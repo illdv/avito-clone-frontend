@@ -1,0 +1,47 @@
+.top-header
+    border-bottom: .5px solid #FFB91B
+    height: 82px
+    line-height: 2.5
+
+.top-header i
+    font-size: 19px
+    margin: 0 2px
+
+.main-nav a:not(.logo) 
+    padding: 0 17.5px
+
+.logo
+    padding-right: 17.5px
+
+.language
+    -webkit-appearance: none
+    -moz-appearance: none
+    background: no-repeat
+    border: none
+    color: #4F4F4F
+    text-decoration: underline
+    outline: none
+
+#categories,#country,#city,.search-btn, #search
+    width: 100%
+
+@media (min-width: 576px) and (max-width: 767px) 
+    #categories,
+    #country,#city,#search
+        width: 100%
+        margin: 5px
+    
+    .search-btn
+        display: block
+        margin: 5px auto
+        width: 100%
+
+    
+    .bottom-header .justify-content-between
+        justify-content: center !important
+    
+
+@media (min-width: 767px) and (max-width: 991px) 
+    .bottom-header .justify-content-between
+        justify-content: flex-start !important
+    
