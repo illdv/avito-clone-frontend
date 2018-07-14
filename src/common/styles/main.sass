@@ -1,10 +1,65 @@
 @import '../../../node_modules/bootstrap/scss/bootstrap'
+@import './helpers'
     
 html, body
     -webkit-overflow-scrolling: touch // Bug fix for iphone
 
-* {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-}
+*
+    box-sizing: border-box
+    padding: 0
+    margin: 0
+
+a:focus,input:focus,select:focus,button:focus
+    outline: none !important
+
+.form-control:focus, a:focus, button:focus
+    border-color: #FFB91B
+    box-shadow: none !important
+
+a
+    color: #000
+    text-decoration: none
+
+a:hover
+    color: black
+    text-decoration: none
+
+.navbar
+    padding: 0 !important
+
+.navbar-nav
+    flex-direction: row !important
+
+select
+    background: url("/static/img/icons/arrow-down.svg") no-repeat right
+    background-position-x: 95%
+    -webkit-appearance: none
+    -moz-appearance: none
+
+
+input[type="checkbox"]
+    -webkit-appearance: none
+    border: 2px solid #FFB91B
+    width: 20px
+    height: 20px
+    border-radius: 50%
+    position: relative
+    display: flex
+    align-items: center
+    justify-content: center
+
+input[type="checkbox"]:checked:after
+    content: ""
+    height: 10px
+    width: 10px
+    background-color: #FFB91B
+    border-radius: 50%
+
+
+.breadcrumb
+    background-color: transparent !important
+    padding-left: 0
+    padding-right: 0
+
+.breadcrumb-item+.breadcrumb-item::before,.breadcrumb-item a 
+    color: #FFB91B
