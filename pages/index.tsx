@@ -9,9 +9,10 @@ import Search from '../src/ssr/blocks/search/Search';
 import Categories from '../src/ssr/blocks/categories/Categories';
 import AdsSection from '../src/ssr/blocks/ads/AdsSection';
 import Footer from '../src/ssr/blocks/footer/Footer';
+import ModalWindow from '../src/common/modalWindow/ModalWindow'
 
 interface IIndexProps {
-	t: any;
+  t: any;
 }
 
 let vipAds = [
@@ -37,6 +38,7 @@ export class Index extends React.Component<IIndexProps> {
 	render(){
 		return (
 			<React.Fragment>
+				<ModalWindow />
 				<Head>
 					<meta property="og:description" content='Content' />
 					<title>Index page</title>

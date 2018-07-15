@@ -20,6 +20,7 @@ export default class MyDocument extends Document {
                 <link rel="stylesheet" href="/_next/static/style.css"/>
 
                 <link rel="shortcut icon" type="image/x-icon" href="/static/assets/images/favicon.png"/>
+                <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3mobile.css"/>
             </Head>
             <body>
                 <Main />
