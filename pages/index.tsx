@@ -7,7 +7,7 @@ import Header from '../src/ssr/blocks/header/Header';
 import Navbar from '../src/ssr/blocks/navbar/Navbar';
 import Search from '../src/ssr/blocks/search/Search';
 import Categories from '../src/ssr/blocks/categories/Categories';
-import AdsSection from '../src/ssr/blocks/ads/AdsSection';
+import ListOfAds from '../src/ssr/blocks/list-of-ads/ListOfAds';
 import Footer from '../src/ssr/blocks/footer/Footer';
 
 interface IIndexProps {
@@ -49,8 +49,8 @@ export class Index extends React.Component<IIndexProps> {
 					</div>
 				</div>
 				<Categories />
-				<AdsSection title='Vip ads' ad={ vipAds } />
-				<AdsSection title='Houses, villas, cottages' ad={ vipAds } />
+				<ListOfAds title='Vip ads' ad={ vipAds } />
+				<ListOfAds title='Houses, villas, cottages' ad={ vipAds } />
 				<Footer />
 			</React.Fragment>
 		)
