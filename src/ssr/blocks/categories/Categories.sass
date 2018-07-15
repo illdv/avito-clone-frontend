@@ -1,0 +1,43 @@
+.category-tiles
+    width: 100%
+    display: grid
+    grid-template-columns: repeat(5,1fr)
+    grid-template-rows: repeat(4,1fr)
+    grid-gap: 8px
+    grid-auto-flow: row
+
+.tile
+    background-color: #FFF7D5
+    grid-column-end: span 2
+    grid-row-end: span 1
+    position: relative
+
+
+.vertical
+    grid-column-end: span 1
+    grid-row-end: span 2
+
+.vertical img
+    position: absolute
+    bottom: 0
+
+
+.tile-inner
+    padding: 16px
+
+.all-catg
+    background-color: #FED001
+
+.catg-info span
+    font-size: 14px
+
+.catg-info h4
+    margin-bottom: 0
+
+
+.catg-img
+    position: absolute
+    bottom: 10px
+
+.catg-img.right
+    right: 3px

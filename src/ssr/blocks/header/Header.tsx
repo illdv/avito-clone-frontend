@@ -1,23 +1,13 @@
 import React, { Component } from 'react';
-import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+
+import LanguageDropdown from './components/LanguageDropdown';
 
 require('../../../common/styles/main.sass');
-require('./Root.sass');
+require('./Header.sass');
 
 class Header extends Component {
     constructor(props) {
         super(props);
-    
-        this.toggle = this.toggle.bind(this);
-        this.state = {
-          dropdownOpen: false
-        };
-    }
-
-    toggle() {
-        this.setState(prevState => ({
-          dropdownOpen: !prevState.dropdownOpen
-        }));
     }
 
     render() {
@@ -34,24 +24,14 @@ class Header extends Component {
                                             <span>Berlin</span>
                                         </a>
                                     </li>
-                                    <li className="nav-item dropdown">
-                                        <a href="#" className="language p-x-40" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <span className="underline">English</span>
-                                        </a>
-                                        <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                            <a className="dropdown-item" href="#">English</a>
-                                            <a className="dropdown-item" href="#">German</a>
-                                            <a className="dropdown-item" href="#">Arab</a>
-                                        </div>
-                                    </li>
-
+                                    <LanguageDropdown />
                                 </ul>
                             </div>
                             <div className="col-md-4 navbar-expand-sm text-right">
                                 <ul className="navbar-nav justify-content-end">
                                     <li className="nav-item">
                                         <a href="#" className="favourites p-x-40">
-                                            <img src="../images/icons/like.svg" alt="" />
+                                            <img src="/static/img/icons/like.svg" alt="" />
                                             <span>Favourites</span>
                                         </a>
                                     </li>
