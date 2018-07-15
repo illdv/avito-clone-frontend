@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 
+import LoginModal from '../../modals/login/LoginModal';
+import { showLoginModal } from '../../modals/login/loginModalTriggers';
+
 import LanguageDropdown from './components/LanguageDropdown';
 
 require('../../../common/styles/main.sass');
@@ -13,6 +16,7 @@ class Header extends Component {
     render() {
         return (
             <header>
+				<LoginModal />
                 <div className="top-header p-y-22 navbar-expand-sm">
                     <div className="container">
                         <div className="row justify-content-between no-gutters">
@@ -36,9 +40,9 @@ class Header extends Component {
                                         </a>
                                     </li>
                                     <li className="nav-item">
-                                        <a href="login.html">
+                                        <button className='login-button' onClick={ showLoginModal }>
                                             Login
-                                        </a>
+                                        </button>
                                     </li>
                                 </ul>
                             </div>

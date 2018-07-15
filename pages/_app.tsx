@@ -33,4 +33,4 @@ class ExampleApp extends App {
   }
 }
 
-export default withRedux(configureStore)(withReduxSaga(ExampleApp));
+export default withRedux(() => configureStore)(withReduxSaga(ExampleApp));

@@ -13,8 +13,8 @@ if (process.env.NODE_ENV !== 'production' && !(typeof window === 'undefined')) {
     middleware = [ ...middleware, logger ];
 }
 
-export default function(initialState = {}) {
-    const store: any = createStore(reducer, initialState, applyMiddleware(...middleware));
+const store = function() {
+    const store: any = createStore(reducer, {}, applyMiddleware(...middleware));
 
     store.runSagaTask = () => {
         store.sagaTask =  sagaMiddleware.run(saga);
@@ -22,4 +22,6 @@ export default function(initialState = {}) {
     store.runSagaTask();
 
     return store;
-}
+}();
+
+export default store;
