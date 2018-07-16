@@ -3,16 +3,14 @@ import React from 'react';
 require('./Categories.sass');
 
 class Categories extends React.Component {
-    constructor(props, context) {
-        super(props, context);
-    }
+
     render() {
         return (
             <section className="section-xs">
                 <div className="container">
                     <div className="row">
                         <div className="col-md-12 ">
-                            <h3>Categories</h3>
+                            <h3 className="main-caption">Categories</h3>
                         </div>
                     </div>
                     <div className="row p-y-20">
@@ -62,7 +60,6 @@ class Categories extends React.Component {
                                     <div className="tile__inner">
                                         <div className="category text-left">
                                             <h4 className="category__caption">Electronics, Appliances</h4>
-                                            <span className="category__count">2359 ads</span>
                                         </div>
                                         <div className="tile__image right">
                                             <img src="/static/img/categories/mac.png" alt="" />
@@ -75,7 +72,6 @@ class Categories extends React.Component {
                                     <div className="tile__inner">
                                         <div className="category text-right">
                                             <h4 className="category__caption">For Home, Cottage</h4>
-                                            <span className="category__count">2359 ads</span>
                                         </div>
                                             <img src="/static/img/categories/kitchen.png" alt="" />
                                     </div>
@@ -86,7 +82,6 @@ class Categories extends React.Component {
                                     <div className="tile__inner">
                                         <div className="category text-right">
                                             <h4 className="category__caption">Things</h4>
-                                            <span className="category__count">2359 ads</span>
                                         </div>
                                         <div className="tile__image">
                                             <img src="/static/img/categories/shirt.png" alt="" />

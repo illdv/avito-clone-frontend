@@ -12,7 +12,7 @@ class Search extends Component {
                 <div className="col-md-12">
                     <form action="#" className="search form-inline form-row">
                         <div className="form-group col-6 col-md-3">
-                            <select name="categories" className="search__categories form-control">
+                            <select name="categories" className="search__options form-control">
                                 <option value="">Job</option>
                                 <option value="">Cars</option>
                                 <option value="">The property</option>
@@ -20,10 +20,10 @@ class Search extends Component {
                             </select>
                         </div>
                         <div className="form-group col-6 col-md-3">
-                            <input type="text" className="search__keywords form-control" placeholder="Search" name="search"/>
+                            <input type="text" className="search__options form-control" placeholder="Search" name="search"/>
                         </div>
                         <div className="form-group col-6 col-md-2">
-                            <select name="country"className="search__countries form-control">
+                            <select name="country" className="search__options form-control">
                                 <option value="">Germany</option>
                                 <option value="">United Arab Emirates</option>
                                 <option value="">Kuwait</option>
@@ -31,7 +31,7 @@ class Search extends Component {
                             </select>
                         </div>
                         <div className="form-group col-6 col-md-2">
-                            <select name="city"className="search__cities form-control">
+                            <select name="city" className="search__options form-control">
                                 <option value="">Berlin</option>
                                 <option value="">Dubai</option>
                                 <option value="">Moscow</option>

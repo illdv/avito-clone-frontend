@@ -22,7 +22,7 @@ export default ({ data }: { data: IAd }) => (
             <img src={ data.img } alt=""/>
         </div>
         <div className="ads-info">
-            <a href="#">{ data.info.name }</a>
+                <a>{data.info.name}</a>
             <span>{ data.info.price }</span>
             <span>{ data.info.description }</span>
             <span>{ data.info.date }</span>
