@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import LoginModal from '../../modals/login/LoginModal';
-import { showLoginModal } from '../../modals/login/loginModalTriggers';
+import LoginModal from '../../modals/auth/AuthModal';
+import { showLoginModal } from '../../modals/auth/loginModalTriggers';
 
 import LanguageDropdown from './components/LanguageDropdown';
 
