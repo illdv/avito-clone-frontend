@@ -1,20 +1,27 @@
-import { Component } from 'react';
 import * as React from 'react';
+import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { IRootState } from 'src/common/store/storeInterface';
+import { IUserActions, UserActions } from 'src/common/user/actions';
+import { bindModuleAction } from 'src/common/user/utils';
 
 export interface IState {
   fields?: {
     email?: string;
     telephone?: string;
     password?: string;
-    confirm_password?: string;
+    password_confirmation?: string;
   };
 }
 
 export interface IProps {
-
+  userActions?: IUserActions;
 }
+
+const mapStateToProps = state => ({});
+
+const mapDispatchToProps = dispatch => ({
+  userActions: bindModuleAction(UserActions, dispatch),
+});
 
 class RegistrationForm extends Component<IProps, IState> {
 
@@ -24,6 +31,16 @@ class RegistrationForm extends Component<IProps, IState> {
     const { id, value } = event.target;
     this.setState({
       fields: { ...this.state.fields, [id]: value },
+    });
+  }
+
+  onRegistration = () => {
+    const { password, email, password_confirmation, telephone } = this.state.fields;
+    this.props.userActions.register.REQUEST({
+      telephone,
+      email,
+      password,
+      password_confirmation,
     });
   }
 
@@ -91,7 +108,7 @@ class RegistrationForm extends Component<IProps, IState> {
           <input
             type='password'
             onChange={this.onChange}
-            id='confirm_password'
+            id='password_confirmation'
             name='confirm'
             className='col-sm-6'
             required
@@ -100,7 +117,7 @@ class RegistrationForm extends Component<IProps, IState> {
           />
         </div>
         <div className='form-group col-sm-12 p-x-40 m-t-40'>
-          <button className='btn orange-btn big-btn'>
+          <button onClick={this.onRegistration} className='btn orange-btn big-btn'>
             Register
           </button>
         </div>
@@ -108,17 +125,5 @@ class RegistrationForm extends Component<IProps, IState> {
     );
   }
 }
-
-const mapStateToProps = (state: IRootState) => ({
-  /// nameStore: state.nameStore
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  /*
-    onLoadingMail: () => {
-     dispatch(Mail.Actions.onLoadingMail.REQUEST());
-   },
-  */
-});
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegistrationForm);

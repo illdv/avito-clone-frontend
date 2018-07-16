@@ -1,11 +1,11 @@
-import { AxiosWrapper } from '../api/AxiosWrapper';
+import { AxiosWrapper } from 'api/AxiosWrapper';
 
 function login(loginRequest: ILoginRequest) {
   return AxiosWrapper.post('/login', loginRequest);
 }
 
 function register(registerRequest: IRegisterRequest) {
-  return AxiosWrapper.post('/register', registerRequest);
+  return AxiosWrapper.post('/register', {...registerRequest, name: '123123132'});
 }
 
 export const UserAPI = {

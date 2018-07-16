@@ -31,10 +31,21 @@ function* login(action: Action<ILoginRequest>) {
   }
 }
 
+function* register(action: Action<IRegisterRequest>) {
+  try {
+    yield call(UserAPI.register, action.payload);
+    yield put(UserActions.register.SUCCESS({}));
+  } catch (e) {
+    yield call(errorHandler, e);
+    yield put(UserActions.register.FAILURE({}));
+  }
+}
+
 function* watcherUser() {
   yield [
     takeEvery(UserActions.login.REQUEST, login),
     takeEvery(UserActions.login.SUCCESS, saveTokenInStore),
+    takeEvery(UserActions.register.REQUEST, register),
     takeEvery(UserActions.logout.REQUEST, clearToken),
   ];
 }
