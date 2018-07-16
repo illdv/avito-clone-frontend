@@ -63,3 +63,20 @@ input[type="checkbox"]:checked:after
 
 .breadcrumb-item+.breadcrumb-item::before,.breadcrumb-item a 
     color: #FFB91B
+
+@media (min-width: 576px) and (max-width: 767px)
+    .header_bottom .justify-content-between
+        justify-content: center !important
+
+    .search__categories .search__countries .search__cities .search__keywords
+        width: 100%
+        margin: 5px
+
+    .search__button
+        display: block
+        margin: 5px auto
+        width: 100%
+
+@media (min-width: 767px) and (max-width: 991px)
+    .header_bottom .justify-content-between
+        justify-content: flex-start !important

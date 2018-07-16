@@ -1,5 +1,8 @@
 import React from 'react';
 
+require('../../../common/styles/main.sass');
+require('./Navbar.sass');
+
 class Navbar extends React.Component {
     constructor(props, context) {
         super(props, context);
@@ -8,7 +11,7 @@ class Navbar extends React.Component {
         return (
             <div className="row justify-content-between no-gutters">
                 <div className="col-md-8 col-lg-7">
-                    <nav className="navbar-expand-lg navbar main-nav">
+                    <nav className="navbar-expand-lg navbar menu">
                         <a href="" className="navbar-brand logo">
                             <img src="/static/img/logo.svg" alt=""/>
                         </a>

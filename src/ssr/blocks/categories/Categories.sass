@@ -1,4 +1,4 @@
-.category-tiles
+.tiles
     width: 100%
     display: grid
     grid-template-columns: repeat(5,1fr)
@@ -12,32 +12,29 @@
     grid-row-end: span 1
     position: relative
 
-
-.vertical
-    grid-column-end: span 1
-    grid-row-end: span 2
-
-.vertical img
-    position: absolute
-    bottom: 0
-
-
-.tile-inner
-    padding: 16px
-
-.all-catg
-    background-color: #FED001
-
-.catg-info span
-    font-size: 14px
-
-.catg-info h4
+.tile__caption
     margin-bottom: 0
 
-
-.catg-img
+.tile__image
     position: absolute
     bottom: 10px
 
-.catg-img.right
+.tile__image_vertical
+    position: absolute
+    bottom: 0
+
+.tile__category .tile_count
+    font-size: 14px
+
+.tile_vertical
+    grid-column-end: span 1
+    grid-row-end: span 2
+
+.tile_inner
+    padding: 16px
+
+.tile_categories
+    background-color: #FED001
+
+.tile_image.right
     right: 3px
