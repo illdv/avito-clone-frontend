@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 
 import LoginModal from '../../modals/auth/AuthModal';
-import { showLoginModal } from '../../modals/auth/loginModalTriggers';
+import ForgotPasswordModal from '../../modals/forgot-password/ForgotPasswordModal';
+import { showLoginModal } from '../../modals/login/loginModalTriggers';
+
 
 import LanguageDropdown from './components/LanguageDropdown';
 
@@ -17,6 +19,7 @@ class Header extends Component {
         return (
             <header>
 				<LoginModal />
+                <ForgotPasswordModal />
                 <div className="top-header p-y-22 navbar-expand-sm">
                     <div className="container">
                         <div className="row justify-content-between no-gutters">
