@@ -2,6 +2,7 @@ import React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { bindModuleAction } from 'src/common/user/utils';
 import { IUserActions, UserActions } from 'src/common/user/actions';
+import { toast } from 'react-toastify'
 
 export interface IState {
   fields?: {
