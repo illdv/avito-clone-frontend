@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 
 import LoginModal from '../../modals/login/LoginModal';
-import {showLoginModal} from '../../modals/login/loginModalTriggers';
+
+import ForgotPasswordModal from '../../modals/forgot-password/ForgotPasswordModal';
+import { showLoginModal } from '../../modals/login/loginModalTriggers';
 
 import LanguageDropdown from './components/LanguageDropdown';
 

@@ -1,5 +1,7 @@
 import React from 'react';
+
 import Modal from '../../../common/modal-juggler/Modal';
+import { showForgotPasswordModal } from '../forgot-password/forgotPasswordModalTriggers';
 import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
 
 require('./LoginModal.sass');
@@ -46,7 +48,7 @@ export class LoginModal extends React.Component<{}, LoginModalState> {
                         placeholder="Enter your password" autoComplete="off"/>
                 </div>
                 <div className="text-right col-sm-12 p-x-40">
-                    <a className="grey-text">Forgot Password?</a>
+                    <a className="grey-text" onClick={ showForgotPasswordModal }>Forgot Password?</a>
                 </div>
                 <div className="form-group col-sm-12 p-x-40 d-flex">
                     <input type="checkbox" id="remember" name="password" defaultChecked />
