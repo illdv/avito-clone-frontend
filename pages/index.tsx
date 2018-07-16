@@ -1,5 +1,6 @@
 import React from 'react';
 import Head from 'next/head'
+import { types } from 'redux-act';
 
 import { withI18next } from '../common/lib/withI18next';
 
@@ -9,27 +10,29 @@ import Search from '../src/ssr/blocks/search/Search';
 import Categories from '../src/ssr/blocks/categories/Categories';
 import AdsSection from '../src/ssr/blocks/ads/AdsSection';
 import Footer from '../src/ssr/blocks/footer/Footer';
-import ModalWindow from '../src/common/modalWindow/ModalWindow'
+
+const isServer: boolean = typeof window === 'undefined';
+
+if (isServer){
+    types.disableChecking();
+}
 
 interface IIndexProps {
   t: any;
 }
 
-let vipAds = [
-	{
-		id: '234234',
-		img: 'https://thenypost.files.wordpress.com/2018/04/shooting-toddler-feature.jpg?quality=90&strip=all&w=618&h=410&crop=1',
-		info: {
-			name: 'Corvete 520, 2018',
-			price: '52 000$',
-			description: '120 000 m',
-			date: 'Yesterday 18:39'
-		}
+const createAbs = () => ({
+	id: String(Math.random()),
+	img: 'https://thenypost.files.wordpress.com/2018/04/shooting-toddler-feature.jpg?quality=90&strip=all&w=618&h=410&crop=1',
+	info: {
+		name: 'Corvete 520, 2018',
+		price: '52 000$',
+		description: '120 000 m',
+		date: 'Yesterday 18:39'
 	}
-]
+})
 
-vipAds = vipAds.concat(vipAds, vipAds, vipAds)
-vipAds = vipAds.concat(vipAds)
+const vipAds = [createAbs(), createAbs(), createAbs(), createAbs(), createAbs(), createAbs(), createAbs(), createAbs()]
 
 export class Index extends React.Component<IIndexProps> {
 	static async getInitialProps(){
@@ -38,7 +41,6 @@ export class Index extends React.Component<IIndexProps> {
 	render(){
 		return (
 			<React.Fragment>
-				<ModalWindow />
 				<Head>
 					<meta property="og:description" content='Content' />
 					<title>Index page</title>
