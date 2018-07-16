@@ -8,12 +8,12 @@ class Footer extends React.Component {
     }
     render() {
         return (
-            <footer className="p-t-120">
-                <div className="top-footer">
+            <footer className="footer p-t-120">
+                <div className="footer_top">
                     <div className="container">
                         <div className="row">
                             <div className="col-md-3">
-                                <h5>Transport</h5>
+                                <h5 className="footer_top__caption">Transport</h5>
                                 <ul className="list-unstyled">
                                     <li><a href="#"><span>Cars</span></a></li>
                                     <li><a href=""><span>Motorcycles and Motorcycles</span></a></li>
@@ -23,7 +23,7 @@ class Footer extends React.Component {
                                 </ul>
                             </div>
                             <div className="col-md-3">
-                                <h5>The property</h5>
+                                <h5 className="footer_top__caption">The property</h5>
                                 <ul className="list-unstyled">
                                     <li><a href=""><span>Apartments</span></a></li>
                                     <li><a href=""><span>Rooms</span></a></li>
@@ -35,14 +35,14 @@ class Footer extends React.Component {
                                 </ul>
                             </div>
                             <div className="col-md-3">
-                                <h5>Job</h5>
+                                <h5 className="footer_top__caption">Job</h5>
                                 <ul className="list-unstyled">
                                     <li><a href=""><span>Careers</span></a></li>
                                     <li><a href=""><span>Summary</span></a></li>
                                 </ul>
                             </div>
                             <div className="col-md-3">
-                                <h5>Personal things</h5>
+                                <h5 className="footer_top__caption">Personal things</h5>
                                 <ul className="list-unstyled">
                                     <li><a href="#"><span>Clothes, shoes, accessories</span></a></li>
                                     <li><a href="#"><span>Children's clothing and footwear</span></a></li>
@@ -54,7 +54,7 @@ class Footer extends React.Component {
                         </div>
                         <div className="row p-y-20">
                             <div className="col-md-3">
-                                <h5>For home and cottages</h5>
+                                <h5 className="footer_top__caption">For home and cottages</h5>
                                 <ul className="list-unstyled">
                                     <li><a href="#"><span>Appliances</span></a></li>
                                     <li><a href="#"><span>Furniture and interior</span></a></li>
@@ -65,7 +65,7 @@ class Footer extends React.Component {
                                 </ul>
                             </div>
                             <div className="col-md-3">
-                                <h5>Animals</h5>
+                                <h5 className="footer_top__caption">Animals</h5>
                                 <ul className="list-unstyled">
                                     <li><a href="#"><span>Dogs</span></a></li>
                                     <li><a href="#"><span>Cats</span></a></li>
@@ -76,7 +76,7 @@ class Footer extends React.Component {
                                 </ul>
                             </div>
                             <div className="col-md-3">
-                                <h5>Consumer electronics</h5>
+                                <h5 className="footer_top__caption">Consumer electronics</h5>
                                 <ul className="list-unstyled">
                                     <li><a href="#"><span>Audio and video</span></a></li>
                                     <li><a href="#"><span>Games, consoles and programs</span></a></li>
@@ -90,7 +90,7 @@ class Footer extends React.Component {
                                 </ul>
                             </div>
                             <div className="col-md-3">
-                                <h5>Hobbies and Recreation</h5>
+                                <h5 className="footer_top__caption">Hobbies and Recreation</h5>
                                 <ul className="list-unstyled">
                                     <li><a href=""><span>Tickets and travel</span></a></li>
                                     <li><a href=""><span>Bicycles</span></a></li>
@@ -112,43 +112,43 @@ class Footer extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="bottom-footer">
+                <div className="footer_bottom">
                     <div className="container">
 
                         <div className="row justify-content-between no-gutters">
                             <div className="col-md-9 col-lg-7 ">
-                                <ul className="navbar-nav footer-nav">
+                                <ul className="navbar-nav footer_bottom__nav">
                                     <li className="nav-item">
                                         <a href="#" className="no-p-l">
                                             <span>Submit an advertisement</span>
                                         </a>
                                     </li>
                                     <li className="nav-item">
-                                        <a href="#">
+                                        <a href="#" className="nav_link">
                                             <span>Advertisements</span>
                                         </a>
                                     </li>
                                     <li className="nav-item">
-                                        <a href="#">
+                                        <a href="#" className="nav_link">
                                             <span>Cooperation</span>
                                         </a>
                                     </li>
                                     <li className="nav-item">
-                                        <a href="#">
+                                        <a href="#" className="nav_link">
                                             <span>About us</span>
                                         </a>
                                     </li>
                                 </ul>
                             </div>
                             <div className="col-md-3  navbar-expand-lg text-right">
-                                <ul className="navbar-nav justify-content-end footer-nav">
+                                <ul className="navbar-nav justify-content-end footer_bottom__nav">
                                     <li className="nav-item">
-                                        <a href="#">
+                                        <a href="#" className="nav_link">
                                             <span>Privacy & Terms</span>
                                         </a>
                                     </li>
                                     <li className="nav-item">
-                                        <a href="#">
+                                        <a href="#" className="nav_link">
                                             <span>Help</span>
                                         </a>
                                     </li>
