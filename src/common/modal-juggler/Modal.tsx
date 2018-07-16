@@ -36,7 +36,7 @@ const defaultStyle = {
         overflow: 'auto',
         backgroundColor: 'rgba(0, 0, 0, .75)',
     },
-}
+} as any;
 
 Modal.setAppElement('body');
 
@@ -45,19 +45,50 @@ class ModalWrap extends React.PureComponent<ModalWrapProps> {
         super(props, context);
     }
 
+    get modal(): IModal|undefined {
+        return this.props.modals.filter((modal: IModal) => {
+            return modal.name === this.props.name
+        })[0];
+    }
+
     get isOpen() {
-        return this.props.modals.some(modal => modal.name === this.props.name);
+        return !!this.modal; // Convert to boolean
+    }
+
+    get isModalLast() {
+        let index = this.props.modals.indexOf(this.modal);
+        index++; // Because the index begins with 0
+
+        return this.props.modals.length === index;
     }
 
     get onRequesClose() {
-        return this.props.useOnRequestClose && (() => this.props.hide(this.props.name))
+        return this.props.useOnRequestClose && (() => this.props.hide(this.props.name));
+    }
+
+    get style() {
+        return  this.props.style || defaultStyle;
+    }
+
+    get modifyStyle() {
+        const style = this.style;
+        const overlay = style && style.overlay && style.overlay.backgroundColor || 'rgba(0, 0, 0, 0)';
+        
+        return {
+            ...style,
+            overlay: {
+                ...style.overlay,
+                zIndex: this.modal ? this.modal.zIndex : 0,
+                backgroundColor: this.isModalLast ? overlay : 'rgba(0, 0, 0, 0)',
+            },
+        }
     }
 
     render() {
         return (
             <Modal
                 isOpen={ this.isOpen }
-                style={ this.props.style || defaultStyle }
+                style={ this.modifyStyle }
                 onRequestClose={ this.onRequesClose }
             >
                 { this.props.children }
