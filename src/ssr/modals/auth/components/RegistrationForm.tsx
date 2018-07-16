@@ -1,10 +1,15 @@
 import { Component } from 'react';
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { IRootState } from '../../../../common/store/storeInterface';
+import { IRootState } from 'src/common/store/storeInterface';
 
 export interface IState {
-
+  fields?: {
+    email?: string;
+    telephone?: string;
+    password?: string;
+    confirm_password?: string;
+  };
 }
 
 export interface IProps {
@@ -15,12 +20,20 @@ class RegistrationForm extends Component<IProps, IState> {
 
   state: IState = {};
 
+  onChange = event => {
+    const { id, value } = event.target;
+    this.setState({
+      fields: { ...this.state.fields, [id]: value },
+    });
+  }
+
   render() {
     return (
-      <form action='#'>
+      <div>
         <div className='form-group row big-input'>
           <label className='col-sm-5 col-form-label ' htmlFor='email'>Email</label>
           <input
+            onChange={this.onChange}
             type='email'
             id='email'
             className='col-sm-6'
@@ -39,7 +52,8 @@ class RegistrationForm extends Component<IProps, IState> {
           </label>
           <input
             type='tel'
-            id='tel'
+            onChange={this.onChange}
+            id='telephone'
             name='tel'
             className='col-sm-6'
             required
@@ -55,6 +69,7 @@ class RegistrationForm extends Component<IProps, IState> {
             Password
           </label>
           <input
+            onChange={this.onChange}
             type='password'
             id='password'
             name='password'
@@ -75,7 +90,8 @@ class RegistrationForm extends Component<IProps, IState> {
           </label>
           <input
             type='password'
-            id='confirm'
+            onChange={this.onChange}
+            id='confirm_password'
             name='confirm'
             className='col-sm-6'
             required
@@ -84,11 +100,11 @@ class RegistrationForm extends Component<IProps, IState> {
           />
         </div>
         <div className='form-group col-sm-12 p-x-40 m-t-40'>
-          <button type='submit' className='btn orange-btn big-btn'>
+          <button className='btn orange-btn big-btn'>
             Register
           </button>
         </div>
-      </form>
+      </div>
     );
   }
 }

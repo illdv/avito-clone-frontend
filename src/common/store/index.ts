@@ -3,7 +3,7 @@ import createSagaMiddleware from 'redux-saga';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-import reducer from './reducers';
+import reducer from './rootReducers';
 import saga from './rootSaga';
 
 const sagaMiddleware = createSagaMiddleware();

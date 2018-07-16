@@ -5,7 +5,7 @@ import { IUserActions, UserActions } from 'src/common/user/actions';
 
 export interface IState {
   fields?: {
-    login?: string;
+    email?: string;
     password?: string;
   };
   isRememberMe: boolean;
@@ -24,6 +24,10 @@ const mapDispatchToProps = dispatch => ({
 class LoginForm extends React.Component<IProps, IState> {
 
   state: IState = {
+    fields: {
+      email: 'dev@cronix.ms',
+      password: '111111',
+    },
     isRememberMe: true,
   };
 
@@ -41,9 +45,9 @@ class LoginForm extends React.Component<IProps, IState> {
   }
 
   onLogin = () => {
-    const { login, password } = this.state.fields;
+    const { email, password } = this.state.fields;
     this.props.userActions.login.REQUEST({
-      login,
+      email,
       password,
     });
   }
@@ -54,13 +58,13 @@ class LoginForm extends React.Component<IProps, IState> {
         <div className='form-group row big-input'>
           <label className='col-sm-4 col-form-label ' htmlFor='first-field'>Phone or email</label>
           <input
-            type='text'
-            id='login'
-            className='col-sm-6'
-            name='first-field'
             required
+            type='text'
+            id='email'
+            className='col-sm-6'
             placeholder='Enter email or phone number'
             autoComplete='off'
+            value={this.state.fields.email}
             onChange={this.onChange}
           />
         </div>
@@ -72,13 +76,14 @@ class LoginForm extends React.Component<IProps, IState> {
             Password
           </label>
           <input
+            required
             type='password'
             id='password'
             name='password'
             className='col-sm-6'
-            required
             placeholder='Enter your password'
             autoComplete='off'
+            value={this.state.fields.password}
             onChange={this.onChange}
           />
         </div>

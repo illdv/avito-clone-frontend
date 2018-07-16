@@ -1,9 +1,10 @@
 interface IUser {
-
+  email: string;
+  token: string;
 }
 
 interface ILoginRequest {
-  login: string;
+  email: string;
   password: string;
 }
 
