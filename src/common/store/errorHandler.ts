@@ -1,6 +1,6 @@
 import { put } from 'redux-saga/effects';
 import { AxiosError } from 'axios';
-import { UserActions } from 'src/common/user/actions';
+import { UserActions } from '../../common/user/actions';
 
 export function* errorHandler(error: AxiosError) {
   const messages = yield extractMessages(error);

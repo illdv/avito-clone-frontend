@@ -1,9 +1,7 @@
 import axios, { AxiosPromise } from 'axios';
 
-axios.defaults.baseURL = API_URL;
-
 const instance = axios.create({
-  baseURL: API_URL,
+  baseURL: process.env.API_URL,
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',

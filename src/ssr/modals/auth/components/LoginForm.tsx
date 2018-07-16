@@ -32,13 +32,13 @@ class LoginForm extends React.Component<IProps, IState> {
     this.setState({
       fields: { ...this.state.fields, [id]: value },
     });
-  }
+  };
 
   onRememberMe = event => {
     this.setState({
       isRememberMe: event.target.checked,
     });
-  }
+  };
 
   onLogin = () => {
     const { login, password } = this.state.fields;
@@ -46,11 +46,11 @@ class LoginForm extends React.Component<IProps, IState> {
       login,
       password,
     });
-  }
+  };
 
   render() {
     return (
-      <form action='#'>
+      <div>
         <div className='form-group row big-input'>
           <label className='col-sm-4 col-form-label ' htmlFor='first-field'>Phone or email</label>
           <input
@@ -95,14 +95,13 @@ class LoginForm extends React.Component<IProps, IState> {
         </div>
         <div className='form-group col-sm-12 p-x-40 m-t-40'>
           <button
-            type='submit'
             className='btn orange-btn big-btn'
             onClick={this.onLogin}
           >
             Login
           </button>
         </div>
-      </form>
+      </div>
     );
   }
 }

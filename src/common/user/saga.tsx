@@ -2,9 +2,9 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 import { Action } from 'redux-act';
 import { AxiosResponse } from 'axios';
 
-import { UserActions } from 'src/common/user/actions';
-import { UserAPI } from 'api/User';
-import { errorHandler } from 'src/common/store/errorHandler';
+import { UserActions } from '../../common/user/actions';
+import { UserAPI } from '../../../api/UserAPI';
+import { errorHandler } from '../../common/store/errorHandler';
 
 function* login(action: Action<ILoginRequest>) {
   try {
