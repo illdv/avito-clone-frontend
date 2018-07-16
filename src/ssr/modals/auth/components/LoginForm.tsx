@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { IUserActions, UserActions } from '../../../../common/user/actions';
-import { bindModuleAction } from '../../../../common/user/utils';
+import { bindModuleAction } from 'src/common/user/utils';
+import { IUserActions, UserActions } from 'src/common/user/actions';
 
 export interface IState {
   fields?: {
@@ -32,13 +32,13 @@ class LoginForm extends React.Component<IProps, IState> {
     this.setState({
       fields: { ...this.state.fields, [id]: value },
     });
-  };
+  }
 
   onRememberMe = event => {
     this.setState({
       isRememberMe: event.target.checked,
     });
-  };
+  }
 
   onLogin = () => {
     const { login, password } = this.state.fields;
@@ -46,7 +46,7 @@ class LoginForm extends React.Component<IProps, IState> {
       login,
       password,
     });
-  };
+  }
 
   render() {
     return (
