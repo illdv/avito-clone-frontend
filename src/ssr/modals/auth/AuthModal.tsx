@@ -1,13 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Modal from '../../../common/modal-juggler/Modal';
-import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
-import { InitialModalProps } from '../../../common/modal-juggler/Modal';
-import { getModals } from '../../../common/store/selectors';
-import { hide } from '../../../common/modal-juggler/module';
-import RegistrationForm from '../../../ssr/modals/auth/components/RegistrationForm';
-import LoginForm from '../../../ssr/modals/auth/components/LoginForm';
+import { ModalNames } from 'src/common/modal-juggler/modalJugglerInterface';
+import { getModals } from 'src/common/store/selectors';
+import { hide } from 'src/common/modal-juggler/module';
+import Modal from 'src/common/modal-juggler/Modal';
+import LoginForm from 'src/ssr/modals/auth/components/LoginForm';
+import RegistrationForm from 'src/ssr/modals/auth/components/RegistrationForm';
 
 require('./AuthModal.sass');
 
@@ -27,11 +26,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   hide: name => dispatch(hide(name)),
 });
-
-export default (props: InitialModalProps) => {
-  const Component = connect(mapStateToProps, mapDispatchToProps)(AuthModal);
-  return <Component {...props} />;
-};
 
 export class AuthModal extends React.Component<{}, ILoginModalState> {
   constructor(props) {
@@ -90,3 +84,5 @@ export class AuthModal extends React.Component<{}, ILoginModalState> {
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(AuthModal);

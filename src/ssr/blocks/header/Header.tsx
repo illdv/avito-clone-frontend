@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 
 import LoginModal from '../../modals/auth/AuthModal';
 import ForgotPasswordModal from '../../modals/forgot-password/ForgotPasswordModal';
-import { showLoginModal } from '../../modals/login/loginModalTriggers';
-
-
 import LanguageDropdown from './components/LanguageDropdown';
+import { showLoginModal } from 'src/ssr/modals/auth/loginModalTriggers';
 
 require('../../../common/styles/main.sass');
 require('./Header.sass');
