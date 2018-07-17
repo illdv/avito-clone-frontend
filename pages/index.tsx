@@ -46,7 +46,7 @@ export class Index extends React.Component<IIndexProps> {
 					<title>Index page</title>
 				</Head>
 				<Header />
-				<div className="bottom-header p-y-20">
+				<div className="header_bottom p-y-20">
         			<div className="container">
 						<Navbar />
 						<Search />

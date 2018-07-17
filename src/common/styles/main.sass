@@ -9,6 +9,9 @@ html, body
     padding: 0
     margin: 0
 
+body
+  font-family: Roboto
+
 a:focus,input:focus,select:focus,button:focus
     outline: none !important
 
@@ -55,6 +58,9 @@ input[type="checkbox"]:checked:after
     background-color: #FFB91B
     border-radius: 50%
 
+.main-caption
+    color: #FFB91B
+    padding: 20px
 
 .breadcrumb
     background-color: transparent !important
@@ -63,3 +69,20 @@ input[type="checkbox"]:checked:after
 
 .breadcrumb-item+.breadcrumb-item::before,.breadcrumb-item a 
     color: #FFB91B
+
+@media (min-width: 576px) and (max-width: 767px)
+    .header_bottom .justify-content-between
+        justify-content: center !important
+
+    .search .search__options
+        width: 100%
+        margin: 5px
+
+    .search .search__button
+        display: block
+        margin: 5px auto
+        width: 100%
+
+@media (min-width: 767px) and (max-width: 991px)
+    .header_bottom .justify-content-between
+        justify-content: flex-start !important
