@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import SimilarAds from 'src/ssr/blocks/ad/components/SimilarAds'
+import SimilarAds from 'client/ssr/blocks/ad/components/SimilarAds'
 
 class Chart extends Component {
     render() {

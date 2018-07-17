@@ -1,12 +1,12 @@
 import React from 'react';
 
 import Breadcrumbs from './components/Breadcrumbs';
-import SliderImages from "./components/SliderImages";
-import VehicleFeature from "./components/VehicleFeature";
-import Seller from "./components/Seller";
-import VehicleDescription from 'src/ssr/blocks/ad/components/VehicleDescription'
-import VehicleKit from 'src/ssr/blocks/ad/components/VehicleKit'
-import Chart from 'src/ssr/blocks/ad/components/Chart'
+import SliderImages from './components/SliderImages';
+import VehicleFeature from './components/VehicleFeature';
+import Seller from './components/Seller';
+import VehicleDescription from './components/VehicleDescription';
+import VehicleKit from './components/VehicleKit';
+import Chart from './components/Chart';
 
 require('./Ad.sass')
 
@@ -21,9 +21,26 @@ const crumbs = [
 ]
 
 const images = [
-    {id: 1, src:'static/img/ads/ads.png'},
-    {id: 2, src:'static/img/ads/ads.png'},
-    {id: 3, src:'static/img/ads/ads.png'},
+    {
+        original:'/static/img/ads/ads.png',
+        thumbnail: '/static/img/ads/ads.png',
+    },
+    {
+        original:'/static/img/ads/ads.png',
+        thumbnail: '/static/img/ads/ads.png',
+    },
+    {
+        original:'/static/img/ads/ads.png',
+        thumbnail: '/static/img/ads/ads.png',
+    },
+    {
+        original:'/static/img/ads/ads.png',
+        thumbnail: '/static/img/ads/ads.png',
+    },
+    {
+        original:'/static/img/ads/ads.png',
+        thumbnail: '/static/img/ads/ads.png',
+    },
 ]
 
 const options = [
@@ -94,7 +111,7 @@ class Ads extends React.PureComponent {
                     </div>
                 </div>
                 <div className="row p-y-20">
-                   <SliderImages urls={images} />
+                   <SliderImages images={images} />
                    <VehicleFeature options={options} />
                 </div>
                 <div className="row">

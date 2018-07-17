@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { showSellerModals } from 'src/ssr/modals/seller/SellerModalTriger'
+import { showSellerModals } from 'client/ssr/modals/seller/SellerModalTriger'
 
 export interface ISeller {
    user: object,

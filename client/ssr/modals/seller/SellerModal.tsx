@@ -1,17 +1,11 @@
 import React, { Component } from 'react';
 import Modal from '../../../common/modal-juggler/Modal';
 import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
-import { hideSellerModal } from 'src/ssr/modals/seller/SellerModalTriger'
+import { hideSellerModal } from 'client/ssr/modals/seller/SellerModalTriger'
 
 require('./SellerModal.sass');
 
-interface  ISellerModalProps {
-    user: {
-        name: string;
-    }
-}
-
-class SellerModal extends Component<ISellerModalProps> {
+class SellerModal extends Component {
     render(){
         return (
         <Modal name={ModalNames.seller} useOnRequestClose={true}>
@@ -26,7 +20,7 @@ class SellerModal extends Component<ISellerModalProps> {
                         <div className="seller">
                             <div className="d-flex align-items-center m-r-15">
                                 <div className="seller-info">
-                                    <span className="orange-text">{ this.props.user.name }</span>
+                                    <span className="orange-text">Andy Kartman</span>
                                     <span className="d-block">On ADS from August 2015</span>
                                     <span>Completed 3 ads</span>
                                 </div>
