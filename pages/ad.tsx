@@ -9,7 +9,8 @@ import Search from 'client/ssr/blocks/search/Search';
 import Ad from 'client/ssr/blocks/ad/Ad';
 import SellerModal from 'client/ssr/modals/seller/SellerModal';
 import Footer from 'client/ssr/blocks/footer/Footer';
-import { types } from 'redux-act'
+import 'isomorphic-fetch'
+import { types } from 'redux-act';
 
 const isServer: boolean = typeof window === 'undefined';
 
@@ -19,6 +20,7 @@ if (isServer){
 
 class Ads extends React.Component {
 	static async getInitialProps(){
+				return
 	}
 
 	render(){
