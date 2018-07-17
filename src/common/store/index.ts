@@ -1,9 +1,10 @@
 import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import thunk from 'redux-thunk';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
-import reducer from './reducers';
-import saga from './saga';
+import reducer from './rootReducers';
+import saga from './rootSaga';
 
 const sagaMiddleware = createSagaMiddleware();
 let middleware = [thunk, sagaMiddleware];
@@ -13,8 +14,8 @@ if (process.env.NODE_ENV !== 'production' && !(typeof window === 'undefined')) {
     middleware = [ ...middleware, logger ];
 }
 
-const store = function() {
-    const store: any = createStore(reducer, {}, applyMiddleware(...middleware));
+const createCustomStore = (() => {
+    const store: any = createStore(reducer, {}, composeWithDevTools(applyMiddleware(...middleware)));
 
     store.runSagaTask = () => {
         store.sagaTask =  sagaMiddleware.run(saga);
@@ -22,6 +23,6 @@ const store = function() {
     store.runSagaTask();
 
     return store;
-}();
+})();
 
-export default store;
+export default createCustomStore;

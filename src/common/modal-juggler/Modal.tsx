@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Modal from 'react-modal';
 
-import { ModalNames, IModal } from './modalJugglerInterface';
+import { IModal, ModalNames } from './modalJugglerInterface';
 
 import { getModals } from '../store/selectors';
 import { hide } from './module';
@@ -73,7 +73,7 @@ class ModalWrap extends React.PureComponent<ModalWrapProps> {
     get modifyStyle() {
         const style = this.style;
         const overlay = style && style.overlay && style.overlay.backgroundColor || 'rgba(0, 0, 0, 0)';
-        
+
         return {
             ...style,
             overlay: {

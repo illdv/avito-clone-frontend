@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
 
-import LoginModal from '../../modals/login/LoginModal';
-
+import LoginModal from '../../modals/auth/AuthModal';
 import ForgotPasswordModal from '../../modals/forgot-password/ForgotPasswordModal';
-import { showLoginModal } from '../../modals/login/loginModalTriggers';
-
 import LanguageDropdown from './components/LanguageDropdown';
+import { showLoginModal } from 'src/ssr/modals/auth/loginModalTriggers';
+import { ToastContainer } from 'react-toastify';
 
 require('../../../common/styles/main.sass');
 require('./Header.sass');
@@ -18,15 +17,16 @@ class Header extends Component {
     render() {
         return (
             <header>
-                <LoginModal/>
+                <LoginModal />
+                <ForgotPasswordModal />
                 <div className="header header_top p-y-22 navbar-expand-sm">
-                    <div className="container">
-                        <div className="row justify-content-between no-gutters">
-                            <div className="col-sm-6 col-md-4">
-                                <ul className="navbar-nav">
-                                    <li className="nav-item">
+                    <div className='container'>
+                        <div className='row justify-content-between no-gutters'>
+                            <div className='col-sm-6 col-md-4'>
+                                <ul className='navbar-nav'>
+                                    <li className='nav-item'>
                                         <a href="#" className="header__location">
-                                            <i className="header__icon fas fa-map-marker-alt"></i>
+                                            <i className="header__icon fas fa-map-marker-alt" />
                                             <span>Berlin</span>
                                         </a>
                                     </li>

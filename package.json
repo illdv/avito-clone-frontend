@@ -16,6 +16,7 @@
     "@types/react-dom": "^16.0.6",
     "@zeit/next-sass": "^0.2.0",
     "@zeit/next-typescript": "^1.1.0",
+    "axios": "^0.18.0",
     "bootstrap": "^4.1.2",
     "dotenv": "^6.0.0",
     "dotenv-webpack": "^1.5.7",
@@ -35,6 +36,7 @@
     "react-i18next": "^7.8.1",
     "react-modal": "^3.5.1",
     "react-redux": "^5.0.7",
+    "react-toastify": "^4.1.0",
     "reactstrap": "^6.3.0",
     "redux": "^4.0.0",
     "redux-act": "^1.7.4",
@@ -44,6 +46,9 @@
     "reselect": "^3.0.1"
   },
   "devDependencies": {
-    "css-loader": "^1.0.0"
+    "css-loader": "^1.0.0",
+    "eslint": "^5.1.0",
+    "tslint": "^5.10.0",
+    "redux-devtools-extension": "latest"
   }
 }
