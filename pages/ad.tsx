@@ -1,15 +1,22 @@
 import React from 'react';
+import { types } from 'redux-act';
 
 import { withI18next } from '../common/lib/withI18next';
 
-import Header from '../src/ssr/blocks/header/Header';
-import Navbar from '../src/ssr/blocks/navbar/Navbar';
-import Search from '../src/ssr/blocks/search/Search';
-import Ad from '../src/ssr/blocks/ad/Ad';
+import Header from '../client/ssr/blocks/header/Header';
+import Navbar from '../client/ssr/blocks/navbar/Navbar';
+import Search from '../client/ssr/blocks/search/Search';
+import Ad from '../client/ssr/blocks/ad/Ad';
+
+const isServer: boolean = typeof window === 'undefined';
+
+if (isServer){
+    types.disableChecking();
+}
 
 class Ads extends React.Component {
-	static async getInitialProps(){
-
+	static async getInitialProps({ query }){
+		console.log(query);
 	}
 
 	render(){

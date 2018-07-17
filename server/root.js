@@ -4,12 +4,14 @@ const path = require('path');
 const next = require('next');
 
 const dev = process.env.NODE_ENV !== 'production';
-const app = next({ dev });
-const handle = app.getRequestHandler();
+const appNext = next({ dev });
+const handleNext = appNext.getRequestHandler();
 
 const i18nextMiddleware = require('i18next-express-middleware');
 const Backend = require('i18next-node-fs-backend');
 const { i18nInstance } = require('../i18n');
+
+const handlerRoutes = require('./handlerRoutes');
 
 // Logers
 const serverLogger = log4js.getLogger('server');
@@ -30,7 +32,7 @@ i18nInstance
 		}
 	}, () => {
 		// loaded translations we can bootstrap our routes
-		app.prepare()
+		appNext.prepare()
 			.then(() => {
 				const server = express();
 
@@ -43,8 +45,10 @@ i18nInstance
 				// missing keys
 				server.post('/locales/add/:lng/:ns', i18nextMiddleware.missingKeyHandler(i18nInstance));
 
+				handlerRoutes(server, appNext, handleNext);
+
 				// use next.js
-				server.get('*', (req, res) => handle(req, res));
+				server.get('*', (req, res) => handleNext(req, res));
 
 				server.listen(process.env.PORT, (err) => {
 					if (err) throw err;

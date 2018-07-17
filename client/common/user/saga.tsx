@@ -2,10 +2,10 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 import { Action } from 'redux-act';
 import axios, { AxiosResponse } from 'axios';
 
-import { UserActions } from 'src/common/user/actions';
+import { UserActions } from 'client/common/user/actions';
 import { UserAPI } from 'api/UserAPI';
-import { errorHandler } from 'src/common/store/errorHandler';
-import { CustomStorage } from 'src/common/user/CustomStorage';
+import { errorHandler } from 'client/common/store/errorHandler';
+import { CustomStorage } from 'client/common/user/CustomStorage';
 
 function* saveTokenInStore(action: Action<IUser>) {
   const token = action.payload.token;

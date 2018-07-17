@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import LoginModal from '../../modals/auth/AuthModal';
 import ForgotPasswordModal from '../../modals/forgot-password/ForgotPasswordModal';
 import LanguageDropdown from './components/LanguageDropdown';
-import { showLoginModal } from 'src/ssr/modals/auth/loginModalTriggers';
+import { showLoginModal } from 'client/ssr/modals/auth/loginModalTriggers';
 import { ToastContainer } from 'react-toastify';
 
 require('../../../common/styles/main.sass');
