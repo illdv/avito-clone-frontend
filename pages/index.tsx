@@ -4,12 +4,12 @@ import { types } from 'redux-act';
 
 import { withI18next } from '../common/lib/withI18next';
 
-import Header from '../src/ssr/blocks/header/Header';
-import Navbar from '../src/ssr/blocks/navbar/Navbar';
-import Search from '../src/ssr/blocks/search/Search';
-import Categories from '../src/ssr/blocks/categories/Categories';
-import ListOfAds from '../src/ssr/blocks/list-of-ads/ListOfAds';
-import Footer from '../src/ssr/blocks/footer/Footer';
+import Header from '../client/ssr/blocks/header/Header';
+import Navbar from '../client/ssr/blocks/navbar/Navbar';
+import Search from '../client/ssr/blocks/search/Search';
+import Categories from '../client/ssr/blocks/categories/Categories';
+import ListOfAds from '../client/ssr/blocks/list-of-ads/ListOfAds';
+import Footer from '../client/ssr/blocks/footer/Footer';
 import { ToastContainer } from 'react-toastify';
 
 const isServer: boolean = typeof window === 'undefined';
@@ -36,7 +36,8 @@ const createAbs = () => ({
 const vipAds = [createAbs(), createAbs(), createAbs(), createAbs(), createAbs(), createAbs(), createAbs(), createAbs()]
 
 export class Index extends React.Component<IIndexProps> {
-	static async getInitialProps(){
+	static async getInitialProps({ query }){
+		console.log(query)
 		return null;
 	}
 	render(){
