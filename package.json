@@ -43,12 +43,14 @@
     "redux-logger": "^3.0.6",
     "redux-saga": "^0.16.0",
     "redux-thunk": "^2.3.0",
-    "reselect": "^3.0.1"
+    "reselect": "^3.0.1",
+    "typescript": "^2.9.2"
   },
   "devDependencies": {
     "css-loader": "^1.0.0",
     "eslint": "^5.1.0",
+    "redux-devtools-extension": "latest",
     "tslint": "^5.10.0",
-    "redux-devtools-extension": "latest"
+    "tslint-react": "^3.6.0"
   }
 }

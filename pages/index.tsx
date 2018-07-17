@@ -31,7 +31,7 @@ const createAbs = () => ({
 		description: '120 000 m',
 		date: 'Yesterday 18:39'
 	}
-})
+});
 
 const vipAds = [createAbs(), createAbs(), createAbs(), createAbs(), createAbs(), createAbs(), createAbs(), createAbs()]
 
