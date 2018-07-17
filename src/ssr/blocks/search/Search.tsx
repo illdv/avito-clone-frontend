@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-require('./Search.sass')
+require('./Search.sass');
 
 class Search extends Component {
     constructor(props, context) {
@@ -12,7 +12,7 @@ class Search extends Component {
                 <div className="col-md-12">
                     <form action="#" className="search form-inline form-row">
                         <div className="form-group col-6 col-md-3">
-                            <select name="categories" id="categories" className="form-control">
+                            <select name="categories" className="search__options form-control">
                                 <option value="">Job</option>
                                 <option value="">Cars</option>
                                 <option value="">The property</option>
@@ -20,10 +20,10 @@ class Search extends Component {
                             </select>
                         </div>
                         <div className="form-group col-6 col-md-3">
-                            <input type="text" className="form-control" placeholder="Search" name="search" id="search" />
+                            <input type="text" className="search__options form-control" placeholder="Search" name="search"/>
                         </div>
                         <div className="form-group col-6 col-md-2">
-                            <select name="country" id="country" className="form-control">
+                            <select name="country" className="search__options form-control">
                                 <option value="">Germany</option>
                                 <option value="">United Arab Emirates</option>
                                 <option value="">Kuwait</option>
@@ -31,15 +31,15 @@ class Search extends Component {
                             </select>
                         </div>
                         <div className="form-group col-6 col-md-2">
-                            <select name="city" id="city" className="form-control">
+                            <select name="city" className="search__options form-control">
                                 <option value="">Berlin</option>
                                 <option value="">Dubai</option>
                                 <option value="">Moscow</option>
                             </select>
                         </div>
                         <div className="form-group col-12 col-md-2">
-                            <button className="btn orange-btn-outline search-btn" type="submit"><i
-                                    className="fas fa-search p-x-5"></i>Search
+                            <button className="btn orange-btn-outline search__button" type="submit">
+                                <i className="fas fa-search p-x-5"></i>Search
                             </button>
                         </div>
                     </form>

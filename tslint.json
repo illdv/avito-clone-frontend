@@ -21,6 +21,11 @@
       true,
       "always"
     ],
+    "arrow-parens": [
+      true,
+      "ban-single-arg-parens"
+    ],
+    "jsx-curly-spacing": false,
     "member-ordering": false,
     "no-namespace": false,
     "member-access": false,

@@ -1,52 +1,26 @@
-.top-header
-    border-bottom: .5px solid #FFB91B
-    height: 82px
-    line-height: 2.5
+.header
+  height: 82px
 
-.top-header i
-    font-size: 19px
-    margin: 0 2px
+.header_top
+  border-bottom: .5px solid #FFB91B
+  line-height: 2.5
 
-.main-nav a:not(.logo) 
-    padding: 0 17.5px
-
-.logo
-    padding-right: 17.5px
+.header__icon
+  font-size: 19px
+  margin: 0 2px
 
 .language
-    -webkit-appearance: none
-    -moz-appearance: none
-    background: no-repeat
-    border: none
-    color: #4F4F4F !important
-    text-decoration: underline
-    outline: none
-    background-color: rgba(0,0,0,0) !important
+  -webkit-appearance: none
+  -moz-appearance: none
+  background: no-repeat
+  border: none
+  color: #4F4F4F !important
+  text-decoration: underline
+  outline: none
+  background-color: rgba(0, 0, 0, 0) !important
 
-#categories,#country,#city,.search-btn, #search
-    width: 100%
+.header__button_login
+  border: none
+  cursor: pointer
 
-.login-button
-    border: none
-    cursor: pointer
 
-@media (min-width: 576px) and (max-width: 767px) 
-    #categories,
-    #country,#city,#search
-        width: 100%
-        margin: 5px
-    
-    .search-btn
-        display: block
-        margin: 5px auto
-        width: 100%
-
-    
-    .bottom-header .justify-content-between
-        justify-content: center !important
-    
-
-@media (min-width: 767px) and (max-width: 991px) 
-    .bottom-header .justify-content-between
-        justify-content: flex-start !important
-    
