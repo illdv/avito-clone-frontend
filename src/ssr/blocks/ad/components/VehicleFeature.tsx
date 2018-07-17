@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import thunk from 'redux-thunk'
 
-export interface IVehicle {
+export interface IVehicleFeature {
     options: object,
 }
 let  fields = []
 
-class Vehicle extends Component<IVehicle, {}> {
+class VehicleFeature extends Component<IVehicleFeature, {}> {
     constructor(props, context) {
         super(props, context)
     }
@@ -34,9 +33,8 @@ class Vehicle extends Component<IVehicle, {}> {
     }
 }
 
-function formationFields(option)
-{
- fields = Object.keys(option);
+function formationFields(option) {
+    fields = Object.keys(option);
 }
 
-export default Vehicle;
+export default VehicleFeature;

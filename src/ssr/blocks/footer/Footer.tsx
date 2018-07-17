@@ -1,7 +1,5 @@
 import React from 'react';
 
-require('./Footer.sass');
-
 class Footer extends React.Component {
     constructor(props, context) {
         super(props, context);

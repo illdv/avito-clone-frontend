@@ -2,8 +2,11 @@ import React from 'react';
 
 import Breadcrumbs from './components/Breadcrumbs';
 import SliderImages from "./components/SliderImages";
-import Vehicle from "./components/Vehicle";
+import VehicleFeature from "./components/VehicleFeature";
 import Seller from "./components/Seller";
+import VehicleDescription from 'src/ssr/blocks/ad/components/VehicleDescription'
+import VehicleKit from 'src/ssr/blocks/ad/components/VehicleKit'
+import Chart from 'src/ssr/blocks/ad/components/Chart'
 
 require('./Ad.sass')
 
@@ -40,6 +43,16 @@ const user = {
     phone: '89995965664642',
 }
 
+const body = 'Great car for traveling!\n' +
+    'Spacious salon of 5 seats.\n' +
+    '1 owner, timely service\n' +
+    'A set of winter tires in the kit.\n' +
+    'The car was purchased from an authorized dealer in Berlin and served according to the rules.\n' +
+    'In the presence of the whole package of service documents with notes on the timely passage of\n' +
+    'maintenance.\n' +
+    'Exchange to your car on favorable terms.\n' +
+    'Credit is possible.';
+
 
 
 class Ads extends React.PureComponent {
@@ -48,6 +61,8 @@ class Ads extends React.PureComponent {
     }
     render() {
         return (
+            <React.Fragment>
+            <section className="heading">
             <div className='container'>
                 <div className="row">
                     <div className="col-md-10">
@@ -80,12 +95,21 @@ class Ads extends React.PureComponent {
                 </div>
                 <div className="row p-y-20">
                    <SliderImages urls={images} />
-                   <Vehicle options={options} />
+                   <VehicleFeature options={options} />
                 </div>
                 <div className="row">
                    <Seller user={user}/>
                 </div>
             </div>
+            </section>
+            <section className="section-mb">
+                <div className="container">
+                    <VehicleDescription body={body} />
+                    <VehicleKit/>
+                    <Chart/>
+                </div>
+            </section>
+            </React.Fragment>
         )
     }
 }

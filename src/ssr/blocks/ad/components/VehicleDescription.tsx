@@ -4,7 +4,7 @@ export interface IDescription {
     body: string,
 }
 
-class DescriptionAd extends Component<IDescription> {
+class VehicleDescription extends Component<IDescription> {
     render() {
         return (
             <div className="row">
@@ -22,4 +22,4 @@ class DescriptionAd extends Component<IDescription> {
     }
 }
 
-export default DescriptionAd;
+export default VehicleDescription;

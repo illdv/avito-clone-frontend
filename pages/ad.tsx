@@ -1,4 +1,5 @@
 import React from 'react';
+import thunk from 'redux-thunk';
 
 import { withI18next } from '../common/lib/withI18next';
 
@@ -6,12 +7,18 @@ import Header from '../src/ssr/blocks/header/Header';
 import Navbar from '../src/ssr/blocks/navbar/Navbar';
 import Search from '../src/ssr/blocks/search/Search';
 import Ad from '../src/ssr/blocks/ad/Ad';
-import SellerModal from 'src/ssr/modals/seller/SellerModal'
+import SellerModal from 'src/ssr/modals/seller/SellerModal';
+import Footer from 'src/ssr/blocks/footer/Footer';
+import { types } from 'redux-act'
 
+const isServer: boolean = typeof window === 'undefined';
+
+if (isServer){
+    types.disableChecking();
+}
 
 class Ads extends React.Component {
 	static async getInitialProps(){
-
 	}
 
 	render(){
@@ -26,6 +33,7 @@ class Ads extends React.Component {
 				</div>
 				<Ad />
 							<SellerModal/>
+				<Footer/>
 			</React.Fragment>
 		)
 	}
