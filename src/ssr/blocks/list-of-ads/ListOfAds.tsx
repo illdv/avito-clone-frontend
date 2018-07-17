@@ -3,7 +3,7 @@ import React from 'react';
 import Ad, { IAd } from './components/Ad';
 export { IAd };
 
-require('./Ads.sass');
+require('./ListOfAds.sass');
 
 export interface AdsProps {
     title: string,
