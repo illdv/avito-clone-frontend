@@ -1,5 +1,5 @@
 import { createReducer } from 'redux-act';
-import { UserActions } from 'src/common/user/actions';
+import { UserActions } from 'client/common/user/actions';
 
 export interface IUserState {
   user: IUser;

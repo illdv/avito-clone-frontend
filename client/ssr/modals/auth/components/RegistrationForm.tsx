@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { IUserActions, UserActions } from 'src/common/user/actions';
-import { bindModuleAction } from 'src/common/user/utils';
+import { IUserActions, UserActions } from 'client/common/user/actions';
+import { bindModuleAction } from 'client/common/user/utils';
 
 export interface IState {
   fields?: {

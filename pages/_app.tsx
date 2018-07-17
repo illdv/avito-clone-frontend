@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import App, { Container } from 'next/app'
 import withRedux from 'next-redux-wrapper'
 import withReduxSaga from 'next-redux-saga'
-import configureStore from '../src/common/store';
+import configureStore from '../client/common/store';
 
 
 class ExampleApp extends App {

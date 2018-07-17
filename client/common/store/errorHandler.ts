@@ -1,13 +1,11 @@
 import { put } from 'redux-saga/effects';
 import { AxiosError } from 'axios';
-import { UserActions } from 'src/common/user/actions';
-import { toast } from 'react-toastify';
+import { UserActions } from 'client/common/user/actions';
+import { Toasts } from 'client/common/utils/Toasts';
 
 export function* errorHandler(error: AxiosError) {
   const messages = yield extractMessages(error);
-  toast.error(messages[0], {
-    position: toast.POSITION.TOP_CENTER,
-  });
+  Toasts.error(messages[0] || messages);
 }
 
 export function* extractMessages(error: AxiosError) {
