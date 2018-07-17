@@ -1,7 +1,7 @@
-const express = require('express');
-const log4js = require('log4js');
-const path = require('path');
-const next = require('next');
+import express from 'express';
+import log4js from 'log4js';
+import path from 'path';
+import next from 'next';
 
 const dev = process.env.NODE_ENV !== 'production';
 const appNext = next({ dev });
