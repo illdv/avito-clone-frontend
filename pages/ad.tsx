@@ -6,6 +6,8 @@ import Header from '../src/ssr/blocks/header/Header';
 import Navbar from '../src/ssr/blocks/navbar/Navbar';
 import Search from '../src/ssr/blocks/search/Search';
 import Ad from '../src/ssr/blocks/ad/Ad';
+import SellerModal from 'src/ssr/modals/seller/SellerModal'
+
 
 class Ads extends React.Component {
 	static async getInitialProps(){
@@ -23,6 +25,7 @@ class Ads extends React.Component {
 					</div>
 				</div>
 				<Ad />
+							<SellerModal/>
 			</React.Fragment>
 		)
 	}
