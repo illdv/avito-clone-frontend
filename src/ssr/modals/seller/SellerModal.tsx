@@ -5,7 +5,13 @@ import { hideSellerModal } from 'src/ssr/modals/seller/SellerModalTriger'
 
 require('./SellerModal.sass');
 
-class SellerModal extends Component {
+interface  ISellerModalProps {
+    user: {
+        name: string;
+    }
+}
+
+class SellerModal extends Component<ISellerModalProps> {
     render(){
         return (
         <Modal name={ModalNames.seller} useOnRequestClose={true}>
@@ -20,7 +26,7 @@ class SellerModal extends Component {
                         <div className="seller">
                             <div className="d-flex align-items-center m-r-15">
                                 <div className="seller-info">
-                                    <span className="orange-text">Andy Kartman</span>
+                                    <span className="orange-text">{ this.props.user.name }</span>
                                     <span className="d-block">On ADS from August 2015</span>
                                     <span>Completed 3 ads</span>
                                 </div>

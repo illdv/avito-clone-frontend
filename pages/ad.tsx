@@ -1,5 +1,6 @@
 import React from 'react';
 import thunk from 'redux-thunk';
+import axios from 'axios';
 
 import { withI18next } from '../common/lib/withI18next';
 
@@ -17,8 +18,16 @@ if (isServer){
     types.disableChecking();
 }
 
-class Ads extends React.Component {
+interface  AdsProps {
+				user: {
+				    name: string
+    }
+}
+
+class Ads extends React.Component<AdsProps> {
 	static async getInitialProps(){
+		return axios.get('api/client/v1/ads/2')
+      .then((response) => {console.log(response)});
 	}
 
 	render(){
@@ -32,7 +41,7 @@ class Ads extends React.Component {
 					</div>
 				</div>
 				<Ad />
-							<SellerModal/>
+							<SellerModal user={ this.props.user }/>
 				<Footer/>
 			</React.Fragment>
 		)
