@@ -55,4 +55,3 @@ module.exports = {
     i18nInstance,
     I18n: i18next.default
 };
-//# sourceMappingURL=i18n.js.map

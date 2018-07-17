@@ -1,7 +1,8 @@
-import prepares from './prepareDataForRoute';
-import routes, { IConfigRoutes, ISsrRoute } from './routes';
+import * as prepares from './prepares';
+import {IConfigRoutes, ISsrRoute, default as routes } from './routes';
 
-const initialRoutes = (server, appNext, handleNext) => {
+
+export const initialRoutes = (server, appNext) => {
     const config: IConfigRoutes = routes;
 
     config.ssr.forEach((route: ISsrRoute) => {
@@ -28,5 +29,3 @@ const initialRoutes = (server, appNext, handleNext) => {
         })
     })
 }
-
-export default initialRoutes;
