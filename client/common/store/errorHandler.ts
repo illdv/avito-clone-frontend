@@ -1,7 +1,7 @@
 import { put } from 'redux-saga/effects';
 import { AxiosError } from 'axios';
-import { UserActions } from 'src/common/user/actions';
-import { Toasts } from 'src/common/utils/Toasts';
+import { UserActions } from 'client/common/user/actions';
+import { toast } from 'react-toastify';
 
 export function* errorHandler(error: AxiosError) {
   const messages = yield extractMessages(error);

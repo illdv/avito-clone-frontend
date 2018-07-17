@@ -3,7 +3,7 @@ const withTs = require('@zeit/next-typescript');
 const withSass = require('@zeit/next-sass');
 const Dotenv = require('dotenv-webpack');
 
-const sourcePath = path.join(__dirname, './src');
+const clientPath = path.join(__dirname, './client');
 const apiPath = path.join(__dirname, './api');
 
 module.exports = withTs(withSass({
@@ -19,9 +19,9 @@ module.exports = withTs(withSass({
 
         config.resolve = {
             extensions: ['.js', '.jsx', '.ts', '.tsx'],
-            modules: ['node_modules', sourcePath],
+            modules: ['node_modules', clientPath],
             alias: {
-                src: sourcePath,
+                client: clientPath,
                 api: apiPath,
             },
         }

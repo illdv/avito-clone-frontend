@@ -1,0 +1,17 @@
+{
+    "ssr": {
+        "/": {
+            "page": "/",
+            "prepare": [ "categories" ]
+        },
+        "/ad/:id": {
+            "page": "/ad",
+            "prepare": [ "categories" ]
+        }
+    },
+    "spa": {
+        "/profile": {
+            "head": "<script type='text/javascript'>alert('Hello world')</script>"
+        }
+    }
+}
