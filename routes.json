@@ -1,12 +1,12 @@
 {
     "ssr": {
         "/": {
-            "page": "/",
-            "prepare": [ "categories" ]
+            "page": "/index",
+            "prepare": [ "ads" ]
         },
         "/ad/:id": {
             "page": "/ad",
-            "prepare": [ "categories" ]
+            "prepare": [ "ads" ]
         }
     },
     "spa": {

@@ -11,9 +11,7 @@ import Categories from '../client/ssr/blocks/categories/Categories';
 import ListOfAds from '../client/ssr/blocks/list-of-ads/ListOfAds';
 import Footer from '../client/ssr/blocks/footer/Footer';
 import { ToastContainer } from 'react-toastify';
-import { IAds, ResponseWhitPagination } from 'src/ssr/blocks/list-of-ads/entries/ads/interface';
-import { Toasts } from 'src/common/utils/Toasts';
-import { AdsAPI } from 'api/AdsAPI';
+import { IAds } from 'client/ssr/blocks/list-of-ads/entries/ads/interface';
 
 const isServer: boolean = typeof window === 'undefined';
 
@@ -27,9 +25,8 @@ interface IIndexProps {
 }
 
 export class Index extends React.Component<IIndexProps> {
-    static async getInitialProps() {
-        const axiosData: ResponseWhitPagination<IAds[]> = await AdsAPI.get();
-        return axiosData.data.data;
+    static async getInitialProps({ query }) {
+        return {data: query.ads};
     }
 
     render() {
