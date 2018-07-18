@@ -12,6 +12,11 @@
   },
   "jsRules": {},
   "rules": {
+    "indent": [
+      true,
+      "tabs",
+      4
+    ],
     "quotemark": [
       true,
       "single",
