@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
 import { showSellerModals } from 'client/ssr/modals/seller/SellerModalTriger';
-import { ISellerProps } from 'client/ssr/modals/seller/SellerModal';
+import { ISeller } from 'client/ssr/blocks/ad/interface'
 
 export const avatar   = '/static/img/person.png';
 export const location = 'Germany Berlin';
 
-export interface ISeller {
-	user: ISellerProps;
-}
 
-class Seller extends Component<ISeller, {}> {
+class Seller extends Component<ISeller> {
 	render() {
 		return (
 			<div className='col-lg-7'>

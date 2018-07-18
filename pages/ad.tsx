@@ -10,6 +10,7 @@ import SellerModal from 'client/ssr/modals/seller/SellerModal';
 import Footer from 'client/ssr/blocks/footer/Footer';
 import 'isomorphic-fetch';
 import { types } from 'redux-act';
+import { IAd } from 'client/ssr/blocks/ad/interface'
 
 const isServer: boolean = typeof window === 'undefined';
 
@@ -17,9 +18,8 @@ if (isServer) {
 	types.disableChecking();
 }
 
-class Ads extends React.Component {
+class Ads extends React.Component<IAd> {
 	static async getInitialProps({ query }) {
-
 		return { ad: query.ad };
 	}
 

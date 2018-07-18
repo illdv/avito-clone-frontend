@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
+import { IVehicleFeature } from 'client/ssr/blocks/ad/interface'
 
-export interface IVehicleFeature {
-	options: object;
-}
-
-class VehicleFeature extends Component<IVehicleFeature, {}> {
+class VehicleFeature extends Component<IVehicleFeature> {
 	render() {
 		return (
 			<div className='col-lg-5'>

@@ -3,20 +3,12 @@ import Modal from '../../../common/modal-juggler/Modal';
 import { ModalNames } from 'client/common/modal-juggler/modalJugglerInterface';
 import { hideSellerModal } from 'client/ssr/modals/seller/SellerModalTriger';
 import NumberFormat from 'react-number-format';
+import { ISeller } from 'client/ssr/blocks/ad/interface'
 
 require('./SellerModal.sass');
 
-export interface ISeller {
-	name: string;
-	phone: string;
-	created_at: string;
-}
 
-export interface ISellerProps {
-	user: ISeller;
-}
-
-class SellerModal extends Component<ISellerProps> {
+class SellerModal extends Component<ISeller> {
 	render() {
 		return (
 			<Modal

@@ -2,13 +2,13 @@ import React from 'react';
 
 import Breadcrumbs from './components/Breadcrumbs';
 import SliderImages from './components/SliderImages';
-import VehicleFeature, { IVehicleFeature } from './components/VehicleFeature';
 import Seller from './components/Seller';
-import VehicleDescription, { IVehicleDescription } from './components/VehicleDescription';
 import VehicleKit from './components/VehicleKit';
 import Chart from './components/Chart';
 import NumberFormat from 'react-number-format';
-import { ISellerProps } from 'client/ssr/modals/seller/SellerModal';
+import { IAd } from 'client/ssr/blocks/ad/interface';
+import VehicleFeature from 'client/ssr/blocks/ad/components/VehicleFeature'
+import VehicleDescription from 'client/ssr/blocks/ad/components/VehicleDescription'
 
 require('./Ad.sass');
 
@@ -52,20 +52,6 @@ const user = {
 	phone: '89995965664642',
 };
 
-export interface IAd {
-	ad: {
-		id: string,
-		title: string,
-		created_at: string,
-		updated_at: string,
-		body: IVehicleDescription,
-		description: string,
-		price: string,
-		options: IVehicleFeature,
-		type: any,
-		user: ISellerProps,
-	};
-}
 
 class Ads extends React.PureComponent <IAd> {
 
@@ -104,8 +90,8 @@ class Ads extends React.PureComponent <IAd> {
 						</span>
 								<span className='f-s-14'>
 							<i className='fas fa-eye orange-text' />
-							<span> 250 </span>
-							(Today's <span> 34</span>)
+							<span> {this.props.ad.total_visits} </span>
+							(Today's <span> {this.props.ad.today_visits}</span>)
 						</span>
 								<button className='btn orange-btn-outline m-t-10 d-block no-b-r'>Add to favourites
 								</button>
@@ -123,7 +109,7 @@ class Ads extends React.PureComponent <IAd> {
 							</div>
 						</div>
 						<div className='row p-y-20'>
-							<SliderImages images={images} />
+							<SliderImages images={images}/>
 							<VehicleFeature options={this.props.ad.options} />
 						</div>
 						<div className='row'>
@@ -133,7 +119,7 @@ class Ads extends React.PureComponent <IAd> {
 				</section>
 				<section className='section-mb'>
 					<div className='container'>
-						<VehicleDescription body={this.props.ad.body.body} />
+						<VehicleDescription body={this.props.ad.body} />
 						<VehicleKit />
 						<Chart />
 					</div>

@@ -1,16 +1,10 @@
 import React, {Component} from 'react';
 import ImageGallery from 'react-image-gallery';
+import { IImage } from 'client/ssr/blocks/ad/interface'
 
-export interface IImage {
-    images: object,
-}
 
-class SliderImages extends Component<IImage, {}> {
-    constructor(props, context) {
-        super(props, context)
 
-    }
-
+class SliderImages extends Component<IImage> {
     render() {
         return (
             <div className="col-lg-7">
@@ -20,7 +14,6 @@ class SliderImages extends Component<IImage, {}> {
             </div>
         )
     }
-
 }
 
 export default SliderImages;
