@@ -12,6 +12,9 @@ import ListOfAds from '../client/ssr/blocks/list-of-ads/ListOfAds';
 import Footer from '../client/ssr/blocks/footer/Footer';
 import { ToastContainer } from 'react-toastify';
 import { IAds } from 'client/ssr/blocks/list-of-ads/entries/ads/interface';
+import { CategoriesProvider } from 'client/ssr/blocks/categories/context'
+import { CategoriesAPI } from 'api/CategoriesAPI'
+import { ICategories } from 'client/ssr/blocks/categories/interface'
 
 const isServer: boolean = typeof window === 'undefined';
 
@@ -45,10 +48,15 @@ interface IIndexProps {
 
 export class Index extends React.Component<IIndexProps> {
     static async getInitialProps({ query }) {
-        return { ads: query.ads };
+        const categories = await CategoriesAPI.getCategories();
+        return ({
+            ads: query.ads,
+            categories: categories.data,
+        });
     }
 
     render() {
+        const { categories } = this.props;
         return (
             <React.Fragment>
                 <CategoriesProvider categories={categories}>
@@ -79,7 +87,7 @@ export class Index extends React.Component<IIndexProps> {
                 <ToastContainer />
                 </CategoriesProvider>
             </React.Fragment>
-        );
+        )
     }
 }
 
