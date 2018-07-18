@@ -12,6 +12,9 @@ import ListOfAds from '../client/ssr/blocks/list-of-ads/ListOfAds';
 import Footer from '../client/ssr/blocks/footer/Footer';
 import { ToastContainer } from 'react-toastify';
 import { IAds } from 'client/ssr/blocks/list-of-ads/entries/ads/interface';
+import { CategoriesProvider } from 'client/ssr/blocks/categories/context'
+import { CategoriesAPI } from 'api/CategoriesAPI'
+import { ICategories } from 'client/ssr/blocks/categories/interface'
 
 const isServer: boolean = typeof window === 'undefined';
 
@@ -24,29 +27,54 @@ interface IIndexProps {
     ads: IAds[];
 }
 
+const createAbs = () => ({
+    id: String(Math.random()),
+    img: 'https://thenypost.files.wordpress.com/2018/04/shooting-toddler-feature.jpg?quality=90&strip=all&w=618&h=410&crop=1',
+    info: {
+        name: 'Corvete 520, 2018',
+        price: '52 000$',
+        description: '120 000 m',
+        date: 'Yesterday 18:39'
+    }
+});
+
+const vipAds = [createAbs(), createAbs(), createAbs(), createAbs(), createAbs(), createAbs(), createAbs(), createAbs()]
+
+interface IIndexProps {
+    t: any;
+    categories: any[]; //ICategories
+    error: string;
+}
+
 export class Index extends React.Component<IIndexProps> {
     static async getInitialProps({ query }) {
-        return { ads: query.ads };
+        const categories = await CategoriesAPI.getCategories();
+        return ({
+            ads: query.ads,
+            categories: categories.data,
+        });
     }
 
     render() {
+        const { categories } = this.props;
         return (
             <React.Fragment>
+                <CategoriesProvider categories={categories}>
                 <Head>
                     <meta
-                        property='og:description'
+                        property="og:description"
                         content='Content'
                     />
                     <title>Index page</title>
                 </Head>
                 <Header />
-                <div className='header_bottom p-y-20'>
-                    <div className='container'>
+                <div className="header_bottom p-y-20">
+                    <div className="container">
                         <Navbar />
                         <Search />
                     </div>
                 </div>
-                <Categories />
+                    <Categories />
                 <ListOfAds
                     title='Vip ads'
                     ads={this.props.ads}
@@ -57,8 +85,9 @@ export class Index extends React.Component<IIndexProps> {
                 />
                 <Footer />
                 <ToastContainer />
+                </CategoriesProvider>
             </React.Fragment>
-        );
+        )
     }
 }
 
