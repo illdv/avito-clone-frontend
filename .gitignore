@@ -1,5 +1,6 @@
 node_modules/
-logs/
+server/logs/
+.server/
 .next/
 .env
 
