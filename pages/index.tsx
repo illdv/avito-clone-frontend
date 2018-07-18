@@ -25,6 +25,9 @@ interface IIndexProps {
 }
 
 export class Index extends React.Component<IIndexProps> {
+    state = {
+        categories: ['cars', 'girls']
+    }
     static async getInitialProps({ query }) {
         return { ads: query.ads };
     }
@@ -32,21 +35,22 @@ export class Index extends React.Component<IIndexProps> {
     render() {
         return (
             <React.Fragment>
+                <CategoriesProvider categories={categories}>
                 <Head>
                     <meta
-                        property='og:description'
+                        property="og:description"
                         content='Content'
                     />
                     <title>Index page</title>
                 </Head>
                 <Header />
-                <div className='header_bottom p-y-20'>
-                    <div className='container'>
+                <div className="header_bottom p-y-20">
+                    <div className="container">
                         <Navbar />
                         <Search />
                     </div>
                 </div>
-                <Categories />
+                    <Categories />
                 <ListOfAds
                     title='Vip ads'
                     ads={this.props.ads}
@@ -57,6 +61,7 @@ export class Index extends React.Component<IIndexProps> {
                 />
                 <Footer />
                 <ToastContainer />
+                </CategoriesProvider>
             </React.Fragment>
         );
     }

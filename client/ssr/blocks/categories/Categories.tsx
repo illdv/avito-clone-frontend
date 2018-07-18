@@ -1,4 +1,5 @@
 import React from 'react';
+import CategoriesContext from 'client/ssr/blocks/categories/context';
 
 require('./Categories.sass');
 
