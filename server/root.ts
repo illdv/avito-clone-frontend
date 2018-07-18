@@ -1,21 +1,20 @@
-const express = require('express');
-const log4js = require('log4js');
-const path = require('path');
-const next = require('next');
+import * as i18nextMiddleware from 'i18next-express-middleware';
+import * as Backend from 'i18next-node-fs-backend';
+import * as express from 'express';
+import * as log4js from 'log4js';
+import * as path from 'path';
+import * as next from 'next';
+
+import { i18nInstance } from '../common/lib/i18n';
+import { initialRoutes } from './router/connectRoutes';
 
 const dev = process.env.NODE_ENV !== 'production';
 const appNext = next({ dev });
 const handleNext = appNext.getRequestHandler();
 
-const i18nextMiddleware = require('i18next-express-middleware');
-const Backend = require('i18next-node-fs-backend');
-const { i18nInstance } = require('../i18n');
-
-const handlerRoutes = require('./handlerRoutes');
-
 // Logers
 const serverLogger = log4js.getLogger('server');
-const defaultLogger = log4js.getLogger();
+//const defaultLogger = log4js.getLogger();
 
 // init i18next with serverside settings
 // using i18next-express-middleware
@@ -45,7 +44,7 @@ i18nInstance
 				// missing keys
 				server.post('/locales/add/:lng/:ns', i18nextMiddleware.missingKeyHandler(i18nInstance));
 
-				handlerRoutes(server, appNext, handleNext);
+				initialRoutes(server, appNext);
 
 				// use next.js
 				server.get('*', (req, res) => handleNext(req, res));

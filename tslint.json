@@ -12,6 +12,12 @@
   },
   "jsRules": {},
   "rules": {
+    "eofline": false,
+    "indent": [
+      true,
+      "tabs",
+      4
+    ],
     "quotemark": [
       true,
       "single",
