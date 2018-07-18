@@ -1,4 +1,4 @@
-const path = require('path');6
+const path = require('path');
 const withTs = require('@zeit/next-typescript');
 const withSass = require('@zeit/next-sass');
 const Dotenv = require('dotenv-webpack');

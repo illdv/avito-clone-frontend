@@ -21,7 +21,7 @@ class Seller extends Component<ISeller, {}> {
 							className='round-img m-r-10'
 						/>
 						<div className='seller-info'>
-							<span>{this.props.user.user.name}</span>
+							<span>{this.props.user.name}</span>
 							<span>{location}</span>
 						</div>
 					</div>
