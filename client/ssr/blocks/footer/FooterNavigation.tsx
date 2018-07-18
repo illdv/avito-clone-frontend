@@ -1,10 +1,7 @@
 import React from 'react';
+import Footer from 'client/ssr/blocks/footer/Footer';
 
-class Footer extends React.Component {
-	constructor(props, context) {
-		super(props, context);
-	}
-
+class FooterNavigation extends React.Component {
 	render() {
 		return (
 			<footer className='footer p-t-120'>
@@ -118,4 +115,4 @@ class Footer extends React.Component {
 	}
 }
 
-export default Footer;
+export default FooterNavigation;

@@ -36,7 +36,7 @@ export class Profile extends Component<IProps, IState> {
 		return (
 			<>
 				<ToolBar />
-				<MainContent/>
+				{/*<MainContent/>*/}
 				<Footer />
 				<ToastContainer />
 			</>
