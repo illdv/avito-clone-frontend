@@ -1,10 +1,10 @@
 import { AxiosWrapper } from './AxiosWrapper';
 
-function login(loginRequest: ILoginRequest) {
+function login(loginRequest) {
   return AxiosWrapper.post('/login', loginRequest);
 }
 
-function register(registerRequest: IRegisterRequest) {
+function register(registerRequest) {
   return AxiosWrapper.post('/register', {...registerRequest, name: '123123132'});
 }
 

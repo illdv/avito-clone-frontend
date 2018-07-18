@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "target": "es6", //компилируем в es6
+        "module": "commonjs", //импорт модулей преобразуется в commonjs (node require)
+        "sourceMap": true, //генерировать sourceMaps, нужно для отладки
+        "outDir": ".server", //проект билдится из папки /server в папку /.server
+        "rootDir": "server"
+    },
+    //указывает что включаться должны только файлы из папки /server
+    "include": [
+        "server/**/*"
+    ]
+}

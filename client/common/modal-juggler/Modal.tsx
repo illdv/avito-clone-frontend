@@ -62,7 +62,7 @@ class ModalWrap extends React.PureComponent<ModalWrapProps> {
         return this.props.modals.length === index;
     }
 
-    get onRequesClose() {
+    get onRequestClose() {
         return this.props.useOnRequestClose && (() => this.props.hide(this.props.name));
     }
 
@@ -89,7 +89,7 @@ class ModalWrap extends React.PureComponent<ModalWrapProps> {
             <Modal
                 isOpen={ this.isOpen }
                 style={ this.modifyStyle }
-                onRequestClose={ this.onRequesClose }
+                onRequestClose={ this.onRequestClose }
             >
                 { this.props.children }
             </Modal>
