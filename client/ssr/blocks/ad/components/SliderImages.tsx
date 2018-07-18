@@ -15,7 +15,7 @@ class SliderImages extends Component<IImage, {}> {
         return (
             <div className="col-lg-7">
                 <div className="ads-image">
-                    <ImageGallery items={this.props.images}/>
+                    <ImageGallery items={this.props.images} showPlayButton={false}/>
                 </div>
             </div>
         )

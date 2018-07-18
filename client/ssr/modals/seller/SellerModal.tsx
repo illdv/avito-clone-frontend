@@ -21,7 +21,7 @@ class SellerModal extends Component<ISellerProps> {
                 <div className="modal-content">
                     <div className="modal-header no-border">
                         <h3 className="modal-title" id="exampleModalLongTitle">
-                            <NumberFormat value={this.props.user.phone} displayType={'text'} format={'# ### ### ## ##'}/>
+                            <NumberFormat value={this.props.user.phone} displayType={'text'} format={'+# (###) ### ## ##'}/>
                         </h3>
                         <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={hideSellerModal}>
                             <span aria-hidden="true">&times;</span>
