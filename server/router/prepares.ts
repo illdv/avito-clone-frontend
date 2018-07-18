@@ -1,6 +1,8 @@
-const axios = require('axios/index');
+import { default as axios } from 'axios';
 
-const prepareAds = async (path, params) => {
+type prepareMethod = (path: string, params: any) => any;
+
+export const ads: prepareMethod = async () => {
 	const instance = axios.create({
 		baseURL: process.env.API_URL,
 		headers: {
@@ -11,8 +13,4 @@ const prepareAds = async (path, params) => {
 
 	const axiosData = await instance.get('/ads');
 	return axiosData.data.data;
-};
-
-module.exports = {
-	ads: prepareAds,
 };

@@ -1,4 +1,4 @@
-import { AxiosWrapper } from 'api/AxiosWrapper';
+import { AxiosWrapper } from './AxiosWrapper';
 
 function login(loginRequest: ILoginRequest) {
   return AxiosWrapper.post('/login', loginRequest);
