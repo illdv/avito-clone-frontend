@@ -14,3 +14,7 @@ export const ads: prepareMethod = async () => {
 	const axiosData = await instance.get('/ads');
 	return axiosData.data.data;
 };
+
+export const gg: prepareMethod = async () => {
+	return {foo: 'bar'}
+}
