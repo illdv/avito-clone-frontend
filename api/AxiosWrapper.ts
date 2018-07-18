@@ -20,7 +20,7 @@ function put(apiMethod: string, body: any = {}) {
   return instance.put(apiMethod, body);
 }
 
-function deleteResponse(apiMethod: string, body: any) {
+function deleteResponse(apiMethod: string, body?: any) {
   return instance.delete(apiMethod, { data: body });
 }
 
