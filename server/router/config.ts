@@ -8,7 +8,7 @@ const routes = [
     {
         path: '/',
         page: '/index',
-        prepare: [ 'gg', 'ads' ],
+        prepare: [ 'ads' ],
     },
     {
         path: '/ad/:id',
