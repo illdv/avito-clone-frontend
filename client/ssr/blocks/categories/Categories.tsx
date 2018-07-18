@@ -4,9 +4,7 @@ import CategoryCard from 'client/ssr/blocks/categories/CategoryCard'
 
 require('./Categories.sass');
 
-class Categories extends React.Component {
-
-    render() {
+const Categories: React.SFC<any> =  () => {
         return (
             <section className="section-xs">
                 <div className="container">

@@ -39,7 +39,7 @@ const vipAds = [createAbs(), createAbs(), createAbs(), createAbs(), createAbs(),
 
 interface IIndexProps {
     t: any;
-    categories: any;
+    categories: any[]; //ICategories
     error: string;
 }
 
