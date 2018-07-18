@@ -4,7 +4,7 @@ function get() {
     return AxiosWrapper.get('/ads');
 }
 function show(id) {
-    return AxiosWrapper.get(id);
+    return AxiosWrapper.get('/ad/'+id);
 }
 
 export const AdsAPI = {

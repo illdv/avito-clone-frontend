@@ -19,8 +19,8 @@ if (isServer){
 }
 
 class Ads extends React.Component {
-	static async getInitialProps(){
-				return
+	static async getInitialProps({query}){
+				console.log(query)
 	}
 
 	render(){
