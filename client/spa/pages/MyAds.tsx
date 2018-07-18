@@ -2,32 +2,99 @@ import { Component } from 'react';
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { IRootState } from 'client/common/store/storeInterface';
+import { bindModuleAction } from 'client/common/user/utils';
+import { AdsActions, IAdsActions } from 'client/common/ads/actions';
+import { IAdsState } from 'client/common/ads/reducer';
+import { IAds } from 'client/common/ads/interface'
 
 export interface IState {
 
 }
 
 export interface IProps {
-
+	ads: IAdsState;
+	adsActions: IAdsActions;
 }
 
 const mapStateToProps = (state: IRootState) => ({
-	/// nameStore: state.nameStore
+	ads: state.ads,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-	/*
-	  onLoadingMail: () => {
-	   dispatch(Mail.Actions.onLoadingMail.REQUEST());
-	 },
-	*/
+	adsActions: bindModuleAction(AdsActions, dispatch),
 });
 
-export class MyAds extends Component<IProps, IState> {
+const Item = ({ id, title }: IAds) => (
+	<div
+		key={id}
+		className='offer-block__item'
+	>
+		<input type='checkbox' />
+		<div className='offer-block__inner'>
+			<div className='row no-gutters'>
+				<div className='col-md-3 col-lg-3'>
+					<img
+						src='/static/img/ads/ads3.png'
+						alt=''
+						className='offer-block__img'
+					/>
+				</div>
+				<div className='col-md-6 col-lg-6'>
+					<a
+						href='#'
+						className='f-s-16'
+					>
+						<h5>
+							{title}
+						</h5>
+					</a>
+					<span className='d-inline-block offer-block__price'>790 000 $</span>
+					<div className='publish-offer'>
+						<a
+							href='#'
+							className='btn button button_dark-outline publish-offer__button'
+						>
+							Activate
+						</a>
+						<a
+							href='#'
+							className='btn button button_dark-outline publish-offer__button'
+						>
+							Remove
+						</a>
+					</div>
+				</div>
+				<div className='col-md-3 col-lg-3 text-right edit-block'>
+					<a
+						href='#'
+						className='edit-block__link'
+					>
+						Edit
+					</a>
+					<div className='watcher'>
+						<i className='watcher__icon fa fa-eye' /> <span>5647</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+);
+
+class MyAds extends Component<IProps, IState> {
 
 	state: IState = {};
 
+	componentDidMount(): void {
+		this.props.adsActions.getMy.REQUEST({});
+	}
+
 	render() {
+		const { isLoading, ads } = this.props.ads;
+
+		if (isLoading) {
+			return <h1>Loading...</h1>;
+		}
+
 		return (
 			<>
 				<div className='filter-offer d-flex'>
@@ -69,151 +136,7 @@ export class MyAds extends Component<IProps, IState> {
 					</button>
 				</div>
 				<div className='offer-block'>
-					<div className='offer-block__item'>
-						<input type='checkbox' />
-						<div className='offer-block__inner'>
-							<div className='row no-gutters'>
-								<div className='col-md-3 col-lg-3'>
-									<img
-										src='/static/img/ads/ads3.png'
-										alt=''
-										className='offer-block__img'
-									/>
-								</div>
-								<div className='col-md-6 col-lg-6'>
-									<a
-										href='#'
-										className='f-s-16'
-									>
-										<h5>
-											House of 230 m²
-										</h5>
-									</a>
-									<span className='d-inline-block offer-block__price'>790 000 $</span>
-									<div className='publish-offer'>
-										<a
-											href='#'
-											className='btn button button_dark-outline publish-offer__button'
-										>
-											Activate
-										</a>
-										<a
-											href='#'
-											className='btn button button_dark-outline publish-offer__button'
-										>
-											Remove
-										</a>
-									</div>
-								</div>
-								<div className='col-md-3 col-lg-3 text-right edit-block'>
-									<a
-										href='#'
-										className='edit-block__link'
-									>
-										Edit
-									</a>
-									<div className='watcher'>
-										<i className='watcher__icon fa fa-eye' /> <span>5647</span>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div className='offer-block__item'>
-						<input type='checkbox' />
-						<div className='offer-block__inner'>
-							<div className='row no-gutters'>
-								<div className='col-md-3 col-lg-3'>
-									<img
-										src='/static/img/ads/ads3.png'
-										alt=''
-										className='offer-block__img'
-									/>
-								</div>
-								<div className='col-md-6 col-lg-6'>
-									<a
-										href='#'
-										className='f-s-16'
-									>
-										<h5>
-											House of 230 m²
-										</h5>
-									</a>
-									<span className='d-inline-block offer-block__price'>790 000 $</span>
-									<div className='publish-offer'>
-										<a
-											href='#'
-											className='btn button button_dark-outline publish-offer__button'
-										>
-											Edit
-										</a>
-									</div>
-								</div>
-								<div className='col-md-3 col-lg-3 text-right edit-block'>
-									<a
-										href='#'
-										className='edit-block__link'
-									>
-										Edit
-									</a>
-									<div className='watcher'>
-										<i className='watcher__icon fa fa-eye' />
-										<span>5647</span>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div className='offer-block__item'>
-						<input type='checkbox' />
-						<div className='offer-block__inner'>
-							<div className='row no-gutters'>
-								<div className='col-md-3 col-lg-3'>
-									<img
-										src='/static/img/ads/ads3.png'
-										alt=''
-										className='offer-block__img'
-									/>
-								</div>
-								<div className='col-md-6 col-lg-6'>
-									<a
-										href='#'
-										className='f-s-16'
-									>
-										<h5>
-											House of 230 m²
-										</h5>
-									</a>
-									<span className='d-inline-block offer-block__price'>790 000 $</span>
-									<div className='publish-offer'>
-										<a
-											href='#'
-											className='btn button button_dark-outline publish-offer__button'
-										>
-											Complete
-										</a>
-										<a
-											href='#'
-											className='btn button button_dark-outline publish-offer__button'
-										>
-											Remove
-										</a>
-									</div>
-								</div>
-								<div className='col-md-3 col-lg-3 text-right edit-block'>
-									<a
-										href='#'
-										className='edit-block__link'
-									>
-										Edit
-									</a>
-									<div className='watcher'>
-										<i className='watcher__icon fa fa-eye' /> <span>5647</span>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+					{ads.map(Item)}
 				</div>
 			</>
 		);
