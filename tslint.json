@@ -12,6 +12,7 @@
   },
   "jsRules": {},
   "rules": {
+    "eofline": false,
     "indent": [
       true,
       "tabs",
