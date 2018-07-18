@@ -24,7 +24,7 @@ export default {
 		{
 			path: '/ad/:id',
 			page: '/ad',
-			prepare: ['ads'],
+			prepare: ['ad'],
 		},
 		{
 			path: '/profile',
