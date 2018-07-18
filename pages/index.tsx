@@ -24,10 +24,26 @@ interface IIndexProps {
     ads: IAds[];
 }
 
-export class Index extends React.Component<IIndexProps> {
-    state = {
-        categories: ['cars', 'girls']
+const createAbs = () => ({
+    id: String(Math.random()),
+    img: 'https://thenypost.files.wordpress.com/2018/04/shooting-toddler-feature.jpg?quality=90&strip=all&w=618&h=410&crop=1',
+    info: {
+        name: 'Corvete 520, 2018',
+        price: '52 000$',
+        description: '120 000 m',
+        date: 'Yesterday 18:39'
     }
+});
+
+const vipAds = [createAbs(), createAbs(), createAbs(), createAbs(), createAbs(), createAbs(), createAbs(), createAbs()]
+
+interface IIndexProps {
+    t: any;
+    categories: any;
+    error: string;
+}
+
+export class Index extends React.Component<IIndexProps> {
     static async getInitialProps({ query }) {
         return { ads: query.ads };
     }
