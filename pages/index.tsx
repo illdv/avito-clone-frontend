@@ -21,12 +21,12 @@ if (isServer) {
 
 interface IIndexProps {
     t: any;
-    data: IAds[];
+    ads: IAds[];
 }
 
 export class Index extends React.Component<IIndexProps> {
     static async getInitialProps({ query }) {
-        return {data: query.ads};
+        return { ads: query.ads };
     }
 
     render() {
@@ -49,11 +49,11 @@ export class Index extends React.Component<IIndexProps> {
                 <Categories />
                 <ListOfAds
                     title='Vip ads'
-                    ad={[]}
+                    ads={this.props.ads}
                 />
                 <ListOfAds
                     title='Houses, villas, cottages'
-                    ad={[]}
+                    ads={this.props.ads}
                 />
                 <Footer />
                 <ToastContainer />

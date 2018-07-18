@@ -10,7 +10,8 @@ export interface IAds {
     id: number;
     category_id: number;
     type_id: number;
-    name: string;
+    title: string;
+    description: string;
     created_at: string;
     updated_at: string;
     deleted_at?: any;

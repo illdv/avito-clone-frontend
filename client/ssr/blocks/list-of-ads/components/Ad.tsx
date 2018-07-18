@@ -1,20 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
+import { IAds } from 'client/ssr/blocks/list-of-ads/entries/ads/interface';
 
-export interface IAdInfo {
-    name: string;
-    price: string;
-    description: string;
-    date: string;
-}
-
-export interface IAd {
-    id: string;
-    img: string;
-    info: IAdInfo;
-}
-
-export default ({ data }: { data: IAd }) => (
+export default ({ data }: { data: IAds }) => (
     <div className='ads-tile'>
         <div className='ads-img'>
             <a href='#'>
@@ -25,15 +13,17 @@ export default ({ data }: { data: IAd }) => (
                 />
             </a>
             <img
-                src={data.img}
-                alt=''
+                src={'https://goo.gl/vLUXu9'}
+                alt='Dogs'
             />
         </div>
         <div className='ads-info'>
-            <Link href={`ad/${data.id}`}>{data.info.name}</Link>
-            <span>{data.info.price}</span>
-            <span>{data.info.description}</span>
-            <span>{data.info.date}</span>
+            <Link href={`ad/${data.id}`}>
+                <a><h4>{data.title}</h4></a>
+            </Link>
+            <span>{'not cost'}</span>
+            <span>{data.description}</span>
+            <span>{data.updated_at}</span>
         </div>
     </div>
 );
