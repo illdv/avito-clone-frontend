@@ -9,7 +9,7 @@ import { ToastContainer } from 'react-toastify';
 require('../../../common/styles/main.sass');
 require('./Header.sass');
 
-class Header extends Component {
+class  Header extends Component {
     constructor(props) {
         super(props);
     }
