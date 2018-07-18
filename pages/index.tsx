@@ -11,7 +11,7 @@ import Categories from '../client/ssr/blocks/categories/Categories';
 import ListOfAds from '../client/ssr/blocks/list-of-ads/ListOfAds';
 import FooterNavigation from '../client/ssr/blocks/footer/FooterNavigation';
 import { ToastContainer } from 'react-toastify';
-import { IAds } from 'client/ssr/blocks/list-of-ads/entries/ads/interface';
+import { IAds } from 'client/common/ads/interface';
 import { CategoriesProvider } from 'client/ssr/blocks/categories/context';
 import { CategoriesAPI } from 'api/CategoriesAPI';
 import { ICategories } from 'client/ssr/blocks/categories/interface';

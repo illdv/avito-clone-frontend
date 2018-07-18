@@ -1,5 +1,5 @@
 import React from 'react';
-import { IAds } from 'client/ssr/blocks/list-of-ads/entries/ads/interface';
+import { IAds } from 'client/common/ads/interface';
 import Ad from 'client/ssr/blocks/list-of-ads/components/Ad';
 
 require('./ListOfAds.sass');
