@@ -1,17 +1,28 @@
 import React, { Component } from 'react';
 import Modal from '../../../common/modal-juggler/Modal';
 import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
-import { hideSellerModal } from 'client/ssr/modals/seller/SellerModalTriger'
+import { hideSellerModal } from 'client/ssr/modals/seller/SellerModalTriger';
+import NumberFormat from 'react-number-format';
 
 require('./SellerModal.sass');
 
-class SellerModal extends Component {
+export interface ISellerProps {
+    user: {
+        name: string,
+        phone: string,
+        created_at: string,
+    }
+}
+
+class SellerModal extends Component<ISellerProps> {
     render(){
         return (
         <Modal name={ModalNames.seller} useOnRequestClose={true}>
                 <div className="modal-content">
                     <div className="modal-header no-border">
-                        <h3 className="modal-title" id="exampleModalLongTitle">8 800 888 89 89</h3>
+                        <h3 className="modal-title" id="exampleModalLongTitle">
+                            <NumberFormat value={this.props.user.phone} displayType={'text'} format={'# ### ### ## ##'}/>
+                        </h3>
                         <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={hideSellerModal}>
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -20,8 +31,8 @@ class SellerModal extends Component {
                         <div className="seller">
                             <div className="d-flex align-items-center m-r-15">
                                 <div className="seller-info">
-                                    <span className="orange-text">Andy Kartman</span>
-                                    <span className="d-block">On ADS from August 2015</span>
+                                    <span className="orange-text">{this.props.user.name}</span>
+                                    <span className="d-block">On ADS from {this.props.user.created_at}</span>
                                     <span>Completed 3 ads</span>
                                 </div>
                                 <img src="/static/img/person.png" alt="" className="round-img m-l-20"/>

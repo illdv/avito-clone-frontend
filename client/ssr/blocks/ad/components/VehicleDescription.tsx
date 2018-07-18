@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
-export interface IDescription {
+export interface IVehicleDescription {
     body: string,
 }
 
-class VehicleDescription extends Component<IDescription> {
+class VehicleDescription extends Component<IVehicleDescription> {
     render() {
         return (
             <div className="row">

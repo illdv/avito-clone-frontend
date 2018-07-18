@@ -7,7 +7,7 @@ class Footer extends React.Component {
     render() {
         return (
             <footer className="footer p-t-120">
-                <div className="top">
+                <div className="footer__top">
                     <div className="container">
                         <div className="row">
                             <div className="col-md-3">
@@ -110,7 +110,7 @@ class Footer extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="bottom">
+                <div className="footer__bottom">
                     <div className="container">
 
                         <div className="row justify-content-between no-gutters">

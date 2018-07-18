@@ -11,6 +11,7 @@ import SellerModal from 'client/ssr/modals/seller/SellerModal';
 import Footer from 'client/ssr/blocks/footer/Footer';
 import 'isomorphic-fetch'
 import { types } from 'redux-act';
+import { AdsAPI } from 'api/AdsAPI'
 
 const isServer: boolean = typeof window === 'undefined';
 
@@ -20,7 +21,9 @@ if (isServer){
 
 class Ads extends React.Component {
 	static async getInitialProps({query}){
-				console.log(query)
+		  const res = await AdsAPI.show(query.id);
+		  const data = await res.data;
+		   return {ad: data};
 	}
 
 	render(){
@@ -33,8 +36,8 @@ class Ads extends React.Component {
 						<Search />
 					</div>
 				</div>
-				<Ad />
-							<SellerModal/>
+				<Ad ad={this.props.ad}/>
+							<SellerModal user={this.props.ad.user}/>
 				<Footer/>
 			</React.Fragment>
 		)

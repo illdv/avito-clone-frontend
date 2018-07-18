@@ -2,11 +2,13 @@ import React from 'react';
 
 import Breadcrumbs from './components/Breadcrumbs';
 import SliderImages from './components/SliderImages';
-import VehicleFeature from './components/VehicleFeature';
+import VehicleFeature, { IVehicleFeature } from './components/VehicleFeature';
 import Seller from './components/Seller';
-import VehicleDescription from './components/VehicleDescription';
+import VehicleDescription, { IVehicleDescription } from './components/VehicleDescription';
 import VehicleKit from './components/VehicleKit';
 import Chart from './components/Chart';
+import NumberFormat from 'react-number-format';
+import { ISellerProps } from 'client/ssr/modals/seller/SellerModal'
 
 require('./Ad.sass')
 
@@ -43,16 +45,6 @@ const images = [
     },
 ]
 
-const options = [
-    {
-        id: 1,
-        brand: 'BMW',
-        mileage: '2226545',
-        carcase: 'sedan',
-        transmission: 'automation',
-    }
-]
-
 const user = {
     name: 'Andrey Beregovoi',
     avatar: '/static/img/person.png',
@@ -60,19 +52,24 @@ const user = {
     phone: '89995965664642',
 }
 
-const body = 'Great car for traveling!\n' +
-    'Spacious salon of 5 seats.\n' +
-    '1 owner, timely service\n' +
-    'A set of winter tires in the kit.\n' +
-    'The car was purchased from an authorized dealer in Berlin and served according to the rules.\n' +
-    'In the presence of the whole package of service documents with notes on the timely passage of\n' +
-    'maintenance.\n' +
-    'Exchange to your car on favorable terms.\n' +
-    'Credit is possible.';
+export interface IAd {
+    ad: {
+        id: string,
+        title: string,
+        created_at: string,
+        updated_at: string,
+        body: IVehicleDescription,
+        description: string,
+        price: string,
+        options: IVehicleFeature,
+        type: any,
+        user: ISellerProps,
+    }
+}
 
 
 
-class Ads extends React.PureComponent {
+class Ads extends React.PureComponent <IAd> {
     constructor(props, context) {
         super(props, context);
     }
@@ -92,12 +89,11 @@ class Ads extends React.PureComponent {
                 </div>
                 <div className="row">
                     <div className="col-md-12 col-lg-8">
-                        <h1 className="m-b-15">BMW 525M, 2018</h1>
-                        <h5 className="f-s-14 f-w-400 m-b-15">№ <span>1316057060</span>, added <span>today</span> at
-                            <span> 17:21</span></h5>
+                        <h1 className="m-b-15">{this.props.ad.title}</h1>
+                        <h5 className="f-s-14 f-w-400 m-b-15">№ <span>{this.props.ad.id}</span>, added <span>{this.props.ad.created_at}</span></h5>
                         <span className="f-s-14">
                             <i className="fas fa-sync-alt orange-text"> </i>
-                            <span> 3 hours ago </span>
+                            <span> {this.props.ad.updated_at} </span>
                         </span>
                         <span className="f-s-14">
                             <i className="fas fa-eye orange-text"></i>
@@ -107,21 +103,28 @@ class Ads extends React.PureComponent {
                         <button className="btn orange-btn-outline m-t-10 d-block no-b-r">Add to favourites</button>
                     </div>
                     <div className="col-md-12 col-lg-4">
-                        <span className="price">890 000$</span>
+                        <span className="price">
+                            <NumberFormat value={this.props.ad.price}
+                                        displayType={'text'}
+                                          suffix={'$'}
+                                          thousandSeparator={' '}
+
+                            />
+                        </span>
                     </div>
                 </div>
                 <div className="row p-y-20">
                    <SliderImages images={images} />
-                   <VehicleFeature options={options} />
+                   <VehicleFeature options={this.props.ad.options} />
                 </div>
                 <div className="row">
-                   <Seller user={user}/>
+                   <Seller user={this.props.ad.user}/>
                 </div>
             </div>
             </section>
             <section className="section-mb">
                 <div className="container">
-                    <VehicleDescription body={body} />
+                    <VehicleDescription body={this.props.ad.body} />
                     <VehicleKit/>
                     <Chart/>
                 </div>
