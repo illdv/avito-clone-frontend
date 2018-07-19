@@ -2,20 +2,19 @@
   "name": "avito-clone-frontend",
   "version": "0.1.0",
   "description": "",
-  "main": "index.js",
+  "main": ".server/index.js",
   "scripts": {
-    "dev": "node index.js",
-    "build": "next build",
-    "start": "NODE_ENV=production node index.js"
+    "dev": "npx tsc -p tsconfig-server.json && node .server/index.js",
+    "dev:server": "nodemon -e js,ts --watch server,common --exec npm run dev",
+    "build": "npx tsc && next build",
+    "start": "NODE_ENV=production node .server/index.js",
+    "test": "jest"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@types/node": "^10.5.2",
-    "@types/react": "^16.4.6",
-    "@types/react-dom": "^16.0.6",
-    "@zeit/next-sass": "^0.2.0",
-    "@zeit/next-typescript": "^1.1.0",
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
     "bootstrap": "^4.1.2",
     "dotenv": "^6.0.0",
     "dotenv-webpack": "^1.5.7",
@@ -29,14 +28,47 @@
     "next": "^6.1.1",
     "next-redux-saga": "^3.0.0-beta.1",
     "next-redux-wrapper": "^2.0.0-beta.6",
+    "node-sass": "^4.9.2",
+    "query-string": "^6.1.0",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-i18next": "^7.8.1",
+    "react-image-gallery": "^0.8.9",
+    "react-modal": "^3.5.1",
+    "react-number-format": "^3.4.4",
     "react-redux": "^5.0.7",
+    "react-toastify": "^4.1.0",
+    "reactstrap": "^6.3.0",
     "redux": "^4.0.0",
     "redux-act": "^1.7.4",
     "redux-logger": "^3.0.6",
     "redux-saga": "^0.16.0",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "reselect": "^3.0.1",
+    "typescript": "^2.9.2"
+  },
+  "devDependencies": {
+    "@types/next": "^6.0.4",
+    "@types/node": "^10.5.2",
+    "@types/react": "^16.4.6",
+    "@types/react-dom": "^16.0.6",
+    "@zeit/next-sass": "^0.2.0",
+    "@zeit/next-typescript": "^1.1.0",
+    "@types/jest": "^23.3.0",
+    "css-loader": "^1.0.0",
+    "enzyme": "^3.3.0",
+    "eslint": "^5.1.0",
+    "jest": "^23.4.1",
+    "nodemon": "^1.18.3",
+    "redux-devtools-extension": "latest",
+    "ts-jest": "^23.0.1",
+    "tslint": "^5.10.0",
+    "tslint-react": "^3.6.0"
+  },
+  "jest": {
+    "setupTestFrameworkScriptFile": "<rootDir>/setupTest.js",
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ]
   }
 }

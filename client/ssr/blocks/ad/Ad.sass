@@ -1,0 +1,64 @@
+@import "node_modules/react-image-gallery/styles/scss/image-gallery.scss"
+.price
+    font-size: 36px
+    text-align: right
+    display: block
+
+.back-next
+    padding: .75rem 1rem
+    text-align: right
+
+.ads-features
+    columns: 2
+
+.ads-features li 
+    padding-bottom: 10px
+
+.seller span:first-of-type
+    font-weight: 500
+    font-size: 14px
+    display: block
+
+.seller span 
+    font-size: 13px
+
+
+.seller img
+    width: 50px
+    height: 50px
+    object-fit: cover
+
+.similar-ads-item span
+    display:block 
+
+
+.similar-ads-item
+    width: 100%
+    max-height: 120px
+    padding: 20px
+
+.similar-ads-item img
+    width: 100%
+    height: 90px
+    object-fit: cover
+
+
+
+
+@media (max-width: 991px) 
+    .ads-features
+        columns: 1
+    
+    .price
+        text-align: left
+    
+    .similar-ads-item img 
+        width: 200px
+        height: auto
+        object-fit: contain
+    
+    .similar-ads-item 
+        width: 100%
+        max-height: 120px
+        padding: 20px
+    
