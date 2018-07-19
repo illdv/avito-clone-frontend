@@ -6,7 +6,7 @@ export interface ICrumb {
 	href: string;
 }
 
-const Breadcrumbs = ({ breadcrumbs, isLastDisabled }: { breadcrumbs: ICrumb[], isLastDisabled }) => {
+const Breadcrumbs = ({ breadcrumbs, isLastDisabled = true }: { breadcrumbs: ICrumb[], isLastDisabled?: boolean }) => {
 	const indexLastCrumb = breadcrumbs.length - 1;
 	return (
 		<Breadcrumb>
