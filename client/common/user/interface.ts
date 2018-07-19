@@ -10,10 +10,10 @@ interface ILoginRequest {
 }
 
 interface IRegisterRequest {
-    email: string;
-    telephone: string;
-    password: string;
-    password_confirmation: string;
+	email: string;
+	phone: string;
+	password: string;
+	password_confirmation: string;
 }
 
 interface IChangePasswordRequest {

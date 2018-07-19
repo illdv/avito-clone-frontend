@@ -7,7 +7,7 @@ import { bindModuleAction } from '../../../../common/user/utils';
 export interface IState {
 	fields?: {
 		email?: string;
-		telephone?: string;
+		phone?: string;
 		password?: string;
 		password_confirmation?: string;
 	};
@@ -35,9 +35,9 @@ class RegistrationForm extends Component<IProps, IState> {
 	}
 
 	onRegistration = () => {
-		const { password, email, password_confirmation, telephone } = this.state.fields;
+		const { password, email, password_confirmation, phone } = this.state.fields;
 		this.props.userActions.register.REQUEST({
-			telephone,
+			phone,
 			email,
 			password,
 			password_confirmation,
@@ -75,7 +75,7 @@ class RegistrationForm extends Component<IProps, IState> {
 					<input
 						type='tel'
 						onChange={this.onChange}
-						id='telephone'
+						id='phone'
 						name='tel'
 						className='col-sm-6'
 						required

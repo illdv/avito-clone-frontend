@@ -29,9 +29,9 @@ function* clearToken() {
 function* resetPassword(action) {
 	try {
 		yield call(UserAPI.sendCodeToEmail, action.payload);
-		yield put(UserActions.sendCode.SUCCESS({}));
+		yield put(UserActions.sendCode.SUCCESS({}))
 		yield put(show(ModalNames.forgotPassword));
-		const userData = yield take(UserActions.resetPasswordByCode.REQUEST);
+		const userData = yield take(UserActions.resetPasswordByCode.REQUEST)
 		yield call(UserAPI.resetPasswordByCode, userData.payload);
 		yield put(show(ModalNames.success));
 	} catch (e) {
