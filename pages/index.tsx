@@ -12,83 +12,82 @@ import ListOfAds from '../client/ssr/blocks/list-of-ads/ListOfAds';
 import Footer from '../client/ssr/blocks/footer/Footer';
 import { ToastContainer } from 'react-toastify';
 import { IAds } from 'client/ssr/blocks/list-of-ads/entries/ads/interface';
-import { CategoriesProvider } from 'client/ssr/blocks/categories/context'
+import { SetCategories } from 'client/ssr/blocks/categories/context'
 import { CategoriesAPI } from 'api/CategoriesAPI'
 import { ICategories } from 'client/ssr/blocks/categories/interface'
 
 const isServer: boolean = typeof window === 'undefined';
 
 if (isServer) {
-    types.disableChecking();
+	types.disableChecking();
 }
 
 interface IIndexProps {
-    t: any;
-    ads: IAds[];
+	t: any;
+	ads: IAds[];
 }
 
 const createAbs = () => ({
-    id: String(Math.random()),
-    img: 'https://thenypost.files.wordpress.com/2018/04/shooting-toddler-feature.jpg?quality=90&strip=all&w=618&h=410&crop=1',
-    info: {
-        name: 'Corvete 520, 2018',
-        price: '52 000$',
-        description: '120 000 m',
-        date: 'Yesterday 18:39'
-    }
+	id: String(Math.random()),
+	img: 'https://thenypost.files.wordpress.com/2018/04/shooting-toddler-feature.jpg?quality=90&strip=all&w=618&h=410&crop=1',
+	info: {
+		name: 'Corvete 520, 2018',
+		price: '52 000$',
+		description: '120 000 m',
+		date: 'Yesterday 18:39'
+	}
 });
 
 const vipAds = [createAbs(), createAbs(), createAbs(), createAbs(), createAbs(), createAbs(), createAbs(), createAbs()]
 
 interface IIndexProps {
-    t: any;
-    categories: any[]; //ICategories
-    error: string;
+	t: any;
+	categories: any[]; // ICategories
+	error: string;
 }
 
 export class Index extends React.Component<IIndexProps> {
-    static async getInitialProps({ query }) {
-        const categories = await CategoriesAPI.getCategories();
-        return ({
-            ads: query.ads,
-            categories: categories.data,
-        });
-    }
+	static async getInitialProps({ query }) {
+		return ({
+			ads: query.ads,
+			categories: query.categories,
+		});
+	}
 
-    render() {
-        const { categories } = this.props;
-        return (
-            <React.Fragment>
-                <CategoriesProvider categories={categories}>
-                <Head>
-                    <meta
-                        property="og:description"
-                        content='Content'
-                    />
-                    <title>Index page</title>
-                </Head>
-                <Header />
-                <div className="header_bottom p-y-20">
-                    <div className="container">
-                        <Navbar />
-                        <Search />
-                    </div>
-                </div>
-                    <Categories />
-                <ListOfAds
-                    title='Vip ads'
-                    ads={this.props.ads}
-                />
-                <ListOfAds
-                    title='Houses, villas, cottages'
-                    ads={this.props.ads}
-                />
-                <Footer />
-                <ToastContainer />
-                </CategoriesProvider>
-            </React.Fragment>
-        )
-    }
+	render() {
+		const { categories } = this.props;
+		return (
+			<React.Fragment>
+				<SetCategories categories={categories}>
+					<Head>
+						<meta
+							property='og:description'
+							content='Content'
+						/>
+						<title>Index page</title>
+					</Head>
+					<Header />
+					<div className='header_bottom p-y-20'>
+						<div className='container'>
+							<Navbar />
+							<Search />
+						</div>
+					</div>
+						<Categories />
+					<ListOfAds
+						title='Vip ads'
+						ads={this.props.ads}
+					/>
+					<ListOfAds
+						title='Houses, villas, cottages'
+						ads={this.props.ads}
+					/>
+					<Footer />
+					<ToastContainer />
+				</SetCategories>
+			</React.Fragment>
+		)
+	}
 }
 
 export default withI18next(['home', 'common'])(Index);
