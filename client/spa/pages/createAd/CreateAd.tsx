@@ -6,6 +6,7 @@ import { Marker, InfoWindow } from 'google-maps-react';
 import { IRootState } from 'client/common/store/storeInterface';
 import { IUserState } from 'client/common/user/reducer';
 import Lease from 'client/spa/pages/createAd/Lease';
+import { Toasts } from 'client/common/utils/Toasts'
 
 export interface IAdsDataForCreate {
 	fields: {
@@ -29,11 +30,6 @@ const mapStateToProps = (state: IRootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-	/*
-	  onLoadingMail: () => {
-	   dispatch(Mail.Actions.onLoadingMail.REQUEST());
-	 },
-	*/
 });
 
 interface IPropsForInput {
@@ -98,9 +94,6 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 	}
 
 	onSelectPlace = (locationName, cityId, location) => {
-		console.log(`CityId: ${cityId}`);
-		console.log(location);
-		console.log(`lat: ${location.lat()} leg: ${location.lng()}`);
 		this.setState({
 			cityId,
 			locationName,

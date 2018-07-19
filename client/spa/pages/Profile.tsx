@@ -55,6 +55,7 @@ export class Profile extends Component<IProps, IState> {
 				<div>
 					<ToolBar onCreateAd={this.onCreateAd} />
 					<CreateAdManager />
+					<ToastContainer />
 				</div>
 			);
 		}
@@ -64,7 +65,6 @@ export class Profile extends Component<IProps, IState> {
 				<ToolBar onCreateAd={this.onCreateAd} />
 				<MainContent />
 				<Footer />
-				<ToastContainer />
 			</>
 		);
 	}
