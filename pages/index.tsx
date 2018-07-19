@@ -33,6 +33,7 @@ export class Index extends React.Component<IIndexProps> {
 			ads: query.ads,
 			categories: query.categories,
 		});
+		console.log('Lol');
 	}
 
 	render() {
@@ -54,7 +55,7 @@ export class Index extends React.Component<IIndexProps> {
 							<Search />
 						</div>
 					</div>
-					<Categories />
+					{/*<Categories />*/}
 					<ListOfAds
 						title='Vip ads'
 						ads={this.props.ads}

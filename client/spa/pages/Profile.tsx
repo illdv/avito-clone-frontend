@@ -7,6 +7,7 @@ import ToolBar from 'client/spa/pages/ToolBar';
 import Footer from 'client/ssr/blocks/footer/Footer';
 import { ToastContainer } from 'react-toastify';
 import { MainContent } from 'client/spa/pages/MainContent';
+import { CustomStorage } from 'client/common/user/CustomStorage';
 
 export interface IState {
 
@@ -31,6 +32,12 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 export class Profile extends Component<IProps, IState> {
 
 	state: IState = {};
+
+	componentDidMount(): void {
+		if (!CustomStorage.getToken()) {
+			window.location.href = '/';
+		}
+	}
 
 	render() {
 		return (

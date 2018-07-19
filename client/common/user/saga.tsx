@@ -7,7 +7,6 @@ import { UserAPI } from 'api/UserAPI';
 import { errorHandler } from 'client/common/store/errorHandler';
 import { CustomStorage } from 'client/common/user/CustomStorage';
 import { hideLoginModal } from 'client/ssr/modals/auth/loginModalTriggers';
-import Router from 'next/router';
 
 function* saveTokenInStore(action: Action<{ user: IUser, isRememberMe: boolean }>) {
 	const { user: { token }, isRememberMe } = action.payload;
@@ -22,7 +21,7 @@ function* saveTokenInStore(action: Action<{ user: IUser, isRememberMe: boolean }
 function* clearToken() {
 	CustomStorage.clear();
 	axios.defaults.headers.common.authorization = ``;
-	Router.push('/', '/', { shallow: true });
+	window.location.href                        = '/';
 }
 
 function* login(action: Action<ILoginRequest>) {
