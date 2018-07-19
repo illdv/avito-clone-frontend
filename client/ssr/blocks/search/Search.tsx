@@ -6,6 +6,7 @@ require('./Search.sass');
 
 interface SearchProps {
 	categories: Category;
+	idActiveCategory: number;
 }
 
 const getOption = option => (
@@ -23,10 +24,14 @@ class Search extends Component<SearchProps> {
 	};
 
 	onSelectCategory = category => {
-		if (this.state.activeCategories[0] !== category) {
-			this.setState({
-				activeCategories: [ category ],
-			});
+		if (category) {
+			if (this.state.activeCategories[0] !== category) {
+				this.setState({
+					activeCategories: [ category ],
+				});
+			}
+		} else {
+			this.setState({ activeCategories: [] });
 		}
 	}
 
@@ -35,16 +40,24 @@ class Search extends Component<SearchProps> {
 
 		const indexParent = categories.indexOf(parent);
 
-		if (indexParent !== -1) {
+		if (category) {
+			if (indexParent !== -1) {
+				const newCategories = categories.slice(0, indexParent + 1);
+				newCategories.push(category);
+	
+				this.setState({
+					activeCategories: newCategories,
+				});
+			} else {
+				throw new Error('Parent no found');
+			}
+		} else {
 			const newCategories = categories.slice(0, indexParent + 1);
-			newCategories.push(category);
-
 			this.setState({
 				activeCategories: newCategories,
 			});
-		} else {
-			throw new Error('Parent no found');
 		}
+
 	}
 
 	get subcategories() {
@@ -75,6 +88,7 @@ class Search extends Component<SearchProps> {
 										categories={ this.props.categories }
 										onSelect={ this.onSelectCategory }
 										label={ 'Category' }
+										idDefaultCategory={this.props.idActiveCategory}
 										parent={ null }
 									/>
 								</div>
