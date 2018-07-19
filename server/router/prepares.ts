@@ -1,6 +1,6 @@
 import { default as axios } from 'axios';
 
-type prepareMethod = (path: string, params: any) => any;
+type prepareMethod = (params: any, query: any) => any;
 
 const instance = axios.create({
 	baseURL: process.env.API_URL,
@@ -16,7 +16,12 @@ export const ads: prepareMethod = async () => {
 	return axiosData.data.data;
 };
 
-export  const ad: prepareMethod = async (path, params) => {
+export  const ad: prepareMethod = async (params) => {
 	const response = await instance.get(`/ads/${ params.id }`);
+	return response.data;
+};
+
+export const categories: prepareMethod = async () => {
+	const response = await instance.get('/categories');
 	return response.data;
 };

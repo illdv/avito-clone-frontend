@@ -1,5 +1,6 @@
 import * as i18nextMiddleware from 'i18next-express-middleware';
 import * as Backend from 'i18next-node-fs-backend';
+import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import * as log4js from 'log4js';
 import * as path from 'path';
@@ -12,6 +13,7 @@ const dev = process.env.NODE_ENV !== 'production';
 const appNext = next({ dev });
 const handleNext = appNext.getRequestHandler();
 
+
 // Logers
 const serverLogger = log4js.getLogger('server');
 //const defaultLogger = log4js.getLogger();
@@ -19,22 +21,24 @@ const serverLogger = log4js.getLogger('server');
 // init i18next with serverside settings
 // using i18next-express-middleware
 i18nInstance
-	.use(Backend)
-	.use(i18nextMiddleware.LanguageDetector)
-	.init({
-		fallbackLng: 'en',
-		preload: ['en', 'de'], // preload all langages
-		ns: ['common', 'home', 'page2'], // need to preload all the namespaces
-		backend: {
-			loadPath: path.join(__dirname, '../common/locales/{{lng}}/{{ns}}.json'),
-			addPath: path.join(__dirname, '../common/locales/{{lng}}/{{ns}}.missing.json')
-		}
-	}, () => {
-		// loaded translations we can bootstrap our routes
-		appNext.prepare()
-			.then(() => {
-				const server = express();
-
+.use(Backend)
+.use(i18nextMiddleware.LanguageDetector)
+.init({
+	fallbackLng: 'en',
+	preload: ['en', 'de'], // preload all langages
+	ns: ['common', 'home', 'page2'], // need to preload all the namespaces
+	backend: {
+		loadPath: path.join(__dirname, '../common/locales/{{lng}}/{{ns}}.json'),
+		addPath: path.join(__dirname, '../common/locales/{{lng}}/{{ns}}.missing.json')
+	}
+}, () => {
+	// loaded translations we can bootstrap our routes
+	appNext.prepare()
+	.then(() => {
+		const server = express();
+		
+				server.use(bodyParser.urlencoded({ extended: false }));
+				server.use(bodyParser.json());
 				// enable middleware for i18next
 				server.use(i18nextMiddleware.handle(i18nInstance));
 
