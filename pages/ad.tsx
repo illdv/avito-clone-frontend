@@ -20,7 +20,7 @@ if (isServer) {
 
 interface IAdsProps {
 	ad: IAd;
-	categories: any[]
+	categories: any[];
 }
 
 class Ads extends React.Component<IAdsProps> {

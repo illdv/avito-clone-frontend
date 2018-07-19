@@ -23,8 +23,7 @@ function* saveTokenInStore(action: Action<{ user: IUser, isRememberMe: boolean }
 function* clearToken() {
 	CustomStorage.clear();
 	axios.defaults.headers.common.authorization = ``;
-
-	window.location.href = '/';
+	window.location.href                        = '/';
 }
 
 function* resetPassword(action) {
