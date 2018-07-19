@@ -12,9 +12,9 @@ import ListOfAds from '../client/ssr/blocks/list-of-ads/ListOfAds';
 import FooterNavigation from '../client/ssr/blocks/footer/FooterNavigation';
 import { ToastContainer } from 'react-toastify';
 import { IAds } from 'client/common/ads/interface';
-import { CategoriesProvider } from 'client/ssr/blocks/categories/context';
-import { CategoriesAPI } from 'api/CategoriesAPI';
-import { ICategories } from 'client/ssr/blocks/categories/interface';
+import { SetCategories } from 'client/ssr/blocks/categories/context'
+import { CategoriesAPI } from 'api/CategoriesAPI'
+import { ICategories } from 'client/ssr/blocks/categories/interface'
 
 const isServer: boolean = typeof window === 'undefined';
 
@@ -30,10 +30,9 @@ interface IIndexProps {
 
 export class Index extends React.Component<IIndexProps> {
 	static async getInitialProps({ query }) {
-		const categories = await CategoriesAPI.getCategories();
 		return ({
 			ads: query.ads,
-			categories: categories.data,
+			categories: query.categories,
 		});
 	}
 
@@ -41,7 +40,7 @@ export class Index extends React.Component<IIndexProps> {
 		const { categories } = this.props;
 		return (
 			<React.Fragment>
-				<CategoriesProvider categories={categories}>
+				<SetCategories categories={categories}>
 					<Head>
 						<meta
 							property='og:description'
@@ -65,11 +64,11 @@ export class Index extends React.Component<IIndexProps> {
 						title='Houses, villas, cottages'
 						ads={this.props.ads}
 					/>
-					<FooterNavigation />
+					<Footer />
 					<ToastContainer />
-				</CategoriesProvider>
+				</SetCategories>
 			</React.Fragment>
-		);
+		)
 	}
 }
 
