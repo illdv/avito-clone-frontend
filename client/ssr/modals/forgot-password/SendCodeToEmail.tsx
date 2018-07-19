@@ -37,7 +37,7 @@ class SendCodeToEmail extends React.Component<IProps & IState> {
     render() {
         return (
             <Modal
-                name={ModalNames.forgotPassword}
+                name={ModalNames.sendCodeToEmail}
                 useOnRequestClose={true}
             >
                 <div className="login-block">

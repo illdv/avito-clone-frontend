@@ -2,7 +2,9 @@ import React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { bindModuleAction } from 'client/common/user/utils';
 import { IUserActions, UserActions } from 'client/common/user/actions';
-import { showSendCodeToEmailModal } from 'client/ssr/modals/forgot-password/forgotPasswordModalTriggers'
+import {
+    showSendCodeToEmailModal
+} from 'client/ssr/modals/forgot-password/forgotPasswordModalTriggers'
 
 export interface IState {
     fields?: {

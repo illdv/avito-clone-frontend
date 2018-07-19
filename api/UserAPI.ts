@@ -13,7 +13,7 @@ function sendCodeToEmail(request: ISendCodeToEmailRequest) {
 }
 
 function resetPasswordByCode(request: IResetPasswordByCodeRequest) {
-    return AxiosWrapper.post('/password/register', request);
+    return AxiosWrapper.post('/password/reset', request);
 }
 
 export const UserAPI = {

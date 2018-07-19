@@ -21,12 +21,16 @@ function clearToken() {
 }
 
 function* resetPassword(action) {
-    yield call(UserAPI.sendCodeToEmail, action.payload);
-    yield take(UserActions.sendCode.SUCCESS)
-    // показать форму ввода кода
-    // yield put(show(ModalNames.forgotPassword));
-    yield call(UserAPI.resetPasswordByCode, action.payload);
-    // redirect to LoginForm
+    try {
+        yield call(UserAPI.sendCodeToEmail, action.payload);
+        yield put(UserActions.sendCode.SUCCESS({}))
+        yield put(show(ModalNames.forgotPassword));
+        const userData = yield take(UserActions.resetPasswordByCode.REQUEST)
+        yield call(UserAPI.resetPasswordByCode, userData.payload);
+    } catch (e) {
+        yield call(errorHandler, e);
+    }
+    yield put(show(ModalNames.login));
 }
 
 function* login(action: Action<ILoginRequest>) {
@@ -59,7 +63,6 @@ function* watcherUser() {
         takeEvery(UserActions.register.REQUEST, register),
         takeEvery(UserActions.logout.REQUEST, clearToken),
         takeLatest(UserActions.sendCode.REQUEST, resetPassword),
-
     ];
 }
 

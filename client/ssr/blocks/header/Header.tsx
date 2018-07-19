@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 
 import LoginModal from '../../modals/auth/AuthModal';
 import ForgotPasswordModal from '../../modals/forgot-password/ForgotPasswordModal';
+import SendCodeToEmailModal from '../../modals/forgot-password/SendCodeToEmail';
 import LanguageDropdown from './components/LanguageDropdown';
 import { showLoginModal } from 'client/ssr/modals/auth/loginModalTriggers';
 import { ToastContainer } from 'react-toastify';
@@ -19,6 +20,7 @@ class Header extends Component {
             <header>
                 <LoginModal />
                 <ForgotPasswordModal />
+                <SendCodeToEmailModal />
                 <div className="header header_top p-y-22 navbar-expand-sm">
                     <div className='container'>
                         <div className='row justify-content-between no-gutters'>
