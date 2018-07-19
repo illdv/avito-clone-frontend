@@ -11,7 +11,7 @@ interface ILoginRequest {
 
 interface IRegisterRequest {
 	email: string;
-	telephone: string;
+	phone: string;
 	password: string;
 	password_confirmation: string;
 }

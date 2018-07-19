@@ -7,6 +7,7 @@ import Header from '../client/ssr/blocks/header/Header';
 require('client/spa/pages/Helpers.sass');
 require('client/spa/pages/ToolBar.sass');
 require('client/spa/pages/MyAds.sass');
+require('client/spa/pages/CreateAd.sass');
 
 const Profile = dynamic(import('client/spa/pages/Profile'), {
 	ssr: false,
