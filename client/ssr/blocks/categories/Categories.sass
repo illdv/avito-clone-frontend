@@ -2,11 +2,12 @@
     width: 100%
     display: grid
     grid-template-columns: repeat(5,1fr)
-    grid-template-rows: repeat(4,1fr)
+    grid-template-rows: repeat(4,200px)
     grid-gap: 8px
     grid-auto-flow: row
 
 .tile
+    box-sizing: border-box
     background-color: #FFF7D5
     grid-column-end: span 2
     grid-row-end: span 1
@@ -27,8 +28,11 @@
     font-size: 14px
 
 .tile_vertical
+    box-sizing: border-box
+    background-color: #FFF7D5
     grid-column-end: span 1
     grid-row-end: span 2
+    position: relative
 
 .tile__inner
     padding: 16px
@@ -38,3 +42,16 @@
 
 .tile__image.right
     right: 3px
+
+@media (max-width: 991px) and (min-width: 768px)
+    .tiles
+        grid-template-columns: repeat(4, 0.25fr)
+        grid-template-rows: repeat(6,200px)
+
+    .tile_vertical
+        grid-column-end: span 2
+        grid-row-end: span 2
+    .tile__image_vertical
+        position: absolute
+        bottom: 0
+        right: 30%

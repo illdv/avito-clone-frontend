@@ -22,7 +22,7 @@ const CategoryCard: React.SFC<ICategoryCard> = data => {
 						<h4 className='category__caption'>{category.title}</h4>
 						<span className='category__count'>2359 ads</span>
 					</div>
-					<div className={!vertical ? imageAlign : ''}>
+					<div className={ imageAlign }>
 						<img
 							src={img}
 							alt=''
