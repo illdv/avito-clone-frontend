@@ -43,3 +43,15 @@
 .tile__image.right
     right: 3px
 
+@media (max-width: 991px) and (min-width: 768px)
+    .tiles
+        grid-template-columns: repeat(4, 0.25fr)
+        grid-template-rows: repeat(6,200px)
+
+    .tile_vertical
+        grid-column-end: span 2
+        grid-row-end: span 2
+    .tile__image_vertical
+        position: absolute
+        bottom: 0
+        right: 30%
