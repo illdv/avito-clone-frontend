@@ -7,8 +7,8 @@ interface ICategoriesList {
 }
 
 const CategoriesList: React.SFC<ICategoriesList> = ({ categories }) => {
-    const error = <div> Category not redy on backend</div>;
-    const bottomButton =  <div className='tile tile-categories'>
+    const error        = <div> Category not redy on backend</div>;
+    const bottomButton = <div className='tile tile-categories'>
         <div className='tile__inner'>
             <div className='category text-left'>
                 <h4 className='category__caption p-b-20'>All categories</h4>
@@ -26,7 +26,6 @@ const CategoriesList: React.SFC<ICategoriesList> = ({ categories }) => {
     </div>;
     return (
         <div className='tiles'>
-            {console.log(categories)}
             {categories[1] ?
                 <CategoryCard
                     category={categories[1]}

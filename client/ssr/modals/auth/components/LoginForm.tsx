@@ -2,9 +2,7 @@ import React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { bindModuleAction } from 'client/common/user/utils';
 import { IUserActions, UserActions } from 'client/common/user/actions';
-import {
-    showSendCodeToEmailModal
-} from 'client/ssr/modals/forgot-password/forgotPasswordModalTriggers'
+import { showSendCodeToEmailModal } from 'client/ssr/modals/forgot-password/forgotPasswordModalTriggers'
 
 export interface IState {
     fields?: {
@@ -48,9 +46,11 @@ class LoginForm extends React.Component<IProps, IState> {
 
     onLogin = () => {
         const { email, password } = this.state.fields;
+        const { isRememberMe }    = this.state;
         this.props.userActions.login.REQUEST({
             email,
             password,
+            isRememberMe
         });
     }
 
@@ -99,7 +99,10 @@ class LoginForm extends React.Component<IProps, IState> {
                     />
                 </div>
                 <div className='text-right col-sm-12 p-x-40'>
-                    <a className='grey-text' onClick={this.onForgot}>Forgot Password?</a>
+                    <a
+                        className='grey-text'
+                        onClick={this.onForgot}
+                    >Forgot Password?</a>
                 </div>
                 <div className='form-group col-sm-12 p-x-40 d-flex'>
                     <input
