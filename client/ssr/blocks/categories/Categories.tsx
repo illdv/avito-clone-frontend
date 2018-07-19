@@ -21,11 +21,7 @@ const Categories: React.SFC<CategoriesComponent> = ({ categories }: { categories
 				</div>
 				<div className='row p-y-20'>
 					<div className='col-12'>
-						{
-							categories[8].title ?
-								<CategoriesList categories={categories} /> :
-								CategoriesListEmpty
-						}
+								<CategoriesList categories={categories} />
 					</div>
 				</div>
 			</div>

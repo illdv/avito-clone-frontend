@@ -24,16 +24,18 @@ class SendCodeToEmail extends React.Component<IProps & IState> {
     }
     onSubmit = (e) => {
         if (this.state.email) {
-             this.props.userActions.sendCode.REQUEST({ email: this.state.email })
+            this.props.userActions.sendCode.REQUEST({ email: this.state.email })
         }
     }
 
-    shouldComponentUpdate(){
+    shouldComponentUpdate() {
         return false;
     }
-     componentDidMount() {
+
+    componentDidMount() {
         console.log('ljl')
-     }
+    }
+
     render() {
         return (
             <Modal
@@ -48,31 +50,31 @@ class SendCodeToEmail extends React.Component<IProps & IState> {
                             with the account to reset your password</h4>
                     </div>
                     <div className="login-form">
-                            <div className="form-group row big-input">
-                                <label
-                                    className="col-sm-4 col-form-label "
-                                    htmlFor="first-field"
-                                >
-                                    Phone or email</label>
-                                <input
-                                    type="text"
-                                    id="first-field"
-                                    className="col-sm-6"
-                                    name="first-field"
-                                    required
-                                    placeholder="Enter email or phone number"
-                                    autoComplete="off"
-                                    onChange={this.onHandle}
-                                />
-                            </div>
-                            <div className="form-group col-sm-12 p-x-40 m-t-40">
-                                <button
-                                    // type="submit"
-                                    className="btn orange-btn big-btn"
-                                    onClick={this.onSubmit}
-                                > Send
-                                </button>
-                            </div>
+                        <div className="form-group row big-input">
+                            <label
+                                className="col-sm-4 col-form-label "
+                                htmlFor="first-field"
+                            >
+                                Phone or email</label>
+                            <input
+                                type="text"
+                                id="first-field"
+                                className="col-sm-6"
+                                name="first-field"
+                                required
+                                placeholder="Enter email or phone number"
+                                autoComplete="off"
+                                onChange={this.onHandle}
+                            />
+                        </div>
+                        <div className="form-group col-sm-12 p-x-40 m-t-40">
+                            <button
+                                // type="submit"
+                                className="btn orange-btn big-btn"
+                                onClick={this.onSubmit}
+                            > Send
+                            </button>
+                        </div>
                     </div>
                 </div>
             </Modal>

@@ -25,7 +25,7 @@ function resetPasswordByCode(request: IResetPasswordByCodeRequest) {
 }
 
 export const UserAPI = {
-    changePassword
+    changePassword,
     login,
     register,
     getProfile,
