@@ -6,8 +6,8 @@ import { UserActions } from 'client/common/user/actions';
 import { UserAPI } from 'api/UserAPI';
 import { errorHandler } from 'client/common/store/errorHandler';
 import { CustomStorage } from 'client/common/user/CustomStorage';
-import { ModalNames } from 'client/common/modal-juggler/modalJugglerInterface'
-import { show } from 'client/common/modal-juggler/module'
+import { ModalNames } from 'client/common/modal-juggler/modalJugglerInterface';
+import { show } from 'client/common/modal-juggler/module';
 import { hideLoginModal } from 'client/ssr/modals/auth/loginModalTriggers';
 
 function* saveTokenInStore(action: Action<{ user: IUser, isRememberMe: boolean }>) {
@@ -29,9 +29,9 @@ function* clearToken() {
 function* resetPassword(action) {
 	try {
 		yield call(UserAPI.sendCodeToEmail, action.payload);
-		yield put(UserActions.sendCode.SUCCESS({}))
+		yield put(UserActions.sendCode.SUCCESS({}));
 		yield put(show(ModalNames.forgotPassword));
-		const userData = yield take(UserActions.resetPasswordByCode.REQUEST)
+		const userData = yield take(UserActions.resetPasswordByCode.REQUEST);
 		yield call(UserAPI.resetPasswordByCode, userData.payload);
 		yield put(show(ModalNames.success));
 	} catch (e) {
@@ -63,7 +63,6 @@ function* register(action: Action<IRegisterRequest>) {
 		yield call(UserAPI.register, action.payload);
 		yield put(UserActions.register.SUCCESS({}));
 		hideLoginModal();
-		yield put(show(ModalNames.success));
 	} catch (e) {
 		yield call(errorHandler, e);
 		yield put(UserActions.register.FAILURE({}));
@@ -71,7 +70,6 @@ function* register(action: Action<IRegisterRequest>) {
 }
 
 function* getProfile() {
-	console.log('getProfile');
 	try {
 		const response: AxiosResponse<IUser> = yield call(UserAPI.getProfile);
 		yield put(UserActions.getProfile.SUCCESS(response.data));
@@ -93,9 +91,7 @@ function* changePassword(action) {
 }
 
 function* loadingUserIfHasToken() {
-	console.log('in not serfer');
 	const token = CustomStorage.getToken();
-	console.log('Token = ' + token);
 	if (token) {
 		yield put(UserActions.getProfile.REQUEST({}));
 	}
