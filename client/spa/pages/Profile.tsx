@@ -7,9 +7,11 @@ import ToolBar from 'client/spa/pages/ToolBar';
 import Footer from 'client/ssr/blocks/footer/Footer';
 import { ToastContainer } from 'react-toastify';
 import { MainContent } from 'client/spa/pages/MainContent';
+import { CustomStorage } from 'client/common/user/CustomStorage';
+import CreateAdManager from 'client/spa/pages/createAd/CreateAdManager';
 
 export interface IState {
-
+	isCreate: boolean;
 }
 
 export interface IProps {
@@ -30,15 +32,39 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 
 export class Profile extends Component<IProps, IState> {
 
-	state: IState = {};
+	state: IState = {
+		isCreate: false,
+	};
+
+	componentDidMount(): void {
+		if (!CustomStorage.getToken()) {
+			window.location.href = '/';
+		}
+	}
+
+	onCreateAd = () => {
+		this.setState(state => ({
+			isCreate: !state.isCreate,
+		}));
+	}
 
 	render() {
+
+		if (this.state.isCreate) {
+			return (
+				<div>
+					<ToolBar onCreateAd={this.onCreateAd} />
+					<CreateAdManager />
+					<ToastContainer />
+				</div>
+			);
+		}
+
 		return (
 			<>
-				<ToolBar />
+				<ToolBar onCreateAd={this.onCreateAd} />
 				<MainContent />
 				<Footer />
-				<ToastContainer />
 			</>
 		);
 	}
