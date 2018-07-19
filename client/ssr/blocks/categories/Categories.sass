@@ -7,6 +7,7 @@
     grid-auto-flow: row
 
 .tile
+    box-sizing: border-box
     background-color: #FFF7D5
     grid-column-end: span 2
     grid-row-end: span 1
@@ -19,16 +20,19 @@
     position: absolute
     bottom: 10px
 
-.tile__image_vertical
-    position: absolute
-    bottom: 0
+//.tile__image_vertical
+//    position: absolute
+//    bottom: 0
 
 .category .category__count
     font-size: 14px
 
 .tile_vertical
+    box-sizing: border-box
+    background-color: #FFF7D5
     grid-column-end: span 1
     grid-row-end: span 2
+    position: relative
 
 .tile__inner
     padding: 16px
@@ -38,3 +42,4 @@
 
 .tile__image.right
     right: 3px
+
