@@ -32,10 +32,6 @@ class SendCodeToEmail extends React.Component<IProps & IState> {
         return false;
     }
 
-    componentDidMount() {
-        console.log('ljl')
-    }
-
     render() {
         return (
             <Modal
@@ -69,7 +65,6 @@ class SendCodeToEmail extends React.Component<IProps & IState> {
                         </div>
                         <div className="form-group col-sm-12 p-x-40 m-t-40">
                             <button
-                                // type="submit"
                                 className="btn orange-btn big-btn"
                                 onClick={this.onSubmit}
                             > Send

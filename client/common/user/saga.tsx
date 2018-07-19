@@ -34,6 +34,7 @@ function* resetPassword(action) {
         yield put(show(ModalNames.forgotPassword));
         const userData = yield take(UserActions.resetPasswordByCode.REQUEST)
         yield call(UserAPI.resetPasswordByCode, userData.payload);
+        yield put(show(ModalNames.success));
     } catch (e) {
         yield call(errorHandler, e);
     }
@@ -63,6 +64,7 @@ function* register(action: Action<IRegisterRequest>) {
         yield call(UserAPI.register, action.payload);
         yield put(UserActions.register.SUCCESS({}));
         hideLoginModal();
+        yield put(show(ModalNames.success));
     } catch (e) {
         yield call(errorHandler, e);
         yield put(UserActions.register.FAILURE({}));
@@ -84,6 +86,7 @@ function* changePassword(action) {
     try {
         yield call(UserAPI.changePassword, action.payload);
         yield put(UserActions.changePassword.SUCCESS({}));
+        yield put(show(ModalNames.success));
     } catch (e) {
         yield call(errorHandler, e);
         yield put(UserActions.changePassword.FAILURE({}));
@@ -108,7 +111,7 @@ function* watcherUser() {
         takeEvery(UserActions.getProfile.REQUEST, getProfile),
         takeEvery(UserActions.initUser.REQUEST, loadingUserIfHasToken),
         takeLatest(UserActions.changePassword.REQUEST, changePassword),
-
+        takeLatest(UserActions.sendCode.REQUEST, resetPassword),
     ];
 }
 

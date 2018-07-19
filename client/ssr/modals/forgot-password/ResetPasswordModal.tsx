@@ -130,7 +130,6 @@ class ResetPasswordModal extends React.Component<IProps & IState> {
                         </div>
                         <div className="form-group col-sm-12 p-x-40 m-t-40">
                             <button
-                                // type="submit"
                                 className="btn orange-btn big-btn"
                                 onClick={this.onSubmit}
                             > Confirm
