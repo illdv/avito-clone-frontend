@@ -7,14 +7,13 @@ import { withI18next } from '../common/lib/withI18next';
 import Header from '../client/ssr/blocks/header/Header';
 import Navbar from '../client/ssr/blocks/navbar/Navbar';
 import Search from '../client/ssr/blocks/search/Search';
-import Categories from '../client/ssr/blocks/categories/Categories';
 import ListOfAds from '../client/ssr/blocks/list-of-ads/ListOfAds';
 import FooterNavigation from '../client/ssr/blocks/footer/FooterNavigation';
 import { ToastContainer } from 'react-toastify';
 import { IAds } from 'client/common/ads/interface';
-import { SetCategories } from 'client/ssr/blocks/categories/context'
-import { CategoriesAPI } from 'api/CategoriesAPI'
-import { ICategories } from 'client/ssr/blocks/categories/interface'
+import { SetCategories } from 'client/ssr/blocks/categories/context';
+import { ICategories } from 'client/ssr/blocks/categories/interface';
+import Categories from 'client/ssr/blocks/categories/Categories'
 
 const isServer: boolean = typeof window === 'undefined';
 
@@ -60,15 +59,17 @@ export class Index extends React.Component<IIndexProps> {
 						title='Vip ads'
 						ads={this.props.ads}
 					/>
+
 					<ListOfAds
 						title='Houses, villas, cottages'
 						ads={this.props.ads}
 					/>
-					<Footer />
+
+					<FooterNavigation />
 					<ToastContainer />
 				</SetCategories>
 			</React.Fragment>
-		)
+		);
 	}
 }
 
