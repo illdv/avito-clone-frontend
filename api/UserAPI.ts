@@ -8,6 +8,10 @@ function getProfile() {
     return AxiosWrapper.get('/profile');
 }
 
+function changePassword(request: IChangePasswordRequest) {
+    return AxiosWrapper.put('/change-password', request);
+}
+
 function register(registerRequest) {
     return AxiosWrapper.post('/register', { ...registerRequest, name: '123123132' });
 }
@@ -21,6 +25,7 @@ function resetPasswordByCode(request: IResetPasswordByCodeRequest) {
 }
 
 export const UserAPI = {
+    changePassword
     login,
     register,
     getProfile,

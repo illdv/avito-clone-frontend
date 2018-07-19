@@ -16,6 +16,12 @@ interface IRegisterRequest {
 	password_confirmation: string;
 }
 
+interface IChangePasswordRequest {
+    old_password: string;
+    password: string;
+    password_confirmation: string;
+}
+
 interface ISendCodeToEmailRequest {
     email: string;
 }
