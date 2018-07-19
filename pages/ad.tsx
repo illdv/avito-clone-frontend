@@ -20,7 +20,8 @@ if (isServer) {
 
 class Ads extends React.Component<IAd> {
 	static async getInitialProps({ query }) {
-		return { ad: query.ad };
+		console.log(query);
+		return { ad: query.ad, categories: query.categories };
 	}
 
 	render() {
@@ -33,7 +34,7 @@ class Ads extends React.Component<IAd> {
 						<Search />
 					</div>
 				</div>
-				<Ad ad={this.props.ad} />
+				<Ad ad={this.props.ad}  categories={this.props.categories}/>
 				<SellerModal user={this.props.ad.user} />
 				<Footer />
 			</React.Fragment>

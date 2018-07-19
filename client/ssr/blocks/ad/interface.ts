@@ -12,8 +12,12 @@ export interface IAd {
         price: string;
         options: IVehicleFeature;
         type: object;
-        user: object;
+        user: ISeller;
     };
+    categories: ICategories;
+}
+export interface ICategories {
+    categories: object;
 }
 
 export interface ISeller {

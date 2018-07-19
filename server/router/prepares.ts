@@ -17,6 +17,11 @@ export const ads: prepareMethod = async () => {
 };
 
 export  const ad: prepareMethod = async (path, params) => {
-	const response = await instance.get(`/ads/${ params.id}`);
+	const response = await instance.get(`/ads/${ params.id }`);
 	return response.data;
 };
+
+export  const categories: prepareMethod = async () => {
+    const response = await instance.get(`/categories`);
+    return response.data;
+}
