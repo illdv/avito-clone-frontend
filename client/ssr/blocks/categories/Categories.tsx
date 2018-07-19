@@ -10,7 +10,6 @@ interface CategoriesComponent {
 }
 
 const Categories: React.SFC<CategoriesComponent> = ({ categories }: { categories: Category }) => {
-	const CategoriesListEmpty = <div>We does not have any categories</div>;
 	return (
 		<section className='section-xs'>
 			<div className='container'>
