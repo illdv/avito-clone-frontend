@@ -1,0 +1,59 @@
+.profile-info
+  padding-bottom: 80px
+
+
+.profile-info p
+  font-size: 14px
+  color: #BDBDBD
+
+.profile-info__button
+  width: 200px
+  color: black !important
+  margin-top: 40px
+  font-weight: normal
+
+
+.notification-control
+  display: flex
+  justify-content: space-between
+  align-items: center
+
+.notification-control__title
+  font-size: 14px
+  font-weight: normal
+  margin-bottom: 5px
+
+.switch-button__input
+  display: none !important
+
+.switch-button__label
+  display: block
+  width: 35px
+  height: 14px
+  background-color: rgb(200,200,200)
+  position: relative
+  border-radius: 50px
+  cursor: pointer
+  transition: all 0.25s ease
+
+
+.switch-button__label:after
+  content: ''
+  display: block
+  background-color: rgb(240,240,240)
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.24), 0 0 2px rgba(0, 0, 0, 0.12)
+  width: 20px
+  height: 20px
+  position: absolute
+  left: -3px
+  top: -3px
+  border-radius: 50%
+  transition: all 0.25s ease
+
+
+.switch-button__input:checked + .switch-button__label
+  background-color: rgb(254, 220, 152)
+
+.switch-button__input:checked + .switch-button__label:after
+  left: calc(100% - 17px)
+  background-color: rgb(255,185,27)
