@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
 import { showSellerModals } from 'client/ssr/modals/seller/SellerModalTriger';
-import { ISellerProps } from 'client/ssr/modals/seller/SellerModal';
+import { ISellerProps } from 'client/ssr/blocks/ad/interface'
 
 export const avatar   = '/static/img/person.png';
 export const location = 'Germany Berlin';
 
-export interface ISeller {
-	user: ISellerProps;
-}
 
-class Seller extends Component<ISeller, {}> {
+class Seller extends Component<ISellerProps> {
 	render() {
 		return (
 			<div className='col-lg-7'>
@@ -21,7 +18,7 @@ class Seller extends Component<ISeller, {}> {
 							className='round-img m-r-10'
 						/>
 						<div className='seller-info'>
-							<span>{this.props.user.name}</span>
+							<span>{this.props.seller.name}</span>
 							<span>{location}</span>
 						</div>
 					</div>
