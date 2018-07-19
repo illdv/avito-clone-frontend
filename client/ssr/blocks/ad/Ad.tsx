@@ -9,8 +9,7 @@ import NumberFormat from 'react-number-format';
 import { IAd } from 'client/ssr/blocks/ad/interface';
 import VehicleFeature from 'client/ssr/blocks/ad/components/VehicleFeature'
 import VehicleDescription from 'client/ssr/blocks/ad/components/VehicleDescription'
-import { categories } from 'server/router/prepares'
-import { reverse } from 'dns'
+import Link from 'next/link';
 
 require('./Ad.sass');
 
@@ -44,6 +43,7 @@ const user = {
     phone: '89995965664642',
 };
 let crumbs = [];
+let back = [];
 
 let crumbes = {};
 
@@ -59,19 +59,17 @@ class Ads extends React.PureComponent <IAd> {
                                 {getCrumbs(this.props.categories, this.props.ad.category_id, this.props.ad.id, this.props.ad.city)}
                                 <Breadcrumbs breadcrumbs={crumbs} />
                             </div>
+                            {backToCatalog()}
                             <div className='col-md-2 back-next'>
-                                <a
-                                    href='#'
-                                    className='orange-text'
-                                >
-                                    Back
+                                <Link href={`${back[0].crumbs.href}`}>
+                                    <a className='orange-text'>
+                                        Back
+                                    </a>
+                                </Link>
+                                <Link href={`${this.props.ad.next_ad}`}>
+                                <a className='p-x-5 orange-text'>Next <i className='fas fa-arrow-right p-l-5 orange-text' />
                                 </a>
-                                <a
-                                    href=''
-                                    className='p-x-5 orange-text'
-                                >
-                                    Next <i className='fas fa-arrow-right p-l-5 orange-text' />
-                                </a>
+                                </Link>
                             </div>
                         </div>
                         <div className='row'>
@@ -130,7 +128,7 @@ function getCrumbs(cats, cat_id, id_ad, city) {
        return recurseCrumbs(items, cat_id)
     })
     formationHref(crumbes, cat_id, id_ad);
-    console.log(crumbs);
+
 }
 
 function recurseCrumbs(items, cat_id) {
@@ -176,4 +174,8 @@ function formationHref(crumbes, cat_id, ad_id) {
     return crumbs.push({name:ad_id, href: '/'+ad_id})
 }
 
-    export default Ads;
+function backToCatalog() {
+    back.push({crumbs: crumbs[crumbs.length-2]});
+}
+
+export default Ads;

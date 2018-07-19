@@ -2,6 +2,7 @@ export interface IAd {
     ad: {
         id: string;
         title: string;
+        next_ad: string;
         created_at: string;
         updated_at: string;
         total_visits: string;

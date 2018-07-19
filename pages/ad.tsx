@@ -20,7 +20,6 @@ if (isServer) {
 
 class Ads extends React.Component<IAd> {
 	static async getInitialProps({ query }) {
-		console.log(query);
 		return { ad: query.ad, categories: query.categories };
 	}
 
