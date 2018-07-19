@@ -15,3 +15,15 @@ export interface IAds {
 	deleted_at?: any;
 	pivot: IPivot;
 }
+
+export interface ICreateAdRequest {
+	title: string;
+	description: string;
+	city_id: string;
+	body: string;
+	type_id: number;
+	price: number;
+	category_id: number;
+	is_published: number;
+	is_vip: number;
+}

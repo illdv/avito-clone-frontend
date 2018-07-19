@@ -1,4 +1,5 @@
 import { AxiosWrapper } from './AxiosWrapper';
+import { IRequestCreateCategory } from 'client/ssr/blocks/categories/interface'
 
 function getCategories() {
 	return AxiosWrapper.get('/categories');
@@ -8,7 +9,7 @@ function getCategory(categoryId) {
 	return AxiosWrapper.get(`/category/${categoryId}`);
 }
 
-function createCategory(category) {
+function createCategory(category: IRequestCreateCategory) {
 	return AxiosWrapper.post('/categories', category);
 }
 

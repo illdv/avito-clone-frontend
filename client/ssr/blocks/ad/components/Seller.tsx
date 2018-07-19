@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { showSellerModals } from 'client/ssr/modals/seller/SellerModalTriger';
-import { ISellerProps } from 'client/ssr/blocks/ad/interface'
+import { ISellerProps } from 'client/ssr/blocks/ad/interface';
 
 export const avatar   = '/static/img/person.png';
 export const location = 'Germany Berlin';
-
 
 class Seller extends Component<ISellerProps> {
 	render() {

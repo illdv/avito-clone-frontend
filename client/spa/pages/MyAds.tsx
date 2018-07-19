@@ -5,7 +5,7 @@ import { IRootState } from 'client/common/store/storeInterface';
 import { bindModuleAction } from 'client/common/user/utils';
 import { AdsActions, IAdsActions } from 'client/common/ads/actions';
 import { IAdsState } from 'client/common/ads/reducer';
-import { IAds } from 'client/common/ads/interface'
+import { IAds } from 'client/common/ads/interface';
 
 export interface IState {
 

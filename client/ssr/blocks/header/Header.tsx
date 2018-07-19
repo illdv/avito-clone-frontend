@@ -3,7 +3,7 @@ import { connect, Dispatch } from 'react-redux';
 import Link from 'next/link';
 
 import LoginModal from '../../modals/auth/AuthModal';
-import ForgotPasswordModal from '../../modals/forgot-password/ForgotPasswordModal';
+import SendCodeToEmailModal from '../../modals/forgot-password/SendCodeToEmail';
 import LanguageDropdown from './components/LanguageDropdown';
 import { showLoginModal } from 'client/ssr/modals/auth/loginModalTriggers';
 import { IRootState } from 'client/common/store/storeInterface';
@@ -12,7 +12,9 @@ import { IUserActions, UserActions } from 'client/common/user/actions';
 import { bindModuleAction } from 'client/common/user/utils';
 import { isServer } from 'client/common/utils/utils';
 import axios from 'axios'
-import { CustomStorage } from 'client/common/user/CustomStorage'
+import { CustomStorage } from 'client/common/user/CustomStorage';
+import ResetPasswordModal from 'client/ssr/modals/forgot-password/ResetPasswordModal';
+import SuccessModal from 'client/ssr/modals/success/SuccessModal';
 
 require('../../../common/styles/main.sass');
 require('./Header.sass');
@@ -73,7 +75,9 @@ class Header extends Component<IProps, IState> {
 		return (
 			<header>
 				<LoginModal />
-				<ForgotPasswordModal />
+				<SendCodeToEmailModal />
+				<ResetPasswordModal />
+				<SuccessModal />
 				<div className='header header_top p-y-22 navbar-expand-sm'>
 					<div className='container'>
 						<div className='row justify-content-between no-gutters'>

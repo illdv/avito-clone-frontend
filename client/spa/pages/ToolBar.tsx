@@ -9,7 +9,7 @@ export interface IState {
 }
 
 export interface IProps {
-
+	onCreateAd: () => void;
 }
 
 const mapStateToProps = (state: IRootState) => ({
@@ -24,7 +24,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 	*/
 });
 
-export class ToolBar extends Component<IProps, IState> {
+class ToolBar extends Component<IProps, IState> {
 
 	state: IState = {};
 
@@ -51,29 +51,34 @@ export class ToolBar extends Component<IProps, IState> {
 								<ul className='main-navigation navbar-nav'>
 									<li className='main-navigation__item nav-item'>
 										<a href='#'>
-											<i className='fas fa-comment-alt fa-lg'/>
+											<i className='fas fa-comment-alt fa-lg' />
 										</a>
 										<span className='badge main-navigation__badge-notify'>3</span>
 									</li>
 									<li className='main-navigation__item nav-item '>
 										<a href='#'>
-											<i className='fas fa-thumbs-up fa-lg'/>
+											<i className='fas fa-thumbs-up fa-lg' />
 										</a>
 										<span className='badge main-navigation__badge-notify'>3</span>
 									</li>
 									<li className='main-navigation__item nav-item'>
 										<a href='#'>
-											<i className='fas fa-bell fa-lg'/>
+											<i className='fas fa-bell fa-lg' />
 										</a>
 									</li>
 									<li className='main-navigation__item nav-item'>
 										<a href='#'>
-											<i className='fas fa-wallet fa-lg'/>
+											<i className='fas fa-wallet fa-lg' />
 										</a>
 									</li>
 								</ul>
 							</nav>
-							<a className='btn button bottom-header__button button_bright '>Submit an advertisement</a>
+							<a
+								className='btn button bottom-header__button button_bright'
+								onClick={this.props.onCreateAd}
+							>
+								Submit an advertisement
+							</a>
 						</div>
 					</div>
 				</div>
