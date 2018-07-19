@@ -18,7 +18,12 @@ if (isServer) {
 	types.disableChecking();
 }
 
-class Ads extends React.Component<IAd> {
+interface IAdsProps {
+	ad: IAd;
+	categories: any[]
+}
+
+class Ads extends React.Component<IAdsProps> {
 	static async getInitialProps({ query }) {
 		return { ad: query.ad, categories: query.categories };
 	}
@@ -34,7 +39,7 @@ class Ads extends React.Component<IAd> {
 					</div>
 				</div>
 				<Ad ad={this.props.ad}  categories={this.props.categories}/>
-				<SellerModal user={this.props.ad.user} />
+				<SellerModal seller={this.props.ad.user} />
 				<Footer />
 			</React.Fragment>
 		);

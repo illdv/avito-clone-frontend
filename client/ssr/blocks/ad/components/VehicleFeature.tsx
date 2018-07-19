@@ -27,7 +27,7 @@ function formationOptions(option) {
 	const key = option.name.replace('_', ' ');
 
 	return (
-		<li key={key}>
+		<li key={option.id}>
 			<span className='grey-text'>{key}</span>: <span>{option.pivot.value}</span>
 		</li>
 	);

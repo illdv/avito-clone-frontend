@@ -6,7 +6,7 @@ import Seller from './components/Seller';
 import VehicleKit from './components/VehicleKit';
 import Chart from './components/Chart';
 import NumberFormat from 'react-number-format';
-import { IAd } from 'client/ssr/blocks/ad/interface';
+import { IAd, IAdsProps, IAdsState, ICrumb } from 'client/ssr/blocks/ad/interface';
 import VehicleFeature from 'client/ssr/blocks/ad/components/VehicleFeature'
 import VehicleDescription from 'client/ssr/blocks/ad/components/VehicleDescription'
 import Link from 'next/link';
@@ -42,12 +42,69 @@ const user = {
     address: 'Germany Berlin',
     phone: '89995965664642',
 };
-let crumbs = [];
-let back = [];
 
-let crumbes = {};
+class Ads extends React.Component <IAdsProps, IAdsState> {
+    constructor(props){
+        super(props);
 
-class Ads extends React.PureComponent <IAd> {
+        const queue = this.recurseGetAdCategories(this.props.categories, this.props.ad.category_id);
+        const queueCrumbs = this.formatCategoriesToCrumbs(queue)
+
+        const crumbs: ICrumb[] = [].concat(this.firstCrumbs, queueCrumbs, this.lastCrumbItem)
+
+        this.state = {
+            crumbs: crumbs,
+            lastCrumb: queueCrumbs[queueCrumbs.length - 1]
+        }
+    }
+
+    get firstCrumbs(): ICrumb {
+        return {
+            name: 'All listings in ' + this.props.ad.city.name,
+            href: encodeURI('/' + this.props.ad.city.name)
+        }
+    }
+
+    get lastCrumbItem(): ICrumb {
+        return {
+            name: this.props.ad.id,
+            href: encodeURI('/' + this.props.ad.id),
+        };
+    }
+
+    formatCategoriesToCrumbs = (categories): ICrumb[] => {
+        return categories.map(category => {
+            return {
+                name: category.title,
+                href: '/' + encodeURI(category.title)
+            }
+        })
+    }
+
+    recurseGetAdCategories = (categories, idCategoryAd): any[]|null => {
+        return categories.reduce((acc, category) => {
+            if (acc) {
+                return acc;
+            }
+
+            if (category.id == idCategoryAd) {
+                return [ category ];
+            } else {
+                if (category.children.length > 0) {
+                    const result = this.recurseGetAdCategories(category.children, idCategoryAd);
+
+                    if (result !== null) {
+                        return [ category ].concat(result);
+                    } else {
+                        return null;
+                    }
+                } else {
+                    return null;
+                }
+            }
+        }, false)
+    }
+
 
     render() {
         return (
@@ -56,19 +113,17 @@ class Ads extends React.PureComponent <IAd> {
                     <div className='container'>
                         <div className='row'>
                             <div className='col-md-10'>
-                                {getCrumbs(this.props.categories, this.props.ad.category_id, this.props.ad.id, this.props.ad.city)}
-                                <Breadcrumbs breadcrumbs={crumbs} />
+                                <Breadcrumbs breadcrumbs={this.state.crumbs} />
                             </div>
-                            {backToCatalog()}
                             <div className='col-md-2 back-next'>
-                                <Link href={`${back[0].crumbs.href}`}>
+                                <Link href={`${this.state.lastCrumb.href}`}>
                                     <a className='orange-text'>
                                         Back
                                     </a>
                                 </Link>
                                 <Link href={`${this.props.ad.next_ad}`}>
-                                <a className='p-x-5 orange-text'>Next <i className='fas fa-arrow-right p-l-5 orange-text' />
-                                </a>
+                                    <a className='p-x-5 orange-text'>Next <i className='fas fa-arrow-right p-l-5 orange-text' />
+                                    </a>
                                 </Link>
                             </div>
                         </div>
@@ -106,7 +161,7 @@ class Ads extends React.PureComponent <IAd> {
                             <VehicleFeature options={this.props.ad.options} />
                         </div>
                         <div className='row'>
-                            <Seller user={this.props.ad.user} />
+                            <Seller seller={this.props.ad.user} />
                         </div>
                     </div>
                 </section>
@@ -120,62 +175,6 @@ class Ads extends React.PureComponent <IAd> {
             </React.Fragment>
         );
     }
-}
-
-function getCrumbs(cats, cat_id, id_ad, city) {
-    crumbs.push({name:'All listings in '+city.name, href: encodeURI('/'+city.name)});
-    cats.map((items) => {
-       return recurseCrumbs(items, cat_id)
-    })
-    formationHref(crumbes, cat_id, id_ad);
-
-}
-
-function recurseCrumbs(items, cat_id) {
-    if (items.id == cat_id) {
-        crumbes = items;
-    } else {
-        if (items.children.length > 0) {
-            items.children.map((item) => {
-                if (item.id == cat_id) {
-                   return crumbes = items;
-                } else {
-                    return item;
-                }
-            });
-        }
-        if (JSON.stringify(crumbes) !== '')
-        {
-            return crumbes;
-        }
-    }
-}
-
-function formationHref(crumbes, cat_id, ad_id) {
-    crumbs.push({name: crumbes.title, href:'/'+encodeURI(crumbes.title)});
-
-    crumbes.children.map((item) => {
-       if (item.id == cat_id) {
-           crumbs.push({name: item.title, href: '/'+encodeURI(item.title)});
-       } else {
-           if (item.children.length > 0) {
-               item.children.map((child) => {
-                   if (child.id == cat_id) {
-                       return crumbs.push({name: child.title, href:'/'+encodeURI(child.title)})
-                   } else {
-                       return item;
-                   }
-               });
-           }
-
-       }
-
-    });
-    return crumbs.push({name:ad_id, href: '/'+ad_id})
-}
-
-function backToCatalog() {
-    back.push({crumbs: crumbs[crumbs.length-2]});
 }
 
 export default Ads;
