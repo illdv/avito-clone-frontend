@@ -5,6 +5,7 @@ module.exports = {
   "transform": {
     "^.+\\.tsx?$": "ts-jest"
   },
+    //TODO: fix path
   "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(ts|js|tsx)?$",
   "moduleFileExtensions": [
     "ts",
@@ -14,4 +15,4 @@ module.exports = {
     "json",
     "node"
   ],
-}
+};
