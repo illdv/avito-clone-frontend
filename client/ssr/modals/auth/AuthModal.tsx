@@ -28,9 +28,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export class AuthModal extends React.Component<{}, ILoginModalState> {
-  constructor(props) {
-    super(props);
-  }
+
 
   state = {
     activeTab: LoginModalTabs.login,

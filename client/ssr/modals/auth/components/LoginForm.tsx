@@ -2,6 +2,7 @@ import React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { bindModuleAction } from 'client/common/user/utils';
 import { IUserActions, UserActions } from 'client/common/user/actions';
+import { showForgotPasswordModal } from 'client/ssr/modals/forgot-password/forgotPasswordModalTriggers'
 
 export interface IState {
     fields?: {
@@ -22,7 +23,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class LoginForm extends React.Component<IProps, IState> {
-
     state: IState = {
         fields: {
             email: 'dev@cronix.ms',
@@ -50,6 +50,10 @@ class LoginForm extends React.Component<IProps, IState> {
             email,
             password,
         });
+    }
+
+    onForgot = () => {
+        showForgotPasswordModal()
     }
 
     render() {
@@ -93,7 +97,7 @@ class LoginForm extends React.Component<IProps, IState> {
                     />
                 </div>
                 <div className='text-right col-sm-12 p-x-40'>
-                    <a className='grey-text'>Forgot Password?</a>
+                    <a className='grey-text' onClick={this.onForgot}>Forgot Password?</a>
                 </div>
                 <div className='form-group col-sm-12 p-x-40 d-flex'>
                     <input
