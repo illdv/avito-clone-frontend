@@ -1,20 +1,26 @@
-import React from 'react';
+import React, { Component, createContext } from 'react';
 
-export const CategoriesContext = React.createContext([]); // ICategories
+export type Category = any[];
 
-interface ICategoriesProvider {
-	categories: any[]; // ICategories
+const { Provider, Consumer } = createContext<Category>(null);
+
+interface IProviderProps {
+	categories: Category; // ICategories
 }
 
-export class CategoriesProvider extends React.Component<ICategoriesProvider> {
+export class SetCategories extends React.Component<IProviderProps> {
 	render() {
 		const { categories, children } = this.props;
 		return (
-			<CategoriesContext.Provider value={categories}>
+			<Provider value={ categories }>
 				{children}
-			</CategoriesContext.Provider>
+			</Provider>
 		);
 	}
 }
 
-export default CategoriesContext;
+export const getCategories = Component => props => (
+	<Consumer>
+		{ (categories: Category) => <Component { ...props } categories={ categories } /> }
+	</Consumer>
+);
