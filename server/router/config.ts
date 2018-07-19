@@ -19,6 +19,11 @@ const routes = [
 		path: '/profile',
 		page: '/profile',
 	},
+	{
+		path: '/category/:categorySlug?',
+		page: '/category',
+		prepare: ['category', 'categories'],
+	},
 ] as IRoute[];
 
 export const getRoutes = () => routes;

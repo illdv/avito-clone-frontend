@@ -5,7 +5,7 @@ export const initialRoutes = (server, appNext) => {
 	getRoutes().forEach((route: IRoute) => {
 
 		server.get(route.path, async (req, res) => {
-			const { params, query } = req; // Express sugar
+			const { params, query, path } = req; // Express sugar
 			const formatPepares = [].concat(route.prepare || []);
 
 			const prepareResult = await formatPepares.reduce(async (accPromise: object, prepareName: string) => {
@@ -15,7 +15,7 @@ export const initialRoutes = (server, appNext) => {
 						throw new Error(`Prepare [${ prepareName }] is not function`);
 					}
 
-					acc[prepareName] = await prepares[prepareName](params, query);
+					acc[prepareName] = await prepares[prepareName](params, query, path);
 					return acc;
 				} catch (error) {
 					throw error;
@@ -31,7 +31,7 @@ export const initialRoutes = (server, appNext) => {
 			return res.status(400).json({ error: 'Query without body' });
 		}
 
-		const { prepareName, query, params } = req.body;
+		const { prepareName, query, params, path } = req.body;
 
 		if (!prepareName) {
 			return res.status(400).json({ error: 'The query does not contain a prepareName' });
@@ -46,7 +46,7 @@ export const initialRoutes = (server, appNext) => {
 		}
 
 		try {
-			const result = await prepares[prepareName](params, query);
+			const result = await prepares[prepareName](params, query, path);
 			res.status(200).json(result);
 		} catch (error) {
 			res.staus(500).end();
