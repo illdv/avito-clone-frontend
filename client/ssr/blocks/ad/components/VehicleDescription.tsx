@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 
-export interface IVehicleDescription {
-	body: string;
-}
+
 
 class VehicleDescription extends Component<IVehicleDescription> {
 	render() {
