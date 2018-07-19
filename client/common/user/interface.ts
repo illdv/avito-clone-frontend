@@ -15,3 +15,9 @@ interface IRegisterRequest {
 	password: string;
 	password_confirmation: string;
 }
+
+interface IChangePasswordRequest {
+    old_password: string;
+    password: string;
+    password_confirmation: string;
+}
