@@ -10,7 +10,6 @@ interface CategoriesComponent {
 }
 
 const Categories: React.SFC<CategoriesComponent> = ({ categories }: { categories: Category }) => {
-	const CategoriesListEmpty = <div>We does not have any categories</div>;
 	return (
 		<section className='section-xs'>
 			<div className='container'>
@@ -21,11 +20,7 @@ const Categories: React.SFC<CategoriesComponent> = ({ categories }: { categories
 				</div>
 				<div className='row p-y-20'>
 					<div className='col-12'>
-						{
-							categories[8].title ?
-								<CategoriesList categories={categories} /> :
-								CategoriesListEmpty
-						}
+								<CategoriesList categories={categories} />
 					</div>
 				</div>
 			</div>

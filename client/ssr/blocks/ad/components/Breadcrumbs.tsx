@@ -13,10 +13,10 @@ const Breadcrumbs = ({ breadcrumbs }: { breadcrumbs: ICrumb[] }) => {
             {
                 breadcrumbs.map((crumb, index) => (
                     <BreadcrumbItem
-                        key={ crumb.href }
+                        key={ crumb.href.toLowerCase() }
                         active={ index !== indexLastCrumb }
                     >
-                        <a href={ crumb.href } className={ 'orange-text' }>
+                        <a href={ crumb.href.toLowerCase() } className={ 'orange-text' }>
                             { crumb.name }
                         </a>
                     </BreadcrumbItem>
