@@ -1,4 +1,4 @@
-import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
+import { call, put, take, takeEvery, takeLatest } from 'redux-saga/effects';
 import { Action } from 'redux-act';
 import axios, { AxiosResponse } from 'axios';
 
@@ -6,6 +6,8 @@ import { UserActions } from 'client/common/user/actions';
 import { UserAPI } from 'api/UserAPI';
 import { errorHandler } from 'client/common/store/errorHandler';
 import { CustomStorage } from 'client/common/user/CustomStorage';
+import { ModalNames } from 'client/common/modal-juggler/modalJugglerInterface'
+import { show } from 'client/common/modal-juggler/module'
 
 function* saveTokenInStore(action: Action<IUser>) {
     const token = action.payload.token;
@@ -20,7 +22,9 @@ function clearToken() {
 
 function* resetPassword(action) {
     yield call(UserAPI.sendCodeToEmail, action.payload);
+    yield take(UserActions.sendCode.SUCCESS)
     // показать форму ввода кода
+    // yield put(show(ModalNames.forgotPassword));
     yield call(UserAPI.resetPasswordByCode, action.payload);
     // redirect to LoginForm
 }

@@ -13,7 +13,7 @@ export interface IState {
     email: string
 }
 
-class ForgotPasswordModal extends React.Component<IProps & IState> {
+class SendCodeToEmail extends React.Component<IProps & IState> {
     state    = {
         email: ''
     }
@@ -83,4 +83,4 @@ class ForgotPasswordModal extends React.Component<IProps & IState> {
 const mapDispatchToProps = dispatch => ({
     userActions: bindModuleAction(UserActions, dispatch),
 });
-export default connect(null, mapDispatchToProps)(ForgotPasswordModal);
+export default connect(null, mapDispatchToProps)(SendCodeToEmail);

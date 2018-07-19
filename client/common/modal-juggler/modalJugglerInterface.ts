@@ -1,6 +1,7 @@
 export enum ModalNames {
     login = 'login',
     registration = 'registration',
+    sendCodeToEmail = 'sendCodeToEmail',
     forgotPassword = 'forgotPassword',
     seller = 'seller'
 }
