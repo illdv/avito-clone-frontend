@@ -3,18 +3,10 @@ import Modal from '../../../common/modal-juggler/Modal';
 import { ModalNames } from 'client/common/modal-juggler/modalJugglerInterface';
 import { hideSellerModal } from 'client/ssr/modals/seller/SellerModalTriger';
 import NumberFormat from 'react-number-format';
+import { ISellerProps } from 'client/ssr/blocks/ad/interface'
 
 require('./SellerModal.sass');
 
-export interface ISeller {
-	name: string;
-	phone: string;
-	created_at: string;
-}
-
-export interface ISellerProps {
-	user: ISeller;
-}
 
 class SellerModal extends Component<ISellerProps> {
 	render() {
@@ -30,7 +22,7 @@ class SellerModal extends Component<ISellerProps> {
 							id='exampleModalLongTitle'
 						>
 							<NumberFormat
-								value={this.props.user.phone}
+								value={this.props.seller.phone}
 								displayType={'text'}
 								format={'# ### ### ## ##'}
 							/>
@@ -49,8 +41,8 @@ class SellerModal extends Component<ISellerProps> {
 						<div className='seller'>
 							<div className='d-flex align-items-center m-r-15'>
 								<div className='seller-info'>
-									<span className='orange-text'>{this.props.user.name}</span>
-									<span className='d-block'>On ADS from {this.props.user.created_at}</span>
+									<span className='orange-text'>{this.props.seller.name}</span>
+									<span className='d-block'>On ADS from {this.props.seller.created_at}</span>
 									<span>Completed 3 ads</span>
 								</div>
 								<img
