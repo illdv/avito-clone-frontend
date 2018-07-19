@@ -1,12 +1,9 @@
 import { Component } from 'react';
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
-
 import { IRootState } from 'client/common/store/storeInterface';
-import ToolBar from 'client/spa/pages/ToolBar';
-import Footer from 'client/ssr/blocks/footer/Footer';
-import { ToastContainer } from 'react-toastify';
-import { MainContent } from 'client/spa/pages/MainContent';
+import ProfileMenu from 'client/spa/pages/ProfileMenu';
+import MyAds from 'client/spa/pages/MyAds';
 
 export interface IState {
 
@@ -28,20 +25,26 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 	*/
 });
 
-export class Profile extends Component<IProps, IState> {
+export class MainContent extends Component<IProps, IState> {
 
 	state: IState = {};
 
 	render() {
 		return (
-			<>
-				<ToolBar />
-				<MainContent />
-				<Footer />
-				<ToastContainer />
-			</>
+			<section className='page'>
+				<div className='container page__container-lg'>
+					<div className='row'>
+						<div className='col-lg-3'>
+							<ProfileMenu />
+						</div>
+						<div className='col-lg-9'>
+							<MyAds />
+						</div>
+					</div>
+				</div>
+			</section>
 		);
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default connect(mapStateToProps, mapDispatchToProps)(MainContent);
