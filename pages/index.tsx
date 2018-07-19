@@ -13,7 +13,7 @@ import { ToastContainer } from 'react-toastify';
 import { IAds } from 'client/common/ads/interface';
 import { SetCategories } from 'client/ssr/blocks/categories/context';
 import { ICategories } from 'client/ssr/blocks/categories/interface';
-import Categories from 'client/ssr/blocks/categories/Categories'
+import Categories from 'client/ssr/blocks/categories/Categories';
 
 const isServer: boolean = typeof window === 'undefined';
 
@@ -33,7 +33,6 @@ export class Index extends React.Component<IIndexProps> {
 			ads: query.ads,
 			categories: query.categories,
 		});
-		console.log('Lol');
 	}
 
 	render() {
@@ -55,7 +54,7 @@ export class Index extends React.Component<IIndexProps> {
 							<Search />
 						</div>
 					</div>
-					{/*<Categories />*/}
+					<Categories />
 					<ListOfAds
 						title='Vip ads'
 						ads={this.props.ads}
