@@ -1,0 +1,63 @@
+.header__top-header
+  border-bottom: .5px solid #FFB91B
+  height: 82px
+  line-height: 2.5
+  padding: 20px 0
+
+.navigation__icon
+  font-size: 19px
+  margin: 0 2px
+
+.main-navigation__item
+  padding: 0 13.5px
+
+.navigation-first__item, .navigation-second__item, .main-navigation__item
+  position: relative
+
+.logo
+  padding-right: 17.5px !important
+
+.navigation-first__language
+  -webkit-appearance: none
+  -moz-appearance: none
+  background: no-repeat
+  border: none
+  color: #4F4F4F
+  text-decoration: underline
+  outline: none
+  padding: 0 40px
+
+.navigation-second__favourites
+  padding: 0 40px
+
+.header__bottom-header
+  padding: 20px 0
+
+.bottom-header__button
+  margin-left: 20px
+
+#categories, #country, #city, .search-btn, #search
+  width: 100%
+
+.main-navigation__badge-notify
+  background: #E25D33
+  position: absolute
+  top: -10px
+  right: 2px
+  color: #ffffff
+  border-radius: 7px
+
+@media (min-width: 576px) and (max-width: 767px)
+  #categories, #country, #city, #search
+    width: 100%
+    margin: 5px
+  .search-btn
+    display: block
+    margin: 5px auto
+    width: 100%
+  .bottom-header .justify-content-between
+    justify-content: center !important
+
+@media (min-width: 767px) and (max-width: 991px)
+  .bottom-header .justify-content-between
+    justify-content: flex-start !important

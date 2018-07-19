@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { IAds } from 'client/ssr/blocks/list-of-ads/entries/ads/interface';
+import { IAds } from 'client/common/ads/interface';
 
 export default ({ data }: { data: IAds }) => (
     <div className='ads-tile'>
