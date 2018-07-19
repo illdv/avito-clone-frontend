@@ -10,22 +10,22 @@ require('client/spa/pages/MyAds.sass');
 require('client/spa/pages/ProfileSettings/ProfileSettings.sass');
 
 const Profile = dynamic(import('client/spa/pages/Profile'), {
-	ssr: false,
-	loading: () => <h1>Loading SPA</h1>,
+    ssr: false,
+    loading: () => <h1>Loading SPA</h1>,
 });
 
 export default () => (
-	<div>
-		<React.Fragment>
-			<Head>
-				<meta
-					property='og:description'
-					content='Content'
-				/>
-				<title>Index page</title>
-			</Head>
-			<Header />
-			<Profile />
-		</React.Fragment>
-	</div>
+    <div>
+        <React.Fragment>
+            <Head>
+                <meta
+                    property='og:description'
+                    content='Content'
+                />
+                <title>Index page</title>
+            </Head>
+            <Header />
+            <Profile />
+        </React.Fragment>
+    </div>
 );

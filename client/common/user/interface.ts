@@ -21,3 +21,14 @@ interface IChangePasswordRequest {
     password: string;
     password_confirmation: string;
 }
+
+interface ISendCodeToEmailRequest {
+    email: string;
+}
+
+interface IResetPasswordByCodeRequest {
+    email: string,
+    token: string,
+    password: string
+    password_confirmation: string
+}

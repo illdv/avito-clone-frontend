@@ -6,6 +6,8 @@ import { UserActions } from 'client/common/user/actions';
 import { UserAPI } from 'api/UserAPI';
 import { errorHandler } from 'client/common/store/errorHandler';
 import { CustomStorage } from 'client/common/user/CustomStorage';
+import { ModalNames } from 'client/common/modal-juggler/modalJugglerInterface'
+import { show } from 'client/common/modal-juggler/module'
 import { hideLoginModal } from 'client/ssr/modals/auth/loginModalTriggers';
 import Router from 'next/router';
 
@@ -23,6 +25,19 @@ function* clearToken() {
     CustomStorage.clear();
     axios.defaults.headers.common.authorization = ``;
     Router.push('/', '/', { shallow: true });
+}
+
+function* resetPassword(action) {
+    try {
+        yield call(UserAPI.sendCodeToEmail, action.payload);
+        yield put(UserActions.sendCode.SUCCESS({}))
+        yield put(show(ModalNames.forgotPassword));
+        const userData = yield take(UserActions.resetPasswordByCode.REQUEST)
+        yield call(UserAPI.resetPasswordByCode, userData.payload);
+    } catch (e) {
+        yield call(errorHandler, e);
+    }
+    yield put(show(ModalNames.login));
 }
 
 function* login(action: Action<ILoginRequest>) {
