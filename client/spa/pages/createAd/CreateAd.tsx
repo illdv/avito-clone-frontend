@@ -5,13 +5,13 @@ import { Marker, InfoWindow } from 'google-maps-react';
 
 import { IRootState } from 'client/common/store/storeInterface';
 import { IUserState } from 'client/common/user/reducer';
-import Lease from 'client/spa/pages/Lease';
+import Lease from 'client/spa/pages/createAd/Lease';
 
-export interface IState {
-	fields?: {
-		title?: string;
-		description?: string;
-		price?: string;
+export interface IAdsDataForCreate {
+	fields: {
+		title: string;
+		description: string;
+		price: string;
 	};
 	cityId: string;
 	lat: string;
@@ -21,6 +21,7 @@ export interface IState {
 
 export interface IProps {
 	user?: IUserState;
+	onNext: (data: IAdsDataForCreate) => void;
 }
 
 const mapStateToProps = (state: IRootState) => ({
@@ -75,9 +76,9 @@ const TextArea = ({ id, title, onChange, inputClass }: IPropsForInput) => (
 	</div>
 );
 
-class CreateAd extends Component<IProps, IState> {
+class CreateAd extends Component<IProps, IAdsDataForCreate> {
 
-	state: IState = {
+	state: IAdsDataForCreate = {
 		fields: {
 			title: '',
 			description: '',
@@ -106,6 +107,10 @@ class CreateAd extends Component<IProps, IState> {
 			lat: location.lat(),
 			lng: location.lng(),
 		});
+	}
+
+	onNext = () => {
+		this.props.onNext(this.state);
 	}
 
 	render() {
@@ -446,7 +451,10 @@ class CreateAd extends Component<IProps, IState> {
 								/>
 							</div>
 						</div>
-						<Lease onSelectPlace={this.onSelectPlace} />
+						<Lease
+							onSelectPlace={this.onSelectPlace}
+							onNext={this.onNext}
+						/>
 					</div>
 				</div>
 			</section>

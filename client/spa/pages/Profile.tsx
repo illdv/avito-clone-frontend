@@ -8,7 +8,7 @@ import Footer from 'client/ssr/blocks/footer/Footer';
 import { ToastContainer } from 'react-toastify';
 import { MainContent } from 'client/spa/pages/MainContent';
 import { CustomStorage } from 'client/common/user/CustomStorage';
-import CreateAd from 'client/spa/pages/CreateAd';
+import CreateAdManager from 'client/spa/pages/createAd/CreateAdManager';
 
 export interface IState {
 	isCreate: boolean;
@@ -54,7 +54,7 @@ export class Profile extends Component<IProps, IState> {
 			return (
 				<div>
 					<ToolBar onCreateAd={this.onCreateAd} />
-					<CreateAd />
+					<CreateAdManager />
 				</div>
 			);
 		}

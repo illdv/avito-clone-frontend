@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 export interface IProps {
 	onSelectPlace: (name: string, id: string, location: any) => void;
+	onNext: () => void;
 }
 
 class Lease extends Component<IProps> {
@@ -123,6 +124,7 @@ class Lease extends Component<IProps> {
 					<button
 						type='submit'
 						className='btn button button_bright w-25'
+						onClick={this.props.onNext}
 					>
 						Continue
 					</button>
