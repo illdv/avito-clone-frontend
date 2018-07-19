@@ -15,7 +15,7 @@ const reducer = createReducer({}, initialState());
 
 reducer.on(UserActions.login.SUCCESS, (state, payload): IUserState => ({
 	...state,
-	user: payload,
+	user: payload.user,
 }));
 
 reducer.on(UserActions.getProfile.REQUEST, (state, payload): IUserState => ({

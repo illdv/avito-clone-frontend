@@ -17,7 +17,7 @@ export const UserActions: IUserActions = {
 };
 
 export interface IUserActions {
-	login: IAsyncAction<ILoginRequest, IUser>;
+	login: IAsyncAction<ILoginRequest, { user: IUser, isRememberMe: boolean }>;
 	register: IAsyncAction<IRegisterRequest>;
 	getProfile: IAsyncAction<{}, IUser>;
 	logout: IAsyncAction;

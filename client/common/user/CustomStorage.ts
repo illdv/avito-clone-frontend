@@ -1,10 +1,10 @@
 const tokenKey = 'token';
 
-function setItem(key: string, value: string) {
+function setAndRememberItem(key: string, value: string) {
 	localStorage.setItem(key, value);
 }
 
-function setAndRememberItem(key: string, value: string) {
+function setItem(key: string, value: string) {
 	sessionStorage.setItem(key, value);
 }
 
@@ -13,29 +13,34 @@ function getItem(key: string) {
 }
 
 function clear() {
-  sessionStorage.clear();
-  localStorage.clear();
+	sessionStorage.clear();
+	localStorage.clear();
 }
 
 function removeItem(key: string) {
-  sessionStorage.removeItem(key);
-  localStorage.removeItem(key);
+	sessionStorage.removeItem(key);
+	localStorage.removeItem(key);
 }
 
 function setToken(token: string) {
+	return setItem(tokenKey, token);
+}
+
+function setAndRememberToken(token: string) {
 	return setAndRememberItem(tokenKey, token);
 }
 
 function getToken() {
-  return getItem(tokenKey);
+	return getItem(tokenKey);
 }
 
 export const CustomStorage = {
-	setAndRememberItem: setItem,
-  setItem,
-  getItem,
-  clear,
-  removeItem,
-  setToken,
-  getToken,
+	setAndRememberItem,
+	setItem,
+	getItem,
+	clear,
+	removeItem,
+	setToken,
+	setAndRememberToken,
+	getToken,
 };

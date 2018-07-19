@@ -1,16 +1,17 @@
 interface IUser {
-  email: string;
-  token: string;
+	email: string;
+	token: string;
 }
 
 interface ILoginRequest {
-  email: string;
-  password: string;
+	email: string;
+	password: string;
+	isRememberMe: boolean;
 }
 
 interface IRegisterRequest {
-  email: string;
-  telephone: string;
-  password: string;
-  password_confirmation: string;
+	email: string;
+	telephone: string;
+	password: string;
+	password_confirmation: string;
 }

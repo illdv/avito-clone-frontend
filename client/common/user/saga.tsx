@@ -9,9 +9,13 @@ import { CustomStorage } from 'client/common/user/CustomStorage';
 import { hideLoginModal } from 'client/ssr/modals/auth/loginModalTriggers';
 import Router from 'next/router';
 
-function* saveTokenInStore(action: Action<IUser>) {
-	const token = action.payload.token;
-	CustomStorage.setToken(token);
+function* saveTokenInStore(action: Action<{ user: IUser, isRememberMe: boolean }>) {
+	const { user: { token }, isRememberMe } = action.payload;
+	if (isRememberMe) {
+		CustomStorage.setAndRememberToken(token);
+	} else {
+		CustomStorage.setToken(token);
+	}
 	axios.defaults.headers.common.authorization = `Bearer ${token}`;
 }
 
@@ -23,10 +27,14 @@ function* clearToken() {
 
 function* login(action: Action<ILoginRequest>) {
 	try {
+		const { email, isRememberMe }                    = action.payload;
 		const response: AxiosResponse<{ token: string }> = yield call(UserAPI.login, action.payload);
 		yield put(UserActions.login.SUCCESS({
-			email: action.payload.email,
-			token: response.data.token,
+			user: {
+				email,
+				token: response.data.token,
+			},
+			isRememberMe,
 		}));
 		hideLoginModal();
 	} catch (e) {
