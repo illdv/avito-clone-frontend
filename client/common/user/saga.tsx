@@ -1,4 +1,4 @@
-import { call, put, take, takeEvery } from 'redux-saga/effects';
+import { call, put, take, takeEvery, takeLatest } from 'redux-saga/effects';
 import { Action } from 'redux-act';
 import axios, { AxiosResponse } from 'axios';
 
@@ -6,6 +6,8 @@ import { UserActions } from 'client/common/user/actions';
 import { UserAPI } from 'api/UserAPI';
 import { errorHandler } from 'client/common/store/errorHandler';
 import { CustomStorage } from 'client/common/user/CustomStorage';
+import { ModalNames } from 'client/common/modal-juggler/modalJugglerInterface'
+import { show } from 'client/common/modal-juggler/module'
 import { hideLoginModal } from 'client/ssr/modals/auth/loginModalTriggers';
 
 function* saveTokenInStore(action: Action<{ user: IUser, isRememberMe: boolean }>) {
@@ -21,7 +23,22 @@ function* saveTokenInStore(action: Action<{ user: IUser, isRememberMe: boolean }
 function* clearToken() {
 	CustomStorage.clear();
 	axios.defaults.headers.common.authorization = ``;
-	window.location.href                        = '/';
+
+	window.location.href = '/';
+}
+
+function* resetPassword(action) {
+	try {
+		yield call(UserAPI.sendCodeToEmail, action.payload);
+		yield put(UserActions.sendCode.SUCCESS({}))
+		yield put(show(ModalNames.forgotPassword));
+		const userData = yield take(UserActions.resetPasswordByCode.REQUEST)
+		yield call(UserAPI.resetPasswordByCode, userData.payload);
+		yield put(show(ModalNames.success));
+	} catch (e) {
+		yield call(errorHandler, e);
+	}
+	yield put(show(ModalNames.login));
 }
 
 function* login(action: Action<ILoginRequest>) {
@@ -47,6 +64,7 @@ function* register(action: Action<IRegisterRequest>) {
 		yield call(UserAPI.register, action.payload);
 		yield put(UserActions.register.SUCCESS({}));
 		hideLoginModal();
+		yield put(show(ModalNames.success));
 	} catch (e) {
 		yield call(errorHandler, e);
 		yield put(UserActions.register.FAILURE({}));
@@ -61,6 +79,17 @@ function* getProfile() {
 	} catch (e) {
 		yield call(errorHandler, e);
 		yield put(UserActions.getProfile.FAILURE({}));
+	}
+}
+
+function* changePassword(action) {
+	try {
+		yield call(UserAPI.changePassword, action.payload);
+		yield put(UserActions.changePassword.SUCCESS({}));
+		yield put(show(ModalNames.success));
+	} catch (e) {
+		yield call(errorHandler, e);
+		yield put(UserActions.changePassword.FAILURE({}));
 	}
 }
 
@@ -81,6 +110,8 @@ function* watcherUser() {
 		takeEvery(UserActions.logout.REQUEST, clearToken),
 		takeEvery(UserActions.getProfile.REQUEST, getProfile),
 		takeEvery(UserActions.initUser.REQUEST, loadingUserIfHasToken),
+		takeLatest(UserActions.changePassword.REQUEST, changePassword),
+		takeLatest(UserActions.sendCode.REQUEST, resetPassword),
 	];
 }
 
