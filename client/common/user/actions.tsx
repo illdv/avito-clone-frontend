@@ -12,24 +12,23 @@ const sendCode            = createAsyncAction('SEND_CODE');
 const resetPasswordByCode = createAsyncAction('RESET_PASSWORD__BY_CODE');
 
 export const UserActions: IUserActions = {
-    login,
-    logout,
-    register,
-    getProfile,
-    initUser,
-    changePassword,
-    sendCode,
-    resetPasswordByCode
+	login,
+	logout,
+	register,
+	getProfile,
+	initUser,
+	changePassword,
+	sendCode,
+	resetPasswordByCode,
 };
 
 export interface IUserActions {
-    login: IAsyncAction<ILoginRequest, { user: IUser, isRememberMe: boolean }>;
-    register: IAsyncAction<IRegisterRequest>;
-    getProfile: IAsyncAction<{}, IUser>;
-    sendCode: IAsyncAction<ISendCodeToEmailRequest>;
-    resetPasswordByCode: IAsyncAction<IResetPasswordByCodeRequest>;
-    logout: IAsyncAction;
-    initUser: IAsyncAction;
-    changePassword: IAsyncAction<IChangePasswordRequest>
+	login: IAsyncAction<ILoginRequest, { user: IUser, isRememberMe: boolean }>;
+	register: IAsyncAction<IRegisterRequest>;
+	getProfile: IAsyncAction<{}, IUser>;
+	sendCode: IAsyncAction<ISendCodeToEmailRequest>;
+	resetPasswordByCode: IAsyncAction<IResetPasswordByCodeRequest>;
+	logout: IAsyncAction;
+	initUser: IAsyncAction;
+	changePassword: IAsyncAction<IChangePasswordRequest>;
 }
-
