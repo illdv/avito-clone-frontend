@@ -2,13 +2,15 @@ import { Component } from 'react';
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { IRootState } from 'client/common/store/storeInterface';
+import { bindModuleAction } from 'client/common/user/utils';
+import { IUserActions, UserActions } from 'client/common/user/actions';
 
 export interface IState {
 
 }
 
 export interface IProps {
-
+	userActions: IUserActions;
 }
 
 const mapStateToProps = (state: IRootState) => ({
@@ -16,16 +18,16 @@ const mapStateToProps = (state: IRootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-	/*
-	  onLoadingMail: () => {
-	   dispatch(Mail.Actions.onLoadingMail.REQUEST());
-	 },
-	*/
+	userActions: bindModuleAction(UserActions, dispatch),
 });
 
-export class ProfileMenu extends Component<IProps, IState> {
+class ProfileMenu extends Component<IProps, IState> {
 
 	state: IState = {};
+
+	onLogout = () => {
+		this.props.userActions.logout.REQUEST({});
+	}
 
 	render() {
 		return (
@@ -60,6 +62,13 @@ export class ProfileMenu extends Component<IProps, IState> {
 						</li>
 						<li className='account-navigation__item'>
 							<span>History</span>
+							<span className='badge notifications-count' />
+						</li>
+						<li
+							className='account-navigation__item'
+							onClick={this.onLogout}
+						>
+							<span>Logout</span>
 							<span className='badge notifications-count' />
 						</li>
 					</ul>

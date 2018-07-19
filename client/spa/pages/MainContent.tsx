@@ -2,7 +2,7 @@ import { Component } from 'react';
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { IRootState } from 'client/common/store/storeInterface';
-import { ProfileMenu } from 'client/spa/pages/ProfileMenu';
+import ProfileMenu from 'client/spa/pages/ProfileMenu';
 import MyAds from 'client/spa/pages/MyAds';
 
 export interface IState {
@@ -38,7 +38,7 @@ export class MainContent extends Component<IProps, IState> {
 							<ProfileMenu />
 						</div>
 						<div className='col-lg-9'>
-							<MyAds/>
+							<MyAds />
 						</div>
 					</div>
 				</div>

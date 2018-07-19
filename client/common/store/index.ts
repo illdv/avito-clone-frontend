@@ -7,22 +7,22 @@ import reducer from './rootReducers';
 import saga from './rootSaga';
 
 const sagaMiddleware = createSagaMiddleware();
-let middleware = [thunk, sagaMiddleware];
+let middleware       = [thunk, sagaMiddleware];
 
 if (process.env.NODE_ENV !== 'production' && !(typeof window === 'undefined')) {
-    const { logger } = require('redux-logger');
-    middleware = [ ...middleware, logger ];
+	const { logger } = require('redux-logger');
+	middleware       = [...middleware, logger];
 }
 
 const createCustomStore = (() => {
-    const store: any = createStore(reducer, {}, composeWithDevTools(applyMiddleware(...middleware)));
+	const store: any = createStore(reducer, {}, composeWithDevTools(applyMiddleware(...middleware)));
 
-    store.runSagaTask = () => {
-        store.sagaTask =  sagaMiddleware.run(saga);
-    };
-    store.runSagaTask();
+	store.runSagaTask = () => {
+		store.sagaTask = sagaMiddleware.run(saga);
+	};
+	store.runSagaTask();
 
-    return store;
+	return store;
 })();
 
 export default createCustomStore;
