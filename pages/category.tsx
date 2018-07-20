@@ -22,32 +22,29 @@ interface ICategoryProps {
 	categories: any[];
 	idActiveCategory: number;
     breadcrumbs: ICrumb[];
-    categoryWithAds: IAdsProps[];
+	categoryWithAds: IAdsProps[];
+	subcategories: any[];
 }
 
-const mockAds = [
-    
-]
 
 class Category extends React.Component<ICategoryProps> {
 	static async getInitialProps({ query }) {
 		let breadcrumbs = [{
-			name: 'All listings in [&]',
+			name: 'All listings',
 			href: '/category',
         }].concat(query.category.breadcrumbs);
         
-        console.log(query.category.idActiveCategory);
 	
 		return {
 			breadcrumbs,
+			subcategories: query.category.subcategories || [],
 			categories: query.category.categories,
             idActiveCategory: query.category.idActiveCategory,
-            categoryWithAds: mockAds
 		};
 	}
 
 	render() {
-		const { categories } = this.props;
+		const { categories, subcategories } = this.props;
 		return (
 			<React.Fragment>
 				<SetCategories categories={categories}>
@@ -68,13 +65,15 @@ class Category extends React.Component<ICategoryProps> {
 						</div>
 					</div>
                     {
-                        this.props.categoryWithAds.length > 0
+						subcategories.length > 0
                         ? (
-                            this.props.categoryWithAds.map(category => (
-                                <ListOfAds
-                                    title={category.title}
-                                    ads={category.ads}
-                                />
+                            subcategories.map(category => (
+								category.ads.length > 0 &&
+									<ListOfAds
+										title={category.title}
+										ads={category.ads}
+									/>
+								|| null
                             ))
                         )
                         : (
