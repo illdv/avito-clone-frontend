@@ -39,6 +39,10 @@ class MyAds extends Component<IProps, IState> {
 		this.props.adsActions.remove.REQUEST({ id });
 	}
 
+	onEdit = (id: string) => () => {
+		this.props.adsActions.selectForEdit.REQUEST({ id });
+	}
+
 	onChangeStatus = (status: MyAdsStatus, id: string) => () => {
 		this.props.adsActions.changeStatus.REQUEST({ status, id });
 	}
@@ -116,7 +120,7 @@ class MyAds extends Component<IProps, IState> {
 						</div>
 						<div className='col-md-3 col-lg-3 text-right edit-block'>
 							<a
-								href='#'
+								onClick={this.onEdit(ad.id)}
 								className='edit-block__link'
 							>
 								Edit

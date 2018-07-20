@@ -7,9 +7,9 @@ import { AdsAPI } from 'api/AdsAPI';
 import { ResponseWhitPagination } from 'client/common/utils/interface';
 import { IAds, ICreateAdRequest } from 'client/common/ads/interface';
 import { Toasts } from 'client/common/utils/Toasts';
-import { PageName } from 'client/common/ads/reducer'
+import { PageName } from 'client/common/ads/reducer';
 import { delay } from 'redux-saga';
-import { MyAdsStatus } from 'client/spa/pages/utils'
+import { MyAdsStatus } from 'client/spa/pages/utils';
 
 function* getMy(action: Action<IRegisterRequest>) {
 	try {
@@ -75,12 +75,26 @@ function* changeStatus(action: Action<{ status: MyAdsStatus, id: string }>) {
 	}
 }
 
+function* edit(action: Action<IAds>) {
+	try {
+		yield call(AdsAPI.edit, action.payload);
+		yield put(AdsActions.edit.SUCCESS({}));
+		yield put(AdsActions.getMy.REQUEST({}));
+		Toasts.info('Ad saved');
+	} catch (e) {
+		yield call(errorHandler, e);
+		Toasts.info('Failed ad save');
+		yield put(AdsActions.edit.FAILURE({}));
+	}
+}
+
 function* watcherUser() {
 	yield [
 		takeEvery(AdsActions.getMy.REQUEST, getMy),
 		takeEvery(AdsActions.create.REQUEST, create),
 		takeEvery(AdsActions.remove.REQUEST, remove),
 		takeEvery(AdsActions.changeStatus.REQUEST, changeStatus),
+		takeEvery(AdsActions.edit.REQUEST, edit),
 	];
 }
 

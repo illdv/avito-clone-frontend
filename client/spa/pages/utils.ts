@@ -21,3 +21,7 @@ export function filterMyAds(selectedFilter: MyAdsStatus, ads: IAds[]) {
 		return ads.filter(isDisapproved);
 	}
 }
+
+export const generateId = () => {
+	return Date.now().toString();
+};

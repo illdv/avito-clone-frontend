@@ -15,17 +15,19 @@ export interface IAds {
 	description: string;
 	body: string;
 	price: string;
-	is_published: number;
-	is_approved: number;
-	is_active: number;
-	is_completed: number;
+	is_published?: number;
+	is_approved?: number;
+	is_active?: number;
+	is_completed?: number;
 	is_vip: number;
-	created_at: string;
-	updated_at: string;
+	created_at?: string;
+	updated_at?: string;
 	deleted_at?: any;
 	city_id: number;
-	type: IType;
-	options: any[];
+	type?: IType;
+	options?: any[];
+	latitude?: number;
+	longitude?: number;
 }
 
 export interface ICreateAdRequest {
@@ -35,6 +37,8 @@ export interface ICreateAdRequest {
 	body: string;
 	type_id: number;
 	price: number;
+	longitude: number;
+	latitude: number;
 	category_id: number;
 	is_published: number;
 	is_vip: number;

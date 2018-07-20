@@ -1,5 +1,5 @@
 import { AxiosWrapper } from './AxiosWrapper';
-import { ICreateAdRequest } from 'client/common/ads/interface';
+import { IAds, ICreateAdRequest } from 'client/common/ads/interface';
 
 function get() {
 	return AxiosWrapper.get('/ads');
@@ -15,6 +15,10 @@ function show(id) {
 
 function create(request: ICreateAdRequest) {
 	return AxiosWrapper.post(`/ads/`, request);
+}
+
+function edit(request: IAds) {
+	return AxiosWrapper.put(`/ads/${request.id}`, request);
 }
 
 function remove(id: string) {
@@ -42,4 +46,5 @@ export const AdsAPI = {
 	approve,
 	activate,
 	complete,
+	edit,
 };

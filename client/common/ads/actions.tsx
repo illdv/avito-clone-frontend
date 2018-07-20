@@ -5,11 +5,13 @@ import { MyAdsStatus } from 'client/spa/pages/utils';
 
 const createAsyncAction = createActionCreator('ADS');
 
-const getMy        = createAsyncAction('GET_MY');
-const create       = createAsyncAction('CREATE');
-const changePage   = createAsyncAction('CHANGE_PAGE');
-const remove       = createAsyncAction('REMOVE');
-const changeStatus = createAsyncAction('CHANGE_STATUS');
+const getMy         = createAsyncAction('GET_MY');
+const create        = createAsyncAction('CREATE');
+const changePage    = createAsyncAction('CHANGE_PAGE');
+const remove        = createAsyncAction('REMOVE');
+const changeStatus  = createAsyncAction('CHANGE_STATUS');
+const selectForEdit = createAsyncAction('SELECT_FOR_EDIT');
+const edit          = createAsyncAction('EDIT');
 
 export const AdsActions: IAdsActions = {
 	getMy,
@@ -17,6 +19,8 @@ export const AdsActions: IAdsActions = {
 	changePage,
 	remove,
 	changeStatus,
+	selectForEdit,
+	edit,
 };
 
 export interface IAdsActions {
@@ -25,4 +29,6 @@ export interface IAdsActions {
 	changePage: IAsyncAction<PageName>;
 	remove: IAsyncAction<{ id: string }>;
 	changeStatus: IAsyncAction<{ status: MyAdsStatus, id: string }>;
+	selectForEdit: IAsyncAction<{ id: string }>;
+	edit: IAsyncAction<IAds>;
 }

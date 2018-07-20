@@ -1,5 +1,5 @@
-import { Component } from 'react';
 import * as React from 'react';
+import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 
 import { IRootState } from 'client/common/store/storeInterface';
@@ -8,6 +8,8 @@ import CreateAd, { IAdsDataForCreate } from 'client/spa/pages/createAd/CreateAd'
 import { bindModuleAction } from 'client/common/user/utils';
 import { AdsActions, IAdsActions } from 'client/common/ads/actions';
 import { IAdsState } from 'client/ssr/blocks/ad/interface';
+import { IAds } from 'client/common/ads/interface'
+import { generateId } from 'client/spa/pages/utils'
 
 export interface IState {
 	data: IAdsDataForCreate;
@@ -57,6 +59,8 @@ class CreateAdManager extends Component<IProps, IState> {
 			is_vip: 0,
 			category_id: 1,
 			type_id: 1,
+			longitude: lng,
+			latitude: lat,
 		});
 	}
 
@@ -72,7 +76,27 @@ class CreateAdManager extends Component<IProps, IState> {
 			);
 		}
 
-		return <CreateAd onNext={this.onNext} />;
+		const ad: IAds = {
+			id: generateId(),
+			title: '',
+			description: '',
+			city_id: 1,
+			price: '',
+			body: '123213',
+			is_published: 1,
+			is_vip: 0,
+			category_id: 1,
+			type_id: 1,
+			longitude: 55.75222,
+			latitude: 37.61140,
+		};
+
+		return (
+			<CreateAd
+				data={ad}
+				onNext={this.onNext}
+			/>
+		);
 	}
 }
 

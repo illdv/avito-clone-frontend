@@ -6,17 +6,20 @@ export enum PageName {
 	Profile = 'Profile',
 	Create  = 'Create',
 	Confirm = 'Confirm',
+	Edit    = 'Edit',
 }
 
 export interface IAdsState {
 	ads: IAds[];
 	isLoading: boolean;
 	currentPage: PageName;
+	selectedId: string;
 }
 
 const initialState = (): IAdsState => ({
 	ads: null,
 	isLoading: true,
+	selectedId: null,
 	currentPage: PageName.Profile,
 });
 
@@ -41,6 +44,12 @@ reducer.on(AdsActions.getMy.FAILURE, (state, payload): IAdsState => ({
 reducer.on(AdsActions.changePage.REQUEST, (state, payload): IAdsState => ({
 	...state,
 	currentPage: payload,
+}));
+
+reducer.on(AdsActions.selectForEdit.REQUEST, (state, payload): IAdsState => ({
+	...state,
+	selectedId: payload.id,
+	currentPage: PageName.Edit,
 }));
 
 export default reducer;
