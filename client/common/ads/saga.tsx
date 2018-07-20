@@ -7,6 +7,8 @@ import { AdsAPI } from 'api/AdsAPI';
 import { ResponseWhitPagination } from 'client/common/utils/interface';
 import { IAds, ICreateAdRequest } from 'client/common/ads/interface';
 import { Toasts } from 'client/common/utils/Toasts';
+import { PageName } from 'client/common/ads/reducer'
+import { delay } from 'redux-saga';
 
 function* getMy(action: Action<IRegisterRequest>) {
 	try {
@@ -23,6 +25,8 @@ function* create(action: Action<ICreateAdRequest>) {
 	try {
 		yield call(AdsAPI.create, action.payload);
 		yield put(AdsActions.create.SUCCESS({}));
+		yield put(AdsActions.changePage.REQUEST(PageName.Profile));
+		yield delay(500);
 		Toasts.info('Ad created');
 	} catch (e) {
 		yield call(errorHandler, e);

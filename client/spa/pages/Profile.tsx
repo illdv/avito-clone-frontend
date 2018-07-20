@@ -9,25 +9,25 @@ import { ToastContainer } from 'react-toastify';
 import { MainContent } from 'client/spa/pages/MainContent';
 import { CustomStorage } from 'client/common/user/CustomStorage';
 import CreateAdManager from 'client/spa/pages/createAd/CreateAdManager';
+import { pushInRouter } from 'client/common/utils/utils';
+import { IAdsState, PageName } from 'client/common/ads/reducer';
+import { AdsActions, IAdsActions } from 'client/common/ads/actions';
+import { bindModuleAction } from 'client/common/user/utils';
 
 export interface IState {
-	isCreate: boolean;
 }
 
 export interface IProps {
-
+	adsActions: IAdsActions;
+	ads: IAdsState;
 }
 
 const mapStateToProps = (state: IRootState) => ({
-	/// nameStore: state.nameStore
+	ads: state.ads,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-	/*
-	  onLoadingMail: () => {
-	   dispatch(Mail.Actions.onLoadingMail.REQUEST());
-	 },
-	*/
+	adsActions: bindModuleAction(AdsActions, dispatch),
 });
 
 export class Profile extends Component<IProps, IState> {
@@ -38,31 +38,30 @@ export class Profile extends Component<IProps, IState> {
 
 	componentDidMount(): void {
 		if (!CustomStorage.getToken()) {
-			window.location.href = '/';
+			pushInRouter('/');
 		}
 	}
 
-	onCreateAd = () => {
-		this.setState(state => ({
-			isCreate: !state.isCreate,
-		}));
+	onClickCreateAd = () => {
+		this.props.adsActions.changePage.REQUEST(PageName.Create);
 	}
 
 	render() {
 
-		if (this.state.isCreate) {
+		const { currentPage } = this.props.ads;
+
+		if (currentPage === PageName.Create) {
 			return (
 				<div>
-					<ToolBar onCreateAd={this.onCreateAd} />
+					<ToolBar onCreateAd={this.onClickCreateAd} />
 					<CreateAdManager />
-					<ToastContainer />
 				</div>
 			);
 		}
 
 		return (
 			<>
-				<ToolBar onCreateAd={this.onCreateAd} />
+				<ToolBar onCreateAd={this.onClickCreateAd} />
 				<MainContent />
 				<Footer />
 			</>

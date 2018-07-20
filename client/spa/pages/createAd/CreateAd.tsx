@@ -1,18 +1,17 @@
 import { Component } from 'react';
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { Marker, InfoWindow } from 'google-maps-react';
 
 import { IRootState } from 'client/common/store/storeInterface';
 import { IUserState } from 'client/common/user/reducer';
 import Lease from 'client/spa/pages/createAd/Lease';
-import { Toasts } from 'client/common/utils/Toasts'
 
 export interface IAdsDataForCreate {
 	fields: {
 		title: string;
 		description: string;
 		price: string;
+		phone: string;
 	};
 	cityId: string;
 	lat: string;
@@ -79,6 +78,7 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 			title: '',
 			description: '',
 			price: '',
+			phone: '',
 		},
 		cityId: '',
 		locationName: '',
@@ -107,7 +107,7 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 	}
 
 	render() {
-		const { email } = this.props.user.user;
+		const { email, name, phone } = this.props.user.user;
 		return (
 			<section className='page'>
 				<div className='container page__container-sm'>
@@ -128,7 +128,7 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 										</label>
 										<input
 											readOnly
-											value='User name'
+											value={name}
 											type='text'
 											className='form-control col-md-6'
 										/>
@@ -155,8 +155,11 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 											Phone
 										</label>
 										<input
+											id='phone'
 											type='tel'
 											className='form-control col-md-6'
+											defaultValue={phone}
+											onChange={this.onChange}
 										/>
 									</div>
 								</div>

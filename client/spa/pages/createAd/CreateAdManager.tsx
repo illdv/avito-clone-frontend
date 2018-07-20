@@ -1,11 +1,13 @@
 import { Component } from 'react';
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
+
 import { IRootState } from 'client/common/store/storeInterface';
 import ConfirmAds from 'client/spa/pages/createAd/ConfirmAds';
 import CreateAd, { IAdsDataForCreate } from 'client/spa/pages/createAd/CreateAd';
 import { bindModuleAction } from 'client/common/user/utils';
 import { AdsActions, IAdsActions } from 'client/common/ads/actions';
+import { IAdsState } from 'client/ssr/blocks/ad/interface';
 
 export interface IState {
 	data: IAdsDataForCreate;
@@ -13,10 +15,11 @@ export interface IState {
 
 export interface IProps {
 	adsActions: IAdsActions;
+	ads: IAdsState;
 }
 
 const mapStateToProps = (state: IRootState) => ({
-	/// nameStore: state.nameStore
+	ads: state.ads,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -54,9 +57,6 @@ class CreateAdManager extends Component<IProps, IState> {
 			is_vip: 0,
 			category_id: 1,
 			type_id: 1,
-		});
-		this.setState({
-			data: null,
 		});
 	}
 
