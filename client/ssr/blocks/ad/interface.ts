@@ -1,5 +1,10 @@
 export interface IAdCity {
 	title: string;
+	country: IAdCountry;
+}
+
+export interface IAdCountry {
+	title: string;
 }
 
 export interface IAd {
@@ -45,6 +50,9 @@ export interface ISeller {
 
 export interface ISellerProps {
 	seller: ISeller;
+	city: string;
+	country: string;
+
 }
 
 export interface IImage {
@@ -55,8 +63,12 @@ export interface IVehicleFeature {
 	options: object;
 }
 
+export interface IDescription {
+	body:string;
+}
+
 export interface ISimilarProps {
-	id: string;
+	id?: string|null;
 	title: string;
 	price: string;
 	userName: string;

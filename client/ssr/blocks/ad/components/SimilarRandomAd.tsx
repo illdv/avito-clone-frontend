@@ -9,7 +9,7 @@ class SimilarRandomAd extends Component<ISimilarProps> {
 			<div className='similar-ads-item'>
 				<div className='row no-gutters'>
 					<div className='col-md-6 col-lg-6'>
-						<Link href={`ad/${this.props.id}`}>
+						<Link href={`${this.props.id}`}>
 						<a className='f-s-14'>{this.props.title}</a>
 						</Link>
 							<br />

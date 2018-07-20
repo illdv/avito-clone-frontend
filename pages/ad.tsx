@@ -11,6 +11,7 @@ import Footer from 'client/ssr/blocks/footer/Footer';
 import 'isomorphic-fetch';
 import { types } from 'redux-act';
 import { IAd } from 'client/ssr/blocks/ad/interface'
+import { SetCategories } from 'client/ssr/blocks/categories/context'
 
 const isServer: boolean = typeof window === 'undefined';
 
@@ -31,16 +32,21 @@ class Ads extends React.Component<IAdsProps> {
 	render() {
 		return (
 			<React.Fragment>
-				<Header />
-				<div className='bottom-header p-y-20'>
-					<div className='container'>
-						<Navbar />
-						{/*<Search />*/}
+				<SetCategories categories={this.props.categories}>
+					<Header />
+					<div className='bottom-header p-y-20'>
+						<div className='container'>
+							<Navbar />
+							<Search />
+						</div>
 					</div>
-				</div>
-				<Ad ad={this.props.ad}  categories={this.props.categories}/>
-				<SellerModal seller={this.props.ad.user} />
-				<Footer />
+					<Ad
+						ad={this.props.ad}
+						categories={this.props.categories}
+					/>
+					<SellerModal seller={this.props.ad.user} />
+					<Footer />
+				</SetCategories>
 			</React.Fragment>
 		);
 	}

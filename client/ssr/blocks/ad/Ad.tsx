@@ -6,8 +6,8 @@ import Seller from './components/Seller';
 import Chart from './components/Chart';
 import NumberFormat from 'react-number-format';
 import { IAdsProps, IAdsState, ICrumb } from 'client/ssr/blocks/ad/interface';
-import VehicleFeature from 'client/ssr/blocks/ad/components/VehicleFeature';
-import VehicleDescription from 'client/ssr/blocks/ad/components/VehicleDescription';
+import Feature from 'client/ssr/blocks/ad/components/Feature';
+import Description from 'client/ssr/blocks/ad/components/Description';
 import Link from 'next/link';
 
 require('./Ad.sass');
@@ -156,16 +156,16 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 						</div>
 						<div className='row p-y-20'>
 							<SliderImages images={images} />
-							<VehicleFeature options={this.props.ad.options} />
+							<Feature options={this.props.ad.options} />
 						</div>
 						<div className='row'>
-							<Seller seller={this.props.ad.user} />
+							<Seller seller={this.props.ad.user} city={this.props.ad.city.title} country={this.props.ad.city.country.title} />
 						</div>
 					</div>
 				</section>
 				<section className='section-mb'>
 					<div className='container'>
-						<VehicleDescription body={this.props.ad.body} />
+						<Description body={this.props.ad.body} />
 						{/*<VehicleKit />*/}
 						<Chart randomAd={this.props.ad.random_ad}/>
 					</div>
