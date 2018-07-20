@@ -15,6 +15,8 @@ import axios from 'axios'
 import { CustomStorage } from 'client/common/user/CustomStorage';
 import ResetPasswordModal from 'client/ssr/modals/forgot-password/ResetPasswordModal';
 import SuccessModal from 'client/ssr/modals/success/SuccessModal';
+import LocationModal from 'client/ssr/modals/location/LocationModal';
+import { showLocationModal } from 'client/ssr/modals/location/locationModalTriggers';
 
 require('../../../common/styles/main.sass');
 require('./Header.sass');
@@ -24,6 +26,7 @@ export interface IState {
 }
 
 export interface IProps {
+    location: any;
 	user: IUserState;
 	userActions: IUserActions;
 }
@@ -47,7 +50,11 @@ class Header extends Component<IProps, IState> {
 		if (!isServer() && !user && token) {
 			axios.defaults.headers.common.authorization = `Bearer ${token}`;
 			this.props.userActions.initUser.REQUEST({});
-		}
+        }
+        
+        if (this.props.location === void 0) {
+            showLocationModal();
+        }
 	}
 
 	renderLogin = () => {
@@ -69,7 +76,7 @@ class Header extends Component<IProps, IState> {
 				Login
 			</button>
 		);
-	}
+    }
 
 	render() {
 		return (
@@ -78,6 +85,7 @@ class Header extends Component<IProps, IState> {
 				<SendCodeToEmailModal />
 				<ResetPasswordModal />
 				<SuccessModal />
+                <LocationModal />
 				<div className='header header_top p-y-22 navbar-expand-sm'>
 					<div className='container'>
 						<div className='row justify-content-between no-gutters'>
