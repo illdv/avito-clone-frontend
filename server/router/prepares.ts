@@ -9,6 +9,7 @@ const instance = axios.create({
 		// 'Content-Type': 'application/json',
 		'Accept': 'application/json',
 		'Accept-Language': 'en-US,en;q=0.9',
+		'Access-Control-Allow-Origin': '*'
 	},
 });
 

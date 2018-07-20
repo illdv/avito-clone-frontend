@@ -17,9 +17,14 @@ function create(request: ICreateAdRequest) {
 	return AxiosWrapper.post(`/ads/`, request);
 }
 
+function switchFavorite(id) {
+	return AxiosWrapper.post(`/ads/switch-favorite/${id}`);
+}
+
 export const AdsAPI = {
 	get,
 	getMy,
 	show,
 	create,
+	switchFavorite,
 };

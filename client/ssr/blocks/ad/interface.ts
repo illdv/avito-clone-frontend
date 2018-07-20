@@ -15,6 +15,7 @@ export interface IAd {
 	updated_at: string;
 	total_visits: string;
 	today_visits: string;
+	is_favorite: boolean;
 	images: IImage;
 	body: string;
 	description: string;
@@ -80,4 +81,13 @@ export interface ISimilar {
 
 export interface IChart {
 	randomAd: IAd;
+}
+
+export interface IFavorites {
+	id: string;
+	is_favorite: boolean;
+}
+
+export interface IFavoriteState {
+	is_favorite: boolean;
 }

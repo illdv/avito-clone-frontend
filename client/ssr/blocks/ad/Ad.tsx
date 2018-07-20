@@ -9,6 +9,7 @@ import { IAdsProps, IAdsState, ICrumb } from 'client/ssr/blocks/ad/interface';
 import Feature from 'client/ssr/blocks/ad/components/Feature';
 import Description from 'client/ssr/blocks/ad/components/Description';
 import Link from 'next/link';
+import ButtonFavorites from 'client/ssr/blocks/ad/components/ButtonFavorites'
 
 require('./Ad.sass');
 
@@ -139,8 +140,7 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 							<span> {this.props.ad.total_visits} </span>
 							(Today's <span> {this.props.ad.today_visits}</span>)
 						</span>
-								<button className='btn orange-btn-outline m-t-10 d-block no-b-r'>Add to favourites
-								</button>
+								<ButtonFavorites id={this.props.ad.id} is_favorite={this.props.ad.is_favorite}/>
 							</div>
 							<div className='col-md-12 col-lg-4'>
 						<span className='price'>
