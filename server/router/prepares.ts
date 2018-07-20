@@ -1,7 +1,14 @@
 import { default as axios } from 'axios';
-import * as queryString from 'query-string'
+import * as queryString from 'query-string';
+import * as iplocation from 'iplocation';
 
-type prepareMethod = (params: any, query: any, path: string) => any;
+interface ISugar {
+    params: any;
+    query: any;
+    path: string;
+} 
+
+type prepareMethod = (sugar: ISugar, req: any) => any;
 
 const instance = axios.create({
 	baseURL: process.env.API_URL,
@@ -17,7 +24,7 @@ export const ads: prepareMethod = async () => {
 	return axiosData.data.data;
 };
 
-export  const ad: prepareMethod = async params => {
+export  const ad: prepareMethod = async ({ params }) => {
 	const response = await instance.get(`/ads/${ params.id }`);
 	return response.data;
 };
@@ -90,9 +97,30 @@ const getSubcategoryByCategoryQueue = async categoryQueue => {
 
 }
 
+export const location: prepareMethod = async (sugar, req) => {
+    const ip = req.clientIp;
+
+    if (req.session.location) {
+        return req.session.location;
+    }
+
+    if (req.session.location === void 0) { // First request
+        try {
+            const location = await iplocation(ip);
+            /*
+                https://www.npmjs.com/package/iplocation
+            */
+        } catch (err) {
+            return undefined;
+        }
+    } else {
+        return req.session.location;
+    }
+
+} 
 
 
-export const category: prepareMethod = async (params, query, path) => {
+export const category: prepareMethod = async ({params, query, path}) => {
 	const { categorySlug } = params;
 	const { data: categories } = await instance.get('/categories');
 

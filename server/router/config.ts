@@ -8,12 +8,12 @@ const routes = [
 	{
 		path: '/',
 		page: '/index',
-		prepare: ['ads', 'categories'],
+		prepare: ['location', 'ads', 'categories'],
 	},
 	{
 		path: '/ad/:id',
 		page: '/ad',
-		prepare: ['ad', 'categories'],
+		prepare: ['location', 'ad', 'categories'],
 	},
 	{
 		path: '/profile',
