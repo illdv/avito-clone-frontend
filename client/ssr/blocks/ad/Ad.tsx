@@ -10,6 +10,7 @@ import { IAd, IAdsProps, IAdsState, ICrumb } from 'client/ssr/blocks/ad/interfac
 import VehicleFeature from 'client/ssr/blocks/ad/components/VehicleFeature'
 import VehicleDescription from 'client/ssr/blocks/ad/components/VehicleDescription'
 import Link from 'next/link';
+import { SetCategories } from '../categories/context';
 
 require('./Ad.sass');
 
@@ -109,6 +110,7 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
     render() {
         return (
             <React.Fragment>
+                <SetCategories categories={this.props.categories}>
                 <section className='heading'>
                     <div className='container'>
                         <div className='row'>
@@ -172,6 +174,7 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
                         <Chart />
                     </div>
                 </section>
+                </SetCategories>
             </React.Fragment>
         );
     }
