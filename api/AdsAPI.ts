@@ -21,10 +21,25 @@ function remove(id: string) {
 	return AxiosWrapper.deleteResponse(`/ads/${id}`);
 }
 
+function approve(id: string) {
+	return AxiosWrapper.put(`/ads/approve/${id}`);
+}
+
+function activate(id: string) {
+	return AxiosWrapper.put(`/ads/activate/${id}`);
+}
+
+function complete(id: string) {
+	return AxiosWrapper.put(`/ads/complete/${id}`);
+}
+
 export const AdsAPI = {
 	get,
 	getMy,
 	show,
 	create,
 	remove,
+	approve,
+	activate,
+	complete,
 };

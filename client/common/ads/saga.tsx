@@ -9,6 +9,7 @@ import { IAds, ICreateAdRequest } from 'client/common/ads/interface';
 import { Toasts } from 'client/common/utils/Toasts';
 import { PageName } from 'client/common/ads/reducer'
 import { delay } from 'redux-saga';
+import { MyAdsStatus } from 'client/spa/pages/utils'
 
 function* getMy(action: Action<IRegisterRequest>) {
 	try {
@@ -48,11 +49,38 @@ function* remove(action: Action<{ id: string }>) {
 	}
 }
 
+function* changeStatus(action: Action<{ status: MyAdsStatus, id: string }>) {
+	try {
+		const { id, status } = action.payload;
+
+		if (status === MyAdsStatus.Active) {
+			yield call(AdsAPI.activate, id);
+		}
+
+		if (status === MyAdsStatus.Completed) {
+			yield call(AdsAPI.complete, id);
+		}
+
+		if (status === MyAdsStatus.Disapproved) {
+			yield call(AdsAPI.approve, id);
+		}
+
+		yield put(AdsActions.changeStatus.SUCCESS({}));
+		yield put(AdsActions.getMy.REQUEST({}));
+		Toasts.info('Status changed');
+	} catch (e) {
+		yield call(errorHandler, e);
+		Toasts.info('Failed status changed');
+		yield put(AdsActions.changeStatus.FAILURE({}));
+	}
+}
+
 function* watcherUser() {
 	yield [
 		takeEvery(AdsActions.getMy.REQUEST, getMy),
 		takeEvery(AdsActions.create.REQUEST, create),
 		takeEvery(AdsActions.remove.REQUEST, remove),
+		takeEvery(AdsActions.changeStatus.REQUEST, changeStatus),
 	];
 }
 

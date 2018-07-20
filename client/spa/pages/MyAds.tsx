@@ -6,10 +6,10 @@ import { bindModuleAction } from 'client/common/user/utils';
 import { AdsActions, IAdsActions } from 'client/common/ads/actions';
 import { IAdsState } from 'client/common/ads/reducer';
 import { IAds } from 'client/common/ads/interface';
-import { filterMyAds, MyAdsFilter } from 'client/spa/pages/utils';
+import { filterMyAds, MyAdsStatus } from 'client/spa/pages/utils';
 
 export interface IState {
-	selectedFilter: MyAdsFilter;
+	selectedFilter: MyAdsStatus;
 }
 
 export interface IProps {
@@ -25,9 +25,9 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 	adsActions: bindModuleAction(AdsActions, dispatch),
 });
 
-const Item = (props: { ad: IAds, onRemove: () => void }) => {
-	const { ad, onRemove }     = props;
-	const { title, id, price } = ad;
+const Item = (props: { ad: IAds, onRemove: () => void, onChangeStatus: () => void }) => {
+	const { ad, onRemove, onChangeStatus } = props;
+	const { title, id, price }             = ad;
 
 	return (
 		<div
@@ -57,8 +57,9 @@ const Item = (props: { ad: IAds, onRemove: () => void }) => {
 						<div className='publish-offer'>
 							<a
 								className='btn button button_dark-outline publish-offer__button'
+								onClick={onChangeStatus}
 							>
-								Activate
+								{ad.is_active === 1 ? 'Deactivation' : 'Activate'}
 							</a>
 							<a
 								onClick={onRemove}
@@ -103,15 +104,19 @@ const FilterButton = (props: { isActive, name: string, cont: number, onClick: ()
 class MyAds extends Component<IProps, IState> {
 
 	state: IState = {
-		selectedFilter: MyAdsFilter.Active,
+		selectedFilter: MyAdsStatus.Active,
 	};
 
-	onSelectFilter = (selectedFilter: MyAdsFilter) => () => {
+	onSelectFilter = (selectedFilter: MyAdsStatus) => () => {
 		this.setState({ selectedFilter });
 	}
 
 	onRemove = (id: string) => () => {
 		this.props.adsActions.remove.REQUEST({ id });
+	}
+
+	onChangeStatus = (status: MyAdsStatus, id: string) => () => {
+		this.props.adsActions.changeStatus.REQUEST({ status, id });
 	}
 
 	componentDidMount(): void {
@@ -128,9 +133,9 @@ class MyAds extends Component<IProps, IState> {
 		const selectedFilter = this.state.selectedFilter;
 		const filteredAds    = filterMyAds(selectedFilter, ads);
 
-		const countActive      = filterMyAds(MyAdsFilter.Active, ads).length;
-		const countDisapproved = filterMyAds(MyAdsFilter.Disapproved, ads).length;
-		const countCompleted   = filterMyAds(MyAdsFilter.Completed, ads).length;
+		const countActive      = filterMyAds(MyAdsStatus.Active, ads).length;
+		const countDisapproved = filterMyAds(MyAdsStatus.Disapproved, ads).length;
+		const countCompleted   = filterMyAds(MyAdsStatus.Completed, ads).length;
 
 		return (
 			<>
@@ -138,20 +143,20 @@ class MyAds extends Component<IProps, IState> {
 					<FilterButton
 						cont={countDisapproved}
 						name={'Disapproved'}
-						isActive={selectedFilter === MyAdsFilter.Disapproved}
-						onClick={this.onSelectFilter(MyAdsFilter.Disapproved)}
+						isActive={selectedFilter === MyAdsStatus.Disapproved}
+						onClick={this.onSelectFilter(MyAdsStatus.Disapproved)}
 					/>
 					<FilterButton
 						cont={countActive}
 						name={'Active'}
-						isActive={selectedFilter === MyAdsFilter.Active}
-						onClick={this.onSelectFilter(MyAdsFilter.Active)}
+						isActive={selectedFilter === MyAdsStatus.Active}
+						onClick={this.onSelectFilter(MyAdsStatus.Active)}
 					/>
 					<FilterButton
 						cont={countCompleted}
 						name={'Completed'}
-						isActive={selectedFilter === MyAdsFilter.Completed}
-						onClick={this.onSelectFilter(MyAdsFilter.Completed)}
+						isActive={selectedFilter === MyAdsStatus.Completed}
+						onClick={this.onSelectFilter(MyAdsStatus.Completed)}
 					/>
 				</div>
 				<div className='remove-offer'>
@@ -170,6 +175,7 @@ class MyAds extends Component<IProps, IState> {
 								key={ad.id}
 								ad={ad}
 								onRemove={this.onRemove(ad.id)}
+								onChangeStatus={this.onChangeStatus(MyAdsStatus.Active, ad.id)}
 							/>
 						))
 					}
