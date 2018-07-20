@@ -7,6 +7,9 @@ import { AdsAPI } from 'api/AdsAPI';
 import { ResponseWhitPagination } from 'client/common/utils/interface';
 import { IAds, ICreateAdRequest } from 'client/common/ads/interface';
 import { Toasts } from 'client/common/utils/Toasts';
+import { PageName } from 'client/common/ads/reducer';
+import { delay } from 'redux-saga';
+import { MyAdsStatus } from 'client/spa/pages/utils';
 
 function* getMy(action: Action<IRegisterRequest>) {
 	try {
@@ -23,6 +26,8 @@ function* create(action: Action<ICreateAdRequest>) {
 	try {
 		yield call(AdsAPI.create, action.payload);
 		yield put(AdsActions.create.SUCCESS({}));
+		yield put(AdsActions.changePage.REQUEST(PageName.Profile));
+		yield delay(500);
 		Toasts.info('Ad created');
 	} catch (e) {
 		yield call(errorHandler, e);
@@ -31,10 +36,65 @@ function* create(action: Action<ICreateAdRequest>) {
 	}
 }
 
+function* remove(action: Action<{ id: string }>) {
+	try {
+		yield call(AdsAPI.remove, action.payload.id);
+		yield put(AdsActions.remove.SUCCESS({}));
+		yield put(AdsActions.getMy.REQUEST({}));
+		Toasts.info('Ad removed');
+	} catch (e) {
+		yield call(errorHandler, e);
+		Toasts.info('Failed ad removed');
+		yield put(AdsActions.remove.FAILURE({}));
+	}
+}
+
+function* changeStatus(action: Action<{ status: MyAdsStatus, id: string }>) {
+	try {
+		const { id, status } = action.payload;
+
+		if (status === MyAdsStatus.Active) {
+			yield call(AdsAPI.activate, id);
+		}
+
+		if (status === MyAdsStatus.Completed) {
+			yield call(AdsAPI.complete, id);
+		}
+
+		if (status === MyAdsStatus.Disapproved) {
+			yield call(AdsAPI.approve, id);
+		}
+
+		yield put(AdsActions.changeStatus.SUCCESS({}));
+		yield put(AdsActions.getMy.REQUEST({}));
+		Toasts.info('Status changed');
+	} catch (e) {
+		yield call(errorHandler, e);
+		Toasts.info('Failed status changed');
+		yield put(AdsActions.changeStatus.FAILURE({}));
+	}
+}
+
+function* edit(action: Action<IAds>) {
+	try {
+		yield call(AdsAPI.edit, action.payload);
+		yield put(AdsActions.edit.SUCCESS({}));
+		yield put(AdsActions.getMy.REQUEST({}));
+		Toasts.info('Ad saved');
+	} catch (e) {
+		yield call(errorHandler, e);
+		Toasts.info('Failed ad save');
+		yield put(AdsActions.edit.FAILURE({}));
+	}
+}
+
 function* watcherUser() {
 	yield [
 		takeEvery(AdsActions.getMy.REQUEST, getMy),
 		takeEvery(AdsActions.create.REQUEST, create),
+		takeEvery(AdsActions.remove.REQUEST, remove),
+		takeEvery(AdsActions.changeStatus.REQUEST, changeStatus),
+		takeEvery(AdsActions.edit.REQUEST, edit),
 	];
 }
 

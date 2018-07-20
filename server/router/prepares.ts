@@ -96,6 +96,7 @@ const getSubcategoryByCategoryQueue = async categoryQueue => {
 
 	const currentCategory = categoryQueue[categoryQueue.length - 1]; // Last children
 
+	return currentCategory.children
 }
 
 
@@ -104,17 +105,17 @@ export const category: prepareMethod = async (params, query, path) => {
 	const { data: categories } = await instance.get('/categories');
 
 	try {
-		const categoryQueue    = findCategoriesQueueBySlug(categories, categorySlug);
-		const breadcrumbs      = categoryQueueToBreadcrumbsFormat(categoryQueue);
-		//const subcategory = await getSubcategoryByCategoryQueue(categoryQueue);
-		const idActiveCategory = getIdMainCategory(categoryQueue);
+        const categoryQueue = findCategoriesQueueBySlug(categories, categorySlug);
+        const breadcrumbs = categoryQueueToBreadcrumbsFormat(categoryQueue);
+        const subcategories = await getSubcategoryByCategoryQueue(categoryQueue);
+        const idActiveCategory = getIdMainCategory(categoryQueue);
 
 		return {
-			categories,
-			breadcrumbs,
-			//subcategory
-			idActiveCategory,
-		};
+            categories,
+            breadcrumbs,
+            subcategories,
+            idActiveCategory,
+        };
 	} catch (err) {
 		return { categories, breadcrumbs: [], subcategory: [] };
 	}

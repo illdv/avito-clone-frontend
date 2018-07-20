@@ -13,7 +13,7 @@ const CategoriesList: React.SFC<ICategoriesList> = ({ categories }) => {
             <div className='category text-left'>
                 <h4 className='category__caption p-b-20'>All categories</h4>
                 <a
-                    href='#'
+                    href='/category'
                     className='btn grey-btn'
                 >
                     Select products

@@ -2,7 +2,7 @@ import React from 'react';
 import FooterNavigation from 'client/ssr/blocks/footer/FooterNavigation/FooterNavigation';
 require('./Footer.sass');
 
-class Footer extends React.Component {
+class ProfileFooter extends React.Component {
 	constructor(props, context) {
 		super(props, context);
 	}
@@ -11,9 +11,6 @@ class Footer extends React.Component {
 		return (
 			<footer className="footer">
 				<div className="footer__top-footer">
-					<div className="container top-footer__container">
-						<FooterNavigation />
-					</div>
 				</div>
 				<div className="footer__middle-footer">
 					<div className="container">
@@ -94,4 +91,4 @@ class Footer extends React.Component {
 	}
 }
 
-export default Footer;
+export default ProfileFooter;
