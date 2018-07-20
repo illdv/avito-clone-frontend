@@ -17,6 +17,10 @@ function create(request: ICreateAdRequest) {
 	return AxiosWrapper.post(`/ads/`, request);
 }
 
+function switchFavorite(id) {
+	return AxiosWrapper.post(`/ads/switch-favorite/${id}`);
+}
+
 function edit(request: IAds) {
 	return AxiosWrapper.put(`/ads/${request.id}`, request);
 }
@@ -42,6 +46,7 @@ export const AdsAPI = {
 	getMy,
 	show,
 	create,
+	switchFavorite,
 	remove,
 	approve,
 	activate,

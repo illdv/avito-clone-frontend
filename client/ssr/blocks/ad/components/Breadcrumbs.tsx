@@ -2,7 +2,7 @@ import React from 'react';
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
 
 export interface ICrumb {
-	name: string;
+	title: string;
 	href: string;
 }
 
@@ -19,10 +19,10 @@ const Breadcrumbs = ({ breadcrumbs, isLastDisabled = true }: { breadcrumbs: ICru
 						{
 							isLastDisabled && index !== indexLastCrumb
 								? <a href={ crumb.href.toLowerCase() } className={ 'orange-text' }>
-									{ crumb.name }
+									{ crumb.title }
 								  </a>
 								: <a>
-									{ crumb.name }
+									{ crumb.title }
 								  </a>
 						}
 					</BreadcrumbItem>
