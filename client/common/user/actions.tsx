@@ -9,7 +9,7 @@ const getProfile          = createAsyncAction('GET_PROFILE');
 const initUser            = createAsyncAction('INIT_USER');
 const changePassword      = createAsyncAction('CHANGE_PASSWORD');
 const sendCode            = createAsyncAction('SEND_CODE');
-const resetPasswordByCode = createAsyncAction('RESET_PASSWORD__BY_CODE');
+const resetPasswordByCode = createAsyncAction('RESET_PASSWORD_BY_CODE');
 
 export const UserActions: IUserActions = {
 	login,

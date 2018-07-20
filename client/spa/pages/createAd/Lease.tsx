@@ -3,9 +3,14 @@ import React, { Component } from 'react';
 export interface IProps {
 	onSelectPlace: (name: string, id: string, location: any) => void;
 	onNext: () => void;
+	defaultValue?: {
+		lat: number,
+		lng: number,
+	};
 }
 
 class Lease extends Component<IProps> {
+
 	constructor(props) {
 		super(props);
 
@@ -26,9 +31,10 @@ class Lease extends Component<IProps> {
 
 	// Фунуция collback
 	initAutocomplete() {
-		const google = window.google;
-		const map    = new google.maps.Map(this.map, {
-			center: { lat: 55.75222, lng: 37.61140 },
+		const { lat, lng } = this.props.defaultValue;
+		const google       = window.google;
+		const map          = new google.maps.Map(this.map, {
+			center: { lat, lng },
 			zoom: 17,
 			mapTypeId: 'roadmap',
 		});

@@ -9,6 +9,8 @@ import { CustomStorage } from 'client/common/user/CustomStorage';
 import { ModalNames } from 'client/common/modal-juggler/modalJugglerInterface';
 import { show } from 'client/common/modal-juggler/module';
 import { hideLoginModal } from 'client/ssr/modals/auth/loginModalTriggers';
+import { Toasts } from 'client/common/utils/Toasts';
+import { pushInRouter } from 'client/common/utils/utils'
 
 function* saveTokenInStore(action: Action<{ user: IUser, isRememberMe: boolean }>) {
 	const { user: { token }, isRememberMe } = action.payload;
@@ -23,7 +25,7 @@ function* saveTokenInStore(action: Action<{ user: IUser, isRememberMe: boolean }
 function* clearToken() {
 	CustomStorage.clear();
 	axios.defaults.headers.common.authorization = ``;
-	window.location.href                        = '/';
+	pushInRouter('/');
 }
 
 function* resetPassword(action) {
@@ -42,12 +44,13 @@ function* resetPassword(action) {
 
 function* login(action: Action<ILoginRequest>) {
 	try {
-		const { email, isRememberMe }                    = action.payload;
-		const response: AxiosResponse<{ token: string }> = yield call(UserAPI.login, action.payload);
+		const { isRememberMe }                        = action.payload;
+		const response: AxiosResponse<ILoginResponse> = yield call(UserAPI.login, action.payload);
+		const { token, user }                         = response.data;
 		yield put(UserActions.login.SUCCESS({
 			user: {
-				email,
-				token: response.data.token,
+				...user,
+				token,
 			},
 			isRememberMe,
 		}));
@@ -63,6 +66,7 @@ function* register(action: Action<IRegisterRequest>) {
 		yield call(UserAPI.register, action.payload);
 		yield put(UserActions.register.SUCCESS({}));
 		hideLoginModal();
+		Toasts.info('You have registered successfully!');
 	} catch (e) {
 		yield call(errorHandler, e);
 		yield put(UserActions.register.FAILURE({}));
