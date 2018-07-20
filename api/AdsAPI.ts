@@ -17,9 +17,14 @@ function create(request: ICreateAdRequest) {
 	return AxiosWrapper.post(`/ads/`, request);
 }
 
+function remove(id: string) {
+	return AxiosWrapper.deleteResponse(`/ads/${id}`);
+}
+
 export const AdsAPI = {
 	get,
 	getMy,
 	show,
 	create,
+	remove,
 };

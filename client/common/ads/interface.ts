@@ -5,7 +5,7 @@ export interface IPivot {
 }
 
 export interface IAds {
-	id: number;
+	id: string;
 	category_id: number;
 	type_id: number;
 	title: string;

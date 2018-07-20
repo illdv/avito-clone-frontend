@@ -35,10 +35,24 @@ function* create(action: Action<ICreateAdRequest>) {
 	}
 }
 
+function* remove(action: Action<{ id: string }>) {
+	try {
+		yield call(AdsAPI.remove, action.payload.id);
+		yield put(AdsActions.remove.SUCCESS({}));
+		yield put(AdsActions.getMy.REQUEST({}));
+		Toasts.info('Ad removed');
+	} catch (e) {
+		yield call(errorHandler, e);
+		Toasts.info('Failed ad removed');
+		yield put(AdsActions.remove.FAILURE({}));
+	}
+}
+
 function* watcherUser() {
 	yield [
 		takeEvery(AdsActions.getMy.REQUEST, getMy),
 		takeEvery(AdsActions.create.REQUEST, create),
+		takeEvery(AdsActions.remove.REQUEST, remove),
 	];
 }
 
