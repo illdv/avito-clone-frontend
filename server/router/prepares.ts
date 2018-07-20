@@ -99,13 +99,13 @@ export const category: prepareMethod = async (params, query, path) => {
 	try {
         const categoryQueue = findCategoriesQueueBySlug(categories, categorySlug);
         const breadcrumbs = categoryQueueToBreadcrumbsFormat(categoryQueue);
-        //const subcategory = await getSubcategoryByCategoryQueue(categoryQueue);
+        //const subcategories = await getSubcategoryByCategoryQueue(categoryQueue);
         const idActiveCategory = getIdMainCategory(categoryQueue);
 
 		return {
             categories,
             breadcrumbs,
-            //subcategory
+            //subcategories
             idActiveCategory,
         };
 	} catch (err) {

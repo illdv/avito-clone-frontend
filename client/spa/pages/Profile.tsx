@@ -4,11 +4,11 @@ import { connect, Dispatch } from 'react-redux';
 
 import { IRootState } from 'client/common/store/storeInterface';
 import ToolBar from 'client/spa/pages/ToolBar';
-import Footer from 'client/ssr/blocks/footer/Footer';
 import { ToastContainer } from 'react-toastify';
 import { MainContent } from 'client/spa/pages/MainContent';
 import { CustomStorage } from 'client/common/user/CustomStorage';
 import CreateAdManager from 'client/spa/pages/createAd/CreateAdManager';
+import ProfileFooter from 'client/ssr/blocks/footer/ProfileFooter';
 
 export interface IState {
 	isCreate: boolean;
@@ -64,7 +64,7 @@ export class Profile extends Component<IProps, IState> {
 			<>
 				<ToolBar onCreateAd={this.onCreateAd} />
 				<MainContent />
-				<Footer />
+				<ProfileFooter />
 			</>
 		);
 	}
