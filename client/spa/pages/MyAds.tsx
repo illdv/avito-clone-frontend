@@ -6,9 +6,10 @@ import { bindModuleAction } from 'client/common/user/utils';
 import { AdsActions, IAdsActions } from 'client/common/ads/actions';
 import { IAdsState } from 'client/common/ads/reducer';
 import { IAds } from 'client/common/ads/interface';
+import { filterMyAds, MyAdsFilter } from 'client/spa/pages/utils';
 
 export interface IState {
-
+	selectedFilter: MyAdsFilter;
 }
 
 export interface IProps {
@@ -25,8 +26,8 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 });
 
 const Item = (props: { ad: IAds, onRemove: () => void }) => {
-	const { ad, onRemove } = props;
-	const { title, id }    = ad;
+	const { ad, onRemove }     = props;
+	const { title, id, price } = ad;
 
 	return (
 		<div
@@ -52,7 +53,7 @@ const Item = (props: { ad: IAds, onRemove: () => void }) => {
 								{title}
 							</h5>
 						</a>
-						<span className='d-inline-block offer-block__price'>790 000 $</span>
+						<span className='d-inline-block offer-block__price'>{price}</span>
 						<div className='publish-offer'>
 							<a
 								className='btn button button_dark-outline publish-offer__button'
@@ -75,7 +76,7 @@ const Item = (props: { ad: IAds, onRemove: () => void }) => {
 							Edit
 						</a>
 						<div className='watcher'>
-							<i className='watcher__icon fa fa-eye' /> <span>5647</span>
+							<i className='watcher__icon fa fa-eye' /> <span>---</span>
 						</div>
 					</div>
 				</div>
@@ -84,10 +85,32 @@ const Item = (props: { ad: IAds, onRemove: () => void }) => {
 	);
 };
 
+const FilterButton = (props: { isActive, name: string, cont: number, onClick: () => void }) => {
+	const { cont, onClick, isActive, name } = props;
+	return (
+		<div className={`filter-offer__item ${isActive ? 'link-active' : ''}`}>
+			<a
+				onClick={onClick}
+				className='filter-offer__link'
+			>
+				{name}
+			</a>
+			<span className='text_count-category'> {cont}</span>
+		</div>
+	);
+};
+
 class MyAds extends Component<IProps, IState> {
 
-	state: IState = {};
-	onRemove      = (id: string) => () => {
+	state: IState = {
+		selectedFilter: MyAdsFilter.Active,
+	};
+
+	onSelectFilter = (selectedFilter: MyAdsFilter) => () => {
+		this.setState({ selectedFilter });
+	}
+
+	onRemove = (id: string) => () => {
 		this.props.adsActions.remove.REQUEST({ id });
 	}
 
@@ -102,36 +125,34 @@ class MyAds extends Component<IProps, IState> {
 			return <h1>Loading...</h1>;
 		}
 
+		const selectedFilter = this.state.selectedFilter;
+		const filteredAds    = filterMyAds(selectedFilter, ads);
+
+		const countActive      = filterMyAds(MyAdsFilter.Active, ads).length;
+		const countDisapproved = filterMyAds(MyAdsFilter.Disapproved, ads).length;
+		const countCompleted   = filterMyAds(MyAdsFilter.Completed, ads).length;
+
 		return (
 			<>
 				<div className='filter-offer d-flex'>
-					<div className='filter-offer__item'>
-						<a
-							href=''
-							className='filter-offer__link'
-						>
-							Disapproved
-						</a>
-						<span className='text_count-category'>1</span>
-					</div>
-					<div className='filter-offer__item'>
-						<a
-							href=''
-							className='filter-offer__link'
-						>
-							Active
-						</a>
-						<span className='text_count-category'>1</span>
-					</div>
-					<div className='filter-offer__item'>
-						<a
-							href=''
-							className='filter-offer__link link-active'
-						>
-							Completed
-						</a>
-						<span className='text_count-category'>1</span>
-					</div>
+					<FilterButton
+						cont={countDisapproved}
+						name={'Disapproved'}
+						isActive={selectedFilter === MyAdsFilter.Disapproved}
+						onClick={this.onSelectFilter(MyAdsFilter.Disapproved)}
+					/>
+					<FilterButton
+						cont={countActive}
+						name={'Active'}
+						isActive={selectedFilter === MyAdsFilter.Active}
+						onClick={this.onSelectFilter(MyAdsFilter.Active)}
+					/>
+					<FilterButton
+						cont={countCompleted}
+						name={'Completed'}
+						isActive={selectedFilter === MyAdsFilter.Completed}
+						onClick={this.onSelectFilter(MyAdsFilter.Completed)}
+					/>
 				</div>
 				<div className='remove-offer'>
 					<input type='checkbox' />
@@ -143,13 +164,15 @@ class MyAds extends Component<IProps, IState> {
 					</button>
 				</div>
 				<div className='offer-block'>
-					{ads.map(ad => (
-						<Item
-							key={ad.id}
-							ad={ad}
-							onRemove={this.onRemove(ad.id)}
-						/>
-					))}
+					{
+						filteredAds.map(ad => (
+							<Item
+								key={ad.id}
+								ad={ad}
+								onRemove={this.onRemove(ad.id)}
+							/>
+						))
+					}
 				</div>
 			</>
 		);
