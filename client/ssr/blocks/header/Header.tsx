@@ -71,6 +71,28 @@ class Header extends Component<IProps, IState> {
 		);
 	}
 
+	onFavorites = () => {
+		const { user } = this.props.user;
+
+		if (user) {
+			return (
+				<Link href={`/favorites`}>
+					<a
+						href='#'
+						className='header__favourites p-x-40'
+					>
+						<img
+							src='/static/img/icons/like.svg'
+							alt=''
+						/>
+						<span>Favourites</span>
+					</a>
+				</Link>
+			);
+		}
+		return null
+	}
+
 	render() {
 		return (
 			<header>
@@ -98,16 +120,7 @@ class Header extends Component<IProps, IState> {
 							<div className='col-md-4 navbar-expand-sm text-right'>
 								<ul className='navbar-nav justify-content-end'>
 									<li className='nav-item'>
-										<a
-											href='#'
-											className='header__favourites p-x-40'
-										>
-											<img
-												src='/static/img/icons/like.svg'
-												alt=''
-											/>
-											<span>Favourites</span>
-										</a>
+										{this.onFavorites()}
 									</li>
 									<li className='nav-item'>
 										{this.renderLogin()}

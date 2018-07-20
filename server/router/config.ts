@@ -20,6 +20,10 @@ const routes = [
 		page: '/profile',
 	},
 	{
+		path: '/favorites',
+		page: '/favorites',
+	},
+	{
 		path: '/category/:categorySlug?',
 		page: '/category',
 		prepare: ['category', 'categories'],

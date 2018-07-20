@@ -14,6 +14,7 @@ export interface IAds {
 	updated_at: string;
 	deleted_at?: any;
 	pivot: IPivot;
+	price: number;
 }
 
 export interface ICreateAdRequest {
