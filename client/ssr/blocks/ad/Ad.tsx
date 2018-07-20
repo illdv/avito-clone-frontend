@@ -46,7 +46,7 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 	formatCategoriesToCrumbs = (categories): ICrumb[] => {
 		return categories.map(category => {
 			return {
-				name: category.title,
+				title: category.title,
 				href: '/' + encodeURI(category.title),
 			};
 		});
@@ -92,14 +92,14 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 
 	get firstCrumbs(): ICrumb {
 		return {
-			name: 'All listings in ' + this.props.ad.city.title,
+			title: 'All listings in ' + this.props.ad.city.title,
 			href: encodeURI('/' + this.props.ad.city.title),
 		};
 	}
 
 	get lastCrumbItem(): ICrumb {
 		return {
-			name: this.props.ad.id,
+			title: this.props.ad.id,
 			href: encodeURI('/' + this.props.ad.id),
 		};
 	}
