@@ -12,7 +12,7 @@ class Navbar extends React.Component {
             <div className="row justify-content-between no-gutters">
                 <div className="col-md-8 col-lg-7">
                     <nav className="navbar-expand-lg navbar menu">
-                        <a href="" className="navbar-brand logo">
+                        <a href="/" className="navbar-brand logo">
                             <img src="/static/img/logo.svg" alt=""/>
                         </a>
                         <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
