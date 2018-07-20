@@ -12,6 +12,7 @@ import 'isomorphic-fetch';
 import { types } from 'redux-act';
 import { IAd } from 'client/ssr/blocks/ad/interface'
 import { SetCategories } from 'client/ssr/blocks/categories/context'
+import Error from 'next/error';
 
 const isServer: boolean = typeof window === 'undefined';
 
@@ -30,6 +31,10 @@ class Ads extends React.Component<IAdsProps> {
 	}
 
 	render() {
+		if (!this.props.ad) {
+			return <Error statusCode={404} />;
+		}
+
 		return (
 			<React.Fragment>
 				<SetCategories categories={this.props.categories}>

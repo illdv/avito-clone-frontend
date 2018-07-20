@@ -1,5 +1,5 @@
 export interface IAdCity {
-	title: string;
+	title?: string|null;
 	country: IAdCountry;
 }
 
@@ -65,7 +65,7 @@ export interface IVehicleFeature {
 }
 
 export interface IDescription {
-	body:string;
+	body: string;
 }
 
 export interface ISimilarProps {

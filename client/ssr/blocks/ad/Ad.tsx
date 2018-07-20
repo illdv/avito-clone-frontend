@@ -9,9 +9,7 @@ import { IAdsProps, IAdsState, ICrumb } from 'client/ssr/blocks/ad/interface';
 import Feature from 'client/ssr/blocks/ad/components/Feature';
 import Description from 'client/ssr/blocks/ad/components/Description';
 import Link from 'next/link';
-import ButtonFavorites from 'client/ssr/blocks/ad/components/ButtonFavorites'
-import Feature from 'client/ssr/blocks/ad/components/Feature'
-import Description from 'client/ssr/blocks/ad/components/Description'
+import ButtonFavorites from 'client/ssr/blocks/ad/components/ButtonFavorites';
 
 require('./Ad.sass');
 
