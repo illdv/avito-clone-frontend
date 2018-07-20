@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 
 import Header from '../client/ssr/blocks/header/Header';
 import { types } from 'redux-act';
+import { ToastContainer } from 'react-toastify'
 
 require('client/spa/pages/Helpers.sass');
 require('client/spa/pages/ToolBar.sass');
@@ -34,6 +35,7 @@ export default () => (
 			</Head>
 			<Header />
 			<Profile />
+			<ToastContainer />
 		</React.Fragment>
 	</div>
 );

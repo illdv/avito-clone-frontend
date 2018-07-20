@@ -1,5 +1,5 @@
 import { AxiosWrapper } from './AxiosWrapper';
-import { ICreateAdRequest } from 'client/common/ads/interface';
+import { IAds, ICreateAdRequest } from 'client/common/ads/interface';
 
 function get() {
 	return AxiosWrapper.get('/ads');
@@ -17,9 +17,34 @@ function create(request: ICreateAdRequest) {
 	return AxiosWrapper.post(`/ads/`, request);
 }
 
+function edit(request: IAds) {
+	return AxiosWrapper.put(`/ads/${request.id}`, request);
+}
+
+function remove(id: string) {
+	return AxiosWrapper.deleteResponse(`/ads/${id}`);
+}
+
+function approve(id: string) {
+	return AxiosWrapper.put(`/ads/approve/${id}`);
+}
+
+function activate(id: string) {
+	return AxiosWrapper.put(`/ads/activate/${id}`);
+}
+
+function complete(id: string) {
+	return AxiosWrapper.put(`/ads/complete/${id}`);
+}
+
 export const AdsAPI = {
 	get,
 	getMy,
 	show,
 	create,
+	remove,
+	approve,
+	activate,
+	complete,
+	edit,
 };
