@@ -40,7 +40,7 @@ export class ProfileSettings extends React.Component<IProps, IState> {
                     <p>The photo</p>
                     <div className="account__person">
                         <img
-                            src="./static/img/person.png"
+                            src="/static/img/person.png"
                             alt=""
                             className="account__img account__img_big"
                         />

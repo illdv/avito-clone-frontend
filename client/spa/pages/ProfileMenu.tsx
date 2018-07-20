@@ -39,7 +39,7 @@ class ProfileMenu extends Component<IProps, IState> {
             <div className='account'>
                 <div className='account__person'>
                     <img
-                        src='./static/img/person.png'
+                        src='/static/img/person.png'
                         alt=''
                         className='account__img'
                     />

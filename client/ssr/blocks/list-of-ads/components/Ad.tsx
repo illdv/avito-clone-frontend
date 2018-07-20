@@ -18,7 +18,7 @@ export default ({ data }: { data: IAds }) => (
 			/>
 		</div>
 		<div className='ads-info'>
-			<Link href={`ad/${data.id}`}>
+			<Link href={`/ad/${data.id}`}>
 				<a><h4>{data.title}</h4></a>
 			</Link>
 			<span>{data.price}</span>
