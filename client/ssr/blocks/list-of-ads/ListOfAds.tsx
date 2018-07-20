@@ -4,6 +4,8 @@ import Ad from 'client/ssr/blocks/list-of-ads/components/Ad';
 
 require('./ListOfAds.sass');
 
+export { IAds };
+
 export interface IAdsProps {
 	title: string;
 	ads: IAds[];

@@ -8,6 +8,7 @@ import Header from 'client/ssr/blocks/header/Header';
 import Navbar from 'client/ssr/blocks/navbar/Navbar';
 import Search from 'client/ssr/blocks/search/Search';
 import Footer from 'client/ssr/blocks/footer/Footer';
+import ListOfAds, { IAdsProps } from '../client/ssr/blocks/list-of-ads/ListOfAds';
 import { SetCategories } from 'client/ssr/blocks/categories/context';
 import Breadcrumbs, { ICrumb } from 'client/ssr/blocks/ad/components/Breadcrumbs';
 
@@ -20,37 +21,28 @@ if (isServer) {
 interface ICategoryProps {
 	categories: any[];
 	idActiveCategory: number;
-	breadcrumbs: ICrumb[];
+    breadcrumbs: ICrumb[];
+    categoryWithAds: IAdsProps[];
 }
+
+const mockAds = [
+    
+]
 
 class Category extends React.Component<ICategoryProps> {
 	static async getInitialProps({ query }) {
-		const isBreadcrumbs = query.category.breadcrumbs && query.category.breadcrumbs.length > 0;
-		
 		let breadcrumbs = [{
 			name: 'All listings in [&]',
 			href: '/category',
-		}];
-		
-		if (isBreadcrumbs) {
-			breadcrumbs = breadcrumbs.concat(query.category.breadcrumbs.map((category, index, arr): ICrumb => {
-				let totla;
+        }].concat(query.category.breadcrumbs);
+        
+        console.log(query.category.idActiveCategory);
 	
-				if (index === arr.length - 1) {
-					totla = ` ${category.total_ads_count}`;
-				}
-	
-				return {
-					name: category.title + (totla || ''),
-					href: `/category/${ encodeURI(category.title) }`,
-				};
-			}));
-		}
-
 		return {
 			breadcrumbs,
 			categories: query.category.categories,
-			idActiveCategory: isBreadcrumbs && query.category.breadcrumbs[0].id // First - main category
+            idActiveCategory: query.category.idActiveCategory,
+            categoryWithAds: mockAds
 		};
 	}
 
@@ -75,6 +67,23 @@ class Category extends React.Component<ICategoryProps> {
 							}
 						</div>
 					</div>
+                    {
+                        this.props.categoryWithAds.length > 0
+                        ? (
+                            this.props.categoryWithAds.map(category => (
+                                <ListOfAds
+                                    title={category.title}
+                                    ads={category.ads}
+                                />
+                            ))
+                        )
+                        : (
+                            <div className='container'>
+                                <h1>Ads not found</h1>
+                            </div>
+                        )
+                        
+                    }
 					<Footer />
 				</SetCategories>
 			</React.Fragment>

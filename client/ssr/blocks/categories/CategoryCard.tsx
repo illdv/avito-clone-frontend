@@ -15,7 +15,7 @@ const CategoryCard: React.SFC<ICategoryCard> = data => {
 
 	const card = (
 		<div className={vertical ? 'tile_vertical' : 'tile'}>
-			<a href='#'>
+			<a href={`/category/${ category.title.toLowerCase() }`}>
 				<div className='tile__inner'>
 					<div className={textAlign}>
 						<h4 className='category__caption'>{category.title}</h4>

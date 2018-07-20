@@ -1,4 +1,5 @@
 import { default as axios } from 'axios';
+import * as queryString from 'query-string'
 
 type prepareMethod = (params: any, query: any, path: string) => any;
 
@@ -26,6 +27,11 @@ export const categories: prepareMethod = async () => {
 	return response.data;
 };
 
+const getAdsByParams = async params => {
+    const response = await instance.get(`/ads?${ queryString.stringify(params) }`)
+    return response.data;
+}
+
 const findCategoriesQueueBySlug = (categories, categorySlug): any[]|null => {
 	return categories.reduce((acc, category) => {
 		if (acc) {
@@ -52,14 +58,57 @@ const findCategoriesQueueBySlug = (categories, categorySlug): any[]|null => {
 	}, false);
 };
 
+const categoryQueueToBreadcrumbsFormat = categoryQueue => {
+    if (!categoryQueue && categoryQueue.length < 1) {
+        return []
+    }
+
+    return categoryQueue.map((category, index, arr) => {
+        let totla;
+
+        if (index === arr.length - 1) {
+            totla = ` ${category.total_ads_count}`;
+        }
+
+        return {
+            name: category.title + (totla || ''),
+            href: `/category/${ encodeURI(category.title) }`,
+        };
+    });
+}
+
+const getIdMainCategory = categoryQueue => {
+    return categoryQueue ? categoryQueue[0].id : null;
+}
+
+const getSubcategoryByCategoryQueue = async categoryQueue => {
+    if (!categoryQueue && categoryQueue.length < 1) {
+        return [];
+    } 
+
+    const currentCategory = categoryQueue[categoryQueue.length - 1]; // Last children
+
+}
+
+
+
 export const category: prepareMethod = async (params, query, path) => {
 	const { categorySlug } = params;
 	const { data: categories } = await instance.get('/categories');
 
 	try {
-		const breadcrumbs = findCategoriesQueueBySlug(categories, categorySlug);
-		return { categories, breadcrumbs };
+        const categoryQueue = findCategoriesQueueBySlug(categories, categorySlug);
+        const breadcrumbs = categoryQueueToBreadcrumbsFormat(categoryQueue);
+        //const subcategory = await getSubcategoryByCategoryQueue(categoryQueue);
+        const idActiveCategory = getIdMainCategory(categoryQueue);
+
+		return {
+            categories,
+            breadcrumbs,
+            //subcategory
+            idActiveCategory,
+        };
 	} catch (err) {
-		return { categories, breadcrumbs: null };
+		return { categories, breadcrumbs: [], subcategory: [] };
 	}
 };
