@@ -35,7 +35,7 @@ class Ads extends React.Component<IAdsProps> {
 				<div className='bottom-header p-y-20'>
 					<div className='container'>
 						<Navbar />
-						<Search />
+						{/*<Search />*/}
 					</div>
 				</div>
 				<Ad ad={this.props.ad}  categories={this.props.categories}/>
