@@ -11,11 +11,13 @@ import { IUserState } from 'client/common/user/reducer';
 import { IUserActions, UserActions } from 'client/common/user/actions';
 import { bindModuleAction } from 'client/common/user/utils';
 import { isServer } from 'client/common/utils/utils';
-import axios from 'axios'
+import axios from 'axios';
 import { CustomStorage } from 'client/common/user/CustomStorage';
 import ResetPasswordModal from 'client/ssr/modals/forgot-password/ResetPasswordModal';
 import SuccessModal from 'client/ssr/modals/success/SuccessModal';
 import LocationModal from 'client/ssr/modals/location/LocationModal';
+import { initialize, ILocationSession, ILocationStoreState } from 'client/common/location/module';
+import { getLocationState } from 'client/common/store/selectors';
 import { showLocationModal } from 'client/ssr/modals/location/locationModalTriggers';
 
 require('../../../common/styles/main.sass');
@@ -26,16 +28,20 @@ export interface IState {
 }
 
 export interface IProps {
-    location: any;
+	location: any;
 	user: IUserState;
 	userActions: IUserActions;
+	locationState: ILocationStoreState;
+	initializeLocation: (data: ILocationSession) => void;
 }
 
 const mapStateToProps = (state: IRootState) => ({
+	locationState: getLocationState(state),
 	user: state.user,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+	initializeLocation: (location) => dispatch(initialize(location)),
 	userActions: bindModuleAction(UserActions, dispatch),
 });
 
@@ -50,11 +56,21 @@ class Header extends Component<IProps, IState> {
 		if (!isServer() && !user && token) {
 			axios.defaults.headers.common.authorization = `Bearer ${token}`;
 			this.props.userActions.initUser.REQUEST({});
-        }
-        
-        if (this.props.location === void 0) {
-            showLocationModal();
-        }
+		}
+		
+		const idCountry = Number(localStorage.getItem('idCountry')) || null;
+		const idRegion = Number(localStorage.getItem('idRegion')) || null;
+		const idCity = Number(localStorage.getItem('idCity')) || null;
+
+		if (idCity) {
+			this.props.initializeLocation({
+				idCountry,
+				idRegion,
+				idCity,
+			});
+		} else {
+			this.props.initializeLocation(null);
+		}
 	}
 
 	renderLogin = () => {
@@ -76,7 +92,46 @@ class Header extends Component<IProps, IState> {
 				Login
 			</button>
 		);
-    }
+	}
+
+	get localeName() {
+		const { idCity, idRegion, idCountry } = this.props.locationState.session;
+
+		if (idCity) {
+			if (this.props.locationState.loaded.session.cities.length > 0) {
+				const result = this.props.locationState.loaded.session.cities.filter(city => {
+					return city.city_id = idCity;
+				});
+				if (result.length > 0) {
+					return result[0].title; 
+				}
+			}
+		}
+
+		if (idRegion) {
+			if (this.props.locationState.loaded.session.regions.length > 0) {
+				const result = this.props.locationState.loaded.session.regions.filter(region => {
+					return region.region_id = idRegion;
+				});
+				if (result.length > 0) {
+					return result[0].title; 
+				}
+			}
+		}
+
+		if (idCountry) {
+			if (this.props.locationState.loaded.session.countries.length > 0) {
+				const result = this.props.locationState.loaded.session.countries.filter(country => {
+					return country.country_id = idCountry;
+				});
+				if (result.length > 0) {
+					return result[0].title; 
+				}
+			}
+		}
+
+		return 'World';
+	}
 
 	render() {
 		return (
@@ -85,7 +140,7 @@ class Header extends Component<IProps, IState> {
 				<SendCodeToEmailModal />
 				<ResetPasswordModal />
 				<SuccessModal />
-                <LocationModal />
+				<LocationModal />
 				<div className='header header_top p-y-22 navbar-expand-sm'>
 					<div className='container'>
 						<div className='row justify-content-between no-gutters'>
@@ -97,7 +152,7 @@ class Header extends Component<IProps, IState> {
 											className='header__location'
 										>
 											<i className='header__icon fas fa-map-marker-alt' />
-											<span>Berlin</span>
+											<span onClick={showLocationModal}>{ this.localeName }</span>
 										</a>
 									</li>
 									<LanguageDropdown />

@@ -4,8 +4,8 @@ export enum ModalNames {
 	sendCodeToEmail = 'sendCodeToEmail',
 	forgotPassword  = 'forgotPassword',
 	seller          = 'seller',
-    success         = 'success',
-    location        = 'location',
+	success         = 'success',
+	location        = 'location',
 }
 
 export interface IModal {

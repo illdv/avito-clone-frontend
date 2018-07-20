@@ -49,7 +49,7 @@ export const initialRoutes = (server, appNext) => {
 			const result = await prepares[prepareName]({ params, query, path }, req);
 			res.status(200).json(result);
 		} catch (error) {
-			res.staus(500).end();
+			res.status(500).end();
 		}
 	});
 };
