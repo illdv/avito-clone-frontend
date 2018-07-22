@@ -12,12 +12,14 @@ class ButtonFavorites extends Component <IFavorites, IFavoriteState> {
 	switchFavorite = () => {
 		AdsAPI.switchFavorite(this.props.id)
 			.then((response) => {
-				this.setState(() => {
-					return {is_favorite: !this.props.is_favorite};
+				this.setState((prevState) => {
+					return { is_favorite: !prevState.is_favorite };
 				});
 			});
-	}
-
+	};
+	formText = () => {
+		return this.state.is_favorite ? 'Remove from favorites' : 'Add to favourites';
+	};
 
 	render() {
 		return (
@@ -25,7 +27,7 @@ class ButtonFavorites extends Component <IFavorites, IFavoriteState> {
 				<button
 					className='btn orange-btn-outline m-t-10 d-block no-b-r'
 					onClick={this.switchFavorite}
-				>Add to favourites
+				>{this.formText()}
 				</button>
 			</React.Fragment>
 		)
