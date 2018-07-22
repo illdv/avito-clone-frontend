@@ -93,8 +93,10 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 
 	get firstCrumbs(): ICrumb {
 		return {
-			title: 'All listings in ' + this.props.ad.city.title,
-			href: encodeURI('/' + this.props.ad.city.title),
+			// title: 'All listings in ' + this.props.ad.city.title,
+			title: 'All listings in ' + 'Moscow',
+			// href: encodeURI('/' + this.props.ad.city.title),
+			href: encodeURI('/' + 'moscow'),
 		};
 	}
 
@@ -159,7 +161,7 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 							<Feature options={this.props.ad.options} />
 						</div>
 						<div className='row'>
-							<Seller seller={this.props.ad.user} city={this.props.ad.city.title} country={this.props.ad.city.country.title} />
+							{/*<Seller seller={this.props.ad.user} city={this.props.ad.city.title} country={this.props.ad.city.country.title} />*/}
 						</div>
 					</div>
 				</section>
@@ -167,7 +169,7 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 					<div className='container'>
 						<Description body={this.props.ad.body} />
 						{/*<VehicleKit />*/}
-						<Chart randomAd={this.props.ad.random_ad}/>
+						{/*<Chart randomAd={this.props.ad.random_ad}/>*/}
 					</div>
 				</section>
 			</React.Fragment>

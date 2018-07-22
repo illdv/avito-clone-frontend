@@ -12,8 +12,8 @@ class ButtonFavorites extends Component <IFavorites, IFavoriteState> {
 	switchFavorite = () => {
 		AdsAPI.switchFavorite(this.props.id)
 			.then((response) => {
-				this.setState((prevState) => {
-					return { is_favorite: !prevState };
+				this.setState(() => {
+					return {is_favorite: !this.props.is_favorite};
 				});
 			});
 	}
