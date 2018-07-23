@@ -6,8 +6,7 @@ import { IRootState } from 'client/common/store/storeInterface';
 import { IUserState } from 'client/common/user/reducer';
 import Lease from 'client/spa/pages/createAd/Lease';
 import { IAds } from 'client/common/ads/interface';
-import { ICategory } from 'client/ssr/blocks/categories/interface'
-import CategoriesSelector from 'client/spa/pages/createAd/CategoriesSelector'
+import CategoriesSelector from 'client/spa/pages/createAd/CategoriesSelector';
 
 export interface IAdsDataForCreate {
 	id: string;
@@ -112,10 +111,6 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 
 	onNext = () => {
 		this.props.onNext(this.state);
-	}
-
-	onSelectCategory = () => {
-
 	}
 
 	static getDerivedStateFromProps(nextProps: IProps, prevState: IAdsDataForCreate): IAdsDataForCreate {
