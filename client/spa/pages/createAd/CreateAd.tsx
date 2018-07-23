@@ -6,6 +6,8 @@ import { IRootState } from 'client/common/store/storeInterface';
 import { IUserState } from 'client/common/user/reducer';
 import Lease from 'client/spa/pages/createAd/Lease';
 import { IAds } from 'client/common/ads/interface';
+import { ICategory } from 'client/ssr/blocks/categories/interface'
+import CategoriesSelector from 'client/spa/pages/createAd/CategoriesSelector'
 
 export interface IAdsDataForCreate {
 	id: string;
@@ -91,13 +93,15 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 		lat: 0,
 		lng: 0,
 	};
-	onChange                 = event => {
+
+	onChange = event => {
 		const { id, value } = event.target;
 		this.setState({
 			fields: { ...this.state.fields, [id]: value },
 		});
 	}
-	onSelectPlace            = (locationName, cityId, location) => {
+
+	onSelectPlace = (locationName, cityId, location) => {
 		this.setState({
 			cityId,
 			locationName,
@@ -105,8 +109,13 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 			lng: location.lng(),
 		});
 	}
-	onNext                   = () => {
+
+	onNext = () => {
 		this.props.onNext(this.state);
+	}
+
+	onSelectCategory = () => {
+
 	}
 
 	static getDerivedStateFromProps(nextProps: IProps, prevState: IAdsDataForCreate): IAdsDataForCreate {
@@ -197,233 +206,7 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 							<h3>Select category</h3>
 						</div>
 						<div className='col-lg-12'>
-							<div className='select-category'>
-								<div className='select-column w-25'>
-									<div className='select-colunm__title'>Categories</div>
-									<a
-										href=''
-										className='select-colunm__category'
-									>
-										Transport
-									</a>
-									<a
-										href=''
-										className='select-colunm__category select-colunm__category_active'
-									>
-										The property
-									</a>
-									<a
-										href=''
-										className='select-colunm__category '
-									>
-										Job
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>
-										The services
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>
-										Personal things
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>
-										For home and cottages
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>
-										Consumer electronics
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>
-										Hobbies and Recreation
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>
-										Animals
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>
-										For business
-									</a>
-								</div>
-								<div className='select-column select-column_right w-25'>
-									<div className='select-colunm__title'>Categories</div>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Transport
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>The property
-									</a>
-									<a
-										href=''
-										className='select-colunm__category '
-									>Job
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>The services
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Personal things
-									</a>
-									<a
-										href=''
-										className='select-colunm__category select-colunm__category_active'
-									>For home and
-										cottages
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Consumer electronics
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Hobbies and Recreation
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Animals
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>For business
-									</a>
-								</div>
-								<div className='select-column select-column_right w-25'>
-									<div className='select-colunm__title'>Categories</div>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Transport
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>The property
-									</a>
-									<a
-										href=''
-										className='select-colunm__category '
-									>Job
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>The services
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Personal things
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>For home and cottages
-									</a>
-									<a
-										href=''
-										className='select-colunm__category select-colunm__category_active'
-									>Consumer
-										electronics
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Hobbies and Recreation
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Animals
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>For business
-									</a>
-								</div>
-								<div className='select-column select-column_right w-25'>
-									<div className='select-colunm__title'>Categories</div>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Transport
-									</a>
-									<a
-										href=''
-										className='select-colunm__category select-colunm__category_active'
-									>The property
-									</a>
-									<a
-										href=''
-										className='select-colunm__category '
-									>Job
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>The services
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Personal things
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>For home and cottages
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Consumer electronics
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Hobbies and Recreation
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Animals
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>For business
-									</a>
-								</div>
-
-							</div>
+							<CategoriesSelector />
 						</div>
 					</div>
 					<div className='row'>

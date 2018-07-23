@@ -29,6 +29,7 @@ interface IIndexProps {
 
 export class Index extends React.Component<IIndexProps> {
 	static async getInitialProps({ query }) {
+		console.log(query.categories);
 		return ({
 			ads: query.ads,
 			categories: query.categories,
