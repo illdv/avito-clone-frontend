@@ -1,23 +1,23 @@
-import React, { Component } from 'react';
-import { AdsAPI } from 'api/AdsAPI';
-import { IFavorites, IFavoriteState } from 'client/ssr/blocks/ad/interface';
+import React, {Component} from 'react';
+import {AdsAPI} from 'api/AdsAPI';
+import {IFavorites, IFavoriteState} from 'client/ssr/blocks/ad/interface';
 
 class ButtonFavorites extends Component <IFavorites, IFavoriteState> {
 	constructor(props) {
-		super (props);
+		super(props);
 		this.state = {
 			is_favorite: this.props.is_favorite,
 		};
 	}
+
 	switchFavorite = () => {
 		AdsAPI.switchFavorite(this.props.id)
 			.then((response) => {
 				this.setState((prevState) => {
-					return { is_favorite: !prevState };
+					return {is_favorite: !prevState};
 				});
 			});
-	}
-
+	};
 
 	render() {
 		return (
@@ -28,7 +28,7 @@ class ButtonFavorites extends Component <IFavorites, IFavoriteState> {
 				>Add to favourites
 				</button>
 			</React.Fragment>
-		)
+		);
 	}
 
 }

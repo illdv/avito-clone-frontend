@@ -5,33 +5,42 @@
     justify-content: center
     align-items: center
 
-.login-block
+.ReactModal__Content
+    width: 100%
+    max-width: 560px
+    border-radius: 10px !important
+
+.auth-modal
     background: #fff
     border-radius: 10px
-    box-shadow: 0px 2px 30px rgba(0, 0, 0, 0.4)
+    box-shadow: 0 2px 30px rgba(0, 0, 0, 0.4)
     height: 100%
-    width: 569px
+    width: 100%
     overflow: hidden
-    padding: 10px 0
 
-.login-links
-    padding: 68px 0
+.auth-links
+    padding: 45px 0
     border-bottom: 1px solid #E0E0E0
     display: flex
     justify-content: center
-    color: #282827
-    font-size: 17px
+    font-size: 18px
 
-.login-links a:not(.active) 
-    opacity: .5
+.auth-link
+    color: #929292 !important
+    cursor: pointer
+    padding-right: 30px
+    padding-left: 30px
+    &.active, &:hover
+        color: black !important
 
-.login-form .big-input
-  padding: 30px 40px
-    border-bottom: 1px solid #E0E0E0
+.auth-input__wrapper
+    padding: 25px 40px
+    margin-bottom: 0 !important
+    &.form-group
+        border-bottom: 1px solid #E0E0E0
 
-.login-form label 
-    color: #282827
-    opacity: 0.5
+.login-form label
+    color: #929292
     font-size: 18px
 
 .login-form input[type='text'],
@@ -46,6 +55,14 @@
 
 .login-form input::placeholder
     color: #b3b3b3
+
+.auth-btn__container
+    padding: 0 40px 40px 40px
+
+.auth-btn
+    padding: 25px !important
+    width: 100%
+    font-size: 20px !important
 
 @media (max-width: 575px) 
     .login-block

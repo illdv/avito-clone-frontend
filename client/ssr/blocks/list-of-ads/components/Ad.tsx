@@ -1,10 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
-import { IAds } from 'client/common/ads/interface';
+import {IAds} from 'client/common/ads/interface';
 
-export default ({ data }: { data: IAds }) => (
-	<div className='ads-tile'>
-		<div className='ads-img'>
+export default ({data}: { data: IAds }) => (
+	<div className='ad__card'>
+		<div className='ad__img'>
 			<a href='#'>
 				<img
 					src='/static/img/icons/like-white.svg'
@@ -17,9 +17,9 @@ export default ({ data }: { data: IAds }) => (
 				alt='Dogs'
 			/>
 		</div>
-		<div className='ads-info'>
+		<div className='ad__info'>
 			<Link href={`/ad/${data.id}`}>
-				<a><h4>{data.title}</h4></a>
+				<a><h6 className='ad__title'>{data.title}</h6></a>
 			</Link>
 			<span>{data.price}</span>
 			<span>{data.description}</span>

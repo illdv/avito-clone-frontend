@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import SelectCategories from './components/SelectCategories';
-import { getCategories, Category } from 'client/ssr/blocks/categories/context';
+import {getCategories, Category} from 'client/ssr/blocks/categories/context';
 
 require('./Search.sass');
 
@@ -10,7 +10,7 @@ interface SearchProps {
 }
 
 const getOption = option => (
-	<input name='name' className='search search__options form-control' placeholder={option.name} />
+	<input name='name' className='search search__options form-control' placeholder={option.name}/>
 );
 
 class Search extends Component<SearchProps> {
@@ -27,13 +27,13 @@ class Search extends Component<SearchProps> {
 		if (category) {
 			if (this.state.activeCategories[0] !== category) {
 				this.setState({
-					activeCategories: [ category ],
+					activeCategories: [category],
 				});
 			}
 		} else {
-			this.setState({ activeCategories: [] });
+			this.setState({activeCategories: []});
 		}
-	}
+	};
 
 	onSelectSubcategory = (category, parent) => {
 		const categories = this.state.activeCategories;
@@ -44,7 +44,7 @@ class Search extends Component<SearchProps> {
 			if (indexParent !== -1) {
 				const newCategories = categories.slice(0, indexParent + 1);
 				newCategories.push(category);
-	
+
 				this.setState({
 					activeCategories: newCategories,
 				});
@@ -58,7 +58,7 @@ class Search extends Component<SearchProps> {
 			});
 		}
 
-	}
+	};
 
 	get subcategories() {
 		return this.state.activeCategories;
@@ -78,82 +78,76 @@ class Search extends Component<SearchProps> {
 
 	render() {
 		return (
-			<div>
-				<form action='#'>
-					<div className='row align-items-center p-y-22'>
-						<div className='col-md-12'>
-							<div className='search form-inline form-row'>
-								<div className='form-group col-6 col-md-3'>
-									<SelectCategories
-										categories={ this.props.categories }
-										onSelect={ this.onSelectCategory }
-										label={ 'Category' }
-										idDefaultCategory={this.props.idActiveCategory}
-										parent={ null }
-									/>
-								</div>
-								<div className='form-group col-6 col-md-3'>
-									<input type='text' className='search__options form-control' placeholder='Search' name='search'/>
-								</div>
-								<div className='form-group col-6 col-md-2'>
-									<select name='country' className='search__options form-control'>
-										<option value=''>Germany</option>
-										<option value=''>United Arab Emirates</option>
-										<option value=''>Kuwait</option>
-										<option value=''>Other</option>
-									</select>
-								</div>
-								<div className='form-group col-6 col-md-2'>
-									<select name='city' className='search__options form-control'>
-										<option value=''>Berlin</option>
-										<option value=''>Dubai</option>
-										<option value=''>Moscow</option>
-									</select>
-								</div>
-								<div className='form-group col-12 col-md-2'>
-									<button className='btn orange-btn-outline search__button' type='submit'>
-										<i className='fas fa-search p-x-5'/>Search
-									</button>
-								</div>
-							</div>
-						</div>
+			<form action='#'>
+				<div className='search form-inline form-row p-y-20'>
+					<div className='form-group col-6 col-md-3'>
+						<SelectCategories
+							categories={this.props.categories}
+							onSelect={this.onSelectCategory}
+							label={'Category'}
+							idDefaultCategory={this.props.idActiveCategory}
+							parent={null}
+						/>
 					</div>
-					{
-						this.isSubcategories &&
-						<div className='row align-items-center'>
-							<div className='col-md-12'>
-								<div className='search form-inline form-row'>
-									{
-										this.subcategories.map(category => (
-											category.children.length > 0
-												? (
-													<div key={ category.id } className='form-group col-6 col-md-3 p-b-22'>
-														<SelectCategories
-															categories={ category.children }
-															onSelect={ this.onSelectSubcategory }
-															label={ 'Subcategory' }
-															parent={ category }
-														/>
-													</div>
-												)
-												: null
-											
-										))
-									}
-									{
-										this.lastSubcategory &&
-										this.lastSubcategory.total_options.map(option => (
-											<div key={option.id} className='form-group col-6 col-md-3 p-b-22'>
-												{ getOption(option) }
-											</div>
-										))
-									}
+					<div className='form-group col-6 col-md-3'>
+						<input
+							type='text'
+							className='search__options form-control'
+							placeholder='Search'
+							name='search'
+						/>
+					</div>
+					<div className='form-group col-6 col-md-2'>
+						<select name='country' className='search__options form-control'>
+							<option value=''>Germany</option>
+							<option value=''>United Arab Emirates</option>
+							<option value=''>Kuwait</option>
+							<option value=''>Other</option>
+						</select>
+					</div>
+					<div className='form-group col-6 col-md-2'>
+						<select name='city' className='search__options form-control'>
+							<option value=''>Berlin</option>
+							<option value=''>Dubai</option>
+							<option value=''>Moscow</option>
+						</select>
+					</div>
+					<div className='form-group col-12 col-md-2'>
+						<button className='btn orange-btn-outline search__button' type='submit'>
+							<i className='fas fa-search p-x-5'/>Search
+						</button>
+					</div>
+				</div>
+				{
+					this.isSubcategories &&
+					<div className='search form-inline form-row'>
+						{
+							this.subcategories.map(category => (
+								category.children.length > 0
+									? (
+										<div key={category.id} className='form-group col-6 col-md-3'>
+											<SelectCategories
+												categories={category.children}
+												onSelect={this.onSelectSubcategory}
+												label={'Subcategory'}
+												parent={category}
+											/>
+										</div>
+									)
+									: null
+							))
+						}
+						{
+							this.lastSubcategory &&
+							this.lastSubcategory.total_options.map(option => (
+								<div key={option.id} className='form-group col-6 col-md-3'>
+									{getOption(option)}
 								</div>
-							</div>
-						</div>
-					}
-				</form>
-			</div>
+							))
+						}
+					</div>
+				}
+			</form>
 		);
 	}
 }

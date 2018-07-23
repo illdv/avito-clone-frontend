@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ICategory } from 'client/ssr/blocks/categories/interface';
+import {ICategory} from 'client/ssr/blocks/categories/interface';
 
 interface ICategoryCard {
 	category: ICategory;
@@ -11,7 +11,7 @@ interface ICategoryCard {
 
 const CategoryCard: React.SFC<ICategoryCard> = data => {
 
-	const { category, vertical, img, textAlign = 'category', imageAlign = 'tile__image' } = data;
+	const {category, vertical, img, textAlign = 'category', imageAlign = 'tile__image'} = data;
 
 	const card = (
 		<div className={vertical ? 'tile_vertical' : 'tile'}>
@@ -21,7 +21,7 @@ const CategoryCard: React.SFC<ICategoryCard> = data => {
 						<h4 className='category__caption'>{category.title}</h4>
 						<span className='category__count'>{category.total_ads_count} ads</span>
 					</div>
-					<div className={ imageAlign }>
+					<div className={imageAlign}>
 						<img
 							src={img}
 							alt=''
