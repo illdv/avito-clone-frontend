@@ -1,45 +1,47 @@
-import { Component } from 'react';
 import * as React from 'react';
+import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { Marker, InfoWindow } from 'google-maps-react';
 
 import { IRootState } from 'client/common/store/storeInterface';
 import { IUserState } from 'client/common/user/reducer';
 import Lease from 'client/spa/pages/createAd/Lease';
-import { Toasts } from 'client/common/utils/Toasts'
+import { IAds } from 'client/common/ads/interface';
 
 export interface IAdsDataForCreate {
+	id: string;
 	fields: {
 		title: string;
 		description: string;
 		price: string;
+		phone: string;
 	};
 	cityId: string;
-	lat: string;
-	lng: string;
+	lat: number;
+	lng: number;
 	locationName: string;
 }
 
 export interface IProps {
 	user?: IUserState;
 	onNext: (data: IAdsDataForCreate) => void;
+	data: IAds;
 }
 
 const mapStateToProps = (state: IRootState) => ({
 	user: state.user,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-});
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({});
 
 interface IPropsForInput {
 	id: string;
+	defaultValue: string;
 	title: string;
 	inputClass: string;
 	onChange: (event) => void;
 }
 
-const Input = ({ id, title, onChange, inputClass }: IPropsForInput) => (
+const Input = ({ id, title, onChange, inputClass, defaultValue }: IPropsForInput) => (
 	<div className='offer-form__item form-group row no-gutters align-items-center'>
 		<label
 			htmlFor={id}
@@ -48,6 +50,7 @@ const Input = ({ id, title, onChange, inputClass }: IPropsForInput) => (
 			{title}
 		</label>
 		<input
+			defaultValue={defaultValue}
 			onChange={onChange}
 			id={id}
 			type='text'
@@ -56,7 +59,7 @@ const Input = ({ id, title, onChange, inputClass }: IPropsForInput) => (
 	</div>
 );
 
-const TextArea = ({ id, title, onChange, inputClass }: IPropsForInput) => (
+const TextArea = ({ id, title, onChange, inputClass, defaultValue }: IPropsForInput) => (
 	<div className='offer-form__item form-group row no-gutters align-items-center'>
 		<label
 			htmlFor={id}
@@ -68,6 +71,7 @@ const TextArea = ({ id, title, onChange, inputClass }: IPropsForInput) => (
 			id={id}
 			onChange={onChange}
 			className={inputClass}
+			defaultValue={defaultValue}
 		/>
 	</div>
 );
@@ -75,25 +79,25 @@ const TextArea = ({ id, title, onChange, inputClass }: IPropsForInput) => (
 class CreateAd extends Component<IProps, IAdsDataForCreate> {
 
 	state: IAdsDataForCreate = {
+		id: null,
 		fields: {
 			title: '',
 			description: '',
 			price: '',
+			phone: '',
 		},
 		cityId: '',
 		locationName: '',
-		lat: '',
-		lng: '',
+		lat: 0,
+		lng: 0,
 	};
-
-	onChange = event => {
+	onChange                 = event => {
 		const { id, value } = event.target;
 		this.setState({
 			fields: { ...this.state.fields, [id]: value },
 		});
 	}
-
-	onSelectPlace = (locationName, cityId, location) => {
+	onSelectPlace            = (locationName, cityId, location) => {
 		this.setState({
 			cityId,
 			locationName,
@@ -101,13 +105,35 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 			lng: location.lng(),
 		});
 	}
-
-	onNext = () => {
+	onNext                   = () => {
 		this.props.onNext(this.state);
 	}
 
+	static getDerivedStateFromProps(nextProps: IProps, prevState: IAdsDataForCreate): IAdsDataForCreate {
+
+		const { id, price, description, title, latitude, longitude } = nextProps.data;
+		if (id !== prevState.id) {
+			return {
+				id,
+				fields: {
+					title,
+					price,
+					description,
+					phone: '',
+				},
+				cityId: '',
+				lat: latitude,
+				lng: longitude,
+				locationName: '',
+			};
+		}
+		return null;
+	}
+
 	render() {
-		const { email } = this.props.user.user;
+		const { email, name }                      = this.props.user.user;
+		const { phone, description, price, title } = this.state.fields;
+		const { lng, lat }                         = this.state;
 		return (
 			<section className='page'>
 				<div className='container page__container-sm'>
@@ -128,7 +154,7 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 										</label>
 										<input
 											readOnly
-											value='User name'
+											value={name}
 											type='text'
 											className='form-control col-md-6'
 										/>
@@ -155,8 +181,11 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 											Phone
 										</label>
 										<input
+											id='phone'
 											type='tel'
 											className='form-control col-md-6'
+											defaultValue={phone}
+											onChange={this.onChange}
 										/>
 									</div>
 								</div>
@@ -413,18 +442,21 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 					</div>
 					<div className='offer-form'>
 						<Input
+							defaultValue={title}
 							id={'title'}
 							title={'Ad title'}
 							onChange={this.onChange}
 							inputClass={'form-control col-md-6'}
 						/>
 						<TextArea
+							defaultValue={description}
 							id={'description'}
 							title={'Advertisement description'}
 							onChange={this.onChange}
 							inputClass={'form-control col-md-6'}
 						/>
 						<Input
+							defaultValue={price}
 							id={'price'}
 							title={'Price'}
 							onChange={this.onChange}
@@ -447,6 +479,7 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 						<Lease
 							onSelectPlace={this.onSelectPlace}
 							onNext={this.onNext}
+							defaultValue={{ lat, lng }}
 						/>
 					</div>
 				</div>

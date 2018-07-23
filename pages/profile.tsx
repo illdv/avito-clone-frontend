@@ -4,12 +4,14 @@ import dynamic from 'next/dynamic';
 
 import Header from '../client/ssr/blocks/header/Header';
 import { types } from 'redux-act';
+import { ToastContainer } from 'react-toastify'
 
 require('client/spa/pages/Helpers.sass');
 require('client/spa/pages/ToolBar.sass');
 require('client/spa/pages/MyAds.sass');
 require('client/spa/pages/createAd/CreateAd.sass');
 require('client/spa/pages/ProfileSettings/ProfileSettings.sass');
+require('client/ssr/blocks/footer/Footer.sass');
 
 const isServer: boolean = typeof window === 'undefined';
 
@@ -34,6 +36,7 @@ export default () => (
 			</Head>
 			<Header />
 			<Profile />
+			<ToastContainer />
 		</React.Fragment>
 	</div>
 );
