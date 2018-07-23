@@ -5,7 +5,7 @@ import SliderImages from './components/SliderImages';
 import Seller from './components/Seller';
 import Chart from './components/Chart';
 import NumberFormat from 'react-number-format';
-import { IAdsProps, IAdsState, ICrumb } from 'client/ssr/blocks/ad/interface';
+import { IAdsProps, IAdsState, ICrumb, IImage } from 'client/ssr/blocks/ad/interface';
 import Feature from 'client/ssr/blocks/ad/components/Feature';
 import Description from 'client/ssr/blocks/ad/components/Description';
 import Link from 'next/link';
@@ -93,10 +93,10 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 
 	get firstCrumbs(): ICrumb {
 		return {
-			// title: 'All listings in ' + this.props.ad.city.title,
-			title: 'All listings in ' + 'Moscow',
-			// href: encodeURI('/' + this.props.ad.city.title),
-			href: encodeURI('/' + 'moscow'),
+			title: 'All listings in ' + this.props.ad.city.title,
+			// title: 'All listings in ' + 'Moscow',
+			href: encodeURI('/' + this.props.ad.city.title),
+			// href: encodeURI('/' + 'moscow'),
 		};
 	}
 
@@ -157,11 +157,11 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 							</div>
 						</div>
 						<div className='row p-y-20'>
-							<SliderImages images={images} />
+							{/*<SliderImages images={}/>*/}
 							<Feature options={this.props.ad.options} />
 						</div>
 						<div className='row'>
-							{/*<Seller seller={this.props.ad.user} city={this.props.ad.city.title} country={this.props.ad.city.country.title} />*/}
+							<Seller seller={this.props.ad.user} city={this.props.ad.city.title} country={this.props.ad.city.country.title} />
 						</div>
 					</div>
 				</section>

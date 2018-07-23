@@ -57,7 +57,10 @@ export interface ISellerProps {
 }
 
 export interface IImage {
-	images: object;
+	images: {
+		original: string;
+		thumbnail: string;
+	};
 }
 
 export interface IVehicleFeature {
