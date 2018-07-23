@@ -181,6 +181,7 @@ export const getRegions: prepareMethod = async ({ query }) => {
 export const getCities: prepareMethod = async ({ query }) => {
 	try{
 		const response = await instanseForLocation.get(`/regions/${query.id}/cities/%20`);
+		console.log(response);
 		return response.data;
 	} catch (err) {
 		console.log(err)

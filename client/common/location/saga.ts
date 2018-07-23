@@ -47,12 +47,8 @@ function* sagaInitializeLocation(action) {
 	const getRegions = yield call(get, 'getRegions', { id: payload.idCountry });
 	const regions = getRegions.data;
 
-	console.log('getRegions', getRegions);
-
 	const getCities = yield call(get, 'getCities', { id: payload.idRegion });
 	const cities = getCities.data;
-
-	console.log('getCities', getCities);
 
 	yield put(changeState({
 		...locationState,

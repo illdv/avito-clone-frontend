@@ -62,7 +62,13 @@ class DataList extends React.Component<DataListProps, DataListState> {
 			<div className=''>
 				<div className='form-group'>
 					<label htmlFor='favorite_team'>{ this.props.label }</label>
-					<input onChange={ this.onChange } list={ this.props.label } className='form-control' onBlur={this.onBlur} />
+					<input
+						onChange={ this.onChange }
+						list={ this.props.label }
+						className='form-control'
+						onBlur={this.onBlur}
+						value={ this.state.value }
+					/>
 					<datalist id={ this.props.label } className='datalist'>
 						{
 							this.filtredValue.map((item, index) => (

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import Link from 'next/link';
+import axios from 'axios';
 
 import LoginModal from '../../modals/auth/AuthModal';
 import SendCodeToEmailModal from '../../modals/forgot-password/SendCodeToEmail';
@@ -11,7 +12,6 @@ import { IUserState } from 'client/common/user/reducer';
 import { IUserActions, UserActions } from 'client/common/user/actions';
 import { bindModuleAction } from 'client/common/user/utils';
 import { isServer } from 'client/common/utils/utils';
-import axios from 'axios';
 import { CustomStorage } from 'client/common/user/CustomStorage';
 import ResetPasswordModal from 'client/ssr/modals/forgot-password/ResetPasswordModal';
 import SuccessModal from 'client/ssr/modals/success/SuccessModal';
@@ -19,6 +19,7 @@ import LocationModal from 'client/ssr/modals/location/LocationModal';
 import { initialize, ILocationSession, ILocationStoreState } from 'client/common/location/module';
 import { getLocationState } from 'client/common/store/selectors';
 import { showLocationModal } from 'client/ssr/modals/location/locationModalTriggers';
+import SearchLocationModal from 'client/ssr/modals/search-location/SearchLocationModal';
 
 require('../../../common/styles/main.sass');
 require('./Header.sass');
@@ -62,7 +63,7 @@ class Header extends Component<IProps, IState> {
 		const idRegion = Number(localStorage.getItem('idRegion')) || null;
 		const idCity = Number(localStorage.getItem('idCity')) || null;
 
-		if (idCity) {
+		if (idCity || idRegion || idCountry) {
 			this.props.initializeLocation({
 				idCountry,
 				idRegion,
@@ -99,9 +100,11 @@ class Header extends Component<IProps, IState> {
 
 		if (idCity) {
 			if (this.props.locationState.loaded.session.cities.length > 0) {
+
 				const result = this.props.locationState.loaded.session.cities.filter(city => {
-					return city.city_id = idCity;
+					return city.city_id === idCity;
 				});
+
 				if (result.length > 0) {
 					return result[0].title; 
 				}
@@ -141,6 +144,7 @@ class Header extends Component<IProps, IState> {
 				<ResetPasswordModal />
 				<SuccessModal />
 				<LocationModal />
+				<SearchLocationModal />
 				<div className='header header_top p-y-22 navbar-expand-sm'>
 					<div className='container'>
 						<div className='row justify-content-between no-gutters'>

@@ -13,7 +13,7 @@ import {
 	changeRegionSession,
 	ILocationStoreState,
 } from 'client/common/location/module';
-import DataList from './components/DataList';
+import DataList from '../location/components/DataList';
 
 export interface ILocationModalProps {
 	locationState: ILocationStoreState;
@@ -41,21 +41,21 @@ const mapDispatchToProps = dispatch => ({
 export class LocationModal extends React.Component<ILocationModalProps> {
 
 	get prepareDataForCountry() {
-		return this.props.locationState.loaded.session.countries.map(item => ({
+		return this.props.locationState.loaded.local.countries.map(item => ({
 			id: item.country_id,
 			title: item.title,
 		}));
 	}
 
 	get prepareDataForRegion() {
-		return this.props.locationState.loaded.session.regions.map(item => ({
+		return this.props.locationState.loaded.local.regions.map(item => ({
 			id: item.region_id,
 			title: item.title,
 		}));
 	}
 
 	get prepareDataForCity() {
-		return this.props.locationState.loaded.session.cities.map(item => ({
+		return this.props.locationState.loaded.local.cities.map(item => ({
 			id: item.city_id,
 			title: item.title,
 		}));
@@ -63,7 +63,7 @@ export class LocationModal extends React.Component<ILocationModalProps> {
 
 	render() {
 		return (
-			<Modal name={ModalNames.location} useOnRequestClose={true}>
+			<Modal name={ModalNames.searchLocation} useOnRequestClose={true}>
 				<div className='login-block'>
 					<div className='login-links'>
 						<a
@@ -77,22 +77,22 @@ export class LocationModal extends React.Component<ILocationModalProps> {
 							label={'Country'}
 							labelEnabled={true}
 							data={this.prepareDataForCountry}
-							onSelect={this.props.changeCountrySession}
-							idActive={this.props.locationState.session.idCountry}
+							onSelect={this.props.changeCountryLocal}
+							idActive={this.props.locationState.local.idCountry}
 						/>
 						<DataList
 							label={'State'}
 							labelEnabled={true}
 							data={this.prepareDataForRegion}
-							onSelect={this.props.changeRegionSession}
-							idActive={this.props.locationState.session.idRegion}
+							onSelect={this.props.changeRegionLocal}
+							idActive={this.props.locationState.local.idRegion}
 						/>
 						<DataList
 							label={'City'}
 							labelEnabled={true}
 							data={this.prepareDataForCity}
-							onSelect={this.props.changeCitySession}
-							idActive={this.props.locationState.session.idCity}
+							onSelect={this.props.changeCityLocal}
+							idActive={this.props.locationState.local.idCity}
 						/>
 					</div>
 				</div>
