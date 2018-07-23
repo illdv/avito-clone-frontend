@@ -3,7 +3,6 @@ import { showSellerModals } from 'client/ssr/modals/seller/SellerModalTriger';
 import { ISellerProps } from 'client/ssr/blocks/ad/interface';
 
 export const avatar   = '/static/img/person.png';
-export const location = 'Germany Berlin';
 
 class Seller extends Component<ISellerProps> {
 	render() {
@@ -18,7 +17,7 @@ class Seller extends Component<ISellerProps> {
 						/>
 						<div className='seller-info'>
 							<span>{this.props.seller.name}</span>
-							<span>{location}</span>
+							<span>{this.props.country + ' ' + this.props.city}</span>
 						</div>
 					</div>
 					<button

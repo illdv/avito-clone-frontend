@@ -13,9 +13,10 @@ type prepareMethod = (sugar: ISugar, req: any) => any;
 const instance = axios.create({
 	baseURL: process.env.API_URL,
 	headers: {
-		'Content-Type': 'application/json',
+		// 'Content-Type': 'application/json',
 		'Accept': 'application/json',
 		'Accept-Language': 'en-US,en;q=0.9',
+		'Access-Control-Allow-Origin': '*',
 	},
 });
 
@@ -35,8 +36,12 @@ export const ads: prepareMethod = async () => {
 };
 
 export  const ad: prepareMethod = async ({ params }) => {
-	const response = await instance.get(`/ads/${ params.id }`);
-	return response.data;
+	try {
+		const response = await instance.get(`/ads/${ params.id }`)
+		return response.data;
+	} catch (error) {
+		console.log(error);
+	}
 };
 
 export const categories: prepareMethod = async () => {
@@ -49,7 +54,7 @@ const getAdsByParams = async params => {
 	return response.data;
 }
 
-const findCategoriesQueueBySlug = (categories, categorySlug): any[]|null => {
+const findCategoriesQueueBySlug = (categories, categorySlug): any[] | null => {
 	return categories.reduce((acc, category) => {
 		if (acc) {
 			return acc;
@@ -58,13 +63,13 @@ const findCategoriesQueueBySlug = (categories, categorySlug): any[]|null => {
 		const slug = category.title.toLowerCase();
 
 		if (slug === categorySlug) {
-			return [ category ];
+			return [category];
 		} else {
 			if (category.children.length > 0) {
 				const result = findCategoriesQueueBySlug(category.children, categorySlug);
 
 				if (result !== null) {
-					return [ category ].concat(result);
+					return [category].concat(result);
 				} else {
 					return null;
 				}
@@ -105,6 +110,7 @@ const getSubcategoryByCategoryQueue = async categoryQueue => {
 
 	const currentCategory = categoryQueue[categoryQueue.length - 1]; // Last children
 
+	return currentCategory.children
 }
 
 export const location: prepareMethod = async (sugar, req) => {

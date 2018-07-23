@@ -160,16 +160,14 @@ class Header extends Component<IProps, IState> {
 							</div>
 							<div className='col-md-4 navbar-expand-sm text-right'>
 								<ul className='navbar-nav justify-content-end'>
-									<li className='nav-item'>
+									<li className='nav-item  p-r-10'>
 										<a
-											href='#'
-											className='header__favourites p-x-40'
+											href='#' className='header__favourites'
 										>
-											<img
-												src='/static/img/icons/like.svg'
-												alt=''
-											/>
-											<span>Favourites</span>
+											<span >Favourites</span>
+											<i className='fas fa-thumbs-up header__icon_favourites'></i>
+
+
 										</a>
 									</li>
 									<li className='nav-item'>

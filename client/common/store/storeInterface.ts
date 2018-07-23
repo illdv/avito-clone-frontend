@@ -1,9 +1,9 @@
 import { IModalJugglerState } from '../modal-juggler/modalJugglerInterface';
-import { ILocationStoreState } from '../location/locationInterface';
+import { IUserState } from 'client/common/user/reducer';
+import { IAdsState } from 'client/common/ads/reducer';
 
 export interface IRootState {
 	modalJuggler: IModalJugglerState;
-	location: ILocationStoreState;
-	user: IUser;
-	ads: IUser;
+	user: IUserState;
+	ads: IAdsState;
 }

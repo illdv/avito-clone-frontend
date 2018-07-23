@@ -8,12 +8,12 @@ import Header from '../client/ssr/blocks/header/Header';
 import Navbar from '../client/ssr/blocks/navbar/Navbar';
 import Search from '../client/ssr/blocks/search/Search';
 import ListOfAds from '../client/ssr/blocks/list-of-ads/ListOfAds';
-import FooterNavigation from '../client/ssr/blocks/footer/FooterNavigation';
 import { ToastContainer } from 'react-toastify';
 import { IAds } from 'client/common/ads/interface';
 import { SetCategories } from 'client/ssr/blocks/categories/context';
 import { ICategories } from 'client/ssr/blocks/categories/interface';
 import Categories from 'client/ssr/blocks/categories/Categories';
+import Footer from 'client/ssr/blocks/footer/Footer';
 
 const isServer: boolean = typeof window === 'undefined';
 
@@ -67,7 +67,7 @@ export class Index extends React.Component<IIndexProps> {
 						ads={this.props.ads}
 					/>
 
-					<FooterNavigation />
+					<Footer />
 					<ToastContainer />
 				</SetCategories>
 			</React.Fragment>
