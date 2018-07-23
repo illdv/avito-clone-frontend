@@ -85,7 +85,6 @@ export interface IChart {
 
 export interface IFavorites {
 	id: string;
-	is_favorite: boolean;
 }
 
 export interface IFavoriteState {
