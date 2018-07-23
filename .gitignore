@@ -3,6 +3,7 @@ server/logs/
 .server/
 .next/
 .env
+/build
 
 # Idea
 .idea/

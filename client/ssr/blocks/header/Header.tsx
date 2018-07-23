@@ -119,7 +119,7 @@ class Header extends Component<IProps, IState> {
 							</div>
 							<div className='col-md-4 navbar-expand-sm text-right'>
 								<ul className='navbar-nav justify-content-end'>
-									<li className='nav-item'>
+									<li className='nav-item p-r-10'>
 										{this.onFavorites()}
 									</li>
 									<li className='nav-item'>

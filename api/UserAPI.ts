@@ -13,7 +13,7 @@ function changePassword(request: IChangePasswordRequest) {
 }
 
 function register(registerRequest) {
-	return AxiosWrapper.post('/register', { ...registerRequest, name: '123123132' });
+	return AxiosWrapper.post('/register', { ...registerRequest });
 }
 
 function sendCodeToEmail(request: ISendCodeToEmailRequest) {
