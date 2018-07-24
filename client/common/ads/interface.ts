@@ -34,15 +34,15 @@ export interface IAds {
 export interface ICreateAdRequest {
 	title: string;
 	description: string;
-	city_id: string;
+	city_id: number;
 	body: string;
 	type_id: number;
-	price: number;
+	price: string;
 	longitude: number;
 	latitude: number;
 	category_id: string;
 	is_published: number;
 	is_vip: number;
-	phone: string;
-	files: any;
+	/*phone: string;*/
+	images: any;
 }

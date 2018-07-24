@@ -8,7 +8,8 @@ import Lease from 'client/spa/pages/createAd/Lease';
 import { IAds } from 'client/common/ads/interface';
 import CategoriesSelector from 'client/spa/pages/createAd/CategoriesSelector';
 import { ICategory } from 'client/common/categories/interface';
-import { removeElementByIndex, useOrDefault } from 'client/spa/pages/createAd/utils';
+import { Images, ImageSelector } from 'client/spa/pages/createAd/ImageSelector';
+import { useOrDefault } from 'client/spa/pages/createAd/utils';
 
 export interface IAdsDataForCreate {
 	id: string;
@@ -19,12 +20,11 @@ export interface IAdsDataForCreate {
 		phone: string;
 	};
 	cityId: string;
-	categoryId: string;
 	lat: number;
 	lng: number;
 	locationName: string;
 	selectedCategory: ICategory[];
-	files: any[];
+	images: Images[];
 }
 
 export interface IProps {
@@ -96,9 +96,8 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 		locationName: '',
 		lat: 0,
 		lng: 0,
-		categoryId: '',
 		selectedCategory: [],
-		files: null,
+		images: null,
 	};
 
 	static getDerivedStateFromProps(nextProps: IProps, prevState: IAdsDataForCreate): IAdsDataForCreate {
@@ -117,9 +116,8 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 				lat: latitude,
 				lng: longitude,
 				locationName: '',
-				categoryId: category_id,
 				selectedCategory: [],
-				files: [],
+				images: [],
 			};
 		}
 		return null;
@@ -141,32 +139,10 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 		});
 	}
 
-	/**
-	 * Use for loading image and add in state.
-	 * @param {any} target
-	 */
-	onAddImage = ({ target }) => {
-		const files = Object.values(target.files);
-		files.forEach((file: any) => {
-			const reader = new FileReader();
-			reader.readAsDataURL(file);
-			reader.onload = e => {
-				this.setState({
-					files: [
-						...this.state.files,
-						{ blob: e.target.result },
-					],
-				});
-			};
+	onUpdateImage = (images: Images[]) => {
+		this.setState({
+			images,
 		});
-	}
-
-	/**
-	 * Need for reset last images
-	 * @param event
-	 */
-	onClickAddImage = event => {
-		event.target.value = null;
 	}
 
 	onNext = () => {
@@ -174,21 +150,13 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 	}
 
 	onSelectCategory = (selectedCategory: ICategory[]) => {
-		const categoryId = useOrDefault(() => selectedCategory[0].id, '');
-		this.setState({ selectedCategory, categoryId });
-	}
-
-	deleteImage = (index: number) => () => {
-		const newFiles = removeElementByIndex(this.state.files, index);
-		this.setState({
-			files: newFiles,
-		});
+		this.setState({ selectedCategory });
 	}
 
 	render() {
-		const { email, name }                       = this.props.user.user;
-		const { phone, description, price, title }  = this.state.fields;
-		const { lng, lat, selectedCategory, files } = this.state;
+		const { email, name }                      = this.props.user.user;
+		const { phone, description, price, title } = this.state.fields;
+		const { lng, lat, selectedCategory }       = this.state;
 		return (
 			<section className='page'>
 				<div className='container page__container-sm'>
@@ -302,24 +270,7 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 							>
 								Photo
 							</label>
-							<div className='offer-form-upload'>
-								<input
-									type='file'
-									className='form-control offer-form-upload__item'
-									accept='.jpeg, .bmp, .png, .svg'
-									onChange={this.onAddImage}
-									onClick={this.onClickAddImage}
-								/>
-							</div>
-							{
-								files.map((image, index) => (
-									<Image
-										key={index}
-										url={image.blob}
-										onClose={this.deleteImage(index)}
-									/>
-								))
-							}
+							<ImageSelector onUpdateImage={this.onUpdateImage} />
 						</div>
 						<Lease
 							onSelectPlace={this.onSelectPlace}
@@ -332,30 +283,5 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 		);
 	}
 }
-
-interface ImageProps {
-	url: string;
-	onClose: () => void;
-}
-
-const Image = ({ url, onClose }: ImageProps) => (
-	<div style={{ position: 'relative' }}>
-		<span
-			style={{
-				position: 'absolute',
-				top: 2,
-				right: 2,
-				zIndex: 100,
-			}}
-			className='close'
-			onClick={onClose}
-		> &times;
-		</span>
-		<img
-			style={{ width: 150, paddingLeft: 10 }}
-			src={url}
-		/>
-	</div>
-);
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateAd);

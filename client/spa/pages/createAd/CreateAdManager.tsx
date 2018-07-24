@@ -50,22 +50,22 @@ class CreateAdManager extends Component<IProps, IState> {
 	}
 
 	onCreate = () => {
-		const { lat, lng, categoryId, files }      = this.state.data;
-		const { description, price, title, phone } = this.state.data.fields;
+		const { lat, lng, images, selectedCategory } = this.state.data;
+		const { description, price, title, phone }   = this.state.data.fields;
+
 		this.props.adsActions.create.REQUEST({
 			title,
 			description,
-			city_id: '1',
-			price: +price,
+			city_id: 1,
+			price,
 			body: '123213',
 			is_published: 0,
 			is_vip: 0,
-			category_id: categoryId,
+			category_id: selectedCategory[selectedCategory.length - 1].id,
 			type_id: 1,
 			longitude: lng,
 			latitude: lat,
-			phone,
-			files,
+			images,
 		});
 	}
 

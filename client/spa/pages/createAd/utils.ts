@@ -17,7 +17,7 @@ export function useOrDefault<T>(func: () => T, defaultValue: T): T {
 	}
 }
 
-export function removeElementByIndex(array: any[], index: number) {
+export function removeElementByIndex<T>(array: T[], index: number): T[] {
 	return [
 		...array.slice(0, index),
 		...array.slice(index + 1),
