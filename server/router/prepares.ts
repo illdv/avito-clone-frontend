@@ -2,6 +2,13 @@ import { default as axios } from 'axios';
 import * as queryString from 'query-string';
 import * as iplocation from 'iplocation';
 
+import {
+	findCategoriesQueueBySlug,
+	categoryQueueToBreadcrumbsFormat,
+	getSubcategoryByCategoryQueue,
+	getIdMainCategory,
+} from '../../common/utils/categoryPrepare';
+
 interface ISugar {
 	params: any;
 	query: any;
@@ -41,68 +48,12 @@ export const categories: prepareMethod = async () => {
 };
 
 const getAdsByParams = async params => {
-	const response = await instance.get(`/ads?${ queryString.stringify(params) }`)
+	const response = await instance.get(`/ads/?${ queryString.stringify(params) }`)
 	return response.data;
-}
-
-const findCategoriesQueueBySlug = (categories, categorySlug): any[] | null => {
-	return categories.reduce((acc, category) => {
-		if (acc) {
-			return acc;
-		}
-
-		const slug = category.title.toLowerCase();
-
-		if (slug === categorySlug) {
-			return [category];
-		} else {
-			if (category.children.length > 0) {
-				const result = findCategoriesQueueBySlug(category.children, categorySlug);
-
-				if (result !== null) {
-					return [category].concat(result);
-				} else {
-					return null;
-				}
-			} else {
-				return null;
-			}
-		}
-	}, false);
 };
 
-const categoryQueueToBreadcrumbsFormat = categoryQueue => {
-	if (!categoryQueue && categoryQueue.length < 1) {
-		return []
-	}
 
-	return categoryQueue.map((category, index, arr) => {
-		let totla;
 
-		if (index === arr.length - 1) {
-			totla = ` ${category.total_ads_count}`;
-		}
-
-		return {
-			name: category.title + (totla || ''),
-			href: `/category/${ encodeURI(category.title) }`,
-		};
-	});
-}
-
-const getIdMainCategory = categoryQueue => {
-	return categoryQueue ? categoryQueue[0].id : null;
-}
-
-const getSubcategoryByCategoryQueue = async categoryQueue => {
-	if (!categoryQueue && categoryQueue.length < 1) {
-		return [];
-	} 
-
-	const currentCategory = categoryQueue[categoryQueue.length - 1]; // Last children
-
-	return currentCategory.children
-}
 
 export const location: prepareMethod = async (sugar, req) => {
 	const ip = req.clientIp;
@@ -133,16 +84,20 @@ export const category: prepareMethod = async ({params, query, path}) => {
 	const { data: categories } = await instance.get('/categories');
 
 	try {
-		const categoryQueue = findCategoriesQueueBySlug(categories, categorySlug);
-		const breadcrumbs = categoryQueueToBreadcrumbsFormat(categoryQueue);
-		//const subcategory = await getSubcategoryByCategoryQueue(categoryQueue);
+		const categoryQueue    = findCategoriesQueueBySlug(categories, categorySlug);
+		const breadcrumbs      = categoryQueueToBreadcrumbsFormat(categoryQueue);
 		const idActiveCategory = getIdMainCategory(categoryQueue);
+
+		const subcategories = getSubcategoryByCategoryQueue(categoryQueue);
+		let listAdsGroups   = [];
 
 		return {
 			categories,
 			breadcrumbs,
 			//subcategory
 			idActiveCategory,
+			subcategories,
+			listAdsGroups,
 		};
 	} catch (err) {
 		return { categories, breadcrumbs: [], subcategory: [] };
