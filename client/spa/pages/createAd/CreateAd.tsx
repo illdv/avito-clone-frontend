@@ -45,17 +45,19 @@ const Input = ({ id, title, onChange, inputClass, defaultValue }: IPropsForInput
 	<div className='offer-form__item form-group row align-items-center'>
 		<label
 			htmlFor={id}
-			className='col-md-4 offer-form__label'
+			className='col-md-3 col-lg-4 offer-form__label'
 		>
 			{title}
 		</label>
-		<input
-			defaultValue={defaultValue}
-			onChange={onChange}
-			id={id}
-			type='text'
-			className={inputClass}
-		/>
+		<div className={inputClass}>
+			<input
+				defaultValue={defaultValue}
+				onChange={onChange}
+				id={id}
+				type='text'
+				className='form-control'
+			/>
+		</div>
 	</div>
 );
 
@@ -63,16 +65,18 @@ const TextArea = ({ id, title, onChange, inputClass, defaultValue }: IPropsForIn
 	<div className='offer-form__item form-group row align-items-center'>
 		<label
 			htmlFor={id}
-			className='col-md-4 offer-form__label'
+			className='col-md-3 col-lg-4 offer-form__label'
 		>
 			{title}
 		</label>
-		<textarea
-			id={id}
-			onChange={onChange}
-			className={inputClass}
-			defaultValue={defaultValue}
-		/>
+		<div className={inputClass}>
+			<textarea
+				id={id}
+				onChange={onChange}
+				className='form-control'
+				defaultValue={defaultValue}
+			/>
+		</div>
 	</div>
 );
 
@@ -152,12 +156,14 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 										>
 											Full name
 										</label>
-										<input
-											readOnly
-											value={name}
-											type='text'
-											className='form-control col-md-6'
-										/>
+										<div className='col-md-6'>
+											<input
+												readOnly
+												value={name}
+												type='text'
+												className='form-control'
+											/>
+										</div>
 									</div>
 									<div className='form-group row align-items-center'>
 										<label
@@ -166,12 +172,14 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 										>
 											Email
 										</label>
-										<input
-											readOnly
-											value={email}
-											type='email'
-											className='form-control col-md-6'
-										/>
+										<div className='col-md-6'>
+											<input
+												readOnly
+												value={email}
+												type='email'
+												className='form-control'
+											/>
+										</div>
 									</div>
 									<div className='form-group row align-items-center'>
 										<label
@@ -180,13 +188,15 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 										>
 											Phone
 										</label>
-										<input
-											id='phone'
-											type='tel'
-											className='form-control col-md-6'
-											defaultValue={phone}
-											onChange={this.onChange}
-										/>
+										<div className='col-md-6'>
+											<input
+												id='phone'
+												type='tel'
+												className='form-control'
+												defaultValue={phone}
+												onChange={this.onChange}
+											/>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -353,34 +363,36 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 							id={'title'}
 							title={'Ad title'}
 							onChange={this.onChange}
-							inputClass={'form-control col-md-6'}
+							inputClass={'col-md-9 col-lg-6'}
 						/>
 						<TextArea
 							defaultValue={description}
 							id={'description'}
 							title={'Advertisement description'}
 							onChange={this.onChange}
-							inputClass={'form-control col-md-6'}
+							inputClass={'col-md-9 col-lg-6'}
 						/>
 						<Input
 							defaultValue={price}
 							id={'price'}
 							title={'Price'}
 							onChange={this.onChange}
-							inputClass={'form-control col-md-3'}
+							inputClass={'col-md-3'}
 						/>
 						<div className='offer-form__item form-group row align-items-center'>
 							<label
 								htmlFor=''
-								className='col-md-4 offer-form__label'
+								className='col-md-3 col-lg-4 offer-form__label'
 							>
 								Photo
 							</label>
-							<div className='offer-form-upload'>
-								<input
-									type='file'
-									className='form-control offer-form-upload__item'
-								/>
+							<div className='col-md-3'>
+								<div className='offer-form-upload'>
+									<input
+										type='file'
+										className='form-control offer-form-upload__item'
+									/>
+								</div>
 							</div>
 						</div>
 						<Lease
