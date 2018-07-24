@@ -280,7 +280,7 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 							>
 								Photo
 							</label>
-							<div className='col-md-3'>
+							<div className='col-md-9 col-lg-6'>
 								<ImageSelector onUpdateImage={this.onUpdateImage}/>
 							</div>
 						</div>

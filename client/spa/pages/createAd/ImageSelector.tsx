@@ -73,15 +73,17 @@ export class ImageSelector extends Component<IProps, IState> {
 						onClick={this.onClickAddImage}
 					/>
 				</div>
-				{
-					images.map((image, index) => (
-						<Image
-							key={index}
-							url={image.blob}
-							onClose={this.deleteImage(index)}
-						/>
-					))
-				}
+				<div className='uploaded-images'>
+					{
+						images.map((image, index) => (
+							<Image
+								key={index}
+								url={image.blob}
+								onClose={this.deleteImage(index)}
+							/>
+						))
+					}
+				</div>
 			</>
 		);
 	}
@@ -93,21 +95,15 @@ interface ImageProps {
 }
 
 const Image = ({url, onClose}: ImageProps) => (
-	<div style={{position: 'relative'}}>
+	<div className='uploaded-img__container'>
 		<span
-			style={{
-				position: 'absolute',
-				top: 2,
-				right: 2,
-				zIndex: 100,
-			}}
-			className='close'
+			className='uploaded-img__remove'
 			onClick={onClose}
 		>
 			&times;
 		</span>
 		<img
-			style={{width: 150, paddingLeft: 10}}
+			className='uploaded-img'
 			src={url}
 		/>
 	</div>
