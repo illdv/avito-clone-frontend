@@ -44,4 +44,5 @@ export interface ICreateAdRequest {
 	is_published: number;
 	is_vip: number;
 	phone: string;
+	files: any;
 }

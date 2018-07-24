@@ -10,7 +10,7 @@ import { AdsActions, IAdsActions } from 'client/common/ads/actions';
 import { IAdsState } from 'client/ssr/blocks/ad/interface';
 import { IAds } from 'client/common/ads/interface';
 import { generateId } from 'client/spa/pages/utils';
-import { IUserState } from 'client/common/user/reducer'
+import { IUserState } from 'client/common/user/reducer';
 
 export interface IState {
 	data: IAdsDataForCreate;
@@ -50,7 +50,7 @@ class CreateAdManager extends Component<IProps, IState> {
 	}
 
 	onCreate = () => {
-		const { lat, lng, categoryId }             = this.state.data;
+		const { lat, lng, categoryId, files }      = this.state.data;
 		const { description, price, title, phone } = this.state.data.fields;
 		this.props.adsActions.create.REQUEST({
 			title,
@@ -65,6 +65,7 @@ class CreateAdManager extends Component<IProps, IState> {
 			longitude: lng,
 			latitude: lat,
 			phone,
+			files,
 		});
 	}
 

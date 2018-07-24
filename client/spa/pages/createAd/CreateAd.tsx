@@ -8,7 +8,7 @@ import Lease from 'client/spa/pages/createAd/Lease';
 import { IAds } from 'client/common/ads/interface';
 import CategoriesSelector from 'client/spa/pages/createAd/CategoriesSelector';
 import { ICategory } from 'client/common/categories/interface';
-import { useOrDefault } from 'client/spa/pages/createAd/utils';
+import { removeElementByIndex, useOrDefault } from 'client/spa/pages/createAd/utils';
 
 export interface IAdsDataForCreate {
 	id: string;
@@ -24,6 +24,7 @@ export interface IAdsDataForCreate {
 	lng: number;
 	locationName: string;
 	selectedCategory: ICategory[];
+	files: any[];
 }
 
 export interface IProps {
@@ -97,32 +98,8 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 		lng: 0,
 		categoryId: '',
 		selectedCategory: [],
+		files: null,
 	};
-
-	onChange = event => {
-		const { id, value } = event.target;
-		this.setState({
-			fields: { ...this.state.fields, [id]: value },
-		});
-	}
-
-	onSelectPlace = (locationName, cityId, location) => {
-		this.setState({
-			cityId,
-			locationName,
-			lat: location.lat(),
-			lng: location.lng(),
-		});
-	}
-
-	onNext = () => {
-		this.props.onNext(this.state);
-	}
-
-	onSelectCategory = (selectedCategory: ICategory[]) => {
-		const categoryId = useOrDefault(() => selectedCategory[0].id, '');
-		this.setState({ selectedCategory, categoryId });
-	}
 
 	static getDerivedStateFromProps(nextProps: IProps, prevState: IAdsDataForCreate): IAdsDataForCreate {
 
@@ -142,15 +119,76 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 				locationName: '',
 				categoryId: category_id,
 				selectedCategory: [],
+				files: [],
 			};
 		}
 		return null;
 	}
 
+	onChangeFields = event => {
+		const { id, value } = event.target;
+		this.setState({
+			fields: { ...this.state.fields, [id]: value },
+		});
+	}
+
+	onSelectPlace = (locationName, cityId, location) => {
+		this.setState({
+			cityId,
+			locationName,
+			lat: location.lat(),
+			lng: location.lng(),
+		});
+	}
+
+	/**
+	 * Use for loading image and add in state.
+	 * @param {any} target
+	 */
+	onAddImage = ({ target }) => {
+		const files = Object.values(target.files);
+		files.forEach((file: any) => {
+			const reader = new FileReader();
+			reader.readAsDataURL(file);
+			reader.onload = e => {
+				this.setState({
+					files: [
+						...this.state.files,
+						{ blob: e.target.result },
+					],
+				});
+			};
+		});
+	}
+
+	/**
+	 * Need for reset last images
+	 * @param event
+	 */
+	onClickAddImage = event => {
+		event.target.value = null;
+	}
+
+	onNext = () => {
+		this.props.onNext(this.state);
+	}
+
+	onSelectCategory = (selectedCategory: ICategory[]) => {
+		const categoryId = useOrDefault(() => selectedCategory[0].id, '');
+		this.setState({ selectedCategory, categoryId });
+	}
+
+	deleteImage = (index: number) => () => {
+		const newFiles = removeElementByIndex(this.state.files, index);
+		this.setState({
+			files: newFiles,
+		});
+	}
+
 	render() {
-		const { email, name }                      = this.props.user.user;
-		const { phone, description, price, title } = this.state.fields;
-		const { lng, lat, selectedCategory }       = this.state;
+		const { email, name }                       = this.props.user.user;
+		const { phone, description, price, title }  = this.state.fields;
+		const { lng, lat, selectedCategory, files } = this.state;
 		return (
 			<section className='page'>
 				<div className='container page__container-sm'>
@@ -202,7 +240,7 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 											type='tel'
 											className='form-control col-md-6'
 											defaultValue={phone}
-											onChange={this.onChange}
+											onChange={this.onChangeFields}
 										/>
 									</div>
 								</div>
@@ -240,21 +278,21 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 							defaultValue={title}
 							id={'title'}
 							title={'Ad title'}
-							onChange={this.onChange}
+							onChange={this.onChangeFields}
 							inputClass={'form-control col-md-6'}
 						/>
 						<TextArea
 							defaultValue={description}
 							id={'description'}
 							title={'Advertisement description'}
-							onChange={this.onChange}
+							onChange={this.onChangeFields}
 							inputClass={'form-control col-md-6'}
 						/>
 						<Input
 							defaultValue={price}
 							id={'price'}
 							title={'Price'}
-							onChange={this.onChange}
+							onChange={this.onChangeFields}
 							inputClass={'form-control col-md-3'}
 						/>
 						<div className='offer-form__item form-group row no-gutters align-items-center'>
@@ -268,8 +306,20 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 								<input
 									type='file'
 									className='form-control offer-form-upload__item'
+									accept='.jpeg, .bmp, .png, .svg'
+									onChange={this.onAddImage}
+									onClick={this.onClickAddImage}
 								/>
 							</div>
+							{
+								files.map((image, index) => (
+									<Image
+										key={index}
+										url={image.blob}
+										onClose={this.deleteImage(index)}
+									/>
+								))
+							}
 						</div>
 						<Lease
 							onSelectPlace={this.onSelectPlace}
@@ -282,5 +332,30 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 		);
 	}
 }
+
+interface ImageProps {
+	url: string;
+	onClose: () => void;
+}
+
+const Image = ({ url, onClose }: ImageProps) => (
+	<div style={{ position: 'relative' }}>
+		<span
+			style={{
+				position: 'absolute',
+				top: 2,
+				right: 2,
+				zIndex: 100,
+			}}
+			className='close'
+			onClick={onClose}
+		> &times;
+		</span>
+		<img
+			style={{ width: 150, paddingLeft: 10 }}
+			src={url}
+		/>
+	</div>
+);
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateAd);
