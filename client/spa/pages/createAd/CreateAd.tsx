@@ -42,7 +42,7 @@ interface IPropsForInput {
 }
 
 const Input = ({ id, title, onChange, inputClass, defaultValue }: IPropsForInput) => (
-	<div className='offer-form__item form-group row no-gutters align-items-center'>
+	<div className='offer-form__item form-group row align-items-center'>
 		<label
 			htmlFor={id}
 			className='col-md-4 offer-form__label'
@@ -60,7 +60,7 @@ const Input = ({ id, title, onChange, inputClass, defaultValue }: IPropsForInput
 );
 
 const TextArea = ({ id, title, onChange, inputClass, defaultValue }: IPropsForInput) => (
-	<div className='offer-form__item form-group row no-gutters align-items-center'>
+	<div className='offer-form__item form-group row align-items-center'>
 		<label
 			htmlFor={id}
 			className='col-md-4 offer-form__label'
@@ -145,7 +145,7 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 							<div className='submit-contact-info'>
 								<h4>Contact information</h4>
 								<div className='submit-contact-info__form'>
-									<div className='form-group row no-gutters align-items-center'>
+									<div className='form-group row align-items-center'>
 										<label
 											htmlFor=''
 											className='col-md-2'
@@ -159,7 +159,7 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 											className='form-control col-md-6'
 										/>
 									</div>
-									<div className='form-group row no-gutters align-items-center'>
+									<div className='form-group row align-items-center'>
 										<label
 											htmlFor=''
 											className='col-md-2'
@@ -173,7 +173,7 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 											className='form-control col-md-6'
 										/>
 									</div>
-									<div className='form-group row no-gutters align-items-center'>
+									<div className='form-group row align-items-center'>
 										<label
 											htmlFor=''
 											className='col-md-2'
@@ -199,227 +199,135 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 						<div className='col-lg-12'>
 							<div className='select-category'>
 								<div className='select-column w-25'>
-									<div className='select-colunm__title'>Categories</div>
-									<a
-										href=''
-										className='select-colunm__category'
-									>
+									<div className='select-column__title'>Categories</div>
+									<a className='select-column__category'>
 										Transport
 									</a>
-									<a
-										href=''
-										className='select-colunm__category select-colunm__category_active'
-									>
+									<a className='select-column__category select-column__category--active'>
 										The property
 									</a>
-									<a
-										href=''
-										className='select-colunm__category '
-									>
+									<a className='select-column__category '>
 										Job
 									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>
+									<a className='select-column__category'>
 										The services
 									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>
+									<a className='select-column__category'>
 										Personal things
 									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>
+									<a className='select-column__category'>
 										For home and cottages
 									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>
+									<a className='select-column__category'>
 										Consumer electronics
 									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>
+									<a className='select-column__category'>
 										Hobbies and Recreation
 									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>
+									<a className='select-column__category'>
 										Animals
 									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>
+									<a className='select-column__category'>
 										For business
 									</a>
 								</div>
 								<div className='select-column select-column_right w-25'>
-									<div className='select-colunm__title'>Categories</div>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Transport
+									<div className='select-column__title'>Categories</div>
+									<a className='select-column__category'>
+										Transport
 									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>The property
+									<a className='select-column__category'>
+										The property
 									</a>
-									<a
-										href=''
-										className='select-colunm__category '
-									>Job
+									<a className='select-column__category '>
+										Job
 									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>The services
+									<a className='select-column__category'>
+										The services
 									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Personal things
+									<a className='select-column__category'>
+										Personal things
 									</a>
-									<a
-										href=''
-										className='select-colunm__category select-colunm__category_active'
-									>For home and
-										cottages
+									<a className='select-column__category select-column__category--active'>
+										For home and cottages
 									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Consumer electronics
+									<a className='select-column__category'>
+										Consumer electronics
 									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Hobbies and Recreation
+									<a className='select-column__category'>
+										Hobbies and Recreation
 									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Animals
+									<a className='select-column__category'>
+										Animals
 									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>For business
+									<a className='select-column__category'>
+										For business
 									</a>
 								</div>
 								<div className='select-column select-column_right w-25'>
-									<div className='select-colunm__title'>Categories</div>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Transport
+									<div className='select-column__title'>Categories</div>
+									<a className='select-column__category'>
+										Transport
 									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>The property
+									<a className='select-column__category'>
+										The property
 									</a>
-									<a
-										href=''
-										className='select-colunm__category '
-									>Job
+									<a className='select-column__category'>
+										Job
 									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>The services
+									<a className='select-column__category'>
+										The services
 									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Personal things
+									<a className='select-column__category'>
+										Personal things
 									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>For home and cottages
+									<a className='select-column__category'>
+										For home and cottages
 									</a>
-									<a
-										href=''
-										className='select-colunm__category select-colunm__category_active'
-									>Consumer
-										electronics
+									<a className='select-column__category select-column__category--active'>
+										Consumer electronics
 									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Hobbies and Recreation
+									<a className='select-column__category'>
+										Hobbies and Recreation
 									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Animals
+									<a className='select-column__category'>
+										Animals
 									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>For business
+									<a className='select-column__category'>
+										For business
 									</a>
 								</div>
 								<div className='select-column select-column_right w-25'>
-									<div className='select-colunm__title'>Categories</div>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Transport
+									<div className='select-column__title'>Categories</div>
+									<a className='select-column__category'>
+										Transport
 									</a>
-									<a
-										href=''
-										className='select-colunm__category select-colunm__category_active'
-									>The property
+									<a className='select-column__category select-column__category--active'>
+										The property
 									</a>
-									<a
-										href=''
-										className='select-colunm__category '
-									>Job
+									<a className='select-column__category '>
+										Job
 									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>The services
+									<a className='select-column__category'>
+										The services
 									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Personal things
+									<a className='select-column__category'>
+										Personal things
 									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>For home and cottages
+									<a className='select-column__category'>
+										For home and cottages
 									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Consumer electronics
+									<a className='select-column__category'>
+										Consumer electronics
 									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Hobbies and Recreation
+									<a className='select-column__category'>
+										Hobbies and Recreation
 									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Animals
+									<a className='select-column__category'>
+										Animals
 									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>For business
+									<a className='select-column__category'>
+										For business
 									</a>
 								</div>
 
@@ -431,11 +339,10 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 							<h3 className='selected-category__title'>Select category</h3>
 							<div className='breadcrumbs category-breadcrumbs'>
 								<ol className='breadcrumb breadcrumb__inner'>
-									<li className='breadcrumb-item breadcrumbs__item'><a href='#'> All listings in
-										Berlin</a></li>
+									<li className='breadcrumb-item breadcrumbs__item'><a href='#'> All listings in Berlin</a></li>
 									<li className='breadcrumb-item breadcrumbs__item'><a href='#'>Real estate</a></li>
-									<li className='breadcrumb-item breadcrumbs__item'><a href=''>Apartments</a></li>
-									<li className='breadcrumb-item breadcrumbs__item'><a href=''>Sell 3 839</a></li>
+									<li className='breadcrumb-item breadcrumbs__item'><a>Apartments</a></li>
+									<li className='breadcrumb-item breadcrumbs__item'><a>Sell 3 839</a></li>
 								</ol>
 							</div>
 						</div>
@@ -462,7 +369,7 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 							onChange={this.onChange}
 							inputClass={'form-control col-md-3'}
 						/>
-						<div className='offer-form__item form-group row no-gutters align-items-center'>
+						<div className='offer-form__item form-group row align-items-center'>
 							<label
 								htmlFor=''
 								className='col-md-4 offer-form__label'

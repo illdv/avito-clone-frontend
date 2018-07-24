@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { ICategory } from 'client/ssr/blocks/categories/interface';
+import {ICategory} from 'client/ssr/blocks/categories/interface';
 
 interface IFootCategory {
-	subcategories: ICategory[]
+	subcategories: ICategory[];
 }
 
-const FootSubCategories: React.SFC<IFootCategory> = ({ subcategories }) => {
+const FootSubCategories: React.SFC<IFootCategory> = ({subcategories}) => {
 	const subcategoryList = subcategories.map(subcategory => (
 		<li key={subcategory.title}>
 			<a href={`/category/${encodeURI(subcategory.title)}`}>
@@ -15,8 +15,8 @@ const FootSubCategories: React.SFC<IFootCategory> = ({ subcategories }) => {
 	));
 
 	return (
-		<ul className='list-unstyled top-footer__categories-list'>
-			{ subcategories ? subcategoryList : null }
+		<ul className='list-unstyled m-b-0'>
+			{subcategories ? subcategoryList : null}
 		</ul>
 	);
 };

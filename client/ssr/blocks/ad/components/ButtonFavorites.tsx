@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { AdsAPI } from 'api/AdsAPI';
-import { IFavorites, IFavoriteState } from 'client/ssr/blocks/ad/interface';
-import { CustomStorage } from 'client/common/user/CustomStorage'
-import { Simulate } from 'react-dom/test-utils'
+import React, {Component} from 'react';
+import {AdsAPI} from 'api/AdsAPI';
+import {IFavorites, IFavoriteState} from 'client/ssr/blocks/ad/interface';
+import {CustomStorage} from 'client/common/user/CustomStorage'
+import {Simulate} from 'react-dom/test-utils'
 import index from 'pages'
 
 class ButtonFavorites extends Component <IFavorites, IFavoriteState> {
@@ -26,7 +26,7 @@ class ButtonFavorites extends Component <IFavorites, IFavoriteState> {
 			}
 			CustomStorage.setItem('favorites_ids', JSON.stringify(newData));
 			return;
-	};
+	}
 
 	// formText = () => {
 	// 	return this.state.is_favorite ? 'Remove from favorites' : 'Add to favourites';
@@ -36,12 +36,12 @@ class ButtonFavorites extends Component <IFavorites, IFavoriteState> {
 		return (
 			<React.Fragment>
 				<button
-					className='btn orange-btn-outline m-t-10 d-block no-b-r'
+					className='btn orange-btn-outline m-t-10 d-block'
 					onClick={this.switchFavorite}
 				>Add to favourites
 				</button>
 			</React.Fragment>
-		)
+		);
 	}
 
 }

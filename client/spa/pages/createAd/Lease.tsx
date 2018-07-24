@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 export interface IProps {
 	onSelectPlace: (name: string, id: string, location: any) => void;
@@ -20,7 +20,7 @@ class Lease extends Component<IProps> {
 
 			const lazyScript = window.document.createElement('script');
 			lazyScript.async = true;
-			lazyScript.src   = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDG6zD5QGwF1c8B3vRrtHghVm0WI
+			lazyScript.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDG6zD5QGwF1c8B3vRrtHghVm0WI
 			-poEjA&language=en&libraries=places&callback=initAutocomplete`;
 
 			window.document.body.appendChild(lazyScript);
@@ -31,10 +31,10 @@ class Lease extends Component<IProps> {
 
 	// Фунуция collback
 	initAutocomplete() {
-		const { lat, lng } = this.props.defaultValue;
-		const google       = window.google;
-		const map          = new google.maps.Map(this.map, {
-			center: { lat, lng },
+		const {lat, lng} = this.props.defaultValue;
+		const google = window.google;
+		const map = new google.maps.Map(this.map, {
+			center: {lat, lng},
 			zoom: 17,
 			mapTypeId: 'roadmap',
 		});
@@ -106,7 +106,7 @@ class Lease extends Component<IProps> {
 
 	render() {
 		return (
-			<div className='offer-form__item form-group row no-gutters align-items-center'>
+			<div className='offer-form__item form-group row align-items-center'>
 				<label
 					htmlFor=''
 					className='col-md-4 offer-form__label'
@@ -123,13 +123,13 @@ class Lease extends Component<IProps> {
 				</div>
 				<div className='map justify-content-end col-md-6 offset-md-4 text-right'>
 					<div
-						style={{ width: 500, height: 500 }}
+						style={{width: 500, height: 500}}
 						ref={el => this.map = el}
 						className='map__location-irame'
 					/>
 					<button
 						type='submit'
-						className='btn button button_bright w-25'
+						className='btn orange-btn w-25'
 						onClick={this.props.onNext}
 					>
 						Continue

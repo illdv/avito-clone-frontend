@@ -28,7 +28,7 @@ class LanguageDropdown extends Component<LanguageDropdownProps, LanguageDropdown
     render() {
         return (
             <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle} className='nav-item'>
-                <DropdownToggle caret className="language p-x-40">
+                <DropdownToggle caret className='language'>
                     English
                 </DropdownToggle>
                 <DropdownMenu>
