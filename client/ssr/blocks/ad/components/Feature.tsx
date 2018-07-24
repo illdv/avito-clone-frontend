@@ -26,7 +26,8 @@ function formationOptions(option) {
 
 	return (
 		<li key={option.id}>
-			<span className='grey-text'>{key}:</span> {option.pivot.value}
+			<span className='grey-text'>
+				{key.charAt(0).toUpperCase() + key.substr(1)}:</span> {option.pivot.value}
 		</li>
 	);
 }

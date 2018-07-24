@@ -5,7 +5,7 @@ import SliderImages from './components/SliderImages';
 import Seller from './components/Seller';
 import Chart from './components/Chart';
 import NumberFormat from 'react-number-format';
-import {IAdsProps, IAdsState, ICrumb} from 'client/ssr/blocks/ad/interface';
+import {IAdsProps, IAdsState, ICrumb, IImage} from 'client/ssr/blocks/ad/interface';
 import Feature from 'client/ssr/blocks/ad/components/Feature';
 import Description from 'client/ssr/blocks/ad/components/Description';
 import Link from 'next/link';
@@ -13,28 +13,28 @@ import ButtonFavorites from 'client/ssr/blocks/ad/components/ButtonFavorites';
 
 require('./Ad.sass');
 
-const images = [
-	{
-		original: '/static/img/ads/ads.png',
-		thumbnail: '/static/img/ads/ads.png',
-	},
-	{
-		original: '/static/img/ads/ads.png',
-		thumbnail: '/static/img/ads/ads.png',
-	},
-	{
-		original: '/static/img/ads/ads.png',
-		thumbnail: '/static/img/ads/ads.png',
-	},
-	{
-		original: '/static/img/ads/ads.png',
-		thumbnail: '/static/img/ads/ads.png',
-	},
-	{
-		original: '/static/img/ads/ads.png',
-		thumbnail: '/static/img/ads/ads.png',
-	},
-];
+// const images = [
+// 	{
+// 		original: '/static/img/ads/ads.png',
+// 		thumbnail: '/static/img/ads/ads.png',
+// 	},
+// 	{
+// 		original: '/static/img/ads/ads.png',
+// 		thumbnail: '/static/img/ads/ads.png',
+// 	},
+// 	{
+// 		original: '/static/img/ads/ads.png',
+// 		thumbnail: '/static/img/ads/ads.png',
+// 	},
+// 	{
+// 		original: '/static/img/ads/ads.png',
+// 		thumbnail: '/static/img/ads/ads.png',
+// 	},
+// 	{
+// 		original: '/static/img/ads/ads.png',
+// 		thumbnail: '/static/img/ads/ads.png',
+// 	},
+// ];
 
 const user = {
 	name: 'Andrey Beregovoi',
@@ -75,33 +75,47 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 				}
 			}
 		}, false);
-	};
+	}
+	formationImages = (images):IImage[] => {
+		return images.map(image => {
+			return {
+				original: image.file_url,
+				thumbnail: image.file_url,
+
+			};
+		});
+	}
 
 	constructor(props) {
 		super(props);
 
 		const queue = this.recurseGetAdCategories(this.props.categories, this.props.ad.category_id);
 		const queueCrumbs = this.formatCategoriesToCrumbs(queue);
+		const slider = this.formationImages(this.props.ad.images);
 
 		const crumbs: ICrumb[] = [].concat(this.firstCrumbs, queueCrumbs, this.lastCrumbItem);
+		const images: IImage[] = [].concat(slider);
 
 		this.state = {
 			crumbs,
 			lastCrumb: queueCrumbs[queueCrumbs.length - 1],
+			images,
 		};
 	}
 
 	get firstCrumbs(): ICrumb {
 		return {
 			title: 'All listings in ' + this.props.ad.city.title,
+			// title: 'All listings in ' + 'Moscow',
 			href: encodeURI('/' + this.props.ad.city.title),
+			// href: encodeURI('/' + 'moscow'),
 		};
 	}
 
 	get lastCrumbItem(): ICrumb {
 		return {
-			title: this.props.ad.id,
-			href: encodeURI('/' + this.props.ad.id),
+			title: this.props.ad.title,
+			href: encodeURI('/' + this.props.ad.title.toLowerCase()),
 		};
 	}
 
@@ -155,8 +169,8 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 							</div>
 						</div>
 						<div className='row p-y-20'>
-							<SliderImages images={images}/>
-							<Feature options={this.props.ad.options}/>
+							<SliderImages images={this.state.images}/>
+							<Feature options={this.props.ad.options} />
 						</div>
 						<div className='row'>
 							<Seller
