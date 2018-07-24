@@ -1,15 +1,15 @@
 import * as React from 'react';
-import { Component } from 'react';
-import { connect, Dispatch } from 'react-redux';
+import {Component} from 'react';
+import {connect, Dispatch} from 'react-redux';
 
-import { IRootState } from 'client/common/store/storeInterface';
-import { IUserState } from 'client/common/user/reducer';
+import {IRootState} from 'client/common/store/storeInterface';
+import {IUserState} from 'client/common/user/reducer';
 import Lease from 'client/spa/pages/createAd/Lease';
-import { IAds } from 'client/common/ads/interface';
+import {IAds} from 'client/common/ads/interface';
 import CategoriesSelector from 'client/spa/pages/createAd/CategoriesSelector';
-import { ICategory } from 'client/common/categories/interface';
-import { Images, ImageSelector } from 'client/spa/pages/createAd/ImageSelector';
-import { useOrDefault } from 'client/spa/pages/createAd/utils';
+import {ICategory} from 'client/common/categories/interface';
+import {Images, ImageSelector} from 'client/spa/pages/createAd/ImageSelector';
+import {useOrDefault} from 'client/spa/pages/createAd/utils';
 
 export interface IAdsDataForCreate {
 	id: string;
@@ -47,38 +47,42 @@ interface IPropsForInput {
 	onChange: (event) => void;
 }
 
-const Input = ({ id, title, onChange, inputClass, defaultValue }: IPropsForInput) => (
+const Input = ({id, title, onChange, inputClass, defaultValue}: IPropsForInput) => (
 	<div className='offer-form__item form-group row align-items-center'>
 		<label
 			htmlFor={id}
-			className='col-md-4 offer-form__label'
+			className='col-md-3 col-lg-4 offer-form__label'
 		>
 			{title}
 		</label>
-		<input
-			defaultValue={defaultValue}
-			onChange={onChange}
-			id={id}
-			type='text'
-			className={inputClass}
-		/>
+		<div className={inputClass}>
+			<input
+				defaultValue={defaultValue}
+				onChange={onChange}
+				id={id}
+				type='text'
+				className='form-control'
+			/>
+		</div>
 	</div>
 );
 
-const TextArea = ({ id, title, onChange, inputClass, defaultValue }: IPropsForInput) => (
+const TextArea = ({id, title, onChange, inputClass, defaultValue}: IPropsForInput) => (
 	<div className='offer-form__item form-group row align-items-center'>
 		<label
 			htmlFor={id}
-			className='col-md-4 offer-form__label'
+			className='col-md-3 col-lg-4 offer-form__label'
 		>
 			{title}
 		</label>
-		<textarea
-			id={id}
-			onChange={onChange}
-			className={inputClass}
-			defaultValue={defaultValue}
-		/>
+		<div className={inputClass}>
+			<textarea
+				id={id}
+				onChange={onChange}
+				className='form-control'
+				defaultValue={defaultValue}
+			/>
+		</div>
 	</div>
 );
 
@@ -102,7 +106,7 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 
 	static getDerivedStateFromProps(nextProps: IProps, prevState: IAdsDataForCreate): IAdsDataForCreate {
 
-		const { id, price, description, title, latitude, longitude, category_id, phone } = nextProps.data;
+		const {id, price, description, title, latitude, longitude, category_id, phone} = nextProps.data;
 		if (id !== prevState.id) {
 			return {
 				id,
@@ -124,9 +128,9 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 	}
 
 	onChangeFields = event => {
-		const { id, value } = event.target;
+		const {id, value} = event.target;
 		this.setState({
-			fields: { ...this.state.fields, [id]: value },
+			fields: {...this.state.fields, [id]: value},
 		});
 	}
 
@@ -150,13 +154,13 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 	}
 
 	onSelectCategory = (selectedCategory: ICategory[]) => {
-		this.setState({ selectedCategory });
+		this.setState({selectedCategory});
 	}
 
 	render() {
-		const { email, name }                      = this.props.user.user;
-		const { phone, description, price, title } = this.state.fields;
-		const { lng, lat, selectedCategory }       = this.state;
+		const {email, name} = this.props.user.user;
+		const {phone, description, price, title} = this.state.fields;
+		const {lng, lat, selectedCategory} = this.state;
 		return (
 			<section className='page'>
 				<div className='container page__container-sm'>
@@ -175,12 +179,14 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 										>
 											Full name
 										</label>
-										<input
-											readOnly
-											value={name}
-											type='text'
-											className='form-control col-md-6'
-										/>
+										<div className='col-md-6'>
+											<input
+												readOnly
+												value={name}
+												type='text'
+												className='form-control'
+											/>
+										</div>
 									</div>
 									<div className='form-group row align-items-center'>
 										<label
@@ -189,12 +195,14 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 										>
 											Email
 										</label>
-										<input
-											readOnly
-											value={email}
-											type='email'
-											className='form-control col-md-6'
-										/>
+										<div className='col-md-6'>
+											<input
+												readOnly
+												value={email}
+												type='email'
+												className='form-control'
+											/>
+										</div>
 									</div>
 									<div className='form-group row align-items-center'>
 										<label
@@ -203,13 +211,15 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 										>
 											Phone
 										</label>
-										<input
-											id='phone'
-											type='tel'
-											className='form-control col-md-6'
-											defaultValue={phone}
-											onChange={this.onChangeFields}
-										/>
+										<div className='col-md-6'>
+											<input
+												id='phone'
+												type='tel'
+												className='form-control'
+												defaultValue={phone}
+												onChange={this.onChangeFields}
+											/>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -220,7 +230,7 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 							<h3>Select category</h3>
 						</div>
 						<div className='col-lg-12'>
-							<CategoriesSelector onSelectCategory={this.onSelectCategory} />
+							<CategoriesSelector onSelectCategory={this.onSelectCategory}/>
 						</div>
 					</div>
 					<div className='row'>
@@ -228,7 +238,7 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 							<h3 className='selected-category__title'>Select category</h3>
 							<div
 								className='breadcrumbs category-breadcrumbs'
-								style={{ width: '100%' }}
+								style={{width: '100%'}}
 							>
 								<ol className='breadcrumb breadcrumb__inner'>
 									{selectedCategory.map(category => (
@@ -247,35 +257,37 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 							id={'title'}
 							title={'Ad title'}
 							onChange={this.onChangeFields}
-							inputClass={'form-control col-md-6'}
+							inputClass={'col-md-9 col-lg-6'}
 						/>
 						<TextArea
 							defaultValue={description}
 							id={'description'}
 							title={'Advertisement description'}
 							onChange={this.onChangeFields}
-							inputClass={'form-control col-md-6'}
+							inputClass={'col-md-9 col-lg-6'}
 						/>
 						<Input
 							defaultValue={price}
 							id={'price'}
 							title={'Price'}
 							onChange={this.onChangeFields}
-							inputClass={'form-control col-md-3'}
+							inputClass={'col-md-3'}
 						/>
 						<div className='offer-form__item form-group row align-items-center'>
 							<label
 								htmlFor=''
-								className='col-md-4 offer-form__label'
+								className='col-md-3 col-lg-4 offer-form__label'
 							>
 								Photo
 							</label>
-							<ImageSelector onUpdateImage={this.onUpdateImage} />
+							<div className='col-md-9 col-lg-6'>
+								<ImageSelector onUpdateImage={this.onUpdateImage}/>
+							</div>
 						</div>
 						<Lease
 							onSelectPlace={this.onSelectPlace}
 							onNext={this.onNext}
-							defaultValue={{ lat, lng }}
+							defaultValue={{lat, lng}}
 						/>
 					</div>
 				</div>

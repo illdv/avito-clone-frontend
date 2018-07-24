@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Component } from 'react';
-import { connect, Dispatch } from 'react-redux';
-import { removeElementByIndex } from 'client/spa/pages/createAd/utils';
+import {Component} from 'react';
+import {connect, Dispatch} from 'react-redux';
+import {removeElementByIndex} from 'client/spa/pages/createAd/utils';
 
 export interface Images {
 	blob: string;
@@ -27,13 +27,13 @@ export class ImageSelector extends Component<IProps, IState> {
 		this.setState({
 			images: newImages,
 		});
-	}
+	};
 
 	/**
 	 * Use for loading image and add in state.
 	 * @param {any} target
 	 */
-	onAddImage = ({ target }) => {
+	onAddImage = ({target}) => {
 		const files = Object.values(target.files);
 		files.forEach((file: any) => {
 			const reader = new FileReader();
@@ -41,11 +41,11 @@ export class ImageSelector extends Component<IProps, IState> {
 			reader.onload = e => {
 				this.onUpdateImage([
 					...this.state.images,
-					{ blob: e.target.result },
+					{blob: e.target.result},
 				]);
 			};
 		});
-	}
+	};
 
 	/**
 	 * Need for reset last images
@@ -53,15 +53,15 @@ export class ImageSelector extends Component<IProps, IState> {
 	 */
 	onClickAddImage = event => {
 		event.target.value = null;
-	}
+	};
 
 	deleteImage = (index: number) => () => {
 		const newFiles = removeElementByIndex(this.state.images, index);
 		this.onUpdateImage(newFiles);
-	}
+	};
 
 	render() {
-		const { images } = this.state;
+		const {images} = this.state;
 		return (
 			<>
 				<div className='offer-form-upload'>
@@ -73,15 +73,17 @@ export class ImageSelector extends Component<IProps, IState> {
 						onClick={this.onClickAddImage}
 					/>
 				</div>
-				{
-					images.map((image, index) => (
-						<Image
-							key={index}
-							url={image.blob}
-							onClose={this.deleteImage(index)}
-						/>
-					))
-				}
+				<div className='uploaded-images'>
+					{
+						images.map((image, index) => (
+							<Image
+								key={index}
+								url={image.blob}
+								onClose={this.deleteImage(index)}
+							/>
+						))
+					}
+				</div>
 			</>
 		);
 	}
@@ -92,21 +94,16 @@ interface ImageProps {
 	onClose: () => void;
 }
 
-const Image = ({ url, onClose }: ImageProps) => (
-	<div style={{ position: 'relative' }}>
+const Image = ({url, onClose}: ImageProps) => (
+	<div className='uploaded-img__container'>
 		<span
-			style={{
-				position: 'absolute',
-				top: 2,
-				right: 2,
-				zIndex: 100,
-			}}
-			className='close'
+			className='uploaded-img__remove'
 			onClick={onClose}
-		> &times;
+		>
+			&times;
 		</span>
 		<img
-			style={{ width: 150, paddingLeft: 10 }}
+			className='uploaded-img'
 			src={url}
 		/>
 	</div>

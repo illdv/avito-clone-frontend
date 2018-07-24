@@ -108,11 +108,11 @@ class Lease extends Component<IProps> {
 			<div className='offer-form__item form-group row align-items-center'>
 				<label
 					htmlFor=''
-					className='col-md-4 offer-form__label'
+					className='col-md-3 col-lg-4 offer-form__label'
 				>
 					Place of inspection
 				</label>
-				<div className='col-md-6'>
+				<div className='col-md-9 col-lg-6'>
 					<input
 						id='place'
 						type='text'
@@ -120,9 +120,8 @@ class Lease extends Component<IProps> {
 						ref={el => this.searchBox = el}
 					/>
 				</div>
-				<div className='map justify-content-end col-md-6 offset-md-4 text-right'>
+				<div className='map justify-content-end col-md-9 offset-md-3 col-lg-6 offset-lg-4 text-right'>
 					<div
-						style={{width: 500, height: 500}}
 						ref={el => this.map = el}
 						className='map__location-irame'
 					/>
