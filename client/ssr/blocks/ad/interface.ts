@@ -16,7 +16,7 @@ export interface IAd {
 	total_visits: string;
 	today_visits: string;
 	is_favorite: boolean;
-	images: IImage;
+	images: any[];
 	body: string;
 	description: string;
 	price: string;
@@ -41,6 +41,16 @@ export interface IAdsProps {
 export interface IAdsState {
 	crumbs: ICrumb[];
 	lastCrumb: ICrumb;
+	images: IImage[];
+}
+
+export interface ISliderProps {
+	images: IImage[];
+}
+
+export interface IImage {
+	original: string;
+	thumbnail: string;
 }
 
 export interface ISeller {
@@ -56,9 +66,6 @@ export interface ISellerProps {
 
 }
 
-export interface IImage {
-	images: object;
-}
 
 export interface IVehicleFeature {
 	options: object;
@@ -85,7 +92,6 @@ export interface IChart {
 
 export interface IFavorites {
 	id: string;
-	is_favorite: boolean;
 }
 
 export interface IFavoriteState {

@@ -7,7 +7,6 @@ import { ISellerProps } from 'client/ssr/blocks/ad/interface'
 
 require('./SellerModal.sass');
 
-
 class SellerModal extends Component<ISellerProps> {
 	render() {
 		return (
