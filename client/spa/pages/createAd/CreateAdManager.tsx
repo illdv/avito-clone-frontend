@@ -8,8 +8,9 @@ import CreateAd, { IAdsDataForCreate } from 'client/spa/pages/createAd/CreateAd'
 import { bindModuleAction } from 'client/common/user/utils';
 import { AdsActions, IAdsActions } from 'client/common/ads/actions';
 import { IAdsState } from 'client/ssr/blocks/ad/interface';
-import { IAds } from 'client/common/ads/interface'
-import { generateId } from 'client/spa/pages/utils'
+import { IAds } from 'client/common/ads/interface';
+import { generateId } from 'client/spa/pages/utils';
+import { IUserState } from 'client/common/user/reducer'
 
 export interface IState {
 	data: IAdsDataForCreate;
@@ -18,10 +19,12 @@ export interface IState {
 export interface IProps {
 	adsActions: IAdsActions;
 	ads: IAdsState;
+	user: IUserState;
 }
 
 const mapStateToProps = (state: IRootState) => ({
 	ads: state.ads,
+	user: state.user,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -47,8 +50,8 @@ class CreateAdManager extends Component<IProps, IState> {
 	}
 
 	onCreate = () => {
-		const { cityId, lat, lng, locationName } = this.state.data;
-		const { description, price, title }      = this.state.data.fields;
+		const { lat, lng, categoryId }             = this.state.data;
+		const { description, price, title, phone } = this.state.data.fields;
 		this.props.adsActions.create.REQUEST({
 			title,
 			description,
@@ -57,10 +60,11 @@ class CreateAdManager extends Component<IProps, IState> {
 			body: '123213',
 			is_published: 0,
 			is_vip: 0,
-			category_id: 1,
+			category_id: categoryId,
 			type_id: 1,
 			longitude: lng,
 			latitude: lat,
+			phone,
 		});
 	}
 
@@ -76,6 +80,8 @@ class CreateAdManager extends Component<IProps, IState> {
 			);
 		}
 
+		const { phone } = this.props.user.user;
+
 		const ad: IAds = {
 			id: generateId(),
 			title: '',
@@ -85,10 +91,11 @@ class CreateAdManager extends Component<IProps, IState> {
 			body: '123213',
 			is_published: 1,
 			is_vip: 0,
-			category_id: 1,
+			category_id: '1',
 			type_id: 1,
 			longitude: 55.75222,
 			latitude: 37.61140,
+			phone,
 		};
 
 		return (

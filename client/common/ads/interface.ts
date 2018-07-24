@@ -10,7 +10,7 @@ export interface IType {
 export interface IAds {
 	id: string;
 	type_id: number;
-	category_id: number;
+	category_id: string;
 	title: string;
 	description: string;
 	body: string;
@@ -28,6 +28,7 @@ export interface IAds {
 	options?: any[];
 	latitude?: number;
 	longitude?: number;
+	phone?: string;
 }
 
 export interface ICreateAdRequest {
@@ -39,7 +40,8 @@ export interface ICreateAdRequest {
 	price: number;
 	longitude: number;
 	latitude: number;
-	category_id: number;
+	category_id: string;
 	is_published: number;
 	is_vip: number;
+	phone: string;
 }

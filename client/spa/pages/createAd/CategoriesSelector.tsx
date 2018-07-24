@@ -16,7 +16,7 @@ export interface IState {
 export interface IProps {
 	categoryActions: ICategoryActions;
 	categories: ICategoryState;
-	onClickCategory: () => void;
+	onSelectCategory: (selectedCategory: ICategory[]) => void;
 }
 
 const mapStateToProps = (state: IRootState) => ({
@@ -45,12 +45,14 @@ export class CategoriesSelector extends Component<IProps, IState> {
 			selectedCategory = selectedCategory.slice(0, repeatedCategoryIndex);
 		}
 
-		this.setState({
-			selectedCategory: [
-				...selectedCategory,
-				selectCategory,
-			],
-		});
+		const newSelectedCategory = [
+			...selectedCategory,
+			selectCategory,
+		];
+
+		this.props.onSelectCategory(newSelectedCategory);
+
+		this.setState({ selectedCategory: newSelectedCategory });
 	}
 
 	toItem = (category: ICategory): ICategoryListItem => {

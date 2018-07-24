@@ -7,6 +7,8 @@ import { IUserState } from 'client/common/user/reducer';
 import Lease from 'client/spa/pages/createAd/Lease';
 import { IAds } from 'client/common/ads/interface';
 import CategoriesSelector from 'client/spa/pages/createAd/CategoriesSelector';
+import { ICategory } from 'client/common/categories/interface';
+import { useOrDefault } from 'client/spa/pages/createAd/utils';
 
 export interface IAdsDataForCreate {
 	id: string;
@@ -17,9 +19,11 @@ export interface IAdsDataForCreate {
 		phone: string;
 	};
 	cityId: string;
+	categoryId: string;
 	lat: number;
 	lng: number;
 	locationName: string;
+	selectedCategory: ICategory[];
 }
 
 export interface IProps {
@@ -91,6 +95,8 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 		locationName: '',
 		lat: 0,
 		lng: 0,
+		categoryId: '',
+		selectedCategory: [],
 	};
 
 	onChange = event => {
@@ -113,9 +119,14 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 		this.props.onNext(this.state);
 	}
 
+	onSelectCategory = (selectedCategory: ICategory[]) => {
+		const categoryId = useOrDefault(() => selectedCategory[0].id, '');
+		this.setState({ selectedCategory, categoryId });
+	}
+
 	static getDerivedStateFromProps(nextProps: IProps, prevState: IAdsDataForCreate): IAdsDataForCreate {
 
-		const { id, price, description, title, latitude, longitude } = nextProps.data;
+		const { id, price, description, title, latitude, longitude, category_id, phone } = nextProps.data;
 		if (id !== prevState.id) {
 			return {
 				id,
@@ -123,12 +134,14 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 					title,
 					price,
 					description,
-					phone: '',
+					phone,
 				},
 				cityId: '',
 				lat: latitude,
 				lng: longitude,
 				locationName: '',
+				categoryId: category_id,
+				selectedCategory: [],
 			};
 		}
 		return null;
@@ -137,7 +150,7 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 	render() {
 		const { email, name }                      = this.props.user.user;
 		const { phone, description, price, title } = this.state.fields;
-		const { lng, lat }                         = this.state;
+		const { lng, lat, selectedCategory }       = this.state;
 		return (
 			<section className='page'>
 				<div className='container page__container-sm'>
@@ -201,19 +214,23 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 							<h3>Select category</h3>
 						</div>
 						<div className='col-lg-12'>
-							<CategoriesSelector />
+							<CategoriesSelector onSelectCategory={this.onSelectCategory} />
 						</div>
 					</div>
 					<div className='row'>
 						<div className='col-lg-9 selected-category'>
 							<h3 className='selected-category__title'>Select category</h3>
-							<div className='breadcrumbs category-breadcrumbs'>
+							<div
+								className='breadcrumbs category-breadcrumbs'
+								style={{ width: '100%' }}
+							>
 								<ol className='breadcrumb breadcrumb__inner'>
-									<li className='breadcrumb-item breadcrumbs__item'><a href='#'> All listings in
-										Berlin</a></li>
-									<li className='breadcrumb-item breadcrumbs__item'><a href='#'>Real estate</a></li>
-									<li className='breadcrumb-item breadcrumbs__item'><a href=''>Apartments</a></li>
-									<li className='breadcrumb-item breadcrumbs__item'><a href=''>Sell 3 839</a></li>
+									{selectedCategory.map(category => (
+										<li className='breadcrumb-item breadcrumbs__item'>
+											<a href=''>{category.title}</a>
+										</li>
+									))}
+
 								</ol>
 							</div>
 						</div>
