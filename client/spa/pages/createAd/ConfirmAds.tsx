@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Component } from 'react';
-import { connect, Dispatch } from 'react-redux';
-import { IRootState } from 'client/common/store/storeInterface';
-import { IAdsDataForCreate } from 'client/spa/pages/createAd/CreateAd';
-import { IUserState } from 'client/common/user/reducer';
+import {Component} from 'react';
+import {connect, Dispatch} from 'react-redux';
+import {IRootState} from 'client/common/store/storeInterface';
+import {IAdsDataForCreate} from 'client/spa/pages/createAd/CreateAd';
+import {IUserState} from 'client/common/user/reducer';
 
 export interface IProps {
 	data: IAdsDataForCreate;
@@ -30,9 +30,9 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 class ConfirmAds extends Component<IProps, IState> {
 
 	render() {
-		const { selectedCategory, locationName }   = this.props.data;
-		const { description, price, title, phone } = this.props.data.fields;
-		const { email }                            = this.props.user.user;
+		const {selectedCategory, locationName} = this.props.data;
+		const {description, price, title, phone} = this.props.data.fields;
+		const {email} = this.props.user.user;
 
 		const category = selectedCategory.map(item => item.title).join('/');
 
@@ -160,7 +160,7 @@ class ConfirmAds extends Component<IProps, IState> {
 									onClick={this.props.onBack}
 									className='btn grey-btn-outline button_confirm'
 								>
-									<i className='fa fa-arrow-left' />
+									<i className='fa fa-arrow-left'/>
 									Back
 								</a>
 								<a
