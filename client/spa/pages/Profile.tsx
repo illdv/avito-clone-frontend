@@ -63,7 +63,7 @@ export class Profile extends Component<IProps, IState> {
 			body: '---',
 			is_published: 0,
 			is_vip: 0,
-			category_id: 1,
+			category_id: '1',
 			type_id: 1,
 			longitude: lng,
 			latitude: lat,

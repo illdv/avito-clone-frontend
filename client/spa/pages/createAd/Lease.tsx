@@ -16,7 +16,6 @@ class Lease extends Component<IProps> {
 
 		// Если window имеется, значит это не сервер, и мы можем "лениво" загрузить скрипт google map
 		if (window !== void 0) {
-			console.log('CLIENT SCRIPT');
 
 			const lazyScript = window.document.createElement('script');
 			lazyScript.async = true;

@@ -49,13 +49,6 @@ export interface ISeller {
 	created_at: string;
 }
 
-export interface ISellerProps {
-	seller: ISeller;
-	city: string;
-	country: string;
-
-}
-
 export interface IImage {
 	images: object;
 }

@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { ICategory } from 'client/ssr/blocks/categories/interface';
+import { ICategory } from 'client/common/categories/interface'
 
 interface IFootCategory {
-	subcategories: ICategory[]
+	subcategories: ICategory[];
 }
 
 const FootSubCategories: React.SFC<IFootCategory> = ({ subcategories }) => {
