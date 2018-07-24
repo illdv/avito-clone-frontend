@@ -2,22 +2,27 @@ import * as React from 'react';
 import { IAds } from 'client/common/ads/interface';
 
 interface IFavoritesItem {
-	item: IAds
+	item: IAds;
+	onCheck: any;
+	checked: boolean;
 }
 
-const FavoritesItem: React.SFC<IFavoritesItem> = ({ item }) => {
+const FavoritesItem: React.SFC<IFavoritesItem> = ({ item, onCheck, checked }) => {
+	const handleCheck = e => onCheck(item.id, e.target.checked);
 	return (
 		<div className="favourites-offer-block__item">
 			<input
 				type="checkbox"
 				className="favorites-page__input"
+				onChange={handleCheck}
+				checked={checked}
 			/>
 			<div className="favourites-offer-block__inner">
 				<div className="row no-gutters">
 					<div className="col-md-3 col-lg-3">
 						<img
 							//TODO: add image
-							src="./static/img/ads/ads3.png"
+							src="/static/img/ads/ads3.png"
 							alt=""
 							className="favourites-offer-block__img"
 						/>

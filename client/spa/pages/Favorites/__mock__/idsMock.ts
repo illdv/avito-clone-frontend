@@ -1,5 +1,5 @@
 export const adsMock = [{
-	id: 1,
+	id: '1',
 	category_id: 1,
 	type_id: 1,
 	title: 'House of 230 m²',
@@ -11,9 +11,12 @@ export const adsMock = [{
 		option_id: 1,
 		value: '45435',
 	},
-	price: 790000,
+	price: '790000',
+	body: '',
+	is_vip: 12,
+	city_id: 1,
 }, {
-	id: 2,
+	id: '2',
 	category_id: 2,
 	type_id: 2,
 	title: 'Tesla car',
@@ -25,5 +28,11 @@ export const adsMock = [{
 		option_id: 1,
 		value: '45435',
 	},
-	price: 50000,
+	price: '50000',
+	body: '',
+	is_vip: 12,
+	city_id: 1,
 }];
+
+
+

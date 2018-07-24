@@ -4,15 +4,9 @@ import FavoritesPage from 'client/spa/pages/Favorites/FavoritesPage';
 import { adsMock } from 'client/spa/pages/Favorites/__mock__/idsMock';
 
 interface IFavorites {
-	children: any;
-	actions: any;
 }
 
-const Favorites: React.SFC<IFavorites> = ({ children, actions }) => {
-	const onRequest = () => {
-		actions;
-	};
-
+const Favorites: React.SFC<IFavorites> = ({}) => {
 	return (
 		<section className="page">
 			<div className="container page__container-lg">

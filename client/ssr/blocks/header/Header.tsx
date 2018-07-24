@@ -11,7 +11,7 @@ import { IUserState } from 'client/common/user/reducer';
 import { IUserActions, UserActions } from 'client/common/user/actions';
 import { bindModuleAction } from 'client/common/user/utils';
 import { isServer } from 'client/common/utils/utils';
-import axios from 'axios'
+import axios from 'axios';
 import { CustomStorage } from 'client/common/user/CustomStorage';
 import ResetPasswordModal from 'client/ssr/modals/forgot-password/ResetPasswordModal';
 import SuccessModal from 'client/ssr/modals/success/SuccessModal';
@@ -69,29 +69,25 @@ class Header extends Component<IProps, IState> {
 				Login
 			</button>
 		);
-	}
+	};
 
 	onFavorites = () => {
-		const { user } = this.props.user;
+		return (
+			<Link href={`/favorites`}>
+				<a
+					href='#'
+					className='header__favourites p-x-40'
+				>
+					<img
+						src='/static/img/icons/like.svg'
+						alt=''
+					/>
+					<span>Favourites</span>
+				</a>
+			</Link>
+		);
 
-		if (user) {
-			return (
-				<Link href={`/favorites`}>
-					<a
-						href='#'
-						className='header__favourites p-x-40'
-					>
-						<img
-							src='/static/img/icons/like.svg'
-							alt=''
-						/>
-						<span>Favourites</span>
-					</a>
-				</Link>
-			);
-		}
-		return null
-	}
+	};
 
 	render() {
 		return (
