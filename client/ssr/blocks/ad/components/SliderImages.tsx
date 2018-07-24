@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import ImageGallery from 'react-image-gallery';
-import { IImage, IImageStateProps } from 'client/ssr/blocks/ad/interface'
+import {ISliderProps } from 'client/ssr/blocks/ad/interface'
 
-
-class SliderImages extends Component<IImage> {
+class SliderImages extends Component<ISliderProps> {
 	render() {
 		return (
 			<div className="col-lg-7">

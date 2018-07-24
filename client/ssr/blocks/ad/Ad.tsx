@@ -13,28 +13,28 @@ import ButtonFavorites from 'client/ssr/blocks/ad/components/ButtonFavorites';
 
 require('./Ad.sass');
 
-const images = [
-	{
-		original: '/static/img/ads/ads.png',
-		thumbnail: '/static/img/ads/ads.png',
-	},
-	{
-		original: '/static/img/ads/ads.png',
-		thumbnail: '/static/img/ads/ads.png',
-	},
-	{
-		original: '/static/img/ads/ads.png',
-		thumbnail: '/static/img/ads/ads.png',
-	},
-	{
-		original: '/static/img/ads/ads.png',
-		thumbnail: '/static/img/ads/ads.png',
-	},
-	{
-		original: '/static/img/ads/ads.png',
-		thumbnail: '/static/img/ads/ads.png',
-	},
-];
+// const images = [
+// 	{
+// 		original: '/static/img/ads/ads.png',
+// 		thumbnail: '/static/img/ads/ads.png',
+// 	},
+// 	{
+// 		original: '/static/img/ads/ads.png',
+// 		thumbnail: '/static/img/ads/ads.png',
+// 	},
+// 	{
+// 		original: '/static/img/ads/ads.png',
+// 		thumbnail: '/static/img/ads/ads.png',
+// 	},
+// 	{
+// 		original: '/static/img/ads/ads.png',
+// 		thumbnail: '/static/img/ads/ads.png',
+// 	},
+// 	{
+// 		original: '/static/img/ads/ads.png',
+// 		thumbnail: '/static/img/ads/ads.png',
+// 	},
+// ];
 
 const user = {
 	name: 'Andrey Beregovoi',
@@ -76,18 +76,30 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 			}
 		}, false);
 	}
+	formationImages = (images):IImage[] => {
+		return images.map(image => {
+			return {
+				original: image.file_url,
+				thumbnail: image.file_url,
+
+			};
+		});
+	}
 
 	constructor(props) {
 		super(props);
 
 		const queue       = this.recurseGetAdCategories(this.props.categories, this.props.ad.category_id);
 		const queueCrumbs = this.formatCategoriesToCrumbs(queue);
+		const slider = this.formationImages(this.props.ad.images);
 
 		const crumbs: ICrumb[] = [].concat(this.firstCrumbs, queueCrumbs, this.lastCrumbItem);
+		const images: IImage[] = [].concat(slider);
 
 		this.state = {
 			crumbs,
 			lastCrumb: queueCrumbs[queueCrumbs.length - 1],
+			images,
 		};
 	}
 
@@ -157,7 +169,7 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 							</div>
 						</div>
 						<div className='row p-y-20'>
-							{/*<SliderImages images={}/>*/}
+							<SliderImages images={this.state.images}/>
 							<Feature options={this.props.ad.options} />
 						</div>
 						<div className='row'>
