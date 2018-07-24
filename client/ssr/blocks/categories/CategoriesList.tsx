@@ -1,13 +1,13 @@
 import * as React from 'react';
 import CategoryCard from 'client/ssr/blocks/categories/CategoryCard';
-import { ICategories } from 'client/common/categories/interface'
+import {ICategories} from 'client/common/categories/interface';
 
 interface ICategoriesList {
 	categories: ICategories;
 }
 
-const CategoriesList: React.SFC<ICategoriesList> = ({ categories }) => {
-	const error        = <div> Category not redy on backend</div>;
+const CategoriesList: React.SFC<ICategoriesList> = ({categories}) => {
+	const error = <div> Category not redy on backend</div>;
 	const bottomButton = <div className='tile tile-categories'>
 		<div className='tile__inner'>
 			<div className='category text-left'>
@@ -18,8 +18,8 @@ const CategoriesList: React.SFC<ICategoriesList> = ({ categories }) => {
 				>
 					Select products
 					<span className='p-x-5'>
-													<i className='fas fa-arrow-right' />
-												</span>
+						<i className='fas fa-arrow-right'/>
+					</span>
 				</a>
 			</div>
 		</div>

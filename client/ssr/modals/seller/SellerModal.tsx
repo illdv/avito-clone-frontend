@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Modal from '../../../common/modal-juggler/Modal';
-import { ModalNames } from 'client/common/modal-juggler/modalJugglerInterface';
-import { hideSellerModal } from 'client/ssr/modals/seller/SellerModalTriger';
+import {ModalNames} from 'client/common/modal-juggler/modalJugglerInterface';
+import {hideSellerModal} from 'client/ssr/modals/seller/SellerModalTriger';
 import NumberFormat from 'react-number-format';
 import { ISeller } from 'client/ssr/blocks/ad/interface';
 
@@ -18,9 +18,9 @@ class SellerModal extends Component<ISellerProps> {
 				name={ModalNames.seller}
 				useOnRequestClose={true}
 			>
-				<div className='modal-content'>
+				<div className='seller-modal'>
 					<div className='modal-header no-border'>
-						<h3
+						<h2
 							className='modal-title'
 							id='exampleModalLongTitle'
 						>
@@ -29,7 +29,7 @@ class SellerModal extends Component<ISellerProps> {
 								displayType={'text'}
 								format={'# ### ### ## ##'}
 							/>
-						</h3>
+						</h2>
 						<button
 							type='button'
 							className='close'
@@ -42,7 +42,7 @@ class SellerModal extends Component<ISellerProps> {
 					</div>
 					<div className='modal-body'>
 						<div className='seller'>
-							<div className='d-flex align-items-center m-r-15'>
+							<div className='d-flex align-items-center m-r-20'>
 								<div className='seller-info'>
 									<span className='orange-text'>{this.props.seller.name}</span>
 									<span className='d-block'>On ADS from {this.props.seller.created_at}</span>
@@ -55,50 +55,45 @@ class SellerModal extends Component<ISellerProps> {
 								/>
 							</div>
 							<div className='p-t-20'>
-						<span className='grey-text f-w-300'>
-							The contact person
-						</span>
-								<span>
-							Alex
-						</span>
-
+								<span className='grey-text f-w-300'>The contact person</span>
+								<span>Alex</span>
 							</div>
-							<div className='p-t-20 d-flex justify-content-between'>
-						<span>
-							<span className='grey-text'>Address</span>
-								<span className='f-w-400'>
-							Octyabrskaya 24
-						</span>
-						</span>
-
-								<a
-									href='#'
-									className='btn grey-btn-outline no-b-r'
-								>
-									Complain
-								</a>
+							<div className='row p-t-20'>
+								<div className='col-9'>
+									<span className='grey-text'>Address</span>
+									<span className='f-w-400'>Octyabrskaya 24</span>
+								</div>
+								<div className='col-3'>
+									<a
+										href='#'
+										className='btn grey-btn-outline seller-modal__button'
+									>
+										Complain
+									</a>
+								</div>
 							</div>
-							<div className='p-t-40'>
-								<form action='#'>
-									<div className='form-group d-flex'>
+							<form action='#'>
+								<div className='form-inline form-row p-t-40'>
+									<div className='form-group col-9'>
 										<input
 											type='text'
-											className='form-control no-b-r m-r-10'
+											className='form-control seller-modal__input'
 											placeholder='Creative note'
 											required
 										/>
+									</div>
+									<div className='form-group col-3'>
 										<a
 											href='#'
-											className='btn grey-btn-outline no-b-r'
+											className='btn grey-btn-outline seller-modal__button'
 										>
 											Create
 										</a>
 									</div>
-								</form>
-							</div>
+								</div>
+							</form>
 						</div>
 					</div>
-					<div className='modal-footerno-border' />
 				</div>
 			</Modal>
 		);

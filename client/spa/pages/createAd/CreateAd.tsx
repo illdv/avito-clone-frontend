@@ -48,7 +48,7 @@ interface IPropsForInput {
 }
 
 const Input = ({ id, title, onChange, inputClass, defaultValue }: IPropsForInput) => (
-	<div className='offer-form__item form-group row no-gutters align-items-center'>
+	<div className='offer-form__item form-group row align-items-center'>
 		<label
 			htmlFor={id}
 			className='col-md-4 offer-form__label'
@@ -66,7 +66,7 @@ const Input = ({ id, title, onChange, inputClass, defaultValue }: IPropsForInput
 );
 
 const TextArea = ({ id, title, onChange, inputClass, defaultValue }: IPropsForInput) => (
-	<div className='offer-form__item form-group row no-gutters align-items-center'>
+	<div className='offer-form__item form-group row align-items-center'>
 		<label
 			htmlFor={id}
 			className='col-md-4 offer-form__label'
@@ -168,7 +168,7 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 							<div className='submit-contact-info'>
 								<h4>Contact information</h4>
 								<div className='submit-contact-info__form'>
-									<div className='form-group row no-gutters align-items-center'>
+									<div className='form-group row align-items-center'>
 										<label
 											htmlFor=''
 											className='col-md-2'
@@ -182,7 +182,7 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 											className='form-control col-md-6'
 										/>
 									</div>
-									<div className='form-group row no-gutters align-items-center'>
+									<div className='form-group row align-items-center'>
 										<label
 											htmlFor=''
 											className='col-md-2'
@@ -196,7 +196,7 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 											className='form-control col-md-6'
 										/>
 									</div>
-									<div className='form-group row no-gutters align-items-center'>
+									<div className='form-group row align-items-center'>
 										<label
 											htmlFor=''
 											className='col-md-2'
@@ -220,6 +220,8 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 							<h3>Select category</h3>
 						</div>
 						<div className='col-lg-12'>
+							// select-column__category
+							// select-column__category select-column__category--active
 							<CategoriesSelector onSelectCategory={this.onSelectCategory} />
 						</div>
 					</div>
@@ -230,6 +232,7 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 								className='breadcrumbs category-breadcrumbs'
 								style={{ width: '100%' }}
 							>
+								// breadcrumb-item breadcrumbs__item
 								<ol className='breadcrumb breadcrumb__inner'>
 									{selectedCategory.map(category => (
 										<li className='breadcrumb-item breadcrumbs__item'>
@@ -263,7 +266,7 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 							onChange={this.onChangeFields}
 							inputClass={'form-control col-md-3'}
 						/>
-						<div className='offer-form__item form-group row no-gutters align-items-center'>
+						<div className='offer-form__item form-group row align-items-center'>
 							<label
 								htmlFor=''
 								className='col-md-4 offer-form__label'

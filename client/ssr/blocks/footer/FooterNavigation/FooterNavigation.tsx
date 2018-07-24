@@ -2,6 +2,7 @@ import React from 'react';
 import { Category, getCategories } from 'client/ssr/blocks/categories/context';
 import FootSubCategory from 'client/ssr/blocks/footer/FooterNavigation/FootSubCategory';
 import { ICategories } from 'client/common/categories/interface'
+
 require('../Footer.sass');
 
 interface IFooterNavigation {

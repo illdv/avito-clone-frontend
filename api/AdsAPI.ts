@@ -17,9 +17,6 @@ function create({ images, ...ads }: ICreateAdRequest) {
 	return AxiosWrapper.post(`/ads/`, ads, { headers: { 'Content-Type': 'multipart/form-data' } });
 }
 
-function switchFavorite(id) {
-	return AxiosWrapper.post(`/ads/switch-favorite/${id}`);
-}
 
 function edit(request: IAds) {
 	return AxiosWrapper.put(`/ads/${request.id}`, request);
@@ -46,7 +43,6 @@ export const AdsAPI = {
 	getMy,
 	show,
 	create,
-	switchFavorite,
 	remove,
 	approve,
 	activate,
