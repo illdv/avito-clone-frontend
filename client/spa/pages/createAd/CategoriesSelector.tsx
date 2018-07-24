@@ -105,9 +105,9 @@ export class CategoriesSelector extends Component<IProps, IState> {
 
 function activeClassName(isActive: boolean) {
 	if (isActive) {
-		return 'select-colunm__category select-colunm__category_active';
+		return 'select-column__category select-column__category--active';
 	} else {
-		return 'select-colunm__category';
+		return 'select-column__category';
 	}
 }
 
@@ -129,7 +129,7 @@ const CategoryList = ({ items, title }: ICategoryListProps) => (
 		className='select-column w-25'
 		style={{ maxWidth: '25%' }}
 	>
-		<div className='select-colunm__title'>{title}</div>
+		<div className='select-column__category'>{title}</div>
 		{
 			items.map(item => (
 				<a

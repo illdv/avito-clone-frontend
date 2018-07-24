@@ -13,7 +13,7 @@ import { IAds } from 'client/common/ads/interface';
 import { SetCategories } from 'client/ssr/blocks/categories/context';
 import Categories from 'client/ssr/blocks/categories/Categories';
 import Footer from 'client/ssr/blocks/footer/Footer';
-import { ICategories } from 'client/common/categories/interface';
+import { ICategories } from 'client/common/categories/interface'
 
 const isServer: boolean = typeof window === 'undefined';
 

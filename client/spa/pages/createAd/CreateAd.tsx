@@ -220,8 +220,6 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 							<h3>Select category</h3>
 						</div>
 						<div className='col-lg-12'>
-							// select-column__category
-							// select-column__category select-column__category--active
 							<CategoriesSelector onSelectCategory={this.onSelectCategory} />
 						</div>
 					</div>
@@ -232,7 +230,6 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 								className='breadcrumbs category-breadcrumbs'
 								style={{ width: '100%' }}
 							>
-								// breadcrumb-item breadcrumbs__item
 								<ol className='breadcrumb breadcrumb__inner'>
 									{selectedCategory.map(category => (
 										<li className='breadcrumb-item breadcrumbs__item'>
