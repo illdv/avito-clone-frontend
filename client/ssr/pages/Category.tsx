@@ -5,7 +5,7 @@ import Navbar from 'client/ssr/blocks/navbar/Navbar';
 import Search from 'client/ssr/blocks/search/Search';
 import Footer from 'client/ssr/blocks/footer/Footer';
 import ListOfAds from 'client/ssr/blocks/list-of-ads/ListOfAds';
-import Breadcrumbs from 'client/ssr/blocks/breadcrumbs/Breadcrumbs';
+import BreadcrumbsWrap from 'client/ssr/wraps/BreadcrumbFromContext';
 import EmptySearch from 'client/ssr/blocks/empty-search/EmptySearch';
 import ListOfSubcategories from 'client/ssr/blocks/list-of-subcategories/ListOfSubcategories';
 
@@ -31,7 +31,10 @@ class Category extends React.Component<ICategoryPageProps> {
 					</div>
 
 					<div className='container'>
-						<Breadcrumbs />
+						<BreadcrumbsWrap
+							classNameForContainer='breadcrumb'
+							classNameForItem='breadcrumb-item'
+						/>
 						{
 							this.props.subcategories.length > 0 &&
 							<ListOfSubcategories subcategories={this.props.subcategories} />
@@ -44,6 +47,7 @@ class Category extends React.Component<ICategoryPageProps> {
 						this.props.subcategories.map(category => (
 							category.ads.length > 0 &&
 								<ListOfAds
+									key={category.id}
 									title={category.title}
 									ads={category.ads}
 								/>

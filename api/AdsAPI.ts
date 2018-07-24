@@ -13,8 +13,8 @@ function show(id) {
 	return AxiosWrapper.get(`/ads/${id}`);
 }
 
-function create(request: ICreateAdRequest) {
-	return AxiosWrapper.post(`/ads/`, request);
+function create({ images, ...ads }: ICreateAdRequest) {
+	return AxiosWrapper.post(`/ads/`, ads, { headers: { 'Content-Type': 'multipart/form-data' } });
 }
 
 

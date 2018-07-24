@@ -1,42 +1,57 @@
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
 
-import { getCategories } from 'client/ssr/contexts/Breadcrunbs';
-import { IBreadcrumb } from 'client/ssr/interfaces/breadcrumbs';
+export interface IBreadcrumb {
+	title: string;
+	href: string;
+}
 
-interface BreadcrumbsPublicProps {
+interface IBreadcrumbsPublicProps {
 	isLastDisabled?: boolean;
 }
 
-interface BreadcrumbsPrivateProps {
+interface IBreadcrumbsPrivateProps {
 	breadcrumbs: IBreadcrumb[];
 	isLastDisabled?: boolean;
+	classNameForContainer?: string;
+	classNameForItem?: string;
 }
 
-const Breadcrumbs = ({ breadcrumbs, isLastDisabled = true }: BreadcrumbsPrivateProps) => {
+const defaultProps = {
+	isLastDisabled: true,
+	classNameForContainer: '',
+	classNameForItem: '',
+};
+
+export const Breadcrumbs = (props: IBreadcrumbsPrivateProps) => {
+	const { breadcrumbs, isLastDisabled, classNameForContainer, classNameForItem } = { ...defaultProps, ...props };
+
 	const indexLastCrumb = breadcrumbs.length - 1;
 	return (
-		<Breadcrumb>
+		<ol className={classNameForContainer}>
 			{
 				breadcrumbs.map((crumb, index) => (
-					<BreadcrumbItem
-						key={ crumb.href.toLowerCase() }
-						active={ index !== indexLastCrumb }
+					<li
+						className={classNameForItem}
+						key={crumb.href.toLowerCase()}
 					>
 						{
 							isLastDisabled && index !== indexLastCrumb
-								? <a href={ crumb.href.toLowerCase() } className={ 'orange-text' }>
-									{ crumb.title }
-								  </a>
+								? <a
+									href={crumb.href.toLowerCase()}
+									className={'orange-text'}
+								>
+									{crumb.title}
+								</a>
 								: <a>
-									{ crumb.title }
-								  </a>
+									{crumb.title}
+								</a>
 						}
-					</BreadcrumbItem>
+					</li>
 				))
 			}
-		</Breadcrumb>
+		</ol>
 	);
 };
 
-export default (props: BreadcrumbsPublicProps) => getCategories(Breadcrumbs)(props);
+export default Breadcrumbs;

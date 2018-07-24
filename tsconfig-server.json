@@ -4,7 +4,7 @@
         "module": "commonjs", //импорт модулей преобразуется в commonjs (node require)
         "sourceMap": true, //генерировать sourceMaps, нужно для отладки
         "outDir": ".server", //проект билдится из папки /server в папку /.server
-        "rootDirs": ["server", "common"]
+        "rootDir": "server"
     },
     //указывает что включаться должны только файлы из папки /server
     "include": [

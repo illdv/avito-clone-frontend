@@ -7,7 +7,7 @@ import {
 	categoryQueueToBreadcrumbsFormat,
 	getSubcategoryByCategoryQueue,
 	getIdMainCategory,
-} from '../../common/utils/categoryPrepare';
+} from '../utils/categoryPrepare';
 
 interface ISugar {
 	params: any;
@@ -53,8 +53,6 @@ const getAdsByParams = async params => {
 };
 
 
-
-
 export const location: prepareMethod = async (sugar, req) => {
 	const ip = req.clientIp;
 
@@ -78,14 +76,15 @@ export const location: prepareMethod = async (sugar, req) => {
 
 } 
 
-
 export const category: prepareMethod = async ({params, query, path}) => {
 	const { categorySlug } = params;
 	const { data: categories } = await instance.get('/categories');
-
+	console.log('back');
 	try {
 		const categoryQueue    = findCategoriesQueueBySlug(categories, categorySlug);
 		const breadcrumbs      = categoryQueueToBreadcrumbsFormat(categoryQueue);
+		console.log('back', breadcrumbs);
+
 		const idActiveCategory = getIdMainCategory(categoryQueue);
 
 		const subcategories = getSubcategoryByCategoryQueue(categoryQueue);
@@ -100,6 +99,7 @@ export const category: prepareMethod = async ({params, query, path}) => {
 			listAdsGroups,
 		};
 	} catch (err) {
+		console.log('err');
 		return { categories, breadcrumbs: [], subcategory: [] };
 	}
 };

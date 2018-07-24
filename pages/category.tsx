@@ -4,7 +4,7 @@ import { types } from 'redux-act';
 
 import { withI18next } from '../common/lib/withI18next';
 
-import { SetBreadcrumbs } from 'client/ssr/contexts/Breadcrunbs';
+import { SetBreadcrumbs } from 'client/ssr/contexts/Breadcrumbs';
 import { SetCategories } from 'client/ssr/blocks/categories/context';
 import { IBreadcrumb } from 'client/ssr/interfaces/breadcrumbs';
 import { IAdsProps } from 'client/ssr/blocks/list-of-ads/ListOfAds';

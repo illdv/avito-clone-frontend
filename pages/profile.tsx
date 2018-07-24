@@ -19,7 +19,7 @@ if (isServer) {
 	types.disableChecking();
 }
 
-const Profile = dynamic(import('client/spa/pages/Profile'), {
+const Profile = dynamic(import('client/spa/pages/Profile') as any, {
 	ssr: false,
 	loading: () => <h1>Loading SPA</h1>,
 });

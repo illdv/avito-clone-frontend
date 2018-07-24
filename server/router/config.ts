@@ -22,7 +22,7 @@ const routes = [
 	{
 		path: '/category/:categorySlug?',
 		page: '/category',
-		prepare: ['category', 'categories'],
+		prepare: ['category'],
 	},
 ] as IRoute[];
 

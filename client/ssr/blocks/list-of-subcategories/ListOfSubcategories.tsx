@@ -8,7 +8,7 @@ const ListOfSubcategories = ({ subcategories }: { subcategories: any[] }) => (
 			<ul className='list-unstyled'>
 				{
 					subcategories.map(subcategory => (
-						<li>
+						<li key={subcategory.id} >
 							<a href={`/category/${ subcategory.slug }`}>
 								<span>{ subcategory.title }</span>
 							</a>

@@ -26,7 +26,7 @@ export const findCategoriesQueueBySlug = (categories, categorySlug): any[] | nul
 
 export const categoryQueueToBreadcrumbsFormat = categoryQueue => {
 	if (!categoryQueue && categoryQueue.length < 1) {
-		return []
+		return [];
 	}
 
 	return categoryQueue.map((category, index, arr) => {
@@ -45,7 +45,7 @@ export const categoryQueueToBreadcrumbsFormat = categoryQueue => {
 
 export const getIdMainCategory = categoryQueue => {
 	return categoryQueue ? categoryQueue[0].id : null;
-}
+};
 
 export const getSubcategoryByCategoryQueue = categoryQueue => {
 	if (!categoryQueue && categoryQueue.length < 1) {

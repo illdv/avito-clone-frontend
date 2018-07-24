@@ -19,7 +19,7 @@ export class SetBreadcrumbs extends React.Component<IProviderProps> {
 	}
 }
 
-export const getCategories = Component => props => (
+export const getBreadcrumbs = Component => props => (
 	<Consumer>
 		{ (breadcrumbs: IBreadcrumb[]) => <Component { ...props } breadcrumbs={ breadcrumbs } /> }
 	</Consumer>

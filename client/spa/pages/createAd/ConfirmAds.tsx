@@ -1,5 +1,5 @@
-import { Component } from 'react';
 import * as React from 'react';
+import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { IRootState } from 'client/common/store/storeInterface';
 import { IAdsDataForCreate } from 'client/spa/pages/createAd/CreateAd';
@@ -30,9 +30,11 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 class ConfirmAds extends Component<IProps, IState> {
 
 	render() {
-		const { cityId, lat, lng, locationName } = this.props.data;
-		const { description, price, title }      = this.props.data.fields;
-		const { email }                          = this.props.user.user;
+		const { selectedCategory, locationName }   = this.props.data;
+		const { description, price, title, phone } = this.props.data.fields;
+		const { email }                            = this.props.user.user;
+
+		const category = selectedCategory.map(item => item.title).join('/');
 
 		return (
 			<section className='page'>
@@ -55,7 +57,7 @@ class ConfirmAds extends Component<IProps, IState> {
 									</div>
 									<div className='confirm-contact-info__item row no-gutters align-items-center'>
 										<span className='col-md-4'>Phone</span>
-										<span className='col-md-6'>+008 989 98 98</span>
+										<span className='col-md-6'>{phone}</span>
 									</div>
 								</div>
 							</div>
@@ -72,7 +74,7 @@ class ConfirmAds extends Component<IProps, IState> {
 									</div>
 									<div className='confirm-offer-info__item row no-gutters align-items-center'>
 										<span className='col-md-4'>Category</span>
-										<span className='col-md-6'>Transport / Water transport / Yachts</span>
+										<span className='col-md-6'>{category}</span>
 									</div>
 									<div className='confirm-offer-info__item row no-gutters align-items-center'>
 										<span className='col-md-4'>Place of inspection</span>
@@ -151,19 +153,19 @@ class ConfirmAds extends Component<IProps, IState> {
 										<h5>67$</h5>
 										<span className='price__discount'>A discount</span>
 									</div>
-								</div>
+								</div>button
 							</div>
 							<div className='text-right'>
 								<a
 									onClick={this.props.onBack}
-									className='btn button button_dark-outline button_confirm'
+									className='btn grey-btn-outline button_confirm'
 								>
 									<i className='fa fa-arrow-left' />
 									Back
 								</a>
 								<a
 									onClick={this.props.onCreate}
-									className='btn button button_bright button_confirm'
+									className='btn orange-btn button_confirm'
 								>
 									Submit an advertisement
 								</a>
