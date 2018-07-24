@@ -30,7 +30,7 @@ interface ICategoryProps {
 class Category extends React.Component<ICategoryProps> {
 	static async getInitialProps({ query }) {
 		let breadcrumbs = [{
-			name: 'All listings',
+			title: 'All listings',
 			href: '/category',
         }].concat(query.category.breadcrumbs);
         

@@ -46,11 +46,20 @@ const user = {
 class Ads extends React.Component <IAdsProps, IAdsState> {
 	formatCategoriesToCrumbs = (categories): ICrumb[] => {
 		return categories.map(category => {
-			return {
-				title: category.title,
-				href: '/' + encodeURI(category.title),
-			};
+			if (categories.length > 0){
+				return {
+					title: category.title,
+					href: '/category/' + encodeURI(category.title),
+				};
+			} else {
+				return {
+					title: category.title,
+					href: categories[0].href + encodeURI(category.title),
+				};
+			}
+
 		});
+
 	}
 
 	recurseGetAdCategories = (categories, idCategoryAd): any[] | null => {
@@ -107,7 +116,7 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 		return {
 			title: 'All listings in ' + this.props.ad.city.title,
 			// title: 'All listings in ' + 'Moscow',
-			href: encodeURI('/' + this.props.ad.city.title),
+			href: encodeURI('/city/' + this.props.ad.city.title),
 			// href: encodeURI('/' + 'moscow'),
 		};
 	}

@@ -79,7 +79,7 @@ const categoryQueueToBreadcrumbsFormat = categoryQueue => {
 		}
 
 		return {
-			name: category.title + (totla || ''),
+			title: category.title + (totla || ''),
 			href: `/category/${ encodeURI(category.title) }`,
 		};
 	});
