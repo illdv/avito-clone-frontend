@@ -32,7 +32,6 @@ class Navbar extends React.Component {
 								</li>
 							</ul>
 						</nav>
-
 						<button className='btn orange-btn'>Submit an advertisement</button>
 					</div>
 				</div>

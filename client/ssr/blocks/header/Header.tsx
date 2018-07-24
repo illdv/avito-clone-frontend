@@ -69,7 +69,7 @@ class Header extends Component<IProps, IState> {
 				Login
 			</button>
 		);
-	};
+	}
 
 	render() {
 		return (

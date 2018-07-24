@@ -77,7 +77,7 @@ class RegistrationForm extends Component<IProps, IState> {
 
 	render() {
 		return (
-			<div className='login-form'>
+			<div className='auth-form'>
 				<Input
 					title='Email'
 					id='email'
@@ -110,10 +110,10 @@ class RegistrationForm extends Component<IProps, IState> {
 					placeholder='Confirm password'
 					onChange={this.onChange}
 				/>
-				<div className='auth-btn__container p-t-40'>
+				<div className='auth-modal-btn__container'>
 					<button
 						onClick={this.onRegistration}
-						className='btn orange-btn auth-btn'
+						className='btn orange-btn auth-modal-btn'
 					>
 						Register
 					</button>

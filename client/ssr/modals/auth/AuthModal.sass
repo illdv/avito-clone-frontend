@@ -39,32 +39,40 @@
     &.form-group
         border-bottom: 1px solid #E0E0E0
 
-.login-form label
+.auth-form label
     color: #929292
     font-size: 18px
 
-.login-form input[type='text'],
-.login-form input[type='password'],
-.login-form input[type='tel'],
-.login-form input[type='email'] 
+.auth-form input[type='text'],
+.auth-form input[type='password'],
+.auth-form input[type='tel'],
+.auth-form input[type='email']
     -webkit-appearance: none
     -moz-appearance: none
     width: 100%
     border: none
     font-size: 17px
 
-.login-form input::placeholder
+.auth-form input::placeholder
     color: #b3b3b3
-
-.auth-btn__container
-    padding: 0 40px 40px 40px
-
-.auth-btn
-    padding: 25px !important
-    width: 100%
-    font-size: 20px !important
 
 @media (max-width: 575px) 
     .login-block
         height: auto
     
+.auth-form__remember
+    -webkit-appearance: none
+    border: 2px solid #FFB91B
+    width: 20px
+    height: 20px
+    border-radius: 50%
+    position: relative
+    display: flex
+    align-items: center
+    justify-content: center
+    &:checked:after
+        content: ""
+        height: 10px
+        width: 10px
+        background-color: #FFB91B
+        border-radius: 50%

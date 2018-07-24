@@ -60,7 +60,7 @@ class LoginForm extends React.Component<IProps, IState> {
 
 	render() {
 		return (
-			<div className='login-form'>
+			<div className='auth-form'>
 				<div className='form-group row auth-input__wrapper'>
 					<label
 						className='col-sm-4 col-form-label'
@@ -109,21 +109,22 @@ class LoginForm extends React.Component<IProps, IState> {
 					</div>
 					<div className='d-flex col-12'>
 						<input
+							className='auth-form__remember'
 							type='checkbox'
 							id='remember'
 							onChange={this.onRememberMe}
 						/>
 						<label
 							className='f-s-14 p-x-5'
-							htmlFor='password'
+							htmlFor='remember'
 						>
 							Remember me
 						</label>
 					</div>
 				</div>
-				<div className='auth-btn__container'>
+				<div className='auth-modal-btn__container p-t-0'>
 					<button
-						className='btn orange-btn auth-btn'
+						className='btn orange-btn auth-modal-btn'
 						onClick={this.onLogin}
 					>
 						Login

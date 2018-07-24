@@ -7,10 +7,7 @@ class Feature extends Component<IVehicleFeature> {
 			<div className='col-lg-5'>
 				{/*<h3 className='caption'>Vehicle Features</h3>*/}
 				<h3>Features</h3>
-
-				<ul
-					className='list-unstyled f-s-14 ads-features'
-				>
+				<ul className='ads-features'>
 					{listItems(this.props.options)}
 				</ul>
 			</div>
@@ -29,7 +26,7 @@ function formationOptions(option) {
 
 	return (
 		<li key={option.id}>
-			<span className='grey-text'>{key}</span>: <span>{option.pivot.value}</span>
+			<span className='grey-text'>{key}:</span> {option.pivot.value}
 		</li>
 	);
 }

@@ -79,7 +79,7 @@ class Search extends Component<SearchProps> {
 	render() {
 		return (
 			<form action='#'>
-				<div className='search form-inline form-row p-y-20'>
+				<div className='search form-inline form-row p-t-20'>
 					<div className='form-group col-6 col-md-3'>
 						<SelectCategories
 							categories={this.props.categories}
@@ -114,7 +114,7 @@ class Search extends Component<SearchProps> {
 					</div>
 					<div className='form-group col-12 col-md-2'>
 						<button className='btn orange-btn-outline search__button' type='submit'>
-							<i className='fas fa-search p-x-5'/>Search
+							<i className='fas fa-search p-r-5'/>Search
 						</button>
 					</div>
 				</div>

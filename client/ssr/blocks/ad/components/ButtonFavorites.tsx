@@ -17,13 +17,13 @@ class ButtonFavorites extends Component <IFavorites, IFavoriteState> {
 					return {is_favorite: !prevState};
 				});
 			});
-	};
+	}
 
 	render() {
 		return (
 			<React.Fragment>
 				<button
-					className='btn orange-btn-outline m-t-10 d-block no-b-r'
+					className='btn orange-btn-outline m-t-10 d-block'
 					onClick={this.switchFavorite}
 				>Add to favourites
 				</button>

@@ -39,25 +39,7 @@ select
     background-position-x: 95%
     -webkit-appearance: none
     -moz-appearance: none
-
-
-input[type="checkbox"]
-    -webkit-appearance: none
-    border: 2px solid #FFB91B
-    width: 20px
-    height: 20px
-    border-radius: 50%
-    position: relative
-    display: flex
-    align-items: center
-    justify-content: center
-
-input[type="checkbox"]:checked:after
-    content: ""
-    height: 10px
-    width: 10px
-    background-color: #FFB91B
-    border-radius: 50%
+    cursor: pointer
 
 .main-caption
     color: #FFB91B
@@ -123,21 +105,11 @@ input[type="checkbox"]:checked:after
 a, button
     transition: all .25s ease-in-out !important
 
+.auth-modal-btn__container
+  padding: 40px
 
-.button_dark:hover, .grey-btn:hover
-    border: 2px solid #4F4F4F
-    color: #4F4F4F
-    background-color: transparent
 
-.button_bright:hover, .orange-btn:hover
-    border: 2px solid #FFB91B
-    color: #FFB91B
-    background: transparent
-
-.button_bright-outline:hover, .orange-btn-outline:hover
-    background-color: #FFB91B
-    color: #fff
-    border: 2px solid #FFB91B
-
-.button_dark-outline:hover, .grey-btn-outline:hover
-    background-color: #919191
+.auth-modal-btn
+    padding: 25px !important
+    width: 100%
+    font-size: 20px !important

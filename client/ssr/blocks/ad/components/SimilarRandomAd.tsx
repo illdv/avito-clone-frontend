@@ -10,17 +10,16 @@ class SimilarRandomAd extends Component<ISimilarProps> {
 				<div className='row'>
 					<div className='col-md-6 col-lg-7'>
 						<Link href={`${this.props.id}`}>
-							<a className='f-s-14'>{this.props.title}</a>
+							<a className='similar-ad__title'>{this.props.title}</a>
 						</Link>
 						<br/>
-						<span className='f-s-13'>{this.props.description}</span>
-						<span className='f-s-13 badge badge-secondary d-inline-block bg-orange'>
+						<span>{this.props.description}</span>
+						<span className='badge badge-secondary d-inline-block bg-orange'>
 							<NumberFormat
 								value={this.props.price}
 								displayType={'text'}
 								suffix={'$'}
 								thousandSeparator={' '}
-
 							/>
 						</span><br/>
 						<span className='f-s-12 f-w-300'>{this.props.userName}</span>
