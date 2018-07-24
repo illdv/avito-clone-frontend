@@ -1,8 +1,8 @@
 import React from 'react';
-import {connect, Dispatch} from 'react-redux';
-import {bindModuleAction} from 'client/common/user/utils';
-import {IUserActions, UserActions} from 'client/common/user/actions';
-import {showSendCodeToEmailModal} from 'client/ssr/modals/forgot-password/forgotPasswordModalTriggers';
+import { connect, Dispatch } from 'react-redux';
+import { bindModuleAction } from 'client/common/user/utils';
+import { IUserActions, UserActions } from 'client/common/user/actions';
+import { showSendCodeToEmailModal } from 'client/ssr/modals/forgot-password/forgotPasswordModalTriggers';
 
 export interface IState {
 	fields?: {
@@ -32,9 +32,9 @@ class LoginForm extends React.Component<IProps, IState> {
 	};
 
 	onChange = event => {
-		const {id, value} = event.target;
+		const { id, value } = event.target;
 		this.setState({
-			fields: {...this.state.fields, [id]: value},
+			fields: { ...this.state.fields, [id]: value },
 		});
 	}
 
@@ -45,8 +45,8 @@ class LoginForm extends React.Component<IProps, IState> {
 	}
 
 	onLogin = () => {
-		const {email, password} = this.state.fields;
-		const {isRememberMe} = this.state;
+		const { email, password } = this.state.fields;
+		const { isRememberMe }    = this.state;
 		this.props.userActions.login.REQUEST({
 			email,
 			password,

@@ -11,9 +11,9 @@ import ListOfAds from '../client/ssr/blocks/list-of-ads/ListOfAds';
 import { ToastContainer } from 'react-toastify';
 import { IAds } from 'client/common/ads/interface';
 import { SetCategories } from 'client/ssr/blocks/categories/context';
-import { ICategories } from 'client/ssr/blocks/categories/interface';
 import Categories from 'client/ssr/blocks/categories/Categories';
 import Footer from 'client/ssr/blocks/footer/Footer';
+import { ICategories } from 'client/common/categories/interface'
 
 const isServer: boolean = typeof window === 'undefined';
 
@@ -29,6 +29,7 @@ interface IIndexProps {
 
 export class Index extends React.Component<IIndexProps> {
 	static async getInitialProps({ query }) {
+		console.log(query.ads);
 		return ({
 			ads: query.ads,
 			categories: query.categories,

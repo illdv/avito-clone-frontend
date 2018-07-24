@@ -159,7 +159,6 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 								</span>
 								<ButtonFavorites
 									id={this.props.ad.id}
-									is_favorite={this.props.ad.is_favorite}
 								/>
 							</div>
 							<div className='col-md-12 col-lg-4 price'>

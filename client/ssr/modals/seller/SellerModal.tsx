@@ -3,9 +3,13 @@ import Modal from '../../../common/modal-juggler/Modal';
 import {ModalNames} from 'client/common/modal-juggler/modalJugglerInterface';
 import {hideSellerModal} from 'client/ssr/modals/seller/SellerModalTriger';
 import NumberFormat from 'react-number-format';
-import {ISellerProps} from 'client/ssr/blocks/ad/interface';
+import { ISeller } from 'client/ssr/blocks/ad/interface';
 
 require('./SellerModal.sass');
+
+export interface ISellerProps {
+	seller: ISeller;
+}
 
 class SellerModal extends Component<ISellerProps> {
 	render() {

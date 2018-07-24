@@ -1,10 +1,16 @@
-import React, {Component} from 'react';
-import {showSellerModals} from 'client/ssr/modals/seller/SellerModalTriger';
-import {ISellerProps} from 'client/ssr/blocks/ad/interface';
+import React, { Component } from 'react';
+import { showSellerModals } from 'client/ssr/modals/seller/SellerModalTriger';
+import { ISeller } from 'client/ssr/blocks/ad/interface';
 
 export const avatar = '/static/img/person.png';
 
-class Seller extends Component<ISellerProps> {
+export interface IProps {
+	seller: ISeller;
+	country: string;
+	city: string;
+}
+
+class Seller extends Component<IProps> {
 	render() {
 		return (
 			<div className='col-lg-7'>
