@@ -114,8 +114,8 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 
 	get lastCrumbItem(): ICrumb {
 		return {
-			title: this.props.ad.id,
-			href: encodeURI('/' + this.props.ad.id),
+			title: this.props.ad.title,
+			href: encodeURI('/' + this.props.ad.title.toLowerCase()),
 		};
 	}
 
@@ -181,7 +181,7 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 					<div className='container'>
 						<Description body={this.props.ad.body} />
 						{/*<VehicleKit />*/}
-						{/*<Chart randomAd={this.props.ad.random_ad}/>*/}
+						<Chart randomAd={this.props.ad.random_ad}/>
 					</div>
 				</section>
 			</React.Fragment>

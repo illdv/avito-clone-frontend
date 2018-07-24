@@ -11,9 +11,9 @@ class ButtonFavorites extends Component <IFavorites, IFavoriteState> {
 	}
 
 	switchFavorite = () => {
-			const oldData = JSON.parse(CustomStorage.getItem('favorite_ids'));
+			const oldData = JSON.parse(CustomStorage.getItem('favorites_ids'));
 			if (!oldData) {
-				CustomStorage.setItem('favorite_ids', JSON.stringify([this.props.id]));
+				CustomStorage.setItem('favorites_ids', JSON.stringify([this.props.id]));
 				return;
 			}
 			let newData = [];
@@ -24,7 +24,7 @@ class ButtonFavorites extends Component <IFavorites, IFavoriteState> {
 			} else {
 				newData = oldData.concat(this.props.id);
 			}
-			CustomStorage.setItem('favorite_ids', JSON.stringify(newData));
+			CustomStorage.setItem('favorites_ids', JSON.stringify(newData));
 			return;
 	};
 
