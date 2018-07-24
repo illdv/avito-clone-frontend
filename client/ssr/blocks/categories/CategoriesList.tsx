@@ -1,6 +1,6 @@
 import * as React from 'react';
 import CategoryCard from 'client/ssr/blocks/categories/CategoryCard';
-import {ICategories} from 'client/ssr/blocks/categories/interface';
+import {ICategories} from 'client/common/categories/interface';
 
 interface ICategoriesList {
 	categories: ICategories;

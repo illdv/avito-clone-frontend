@@ -6,6 +6,10 @@ import { IRootState } from 'client/common/store/storeInterface';
 import { IUserState } from 'client/common/user/reducer';
 import Lease from 'client/spa/pages/createAd/Lease';
 import { IAds } from 'client/common/ads/interface';
+import CategoriesSelector from 'client/spa/pages/createAd/CategoriesSelector';
+import { ICategory } from 'client/common/categories/interface';
+import { Images, ImageSelector } from 'client/spa/pages/createAd/ImageSelector';
+import { useOrDefault } from 'client/spa/pages/createAd/utils';
 
 export interface IAdsDataForCreate {
 	id: string;
@@ -19,6 +23,8 @@ export interface IAdsDataForCreate {
 	lat: number;
 	lng: number;
 	locationName: string;
+	selectedCategory: ICategory[];
+	images: Images[];
 }
 
 export interface IProps {
@@ -90,28 +96,13 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 		locationName: '',
 		lat: 0,
 		lng: 0,
+		selectedCategory: [],
+		images: null,
 	};
-	onChange                 = event => {
-		const { id, value } = event.target;
-		this.setState({
-			fields: { ...this.state.fields, [id]: value },
-		});
-	}
-	onSelectPlace            = (locationName, cityId, location) => {
-		this.setState({
-			cityId,
-			locationName,
-			lat: location.lat(),
-			lng: location.lng(),
-		});
-	}
-	onNext                   = () => {
-		this.props.onNext(this.state);
-	}
 
 	static getDerivedStateFromProps(nextProps: IProps, prevState: IAdsDataForCreate): IAdsDataForCreate {
 
-		const { id, price, description, title, latitude, longitude } = nextProps.data;
+		const { id, price, description, title, latitude, longitude, category_id, phone } = nextProps.data;
 		if (id !== prevState.id) {
 			return {
 				id,
@@ -119,21 +110,53 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 					title,
 					price,
 					description,
-					phone: '',
+					phone,
 				},
 				cityId: '',
 				lat: latitude,
 				lng: longitude,
 				locationName: '',
+				selectedCategory: [],
+				images: [],
 			};
 		}
 		return null;
 	}
 
+	onChangeFields = event => {
+		const { id, value } = event.target;
+		this.setState({
+			fields: { ...this.state.fields, [id]: value },
+		});
+	}
+
+	onSelectPlace = (locationName, cityId, location) => {
+		this.setState({
+			cityId,
+			locationName,
+			lat: location.lat(),
+			lng: location.lng(),
+		});
+	}
+
+	onUpdateImage = (images: Images[]) => {
+		this.setState({
+			images,
+		});
+	}
+
+	onNext = () => {
+		this.props.onNext(this.state);
+	}
+
+	onSelectCategory = (selectedCategory: ICategory[]) => {
+		this.setState({ selectedCategory });
+	}
+
 	render() {
 		const { email, name }                      = this.props.user.user;
 		const { phone, description, price, title } = this.state.fields;
-		const { lng, lat }                         = this.state;
+		const { lng, lat, selectedCategory }       = this.state;
 		return (
 			<section className='page'>
 				<div className='container page__container-sm'>
@@ -185,7 +208,7 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 											type='tel'
 											className='form-control col-md-6'
 											defaultValue={phone}
-											onChange={this.onChange}
+											onChange={this.onChangeFields}
 										/>
 									</div>
 								</div>
@@ -197,152 +220,23 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 							<h3>Select category</h3>
 						</div>
 						<div className='col-lg-12'>
-							<div className='select-category'>
-								<div className='select-column w-25'>
-									<div className='select-column__title'>Categories</div>
-									<a className='select-column__category'>
-										Transport
-									</a>
-									<a className='select-column__category select-column__category--active'>
-										The property
-									</a>
-									<a className='select-column__category '>
-										Job
-									</a>
-									<a className='select-column__category'>
-										The services
-									</a>
-									<a className='select-column__category'>
-										Personal things
-									</a>
-									<a className='select-column__category'>
-										For home and cottages
-									</a>
-									<a className='select-column__category'>
-										Consumer electronics
-									</a>
-									<a className='select-column__category'>
-										Hobbies and Recreation
-									</a>
-									<a className='select-column__category'>
-										Animals
-									</a>
-									<a className='select-column__category'>
-										For business
-									</a>
-								</div>
-								<div className='select-column select-column_right w-25'>
-									<div className='select-column__title'>Categories</div>
-									<a className='select-column__category'>
-										Transport
-									</a>
-									<a className='select-column__category'>
-										The property
-									</a>
-									<a className='select-column__category '>
-										Job
-									</a>
-									<a className='select-column__category'>
-										The services
-									</a>
-									<a className='select-column__category'>
-										Personal things
-									</a>
-									<a className='select-column__category select-column__category--active'>
-										For home and cottages
-									</a>
-									<a className='select-column__category'>
-										Consumer electronics
-									</a>
-									<a className='select-column__category'>
-										Hobbies and Recreation
-									</a>
-									<a className='select-column__category'>
-										Animals
-									</a>
-									<a className='select-column__category'>
-										For business
-									</a>
-								</div>
-								<div className='select-column select-column_right w-25'>
-									<div className='select-column__title'>Categories</div>
-									<a className='select-column__category'>
-										Transport
-									</a>
-									<a className='select-column__category'>
-										The property
-									</a>
-									<a className='select-column__category'>
-										Job
-									</a>
-									<a className='select-column__category'>
-										The services
-									</a>
-									<a className='select-column__category'>
-										Personal things
-									</a>
-									<a className='select-column__category'>
-										For home and cottages
-									</a>
-									<a className='select-column__category select-column__category--active'>
-										Consumer electronics
-									</a>
-									<a className='select-column__category'>
-										Hobbies and Recreation
-									</a>
-									<a className='select-column__category'>
-										Animals
-									</a>
-									<a className='select-column__category'>
-										For business
-									</a>
-								</div>
-								<div className='select-column select-column_right w-25'>
-									<div className='select-column__title'>Categories</div>
-									<a className='select-column__category'>
-										Transport
-									</a>
-									<a className='select-column__category select-column__category--active'>
-										The property
-									</a>
-									<a className='select-column__category '>
-										Job
-									</a>
-									<a className='select-column__category'>
-										The services
-									</a>
-									<a className='select-column__category'>
-										Personal things
-									</a>
-									<a className='select-column__category'>
-										For home and cottages
-									</a>
-									<a className='select-column__category'>
-										Consumer electronics
-									</a>
-									<a className='select-column__category'>
-										Hobbies and Recreation
-									</a>
-									<a className='select-column__category'>
-										Animals
-									</a>
-									<a className='select-column__category'>
-										For business
-									</a>
-								</div>
-
-							</div>
+							<CategoriesSelector onSelectCategory={this.onSelectCategory} />
 						</div>
 					</div>
 					<div className='row'>
 						<div className='col-lg-9 selected-category'>
 							<h3 className='selected-category__title'>Select category</h3>
-							<div className='breadcrumbs category-breadcrumbs'>
+							<div
+								className='breadcrumbs category-breadcrumbs'
+								style={{ width: '100%' }}
+							>
 								<ol className='breadcrumb breadcrumb__inner'>
-									<li className='breadcrumb-item breadcrumbs__item'><a href='#'> All listings in Berlin</a></li>
-									<li className='breadcrumb-item breadcrumbs__item'><a href='#'>Real estate</a></li>
-									<li className='breadcrumb-item breadcrumbs__item'><a>Apartments</a></li>
-									<li className='breadcrumb-item breadcrumbs__item'><a>Sell 3 839</a></li>
+									{selectedCategory.map(category => (
+										<li className='breadcrumb-item breadcrumbs__item'>
+											<a href=''>{category.title}</a>
+										</li>
+									))}
+
 								</ol>
 							</div>
 						</div>
@@ -352,21 +246,21 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 							defaultValue={title}
 							id={'title'}
 							title={'Ad title'}
-							onChange={this.onChange}
+							onChange={this.onChangeFields}
 							inputClass={'form-control col-md-6'}
 						/>
 						<TextArea
 							defaultValue={description}
 							id={'description'}
 							title={'Advertisement description'}
-							onChange={this.onChange}
+							onChange={this.onChangeFields}
 							inputClass={'form-control col-md-6'}
 						/>
 						<Input
 							defaultValue={price}
 							id={'price'}
 							title={'Price'}
-							onChange={this.onChange}
+							onChange={this.onChangeFields}
 							inputClass={'form-control col-md-3'}
 						/>
 						<div className='offer-form__item form-group row align-items-center'>
@@ -376,12 +270,7 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 							>
 								Photo
 							</label>
-							<div className='offer-form-upload'>
-								<input
-									type='file'
-									className='form-control offer-form-upload__item'
-								/>
-							</div>
+							<ImageSelector onUpdateImage={this.onUpdateImage} />
 						</div>
 						<Lease
 							onSelectPlace={this.onSelectPlace}

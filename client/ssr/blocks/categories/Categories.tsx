@@ -1,15 +1,15 @@
 import React from 'react';
 import {getCategories, Category} from 'client/ssr/blocks/categories/context';
 import CategoriesList from 'client/ssr/blocks/categories/CategoriesList';
-import {ICategories} from 'client/ssr/blocks/categories/interface';
+import { ICategories } from 'client/common/categories/interface'
 
 require('./Categories.sass');
 
-interface CategoriesComponent {
+interface ICategoriesComponent {
 	categories: ICategories;
 }
 
-const Categories: React.SFC<CategoriesComponent> = ({categories}: { categories: Category }) => {
+const Categories: React.SFC<ICategoriesComponent> = ({ categories }: { categories: Category }) => {
 	return (
 		<section className='section-xs'>
 			<div className='container'>
