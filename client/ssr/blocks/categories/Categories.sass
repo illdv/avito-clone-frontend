@@ -12,9 +12,11 @@
     grid-column-end: span 2
     grid-row-end: span 1
     position: relative
+    overflow: hidden
 
 .category__caption
     margin-bottom: 0
+    position: relative
 
 .tile__image
     position: absolute
@@ -26,6 +28,7 @@
 
 .category .category__count
     font-size: 14px
+    position: relative
 
 .tile_vertical
     box-sizing: border-box
@@ -33,6 +36,7 @@
     grid-column-end: span 1
     grid-row-end: span 2
     position: relative
+    overflow: hidden
 
 .tile__inner
     padding: 16px
@@ -42,6 +46,26 @@
 
 .tile__image.right
     right: 3px
+
+.tile:not(.tile-categories)::before, .tile_vertical::before
+    position: absolute
+    display: block
+    width: 0
+    height: 0
+    border-radius: 50%
+    background-color: #FFB91B
+    transition: width 0.6s ease-in-out, height 0.6s ease-in-out
+    -webkit-transform: translate(-50%, -50%)
+    transform: translate(-50%, -50%)
+    z-index: 0
+    content: ""
+
+.tile:hover:before, .tile_vertical:hover:before
+    width: 1000px
+    height: 1000px
+
+
+
 
 @media (max-width: 991px) and (min-width: 768px)
     .tiles
