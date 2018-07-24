@@ -1,12 +1,16 @@
 export const findCategoriesQueueBySlug = (categories, categorySlug): any[] | null => {
+	if (!categorySlug) {
+		return [];
+	}
+
 	return categories.reduce((acc, category) => {
 		if (acc) {
 			return acc;
 		}
 
-		const slug = category.title.toLowerCase();
+		const slug = category.slug.toLowerCase();
 
-		if (slug === categorySlug) {
+		if (slug === categorySlug.toLowerCase()) {
 			return [category];
 		} else {
 			if (category.children.length > 0) {
@@ -25,7 +29,7 @@ export const findCategoriesQueueBySlug = (categories, categorySlug): any[] | nul
 };
 
 export const categoryQueueToBreadcrumbsFormat = categoryQueue => {
-	if (!categoryQueue && categoryQueue.length < 1) {
+	if (!categoryQueue || categoryQueue.length < 1) {
 		return [];
 	}
 
@@ -38,17 +42,25 @@ export const categoryQueueToBreadcrumbsFormat = categoryQueue => {
 
 		return {
 			title: category.title + (totla || ''),
-			href: `/category/${ encodeURI(category.title) }`,
+			href: `/category/${ encodeURI(category.slug) }`,
 		};
 	});
 };
 
-export const getIdMainCategory = categoryQueue => {
-	return categoryQueue ? categoryQueue[0].id : null;
+export const getMainCategory = categoryQueue => {
+	return (categoryQueue && categoryQueue.length > 0) ? categoryQueue[0] : null;
+};
+
+export const getCurrentCategoryByQueue = categoryQueue => {
+	return (categoryQueue && categoryQueue.length > 0) ? categoryQueue[categoryQueue.length - 1] : null;
+}
+
+export const getIdFromCategory = categoty => {
+	return categoty ? categoty.id : null;
 };
 
 export const getSubcategoryByCategoryQueue = categoryQueue => {
-	if (!categoryQueue && categoryQueue.length < 1) {
+	if (!categoryQueue || categoryQueue.length < 1) {
 		return [];
 	}
 

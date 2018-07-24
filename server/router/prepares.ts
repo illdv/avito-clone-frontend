@@ -6,7 +6,9 @@ import {
 	findCategoriesQueueBySlug,
 	categoryQueueToBreadcrumbsFormat,
 	getSubcategoryByCategoryQueue,
-	getIdMainCategory,
+	getMainCategory,
+	getIdFromCategory,
+	getCurrentCategoryByQueue,
 } from '../utils/categoryPrepare';
 
 interface ISugar {
@@ -52,7 +54,6 @@ const getAdsByParams = async params => {
 	return response.data;
 };
 
-
 export const location: prepareMethod = async (sugar, req) => {
 	const ip = req.clientIp;
 
@@ -79,27 +80,76 @@ export const location: prepareMethod = async (sugar, req) => {
 export const category: prepareMethod = async ({params, query, path}) => {
 	const { categorySlug } = params;
 	const { data: categories } = await instance.get('/categories');
-	console.log('back');
+
 	try {
 		const categoryQueue    = findCategoriesQueueBySlug(categories, categorySlug);
 		const breadcrumbs      = categoryQueueToBreadcrumbsFormat(categoryQueue);
-		console.log('back', breadcrumbs);
+		const currentCategory  = getCurrentCategoryByQueue(categoryQueue);
+		const mainCategory     = getMainCategory(categoryQueue);
+		const mainCategoryId   = getIdFromCategory(mainCategory);
 
-		const idActiveCategory = getIdMainCategory(categoryQueue);
+		let subcategories = [];
+		const adGroupList = [];
 
-		const subcategories = getSubcategoryByCategoryQueue(categoryQueue);
-		let listAdsGroups   = [];
+		const reqForVipAds: any = { vip: 1, count: 4 };
+
+		if (currentCategory) {
+			reqForVipAds.category = currentCategory.id;
+			subcategories = subcategories.concat(getSubcategoryByCategoryQueue(categoryQueue));
+		} else {
+			subcategories = subcategories.concat(categories);
+		}
+
+		const vipAds = await getAdsByParams(reqForVipAds);
+
+		if (vipAds.data.length > 0) {
+			adGroupList.push({
+				id: 999999999999999, // <- Need fix
+				title: 'Vip ads',
+				ads: vipAds.data,
+			});
+		}
+
+		if (currentCategory) {
+			if (subcategories && subcategories.length > 0) {
+				subcategories.forEach(subcategory => {
+					if (subcategory.ads.length > 0) {
+						adGroupList.push({
+							title: subcategory.title,
+							ads: subcategory.ads,
+						});
+					}
+				});
+			} else {
+				if (currentCategory && currentCategory.ads.length > 0) {
+					adGroupList.push({
+						id: currentCategory.id,
+						title: currentCategory.title,
+						ads: currentCategory.ads,
+					});
+				}
+			}
+		} else {
+			const ads = await getAdsByParams({});
+	
+			if (ads.data.length > 0) {
+				adGroupList.push({
+					title: 'All ads',
+					ads: ads.data,
+				});
+			}
+		}
 
 		return {
 			categories,
 			breadcrumbs,
-			//subcategory
-			idActiveCategory,
+			mainCategoryId,
+			mainCategory,
 			subcategories,
-			listAdsGroups,
+			adGroupList,
 		};
 	} catch (err) {
-		console.log('err');
+		console.log(err);
 		return { categories, breadcrumbs: [], subcategory: [] };
 	}
 };
