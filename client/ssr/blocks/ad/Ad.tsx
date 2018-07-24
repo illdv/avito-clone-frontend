@@ -76,7 +76,7 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 			}
 		}, false);
 	}
-	formationImages = (images):IImage[] => {
+	formationImages = (images): IImage[] => {
 		return images.map(image => {
 			return {
 				original: image.file_url,
@@ -157,7 +157,10 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 									<span> {this.props.ad.total_visits} </span>
 									(Today's <span> {this.props.ad.today_visits}</span>)
 								</span>
-								<ButtonFavorites id={this.props.ad.id} is_favorite={this.props.ad.is_favorite}/>
+								<ButtonFavorites
+									id={this.props.ad.id}
+									is_favorite={this.props.ad.is_favorite}
+								/>
 							</div>
 							<div className='col-md-12 col-lg-4 price'>
 								<NumberFormat
@@ -170,7 +173,7 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 						</div>
 						<div className='row p-y-20'>
 							<SliderImages images={this.state.images}/>
-							<Feature options={this.props.ad.options} />
+							<Feature options={this.props.ad.options}/>
 						</div>
 						<div className='row'>
 							<Seller
