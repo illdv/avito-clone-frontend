@@ -15,11 +15,12 @@ import { isServer } from 'client/common/utils/utils';
 import { CustomStorage } from 'client/common/user/CustomStorage';
 import ResetPasswordModal from 'client/ssr/modals/forgot-password/ResetPasswordModal';
 import SuccessModal from 'client/ssr/modals/success/SuccessModal';
-import LocationModal from 'client/ssr/modals/location/LocationModal';
+import MainLocationModal from 'client/ssr/modals/location/MainLocationModal';
 import { initialize, ILocationSession, ILocationStoreState } from 'client/common/location/module';
 import { getLocationState } from 'client/common/store/selectors';
 import { showLocationModal } from 'client/ssr/modals/location/locationModalTriggers';
-import SearchLocationModal from 'client/ssr/modals/search-location/SearchLocationModal';
+import SearchLocationModal from 'client/ssr/modals/location/SearchLocationModal';
+import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
 
 require('../../../common/styles/main.sass');
 require('./Header.sass');
@@ -114,7 +115,7 @@ class Header extends Component<IProps, IState> {
 		if (idRegion) {
 			if (this.props.locationState.loaded.session.regions.length > 0) {
 				const result = this.props.locationState.loaded.session.regions.filter(region => {
-					return region.region_id = idRegion;
+					return region.region_id === idRegion;
 				});
 				if (result.length > 0) {
 					return result[0].title; 
@@ -125,7 +126,7 @@ class Header extends Component<IProps, IState> {
 		if (idCountry) {
 			if (this.props.locationState.loaded.session.countries.length > 0) {
 				const result = this.props.locationState.loaded.session.countries.filter(country => {
-					return country.country_id = idCountry;
+					return country.country_id === idCountry;
 				});
 				if (result.length > 0) {
 					return result[0].title; 
@@ -136,6 +137,8 @@ class Header extends Component<IProps, IState> {
 		return 'World';
 	}
 
+	showMainLocationModal = () => showLocationModal(ModalNames.location);
+
 	render() {
 		return (
 			<header>
@@ -143,7 +146,7 @@ class Header extends Component<IProps, IState> {
 				<SendCodeToEmailModal />
 				<ResetPasswordModal />
 				<SuccessModal />
-				<LocationModal />
+				<MainLocationModal />
 				<SearchLocationModal />
 				<div className='header header_top p-y-22 navbar-expand-sm'>
 					<div className='container'>
@@ -156,7 +159,7 @@ class Header extends Component<IProps, IState> {
 											className='header__location'
 										>
 											<i className='header__icon fas fa-map-marker-alt' />
-											<span onClick={showLocationModal}>{ this.localeName }</span>
+											<span onClick={this.showMainLocationModal}>{ this.localeName }</span>
 										</a>
 									</li>
 									<LanguageDropdown />

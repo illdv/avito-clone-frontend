@@ -7,7 +7,8 @@ import { getLocationState } from 'client/common/store/selectors';
 import { getCategories, Category } from 'client/ssr/blocks/categories/context';
 import { ILocationStoreState } from 'client/common/location/module';
 
-import { showSearchLocationModal } from 'client/ssr/modals/search-location/SearchLocationModalTriggers';
+import { showLocationModal } from 'client/ssr/modals/location/locationModalTriggers';
+import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
 
 require('./Search.sass');
 
@@ -108,7 +109,7 @@ class Search extends Component<SearchProps> {
 		if (idRegion) {
 			if (this.props.locationState.loaded.local.regions.length > 0) {
 				const result = this.props.locationState.loaded.local.regions.filter(region => {
-					return region.region_id = idRegion;
+					return region.region_id === idRegion;
 				});
 				if (result.length > 0) {
 					return result[0].title; 
@@ -119,7 +120,7 @@ class Search extends Component<SearchProps> {
 		if (idCountry) {
 			if (this.props.locationState.loaded.local.countries.length > 0) {
 				const result = this.props.locationState.loaded.local.countries.filter(country => {
-					return country.country_id = idCountry;
+					return country.country_id === idCountry;
 				});
 				if (result.length > 0) {
 					return result[0].title; 
@@ -129,6 +130,8 @@ class Search extends Component<SearchProps> {
 
 		return 'World';
 	}
+
+	showSearchLocationModal = () => showLocationModal(ModalNames.searchLocation);
 
 	render() {
 		return (
@@ -156,7 +159,7 @@ class Search extends Component<SearchProps> {
 										placeholder='Search'
 										defaultValue={this.localeName}
 										className='search__options form-control'
-										onClick={showSearchLocationModal}
+										onClick={this.showSearchLocationModal}
 									/>
 								</div>
 								<div className='form-group col-12 col-md-2'>

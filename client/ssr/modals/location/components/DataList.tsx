@@ -8,10 +8,12 @@ interface Data {
 }
 
 interface DataListProps {
-	label: string;
+	name: string;
 	data: Data[];
-	idActive: number;
-	labelEnabled: boolean;
+	inputId: string;
+	idActive: number|null;
+	inputClassName?: string;
+	groupClassName?: string;
 	onSelect: (id: number) => void;
 }
 
@@ -31,8 +33,7 @@ class DataList extends React.Component<DataListProps, DataListState> {
 
 	get active() {
 		const result = this.props.data.filter(item => item.id === this.props.idActive);
-		const result_2 = result.length > 0 ? result[0].title : '';
-		return result_2;
+		return result.length > 0 ? result[0].title : '';
 	}
 
 	onChange = e => {
@@ -42,13 +43,34 @@ class DataList extends React.Component<DataListProps, DataListState> {
 	}
 
 	onBlur = e => {
-		if (this.filtredValue.length > 0) {
+		if (this.filtredValue.length > 0 && this.state.value !== '') {
+			if (this.filtredValue[0].title !== this.state.value) {
+				this.setState({
+					value: this.filtredValue[0].title,
+				});
+			} 
 			this.props.onSelect(this.filtredValue[0].id);
 		} else {
 			this.setState({
 				error: 'No valid',
 			});
+			this.props.onSelect(null);
 		}
+	}
+
+	componentWillReceiveProps(newProps) {
+		if (newProps.idActive === null) {
+			this.setState({
+				value: '',
+				error: null,
+			});
+		}
+	}
+
+	shouldComponentUpdate(newProps: DataListProps, newSatate: DataListState) {
+		return  this.props.data !== newProps.data ||
+				this.props.idActive !== newProps.idActive ||
+				this.state.value !== newSatate.value;
 	}
 
 	get filtredValue(): Data[] {
@@ -57,47 +79,25 @@ class DataList extends React.Component<DataListProps, DataListState> {
 		});
 	}
 
-	get elementLabelEnabled() {
-		return (
-			<div className=''>
-				<div className='form-group'>
-					<label htmlFor='favorite_team'>{ this.props.label }</label>
-					<input
-						onChange={ this.onChange }
-						list={ this.props.label }
-						className='form-control'
-						onBlur={this.onBlur}
-						value={ this.state.value }
-					/>
-					<datalist id={ this.props.label } className='datalist'>
-						{
-							this.filtredValue.map((item, index) => (
-								index <= 10 && <option key={item.id} value={item.title} /> || null
-							))
-						}
-					</datalist>
-				</div>
-			</div>
-		);
-	}
-
-	get elementNoLabelEnabled() {
-		return (
-			<input onChange={ this.onChange } />
-		);
-	}
-
 	render() {
 		return (
-			<React.Fragment>
-				<div className='container'>
+			<div className={ this.props.groupClassName || '' }>
+				<input
+					onBlur={this.onBlur}
+					value={ this.state.value }
+					onChange={ this.onChange }
+					id={ this.props.inputId || '' }
+					list={`list-${ this.props.name }`}
+					className={ this.props.inputClassName || '' }
+				/>
+				<datalist id={`list-${ this.props.name }`} className='datalist'>
 					{
-						this.props.labelEnabled
-						? this.elementLabelEnabled
-						: this.elementNoLabelEnabled
+						this.filtredValue.map((item, index) => (
+							index <= 10 && <option key={item.id} value={item.title} /> || null
+						))
 					}
-				</div>
-			</React.Fragment>
+				</datalist>
+			</div>
 		);
 	}
 }

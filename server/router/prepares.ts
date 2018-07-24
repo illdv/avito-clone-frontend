@@ -20,15 +20,6 @@ const instance = axios.create({
 	},
 });
 
-const instanseForLocation = axios.create({
-	baseURL: process.env.API_FOR_LOCATION,
-	headers: {
-		'Content-Type': 'application/json',
-		'Accept': 'application/json',
-		'Accept-Language': 'en-US,en;q=0.9',
-	},
-});
-
 export const ads: prepareMethod = async () => {
 
 	const axiosData = await instance.get('/ads');
@@ -158,33 +149,40 @@ export const category: prepareMethod = async ({params, query, path}) => {
 	}
 };
 
-export const getCountries: prepareMethod = async () => {
-	try{
-		const response = await instanseForLocation.get('/countries');
+const getInstanseWithLanguageByReq = req => {
+	return axios.create({
+		baseURL: process.env.API_FOR_LOCATION,
+		headers: {
+			'Content-Type': 'application/json',
+			'Accept': 'application/json',
+			'Accept-Language': req.headers['accept-language'],
+		},
+	});
+};
+
+export const getCountries: prepareMethod = async (sugar, req) => {
+	try {
+		const response = await getInstanseWithLanguageByReq(req).get('/countries');
 		return response.data;
 	} catch (err) {
-		console.log(err)
 		return [];
 	}
 };
 
-export const getRegions: prepareMethod = async ({ query }) => {
-	try{
-		const response = await instanseForLocation.get(`/countries/${query.id}/regions/%20`);
+export const getRegions: prepareMethod = async ({ query }, req) => {
+	try {
+		const response = await getInstanseWithLanguageByReq(req).get(`/countries/${query.id}/regions/%20`);
 		return response.data;
 	} catch (err) {
-		console.log(err)
 		return [];
 	}
 };
 
-export const getCities: prepareMethod = async ({ query }) => {
-	try{
-		const response = await instanseForLocation.get(`/regions/${query.id}/cities/%20`);
-		console.log(response);
+export const getCities: prepareMethod = async ({ query }, req) => {
+	try {
+		const response = await getInstanseWithLanguageByReq(req).get(`/regions/${query.id}/cities/%20`);
 		return response.data;
 	} catch (err) {
-		console.log(err)
 		return [];
 	}
 };

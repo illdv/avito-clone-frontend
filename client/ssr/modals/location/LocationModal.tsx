@@ -1,8 +1,6 @@
 import React from 'react';
-import { connect } from 'react-redux';
 
 import { ModalNames } from 'client/common/modal-juggler/modalJugglerInterface';
-import { getLocationState } from 'client/common/store/selectors';
 import Modal from 'client/common/modal-juggler/Modal';
 import {
 	changeCityLocal,
@@ -14,86 +12,111 @@ import {
 	ILocationStoreState,
 } from 'client/common/location/module';
 import DataList from './components/DataList';
+import { hideLocationModal } from './locationModalTriggers';
 
 export interface ILocationModalProps {
-	locationState: ILocationStoreState;
-	changeCityLocal: (id: number) => void;
-	changeCitySession: (id: number) => void;
-	changeCountryLocal: (id: number) => void;
-	changeCountrySession: (id: number) => void;
-	changeRegionLocal: (id: number) => void;
-	changeRegionSession: (id: number) => void;
+	name: ModalNames;
+	countries: any[];
+	regions: any[];
+	cities: any[];
+	idCountry: number;
+	idRegion: number;
+	idCity: number;
+	changeCity: (id: number) => void;
+	changeRegion: (id: number) => void;
+	changeCountry: (id: number) => void;
 }
-
-const mapStateToProps = state => ({
-	locationState: getLocationState(state),
-});
-
-const mapDispatchToProps = dispatch => ({
-	changeCityLocal: id => dispatch(changeCityLocal(id)),
-	changeCitySession: id => dispatch(changeCitySession(id)),
-	changeCountryLocal: id => dispatch(changeCountryLocal(id)),
-	changeCountrySession: id => dispatch(changeCountrySession(id)),
-	changeRegionLocal: id => dispatch(changeRegionLocal(id)),
-	changeRegionSession: id => dispatch(changeRegionSession(id)),
-});
 
 export class LocationModal extends React.Component<ILocationModalProps> {
 
 	get prepareDataForCountry() {
-		return this.props.locationState.loaded.session.countries.map(item => ({
+		const result = this.props.countries.map(item => ({
 			id: item.country_id,
 			title: item.title,
 		}));
+		return [...result];
 	}
 
 	get prepareDataForRegion() {
-		return this.props.locationState.loaded.session.regions.map(item => ({
+		const result = this.props.regions.map(item => ({
 			id: item.region_id,
 			title: item.title,
 		}));
+		return [...result];
 	}
 
 	get prepareDataForCity() {
-		return this.props.locationState.loaded.session.cities.map(item => ({
+		const result = this.props.cities.map(item => ({
 			id: item.city_id,
 			title: item.title,
 		}));
+		return [...result];
+	}
+
+	close = () => {
+		hideLocationModal(this.props.name);
 	}
 
 	render() {
 		return (
-			<Modal name={ModalNames.location} useOnRequestClose={true}>
-				<div className='login-block'>
-					<div className='login-links'>
-						<a
-							className={`p-x-22`}
-						>
-							SET LOCATION
-						</a>
+			<Modal name={this.props.name} useOnRequestClose={true}>
+				<div className='modal-content'>
+					<div className='modal-header'>
+						<h4 className='modal-title' id='exampleModalLongTitle'>Choose your location</h4>
+						<button type='button' className='close' onClick={this.close} >
+							<span>&times;</span>
+						</button>
 					</div>
-					<div className='login-form'>
-						<DataList
-							label={'Country'}
-							labelEnabled={true}
-							data={this.prepareDataForCountry}
-							onSelect={this.props.changeCountrySession}
-							idActive={this.props.locationState.session.idCountry}
-						/>
-						<DataList
-							label={'State'}
-							labelEnabled={true}
-							data={this.prepareDataForRegion}
-							onSelect={this.props.changeRegionSession}
-							idActive={this.props.locationState.session.idRegion}
-						/>
-						<DataList
-							label={'City'}
-							labelEnabled={true}
-							data={this.prepareDataForCity}
-							onSelect={this.props.changeCitySession}
-							idActive={this.props.locationState.session.idCity}
-						/>
+					<div className='modal-body'>
+						<div>
+							<form action='' className='choose-location'>
+								<div className='form-group row align-items-center'>
+						   			<label htmlFor='chooseCountry' className='col-3 choose-location__label'>
+									   Country
+									</label>
+									<DataList
+										name='country'
+										groupClassName='col-8'
+										inputId='chooseCountry'
+										inputClassName='form-control datalist'
+										data={this.prepareDataForCountry}
+										onSelect={this.props.changeCountry}
+										idActive={this.props.idCountry}
+									/>
+								</div>
+								<div className='form-group row align-items-center'>
+						   			<label htmlFor='chooseState' className='col-3 choose-location__label'>
+									   State(region)
+									</label>
+									<DataList
+										name='state'
+										groupClassName='col-8'
+										inputId='chooseState'
+										inputClassName='form-control datalist'
+										data={this.prepareDataForRegion}
+										onSelect={this.props.changeRegion}
+										idActive={this.props.idRegion}
+									/>
+								</div>
+								<div className='form-group row align-items-center'>
+						   			<label htmlFor='chooseCity' className='col-3 choose-location__label'>
+									   City
+									</label>
+									<DataList
+										name='city'
+										groupClassName='col-8'
+										inputId='chooseCity'
+										inputClassName='form-control datalist'
+										data={this.prepareDataForCity}
+										onSelect={this.props.changeCity}
+										idActive={this.props.idCity}
+									/>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div className='modal-footer'>
+						<button type='button' className='btn button button_bright w-100' onClick={this.close}>Confirm location</button>
 					</div>
 				</div>
 			</Modal>
@@ -101,4 +124,4 @@ export class LocationModal extends React.Component<ILocationModalProps> {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LocationModal);
+export default LocationModal;

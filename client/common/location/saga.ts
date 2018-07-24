@@ -1,7 +1,9 @@
 import { select, takeEvery, call, put } from 'redux-saga/effects';
 import { get } from '../loader-prepare/loaderPrepare';
-import { Toasts } from 'client/common/utils/Toasts';
-import { showLocationModal } from 'client/ssr/modals/location/locationModalTriggers';
+import { Toasts } from '../../common/utils/Toasts';
+
+import { ModalNames } from '../../common/modal-juggler/modalJugglerInterface';
+import { showLocationModal } from '../../ssr/modals/location/locationModalTriggers';
 
 import { getLocationState } from '../store/selectors';
 import { ILocationStoreState, ILocationSession, IRegion, ICity } from './locationInterface';
@@ -40,7 +42,7 @@ function* sagaInitializeLocation(action) {
 			},
 		}));
 		
-		showLocationModal();
+		showLocationModal(ModalNames.location);
 		return null;
 	}
 
@@ -72,8 +74,32 @@ function* sagaChangeCountryForSession(action) {
 	const locationState: ILocationStoreState = yield select(getLocationState);
 	const idCountry: number = action.payload;
 
-	if (locationState.session.idCity === idCountry) {
-		return null;
+	if (!idCountry || locationState.session.idCountry === idCountry) {
+		yield put(changeState({
+			...locationState,
+			session: {
+				idCountry: null,
+				idRegion: null,
+				idCity: null,
+			},
+			local: {
+				idCountry: null,
+				idRegion: null,
+				idCity: null,
+			},
+			loaded: {
+				session: {
+					...locationState.loaded.session,
+					regions: [],
+					cities: [],
+				},
+				local: {
+					...locationState.loaded.local,
+					regions: [],
+					cities: [],
+				},
+			},
+		}));
 	} else {
 		try {
 			const getRegions = yield call(get, 'getRegions', { id: idCountry });
@@ -88,9 +114,18 @@ function* sagaChangeCountryForSession(action) {
 					idRegion: null,
 					idCity: null,
 				},
+				local: {
+					idCountry,
+					idRegion: null,
+					idCity: null,
+				},
 				loaded: {
-					...locationState.loaded,
 					session: {
+						countries: locationState.loaded.session.countries,
+						regions,
+						cities: [],
+					},
+					local: {
 						countries: locationState.loaded.session.countries,
 						regions,
 						cities: [],
@@ -107,8 +142,23 @@ function* sagaChangeCountryForLocal(action) {
 	const locationState: ILocationStoreState = yield select(getLocationState);
 	const idCountry: number = action.payload;
 
-	if (locationState.local.idCity === idCountry) {
-		return null;
+	if (!idCountry || locationState.local.idCountry === idCountry) {
+		yield put(changeState({
+			...locationState,
+			local: {
+				idCountry: null,
+				idRegion: null,
+				idCity: null,
+			},
+			loaded: {
+				...locationState.loaded,
+				local: {
+					...locationState.loaded.local,
+					regions: [],
+					cities: [],
+				},
+			},
+		}));
 	} else {
 		try {
 			const getRegions = yield call(get, 'getRegions', { id: idCountry });
@@ -124,7 +174,7 @@ function* sagaChangeCountryForLocal(action) {
 				loaded: {
 					...locationState.loaded,
 					local: {
-						countries: locationState.loaded.local.countries,
+						...locationState.loaded.local,
 						regions,
 						cities: [],
 					},
@@ -140,8 +190,20 @@ function* sagaChangeRegionForSession(action) {
 	const locationState: ILocationStoreState = yield select(getLocationState);
 	const idRegion: number = action.payload;
 
-	if (locationState.session.idCity === idRegion) {
-		return null;
+	if (!idRegion || locationState.session.idRegion === idRegion) {
+		yield put(changeState({
+			...locationState,
+			session: {
+				...locationState.local,
+				idRegion: null,
+				idCity: null,
+			},
+			local: {
+				...locationState.local,
+				idRegion: null,
+				idCity: null,
+			},
+		}));
 	} else {
 		try {
 			const getCities = yield call(get, 'getCities', { id: idRegion });
@@ -156,9 +218,18 @@ function* sagaChangeRegionForSession(action) {
 					idRegion,
 					idCity: null,
 				},
+				local: {
+					...locationState.session,
+					idRegion,
+					idCity: null,
+				},
 				loaded: {
-					...locationState.loaded,
 					session: {
+						countries: locationState.loaded.session.countries,
+						regions: locationState.loaded.session.regions,
+						cities,
+					},
+					local: {
 						countries: locationState.loaded.session.countries,
 						regions: locationState.loaded.session.regions,
 						cities,
@@ -175,8 +246,15 @@ function* sagaChangeRegionForLocal(action) {
 	const locationState: ILocationStoreState = yield select(getLocationState);
 	const idRegion: number = action.payload;
 
-	if (locationState.local.idCity === idRegion) {
-		return null;
+	if (!idRegion || locationState.local.idRegion === idRegion) {
+		yield put(changeState({
+			...locationState,
+			local: {
+				...locationState.local,
+				idRegion: null,
+				idCity: null,
+			},
+		}));
 	} else {
 		try {
 			const getCities = yield call(get, 'getCities', { id: idRegion });
@@ -210,13 +288,27 @@ function* sagaChangeCityForSession(action) {
 
 	localStorage.setItem('idCity', String(idCity));
 
-	if (locationState.local.idCity === idCity) {
-		return null;
+	if (!idCity || locationState.local.idCity === idCity) {
+		yield put(changeState({
+			...locationState,
+			session: {
+				...locationState.local,
+				idCity: null,
+			},
+			local: {
+				...locationState.local,
+				idCity: null,
+			},
+		}));
 	} else {
 		try {
 			yield put(changeState({
 				...locationState,
 				session: {
+					...locationState.session,
+					idCity,
+				},
+				local: {
 					...locationState.session,
 					idCity,
 				},
@@ -231,14 +323,20 @@ function* sagaChangeCityForLocal(action) {
 	const locationState: ILocationStoreState = yield select(getLocationState);
 	const idCity: number = action.payload;
 
-	if (locationState.local.idCity === idCity) {
-		return null;
+	if (!idCity || locationState.local.idCity === idCity) {
+		yield put(changeState({
+			...locationState,
+			local: {
+				...locationState.local,
+				idCity: null,
+			},
+		}));
 	} else {
 		try {
 			yield put(changeState({
 				...locationState,
 				local: {
-					...locationState.session,
+					...locationState.local,
 					idCity,
 				},
 			}));
@@ -265,6 +363,15 @@ function* watcherLocation() {
 
 export {
 	sagaInitializeLocation,
+
+	sagaChangeCityForLocal,
+	sagaChangeCityForSession,
+
+	sagaChangeRegionForLocal,
+	sagaChangeRegionForSession,
+	
+	sagaChangeCountryForLocal,
+	sagaChangeCountryForSession,
 };
 
 export default [watcherLocation];
