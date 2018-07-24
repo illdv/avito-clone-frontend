@@ -53,3 +53,5 @@ export const Breadcrumbs = (props: IBreadcrumbsPrivateProps) => {
 		</ol>
 	);
 };
+
+export default Breadcrumbs;

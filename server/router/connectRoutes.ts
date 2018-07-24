@@ -15,7 +15,7 @@ export const initialRoutes = (server, appNext) => {
 						throw new Error(`Prepare [${ prepareName }] is not function`);
 					}
 
-					acc[prepareName] = await prepares[prepareName](params, query, path);
+					acc[prepareName] = await prepares[prepareName]({ params, query, path }, req);
 					return acc;
 				} catch (error) {
 					throw error;
@@ -27,9 +27,9 @@ export const initialRoutes = (server, appNext) => {
 	});
 
 	server.post('/prepare', async (req, res) => {
-		if (!req.body) {
-			return res.status(400).json({ error: 'Query without body' });
-		}
+        if (!req.body) {
+            return res.status(400).json({ error: 'Query without body' });
+        }
 
 		const { prepareName, query, params, path } = req.body;
 
@@ -46,10 +46,10 @@ export const initialRoutes = (server, appNext) => {
 		}
 
 		try {
-			const result = await prepares[prepareName](params, query, path);
+			const result = await prepares[prepareName]({ params, query, path }, req);
 			res.status(200).json(result);
 		} catch (error) {
-			res.staus(500).end();
+			res.status(500).end();
 		}
 	});
 };
