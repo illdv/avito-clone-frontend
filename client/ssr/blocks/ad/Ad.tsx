@@ -46,18 +46,10 @@ const user = {
 class Ads extends React.Component <IAdsProps, IAdsState> {
 	formatCategoriesToCrumbs = (categories): ICrumb[] => {
 		return categories.map(category => {
-			if (categories.length > 0){
-				return {
-					title: category.title,
-					href: '/category/' + encodeURI(category.title),
-				};
-			} else {
-				return {
-					title: category.title,
-					href: categories[0].href + encodeURI(category.title),
-				};
+			return {
+				title: category.title,
+				href: '/category/' + encodeURI(category.title),
 			}
-
 		});
 
 	}
@@ -85,7 +77,7 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 			}
 		}, false);
 	}
-	formationImages = (images):IImage[] => {
+	formationImages        = (images): IImage[] => {
 		return images.map(image => {
 			return {
 				original: image.file_url,
@@ -100,7 +92,7 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 
 		const queue       = this.recurseGetAdCategories(this.props.categories, this.props.ad.category_id);
 		const queueCrumbs = this.formatCategoriesToCrumbs(queue);
-		const slider = this.formationImages(this.props.ad.images);
+		const slider      = this.formationImages(this.props.ad.images);
 
 		const crumbs: ICrumb[] = [].concat(this.firstCrumbs, queueCrumbs, this.lastCrumbItem);
 		const images: IImage[] = [].concat(slider);
@@ -178,11 +170,15 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 							</div>
 						</div>
 						<div className='row p-y-20'>
-							<SliderImages images={this.state.images}/>
+							<SliderImages images={this.state.images} />
 							<Feature options={this.props.ad.options} />
 						</div>
 						<div className='row'>
-							<Seller seller={this.props.ad.user} city={this.props.ad.city.title} country={this.props.ad.city.country.title} />
+							<Seller
+								seller={this.props.ad.user}
+								city={this.props.ad.city.title}
+								country={this.props.ad.city.country.title}
+							/>
 						</div>
 					</div>
 				</section>
@@ -190,7 +186,7 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 					<div className='container'>
 						<Description body={this.props.ad.body} />
 						{/*<VehicleKit />*/}
-						<Chart randomAd={this.props.ad.random_ad}/>
+						<Chart similar_ad={this.props.ad.similar_ad} id_parent={this.props.ad.id}/>
 					</div>
 				</section>
 			</React.Fragment>

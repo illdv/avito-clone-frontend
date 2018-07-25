@@ -7,7 +7,7 @@ class Chart extends Component<IChart> {
 		return (
 			<div className='row p-t-60'>
 				<div className='col-lg-8 bg-grey'>PLACE FOR CHART</div>
-				<SimilarAds random={this.props.randomAd} /> 
+				<SimilarAds similar_ad={this.props.similar_ad} id_parent={this.props.id_parent}/>
 			</div>
 		)
 	}

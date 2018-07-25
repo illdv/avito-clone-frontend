@@ -38,6 +38,10 @@ function complete(id: string) {
 	return AxiosWrapper.put(`/ads/complete/${id}`);
 }
 
+function similar(sort: string, id: string) {
+	return AxiosWrapper.get(`ad/${id}/similar/${sort}`);
+}
+
 export const AdsAPI = {
 	get,
 	getMy,
@@ -48,4 +52,5 @@ export const AdsAPI = {
 	activate,
 	complete,
 	edit,
+	similar,
 };
