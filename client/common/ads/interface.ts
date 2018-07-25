@@ -1,5 +1,20 @@
 import { Images } from 'client/spa/pages/createAd/ImageSelector';
 
+export enum MyAdsStatus {
+	Disapproved = 'Disapproved',
+	Active      = 'Active',
+	Completed   = 'Completed',
+}
+
+export enum AdsActionType {
+	Approve    = 'approve',
+	Disapprove = 'disapprove',
+	Activate   = 'activate',
+	Deactivate = 'deactivate',
+	Complete   = 'complete',
+	Uncomplete = 'uncomplete',
+}
+
 export interface IType {
 	id: number;
 	name: string;
@@ -28,11 +43,11 @@ export interface IAds {
 	description: string;
 	body: string;
 	price: string;
-	is_published?: number;
-	is_approved?: number;
-	is_active?: number;
-	is_completed?: number;
-	is_vip: number;
+	is_published?: boolean;
+	is_approved?: boolean;
+	is_active?: boolean;
+	is_completed?: boolean;
+	is_vip: boolean;
 	created_at?: string;
 	updated_at?: string;
 	deleted_at?: any;
@@ -55,8 +70,8 @@ export interface ICreateAdRequest {
 	longitude: number;
 	latitude: number;
 	category_id: string;
-	is_published: number;
-	is_vip: number;
+	is_published: boolean;
+	is_vip: boolean;
 	phone: string;
 	images: Images[];
 }
