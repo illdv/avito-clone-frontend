@@ -67,9 +67,9 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 	constructor(props) {
 		super(props);
 
-		const queue       = this.recurseGetAdCategories(this.props.categories, this.props.ad.category_id);
+		const queue = this.recurseGetAdCategories(this.props.categories, this.props.ad.category_id);
 		const queueCrumbs = this.formatCategoriesToCrumbs(queue);
-		const slider      = this.formationImages(this.props.ad.images);
+		const slider = this.formationImages(this.props.ad.images);
 
 		const crumbs: ICrumb[] = [].concat(this.firstCrumbs, queueCrumbs, this.lastCrumbItem);
 		const images: IImage[] = [].concat(slider);
@@ -78,6 +78,10 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 			crumbs,
 			lastCrumb: queueCrumbs[queueCrumbs.length - 1],
 			images,
+			default_map: {
+				lat: this.props.ad.latitude,
+				lng: this.props.ad.longitude,
+			},
 		};
 	}
 
@@ -104,7 +108,7 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 					<div className='container'>
 						<div className='row'>
 							<div className='col-md-9'>
-								<Breadcrumbs breadcrumbs={this.state.crumbs}/>
+								<Breadcrumbs breadcrumbs={this.state.crumbs} />
 							</div>
 							<div className='col-md-3'>
 								<div className='back-next'>
@@ -113,7 +117,7 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 									</Link>
 									<Link href={`${this.props.ad.next_ad}`}>
 										<a className='back-next__link orange-text'>
-											Next<i className='fas fa-arrow-right p-l-5 f-s-12 orange-text'/>
+											Next<i className='fas fa-arrow-right p-l-5 f-s-12 orange-text' />
 										</a>
 									</Link>
 								</div>
@@ -127,11 +131,11 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 									added <span>{this.props.ad.created_at}</span>
 								</h6>
 								<span>
-									<i className='fas fa-sync-alt orange-text'/>
+									<i className='fas fa-sync-alt orange-text' />
 									<span> {this.props.ad.updated_at} </span>
 								</span>
 								<span className='p-l-15'>
-									<i className='fas fa-eye orange-text'/>
+									<i className='fas fa-eye orange-text' />
 									<span> {this.props.ad.total_visits} </span>
 									(Today's <span> {this.props.ad.today_visits}</span>)
 								</span>
@@ -163,9 +167,13 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 				</section>
 				<section className='section-mb'>
 					<div className='container'>
-						<Description body={this.props.ad.body}/>
+						<Description body={this.props.ad.body} />
 						{/*<VehicleKit />*/}
-						<Chart similar_ad={this.props.ad.similar_ad} id_parent={this.props.ad.id}/>
+						<Chart
+							similar_ad={this.props.ad.similar_ad}
+							id_parent={this.props.ad.id}
+							default_map={this.state.default_map}
+						/>
 					</div>
 				</section>
 			</React.Fragment>

@@ -28,6 +28,7 @@ class SimilarSortedBy extends Component<any, ISimilarSortState> {
 					<option
 						value={this.state.filter}
 						hidden
+						selected
 					>Sort by
 					</option>
 					{filters.map((filter) => {

@@ -26,6 +26,8 @@ export interface IAd {
 	user: ISeller;
 	category_id: string;
 	city: IAdCity;
+	latitude: number;
+	longitude: number;
 }
 export interface ISimilarSortState {
 	similar_ad?: ISimilarAd;
@@ -46,6 +48,10 @@ export interface IAdsState {
 	crumbs: ICrumb[];
 	lastCrumb: ICrumb;
 	images: IImage[];
+	default_map: {
+		lat: number;
+		lng: number;
+	};
 }
 
 export interface ISliderProps {
@@ -104,6 +110,10 @@ export interface ISimilar {
 export interface IChart {
 	similar_ad: ISimilarAd;
 	id_parent: string;
+	default_map: {
+		lat: number;
+		lng: number;
+	};
 }
 
 export interface IFavorites {
