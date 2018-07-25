@@ -115,6 +115,7 @@ export class LocationModal extends React.Component<ILocationModalProps> {
 							</form>
 						</div>
 					</div>
+					{this.props.children}
 					<div className='modal-footer'>
 						<button type='button' className='btn button button_bright w-100' onClick={this.close}>Confirm location</button>
 					</div>

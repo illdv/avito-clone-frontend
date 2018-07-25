@@ -10,6 +10,7 @@ import {
 	ILocationStoreState,
 } from 'client/common/location/module';
 import LocationModal from './LocationModal';
+import { hideLocationModal } from './locationModalTriggers';
 
 export interface IMainLocationModalProps {
 	locationState: ILocationStoreState;
@@ -30,6 +31,11 @@ const mapDispatchToProps = dispatch => ({
 
 export class MainLocationModal extends React.Component<IMainLocationModalProps> {
 
+	doNotAskAgain = () => {
+		localStorage.setItem('location-ask', 'no-ask');
+		hideLocationModal(ModalNames.location);
+	}
+
 	render() {
 		return (
 			<LocationModal
@@ -43,7 +49,13 @@ export class MainLocationModal extends React.Component<IMainLocationModalProps> 
 				changeCountry={this.props.changeCountrySession}
 				changeRegion={this.props.changeRegionSession}
 				changeCity={this.props.changeCitySession}
-			/>
+			>
+				<div className='container'>
+					<button onClick={this.doNotAskAgain} className='btn btn-link'>
+						Do not ask again.
+					</button>
+				</div>
+			</LocationModal>
 		);
 	}
 }

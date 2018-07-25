@@ -25,7 +25,9 @@ function* sagaInitializeLocation(action) {
 	const payload: ILocationStoreState = action.payload;
 
 	if (!payload.session.idCity && !payload.session.idRegion && !payload.session.idCountry) {
-		showLocationModal(ModalNames.location);
+		if (localStorage.getItem('location-ask') !== 'no-ask') {
+			showLocationModal(ModalNames.location);
+		}
 	}
 }
 

@@ -24,19 +24,26 @@ const Profile = dynamic(import('client/spa/pages/Profile') as any, {
 	loading: () => <h1>Loading SPA</h1>,
 });
 
-export default () => (
-	<div>
-		<React.Fragment>
-			<Head>
-				<meta
-					property='og:description'
-					content='Content'
-				/>
-				<title>Index page</title>
-			</Head>
-			<Header />
-			<Profile />
-			<ToastContainer />
-		</React.Fragment>
-	</div>
-);
+export default class extends React.Component {
+	static async getInitialProps({ query }) {
+		return { location: query.location };
+	}
+	render(){
+		return (
+			<div>
+				<React.Fragment>
+					<Head>
+						<meta
+							property='og:description'
+							content='Content'
+						/>
+						<title>Index page</title>
+					</Head>
+					<Header />
+					<Profile />
+					<ToastContainer />
+				</React.Fragment>
+			</div>
+		);
+	}
+}
