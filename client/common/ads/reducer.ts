@@ -17,7 +17,7 @@ export interface IAdsState {
 }
 
 const initialState = (): IAdsState => ({
-	ads: null,
+	ads: [],
 	isLoading: true,
 	selectedId: null,
 	currentPage: PageName.Profile,
