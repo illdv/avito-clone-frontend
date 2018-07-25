@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect, Dispatch } from 'react-redux';
 
 import Breadcrumbs from './components/Breadcrumbs';
 import SliderImages from './components/SliderImages';
@@ -9,7 +10,9 @@ import { IAdsProps, IAdsState, ICrumb, IImage } from 'client/ssr/blocks/ad/inter
 import Feature from 'client/ssr/blocks/ad/components/Feature';
 import Description from 'client/ssr/blocks/ad/components/Description';
 import Link from 'next/link';
-import ButtonFavorites from 'client/ssr/blocks/ad/components/ButtonFavorites';
+import { bindModuleAction } from 'client/common/user/utils';
+import { UserActions } from 'client/common/user/actions';
+import { ButtonFavorites} from 'client/ssr/blocks/ad/components/ButtonFavorites';
 
 require('./Ad.sass');
 
@@ -54,7 +57,7 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 			}
 		}, false);
 	}
-	formationImages        = (images): IImage[] => {
+	formationImages = (images): IImage[] => {
 		return images.map(image => {
 			return {
 				original: image.file_url,
@@ -62,14 +65,14 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 
 			};
 		});
-	}
+	};
 
 	constructor(props) {
 		super(props);
 
 		const queue = this.recurseGetAdCategories(this.props.categories, this.props.ad.category_id);
 		const queueCrumbs = this.formatCategoriesToCrumbs(queue);
-		const slider = this.formationImages(this.props.ad.images);
+		const slider      = this.formationImages(this.props.ad.images);
 
 		const crumbs: ICrumb[] = [].concat(this.firstCrumbs, queueCrumbs, this.lastCrumbItem);
 		const images: IImage[] = [].concat(slider);
@@ -88,9 +91,7 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 	get firstCrumbs(): ICrumb {
 		return {
 			title: 'All listings in ' + this.props.ad.city.title,
-			// title: 'All listings in ' + 'Moscow',
 			href: encodeURI('/' + this.props.ad.city.title),
-			// href: encodeURI('/' + 'moscow'),
 		};
 	}
 
@@ -101,9 +102,13 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 		};
 	}
 
+	selectFavorite = (id: string) => {
+		this.props.userActions.selectFavorite.REQUEST({ id });
+	};
+
 	render() {
 		return (
-			<React.Fragment>
+			<>
 				<section className='heading'>
 					<div className='container'>
 						<div className='row'>
@@ -116,8 +121,8 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 										<a className='back-next__link orange-text'>Back</a>
 									</Link>
 									<Link href={`${this.props.ad.next_ad}`}>
-										<a className='back-next__link orange-text'>
-											Next<i className='fas fa-arrow-right p-l-5 f-s-12 orange-text' />
+										<a className='back-next__link orange-text'>Next
+											<i className='fas fa-arrow-right p-l-5 f-s-12 orange-text'/>
 										</a>
 									</Link>
 								</div>
@@ -141,6 +146,7 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 								</span>
 								<ButtonFavorites
 									id={this.props.ad.id}
+									selectFavorite={this.selectFavorite}
 								/>
 							</div>
 							<div className='col-md-12 col-lg-4 price'>
@@ -177,9 +183,12 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 						/>
 					</div>
 				</section>
-			</React.Fragment>
+			</>
 		);
 	}
 }
 
-export default Ads;
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+	userActions: bindModuleAction(UserActions, dispatch),
+});
+export default connect(null, mapDispatchToProps)(Ads);

@@ -7,7 +7,7 @@ import { AdsActions, IAdsActions } from 'client/common/ads/actions';
 import { IAdsState } from 'client/common/ads/reducer';
 import { AdsActionType, IAds, MyAdsStatus } from 'client/common/ads/interface';
 import { filterMyAds } from 'client/spa/pages/utils';
-import { extractPreviewImage } from 'client/ssr/blocks/ad/utils'
+import { extractPreviewImage } from 'client/ssr/blocks/ad/utils';
 
 export interface IState {
 	selectedFilter: MyAdsStatus;
@@ -161,10 +161,6 @@ class MyAds extends Component<IProps, IState> {
 
 	render() {
 		const { isLoading, ads } = this.props.ads;
-
-		if (isLoading) {
-			return <h1>Loading...</h1>;
-		}
 
 		const selectedFilter = this.state.selectedFilter;
 		const filteredAds    = filterMyAds(selectedFilter, ads);

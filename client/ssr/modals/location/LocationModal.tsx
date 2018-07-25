@@ -59,7 +59,7 @@ export class LocationModal extends React.Component<ILocationModalProps> {
 
 	render() {
 		return (
-			<Modal name={this.props.name} useOnRequestClose={true}>
+			<Modal name={this.props.name} useOnRequestClose={true} autocomplete='off'>
 				<div className='modal-content'>
 					<div className='modal-header'>
 						<h4 className='modal-title' id='exampleModalLongTitle'>Choose your location</h4>
