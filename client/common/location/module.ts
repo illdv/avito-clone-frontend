@@ -52,6 +52,7 @@ const defaultState: ILocationStoreState = {
 			cities: [],
 		},
 	},
+	locationName: 'World',
 };
 
 const reducer = createReducer({}, defaultState);

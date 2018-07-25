@@ -44,4 +44,5 @@ export interface ILocationStoreState {
 	session: ILocationSession;
 	local: ILocationLocal;
 	loaded: ILoaded;
+	locationName: string;
 }

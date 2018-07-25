@@ -1,3 +1,5 @@
+import * as jsHttpCookie from 'cookie';
+
 export const findCategoriesQueueBySlug = (categories, categorySlug): any[] | null => {
 	if (!categorySlug) {
 		return [];
@@ -68,3 +70,72 @@ export const getSubcategoryByCategoryQueue = categoryQueue => {
 
 	return currentCategory.children;
 };
+
+export const getLocationsIdByRequest = req => {
+	const result = {
+		idCountry: null,
+		idRegion: null,
+		idCity: null,
+	};
+
+	if (req && req.headers) {
+		const cookies = req.headers.cookie;
+  
+		if (typeof cookies === 'string') {
+			const cookiesJSON = jsHttpCookie.parse(cookies);
+
+			if (cookiesJSON.idCountry) {
+				result.idCountry = Number(cookiesJSON.idCountry) || null;
+			}
+
+			if (cookiesJSON.idRegion) {
+				result.idRegion = Number(cookiesJSON.idRegion) || null
+			}
+
+			if (cookiesJSON.idCity) {
+				result.idCity = Number(cookiesJSON.idCity) || null
+			}
+		}
+	};
+
+	return result;
+}
+
+export const getLocationNameByLocations = (idCountry, idRegion, idCity, countries, regions, cities) => {
+	if (idCity) {
+		if (cities.length > 0) {
+
+			const result = cities.filter(city => {
+				return city.city_id === idCity;
+			});
+
+			if (result.length > 0) {
+				return result[0].title; 
+			}
+		}
+	}
+
+	if (idRegion) {
+		if (regions.length > 0) {
+			const result = regions.filter(region => {
+				return region.region_id === idRegion;
+			});
+			if (result.length > 0) {
+				return result[0].title; 
+			}
+		}
+	}
+
+	if (idCountry) {
+		if (countries.length > 0) {
+			const result = countries.filter(country => {
+				return country.country_id === idCountry;
+			});
+			if (result.length > 0) {
+				return result[0].title; 
+			}
+		}
+	}
+
+	return 'World';
+}

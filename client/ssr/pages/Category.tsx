@@ -50,13 +50,16 @@ class Category extends React.Component<ICategoryPageProps> {
 					this.props.adGroupList.length > 0
 					? (
 						this.props.adGroupList.map(category => (
-							category.ads.length > 0 &&
-								<ListOfAds
-									key={category.id}
-									title={category.title}
-									ads={category.ads}
-								/>
-							|| null
+							category.ads.length > 0
+								?
+									<React.Fragment key={category.id}>
+										<ListOfAds
+											title={category.title}
+											ads={category.ads}
+										/>
+									</React.Fragment>
+								:
+									<React.Fragment key={category.id} />
 						))
 					)
 					: <EmptySearch />
