@@ -13,6 +13,7 @@ import { AdsActions, IAdsActions } from 'client/common/ads/actions';
 import { bindModuleAction } from 'client/common/user/utils';
 import CreateAd, { IAdsDataForCreate } from 'client/spa/pages/createAd/CreateAd';
 import ProfileFooter from 'client/ssr/blocks/footer/ProfileFooter';
+import { INotificationActions, NotificationActions } from 'client/common/notification/actions';
 
 export interface IState {
 }
@@ -20,6 +21,7 @@ export interface IState {
 export interface IProps {
 	adsActions: IAdsActions;
 	ads: IAdsState;
+	notificationActions: INotificationActions;
 }
 
 const mapStateToProps = (state: IRootState) => ({
@@ -28,6 +30,7 @@ const mapStateToProps = (state: IRootState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 	adsActions: bindModuleAction(AdsActions, dispatch),
+	notificationActions: bindModuleAction(NotificationActions, dispatch),
 });
 
 export class Profile extends Component<IProps, IState> {
@@ -35,6 +38,13 @@ export class Profile extends Component<IProps, IState> {
 	state: IState = {
 		isCreate: false,
 	};
+
+	componentDidMount(): void {
+		if (!CustomStorage.getToken()) {
+			pushInRouter('/');
+		}
+		this.props.notificationActions.loading.REQUEST({});
+	}
 
 	onClickCreateAd = () => {
 		const currentPage = this.props.ads.currentPage;
@@ -66,12 +76,6 @@ export class Profile extends Component<IProps, IState> {
 			longitude: lng,
 			latitude: lat,
 		});
-	}
-
-	componentDidMount(): void {
-		if (!CustomStorage.getToken()) {
-			pushInRouter('/');
-		}
 	}
 
 	render() {

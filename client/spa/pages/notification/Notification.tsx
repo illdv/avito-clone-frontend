@@ -1,14 +1,16 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
+
 import { IRootState } from 'client/common/store/storeInterface';
 import { INotification } from 'client/common/notification/interface';
 import { INotificationState } from 'client/common/notification/reducer';
 import { INotificationActions, NotificationActions } from 'client/common/notification/actions';
 import { bindModuleAction } from 'client/common/user/utils';
+import { filterNotification } from 'client/spa/pages/notification/utils';
 
 export interface IState {
-
+	selectedFilter: FilterType;
 }
 
 export interface IProps {
@@ -24,28 +26,33 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 	notificationActions: bindModuleAction(NotificationActions, dispatch),
 });
 
+export enum FilterType {
+	Read   = 'Read',
+	NoRead = 'No read',
+	All    = 'All',
+}
+
 class Notification extends Component<IProps, IState> {
 
-	state: IState = {};
-
-	componentDidMount(): void {
-		this.props.notificationActions.loading.REQUEST({});
-	}
+	state: IState = {
+		selectedFilter: FilterType.All,
+	};
 
 	convertToItem = ({ id, title, isRead }: INotification) => {
 
 		return (
 			<div
-				style={{ background: isRead && '#ffb91b9c' || '' }}
+				style={{ background: isRead ? '' : '#ffb91b9c' }}
 				key={id}
 				className='offer-block__item'
+				onClick={this.onClick(id)}
 			>
 				<div className='offer-block__inner'>
 					<div className='row'>
 						<div className='col-9 d-flex'>
 							<div className='offer-block__info'>
 								<div>
-									<h5>{title}</h5>
+									<h5 style={{ margin: 10 }}>{title}</h5>
 								</div>
 							</div>
 						</div>
@@ -55,14 +62,63 @@ class Notification extends Component<IProps, IState> {
 		);
 	}
 
+	renderListNotification() {
+		const { data } = this.props.notification;
+
+		const notification = filterNotification(this.state.selectedFilter, data);
+
+		if (notification.length === 0) {
+			return <h2>Not notification</h2>;
+		}
+		return notification.map(this.convertToItem);
+	}
+
+	onSelectFilter = (selectedFilter: FilterType) => () => {
+		this.setState({ selectedFilter });
+	}
+
+	onClick = (id: string) => () => {
+		this.props.notificationActions.read.REQUEST({ id });
+	}
+
+	FilterButton = (props: { buttonFilter: FilterType, notifications: INotification[] }) => {
+		const { buttonFilter, notifications } = props;
+
+		const cont     = filterNotification(buttonFilter, notifications).length;
+		const isActive = buttonFilter === this.state.selectedFilter;
+
+		return (
+			<a
+				onClick={this.onSelectFilter(buttonFilter)}
+				className={`filter-offer__link ${isActive ? 'link-active' : ''}`}
+			>
+				{buttonFilter}
+				<span className='grey-text'> {cont}</span>
+			</a>
+
+		);
+	}
+
 	render() {
 		const { data } = this.props.notification;
 		return (
-			<div>
-				{
-					data.map(this.convertToItem)
-				}
-			</div>
+			<>
+				<div className='filter-offer d-flex'>
+					<this.FilterButton
+						buttonFilter={FilterType.All}
+						notifications={data}
+					/>
+					<this.FilterButton
+						buttonFilter={FilterType.NoRead}
+						notifications={data}
+					/>
+					<this.FilterButton
+						buttonFilter={FilterType.Read}
+						notifications={data}
+					/>
+				</div>
+				{this.renderListNotification()}
+			</>
 		);
 	}
 }

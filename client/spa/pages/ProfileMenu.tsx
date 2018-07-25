@@ -1,10 +1,14 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
+
 import { IRootState } from 'client/common/store/storeInterface';
 import { bindModuleAction } from 'client/common/user/utils';
 import { IUserActions, UserActions } from 'client/common/user/actions';
 import { MenuItem } from 'client/spa/pages/MainContent';
+import { INotificationState } from 'client/common/notification/reducer';
+import { filterNotification } from 'client/spa/pages/notification/utils'
+import { FilterType } from 'client/spa/pages/notification/Notification'
 
 export interface IState {
 
@@ -13,10 +17,11 @@ export interface IState {
 export interface IProps {
 	userActions: IUserActions;
 	onSelectMenuItem: (menuItem: MenuItem) => void;
+	notification: INotificationState;
 }
 
 const mapStateToProps = (state: IRootState) => ({
-	/// nameStore: state.nameStore
+	notification: state.notification,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -36,6 +41,11 @@ class ProfileMenu extends Component<IProps, IState> {
 	}
 
 	render() {
+
+		const { data } = this.props.notification;
+
+		const countNotReadNotification = filterNotification(FilterType.NoRead, data).length;
+
 		return (
 			<div className='account'>
 				<div className='account__person'>
@@ -67,7 +77,7 @@ class ProfileMenu extends Component<IProps, IState> {
 							className='account-navigation__item'
 						>
 							Notifications
-							{/*<span className='notification account__notification'>5</span>*/}
+							<span className='notification account__notification'>{countNotReadNotification}</span>
 						</li>
 						<li
 							className='account-navigation__item'
