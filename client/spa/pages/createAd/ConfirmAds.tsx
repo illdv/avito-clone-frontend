@@ -156,13 +156,13 @@ class ConfirmAds extends Component<IProps, IState> {
 								</div>
 							</div>
 							<div className='text-right'>
-								<a
+								{/*<a
 									onClick={this.props.onBack}
 									className='btn grey-btn-outline button_confirm'
 								>
 									<i className='fa fa-arrow-left'/>
 									Back
-								</a>
+								</a>*/}
 								<a
 									onClick={this.props.onCreate}
 									className='btn orange-btn button_confirm'
