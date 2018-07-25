@@ -42,6 +42,10 @@ function useAction(id: string, actionType: AdsActionType) {
 	return AxiosWrapper.put(`/ads/${id}/state/${actionType}`);
 }
 
+function similar(sort: string, id: string) {
+	return AxiosWrapper.get(`ad/${id}/similar/${sort}`);
+}
+
 export const AdsAPI = {
 	get,
 	getMy,
@@ -50,4 +54,5 @@ export const AdsAPI = {
 	remove,
 	edit,
 	useAction,
+	similar,
 };

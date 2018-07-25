@@ -17,7 +17,7 @@ interface ISugar {
 	params?: any;
 	query?: any;
 	path?: string;
-} 
+}
 
 type prepareMethod = (sugar: ISugar, req: any) => any;
 
@@ -187,7 +187,7 @@ export const category: prepareMethod = async ({params, query, path}, req) => {
 			}
 		} else {
 			const ads = await getAdsByParams({});
-	
+
 			if (ads.data.length > 0) {
 				adGroupList.push({
 					title: 'All ads',
