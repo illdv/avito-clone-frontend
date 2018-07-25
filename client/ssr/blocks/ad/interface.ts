@@ -116,6 +116,10 @@ export interface IChart {
 	};
 }
 
+export interface IChartState {
+	zoom: number;
+}
+
 export interface IFavorites {
 	id: string;
 }

@@ -90,18 +90,18 @@ class Lease extends Component<IProps> {
 		});
 	}
 
-	// componentDidMount() {
-	// 	if (window === void 0) {
-	// 		return;
-	// 	}// Если window отсутствует, значит это серверный рендеринг. На сервере крту мы не рендерим
-	//
-	// 	window.initAutocomplete = this.initAutocomplete;
-	//
-	// 	if (window.google !== void 0) {
-	// 		this.initAutocomplete();
-	// 	}
-	//
-	// }
+	componentDidMount() {
+		if (window === void 0) {
+			return;
+		}// Если window отсутствует, значит это серверный рендеринг. На сервере крту мы не рендерим
+
+		window.initAutocomplete = this.initAutocomplete;
+
+		if (window.google !== void 0) {
+			this.initAutocomplete();
+		}
+
+	}
 
 	render() {
 		return (
