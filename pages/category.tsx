@@ -19,33 +19,40 @@ if (isServer) {
 
 interface ICategoryProps {
 	categories: any[];
-	idActiveCategory: number;
+	mainCategoryId: number;
 	breadcrumbs: IBreadcrumb[];
-	categoryWithAds: IAdsProps[];
+	adGroupList: any[];
 	subcategories: any[];
+	mainCategory: any;
 }
 
 class Category extends React.Component<ICategoryProps> {
 	static async getInitialProps({ query }) {
 		const breadcrumbs = [{
-			title: 'All listings',
+			title: `All listings in ${query.location.locationName}`,
 			href: '/category',
 		}].concat(query.category.breadcrumbs);
 
 		return {
 			breadcrumbs,
 			subcategories: query.category.subcategories || [],
-			categories: query.category.categories,
-			idActiveCategory: query.category.idActiveCategory,
+			categories: query.category.categories || [],
+			adGroupList: query.category.adGroupList || [],
+			mainCategoryId: query.category.mainCategoryId,
+			mainCategory: query.category.mainCategory,
 		};
 	}
 
 	render() {
-		const { idActiveCategory, categories, subcategories, breadcrumbs } = this.props;
+		const { mainCategoryId, categories, subcategories, breadcrumbs, adGroupList, mainCategory } = this.props;
 		return (
-			<SetCategories categories={categories}>
-				<SetBreadcrumbs breadCrumbs={breadcrumbs}>
-					<CategoryPage idActiveCategory={idActiveCategory} subcategories={subcategories} />
+			<SetCategories categories={ categories }>
+				<SetBreadcrumbs breadCrumbs={ breadcrumbs }>
+					<CategoryPage
+						mainCategoryId={ mainCategoryId }
+						subcategories={ subcategories }
+						adGroupList={ adGroupList }
+					/>
 				</SetBreadcrumbs>
 			</SetCategories>
 		);
