@@ -245,3 +245,12 @@ export const getCities: prepareMethod = async ({ query }, req) => {
 		return [];
 	}
 };
+
+export const search: prepareMethod = async ({ query }, req) => {
+	try {
+		const response = await getAdsByParams(query || {});
+		return response.data;
+	} catch (err) {
+		return [];
+	}
+};
