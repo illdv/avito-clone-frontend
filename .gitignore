@@ -4,6 +4,7 @@ server/logs/
 .next/
 .env
 /build
+/logs
 
 # Idea
 .idea/

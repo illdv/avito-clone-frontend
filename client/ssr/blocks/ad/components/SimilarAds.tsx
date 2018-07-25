@@ -54,7 +54,7 @@ class SimilarAds extends Component <ISimilar, ISimilarSortState> {
 					</div>
 				</div>
 			</div>
-		)
+		);
 	}
 }
 

@@ -8,8 +8,9 @@ import CreateAd, { IAdsDataForCreate } from 'client/spa/pages/createAd/CreateAd'
 import { bindModuleAction } from 'client/common/user/utils';
 import { AdsActions, IAdsActions } from 'client/common/ads/actions';
 import { IAdsState } from 'client/ssr/blocks/ad/interface';
-import { IAds } from 'client/common/ads/interface'
-import { generateId } from 'client/spa/pages/utils'
+import { IAds } from 'client/common/ads/interface';
+import { generateId } from 'client/spa/pages/utils';
+import { IUserState } from 'client/common/user/reducer';
 
 export interface IState {
 	data: IAdsDataForCreate;
@@ -18,10 +19,12 @@ export interface IState {
 export interface IProps {
 	adsActions: IAdsActions;
 	ads: IAdsState;
+	user: IUserState;
 }
 
 const mapStateToProps = (state: IRootState) => ({
 	ads: state.ads,
+	user: state.user,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -47,20 +50,23 @@ class CreateAdManager extends Component<IProps, IState> {
 	}
 
 	onCreate = () => {
-		const { cityId, lat, lng, locationName } = this.state.data;
-		const { description, price, title }      = this.state.data.fields;
+		const { lat, lng, images, selectedCategory } = this.state.data;
+		const { description, price, title, phone }   = this.state.data.fields;
+
 		this.props.adsActions.create.REQUEST({
 			title,
 			description,
-			city_id: '1',
-			price: +price,
+			city_id: 1,
+			price,
 			body: '123213',
-			is_published: 0,
-			is_vip: 0,
-			category_id: 1,
+			is_published: false,
+			is_vip: false,
+			category_id: selectedCategory[selectedCategory.length - 1].id,
 			type_id: 1,
 			longitude: lng,
 			latitude: lat,
+			phone,
+			images,
 		});
 	}
 
@@ -76,6 +82,8 @@ class CreateAdManager extends Component<IProps, IState> {
 			);
 		}
 
+		const { phone } = this.props.user.user;
+
 		const ad: IAds = {
 			id: generateId(),
 			title: '',
@@ -83,12 +91,13 @@ class CreateAdManager extends Component<IProps, IState> {
 			city_id: 1,
 			price: '',
 			body: '123213',
-			is_published: 1,
-			is_vip: 0,
-			category_id: 1,
+			is_published: true,
+			is_vip: false,
+			category_id: '1',
 			type_id: 1,
 			longitude: 55.75222,
 			latitude: 37.61140,
+			phone,
 		};
 
 		return (

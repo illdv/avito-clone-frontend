@@ -13,28 +13,6 @@ import ButtonFavorites from 'client/ssr/blocks/ad/components/ButtonFavorites';
 
 require('./Ad.sass');
 
-// const images = [
-// 	{
-// 		original: '/static/img/ads/ads.png',
-// 		thumbnail: '/static/img/ads/ads.png',
-// 	},
-// 	{
-// 		original: '/static/img/ads/ads.png',
-// 		thumbnail: '/static/img/ads/ads.png',
-// 	},
-// 	{
-// 		original: '/static/img/ads/ads.png',
-// 		thumbnail: '/static/img/ads/ads.png',
-// 	},
-// 	{
-// 		original: '/static/img/ads/ads.png',
-// 		thumbnail: '/static/img/ads/ads.png',
-// 	},
-// 	{
-// 		original: '/static/img/ads/ads.png',
-// 		thumbnail: '/static/img/ads/ads.png',
-// 	},
-// ];
 
 const user = {
 	name: 'Andrey Beregovoi',
@@ -51,8 +29,7 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 				href: '/category/' + encodeURI(category.title),
 			}
 		});
-
-	}
+	};
 
 	recurseGetAdCategories = (categories, idCategoryAd): any[] | null => {
 		return categories.reduce((acc, category) => {
@@ -126,47 +103,49 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 				<section className='heading'>
 					<div className='container'>
 						<div className='row'>
-							<div className='col-md-10'>
-								<Breadcrumbs breadcrumbs={this.state.crumbs} />
+							<div className='col-md-9'>
+								<Breadcrumbs breadcrumbs={this.state.crumbs}/>
 							</div>
-							<div className='col-md-2 back-next'>
-								<Link href={`${this.state.lastCrumb.href}`}>
-									<a className='orange-text'>
-										Back
-									</a>
-								</Link>
-								<Link href={`${this.props.ad.next_ad}`}>
-									<a className='p-x-5 orange-text'>Next <i className='fas fa-arrow-right p-l-5 orange-text' />
-									</a>
-								</Link>
+							<div className='col-md-3'>
+								<div className='back-next'>
+									<Link href={`${this.state.lastCrumb.href}`}>
+										<a className='back-next__link orange-text'>Back</a>
+									</Link>
+									<Link href={`${this.props.ad.next_ad}`}>
+										<a className='back-next__link orange-text'>
+											Next<i className='fas fa-arrow-right p-l-5 f-s-12 orange-text'/>
+										</a>
+									</Link>
+								</div>
 							</div>
 						</div>
 						<div className='row'>
 							<div className='col-md-12 col-lg-8'>
-								<h1 className='m-b-15'>{this.props.ad.title}</h1>
-								<h5 className='f-s-14 f-w-400 m-b-15'>№ <span>{this.props.ad.id}</span>,
-									added <span>{this.props.ad.created_at}</span></h5>
-								<span className='f-s-14'>
-							<i className='fas fa-sync-alt orange-text' />
-							<span> {this.props.ad.updated_at} </span>
-						</span>
-								<span className='f-s-14'>
-							<i className='fas fa-eye orange-text' />
-							<span> {this.props.ad.total_visits} </span>
-							(Today's <span> {this.props.ad.today_visits}</span>)
-						</span>
-								<ButtonFavorites id={this.props.ad.id} />
+								<h1 className='ad-page__title'>{this.props.ad.title}</h1>
+								<h6 className='f-w-400 m-b-15'>
+									№ <span>{this.props.ad.id}</span>,
+									added <span>{this.props.ad.created_at}</span>
+								</h6>
+								<span>
+									<i className='fas fa-sync-alt orange-text'/>
+									<span> {this.props.ad.updated_at} </span>
+								</span>
+								<span className='p-l-15'>
+									<i className='fas fa-eye orange-text'/>
+									<span> {this.props.ad.total_visits} </span>
+									(Today's <span> {this.props.ad.today_visits}</span>)
+								</span>
+								<ButtonFavorites
+									id={this.props.ad.id}
+								/>
 							</div>
-							<div className='col-md-12 col-lg-4'>
-						<span className='price'>
-							<NumberFormat
-								value={this.props.ad.price}
-								displayType={'text'}
-								suffix={'$'}
-								thousandSeparator={' '}
-
-							/>
-						</span>
+							<div className='col-md-12 col-lg-4 price'>
+								<NumberFormat
+									value={this.props.ad.price}
+									displayType={'text'}
+									suffix={'$'}
+									thousandSeparator={' '}
+								/>
 							</div>
 						</div>
 						<div className='row p-y-20'>
@@ -184,7 +163,7 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 				</section>
 				<section className='section-mb'>
 					<div className='container'>
-						<Description body={this.props.ad.body} />
+						<Description body={this.props.ad.body}/>
 						{/*<VehicleKit />*/}
 						<Chart similar_ad={this.props.ad.similar_ad} id_parent={this.props.ad.id}/>
 					</div>

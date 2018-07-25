@@ -9,7 +9,7 @@ class Chart extends Component<IChart> {
 				<div className='col-lg-8 bg-grey'>PLACE FOR CHART</div>
 				<SimilarAds similar_ad={this.props.similar_ad} id_parent={this.props.id_parent}/>
 			</div>
-		)
+		);
 	}
 }
 

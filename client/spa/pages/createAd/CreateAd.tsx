@@ -1,11 +1,14 @@
 import * as React from 'react';
-import { Component } from 'react';
-import { connect, Dispatch } from 'react-redux';
+import {Component} from 'react';
+import {connect, Dispatch} from 'react-redux';
 
-import { IRootState } from 'client/common/store/storeInterface';
-import { IUserState } from 'client/common/user/reducer';
+import {IRootState} from 'client/common/store/storeInterface';
+import {IUserState} from 'client/common/user/reducer';
 import Lease from 'client/spa/pages/createAd/Lease';
-import { IAds } from 'client/common/ads/interface';
+import {IAds} from 'client/common/ads/interface';
+import CategoriesSelector from 'client/spa/pages/createAd/CategoriesSelector';
+import { ICategory } from 'client/common/categories/interface';
+import { Images, ImageSelector } from 'client/spa/pages/createAd/ImageSelector';
 
 export interface IAdsDataForCreate {
 	id: string;
@@ -19,6 +22,8 @@ export interface IAdsDataForCreate {
 	lat: number;
 	lng: number;
 	locationName: string;
+	selectedCategory: ICategory[];
+	images: Images[];
 }
 
 export interface IProps {
@@ -41,38 +46,42 @@ interface IPropsForInput {
 	onChange: (event) => void;
 }
 
-const Input = ({ id, title, onChange, inputClass, defaultValue }: IPropsForInput) => (
-	<div className='offer-form__item form-group row no-gutters align-items-center'>
+const Input = ({id, title, onChange, inputClass, defaultValue}: IPropsForInput) => (
+	<div className='offer-form__item form-group row align-items-center'>
 		<label
 			htmlFor={id}
-			className='col-md-4 offer-form__label'
+			className='col-md-3 col-lg-4 offer-form__label'
 		>
 			{title}
 		</label>
-		<input
-			defaultValue={defaultValue}
-			onChange={onChange}
-			id={id}
-			type='text'
-			className={inputClass}
-		/>
+		<div className={inputClass}>
+			<input
+				defaultValue={defaultValue}
+				onChange={onChange}
+				id={id}
+				type='text'
+				className='form-control'
+			/>
+		</div>
 	</div>
 );
 
-const TextArea = ({ id, title, onChange, inputClass, defaultValue }: IPropsForInput) => (
-	<div className='offer-form__item form-group row no-gutters align-items-center'>
+const TextArea = ({id, title, onChange, inputClass, defaultValue}: IPropsForInput) => (
+	<div className='offer-form__item form-group row align-items-center'>
 		<label
 			htmlFor={id}
-			className='col-md-4 offer-form__label'
+			className='col-md-3 col-lg-4 offer-form__label'
 		>
 			{title}
 		</label>
-		<textarea
-			id={id}
-			onChange={onChange}
-			className={inputClass}
-			defaultValue={defaultValue}
-		/>
+		<div className={inputClass}>
+			<textarea
+				id={id}
+				onChange={onChange}
+				className='form-control'
+				defaultValue={defaultValue}
+			/>
+		</div>
 	</div>
 );
 
@@ -90,28 +99,13 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 		locationName: '',
 		lat: 0,
 		lng: 0,
+		selectedCategory: [],
+		images: null,
 	};
-	onChange                 = event => {
-		const { id, value } = event.target;
-		this.setState({
-			fields: { ...this.state.fields, [id]: value },
-		});
-	}
-	onSelectPlace            = (locationName, cityId, location) => {
-		this.setState({
-			cityId,
-			locationName,
-			lat: location.lat(),
-			lng: location.lng(),
-		});
-	}
-	onNext                   = () => {
-		this.props.onNext(this.state);
-	}
 
 	static getDerivedStateFromProps(nextProps: IProps, prevState: IAdsDataForCreate): IAdsDataForCreate {
 
-		const { id, price, description, title, latitude, longitude } = nextProps.data;
+		const {id, price, description, title, latitude, longitude, phone} = nextProps.data;
 		if (id !== prevState.id) {
 			return {
 				id,
@@ -119,21 +113,53 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 					title,
 					price,
 					description,
-					phone: '',
+					phone,
 				},
 				cityId: '',
 				lat: latitude,
 				lng: longitude,
 				locationName: '',
+				selectedCategory: [],
+				images: [],
 			};
 		}
 		return null;
 	}
 
+	onChangeFields = event => {
+		const {id, value} = event.target;
+		this.setState({
+			fields: {...this.state.fields, [id]: value},
+		});
+	}
+
+	onSelectPlace = (locationName, cityId, location) => {
+		this.setState({
+			cityId,
+			locationName,
+			lat: location.lat(),
+			lng: location.lng(),
+		});
+	}
+
+	onUpdateImage = (images: Images[]) => {
+		this.setState({
+			images,
+		});
+	}
+
+	onNext = () => {
+		this.props.onNext(this.state);
+	}
+
+	onSelectCategory = (selectedCategory: ICategory[]) => {
+		this.setState({selectedCategory});
+	}
+
 	render() {
-		const { email, name }                      = this.props.user.user;
-		const { phone, description, price, title } = this.state.fields;
-		const { lng, lat }                         = this.state;
+		const {email, name} = this.props.user.user;
+		const {phone, description, price, title} = this.state.fields;
+		const {lng, lat, selectedCategory} = this.state;
 		return (
 			<section className='page'>
 				<div className='container page__container-sm'>
@@ -145,48 +171,54 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 							<div className='submit-contact-info'>
 								<h4>Contact information</h4>
 								<div className='submit-contact-info__form'>
-									<div className='form-group row no-gutters align-items-center'>
+									<div className='form-group row align-items-center'>
 										<label
 											htmlFor=''
 											className='col-md-2'
 										>
 											Full name
 										</label>
-										<input
-											readOnly
-											value={name}
-											type='text'
-											className='form-control col-md-6'
-										/>
+										<div className='col-md-6'>
+											<input
+												readOnly
+												value={name}
+												type='text'
+												className='form-control'
+											/>
+										</div>
 									</div>
-									<div className='form-group row no-gutters align-items-center'>
+									<div className='form-group row align-items-center'>
 										<label
 											htmlFor=''
 											className='col-md-2'
 										>
 											Email
 										</label>
-										<input
-											readOnly
-											value={email}
-											type='email'
-											className='form-control col-md-6'
-										/>
+										<div className='col-md-6'>
+											<input
+												readOnly
+												value={email}
+												type='email'
+												className='form-control'
+											/>
+										</div>
 									</div>
-									<div className='form-group row no-gutters align-items-center'>
+									<div className='form-group row align-items-center'>
 										<label
 											htmlFor=''
 											className='col-md-2'
 										>
 											Phone
 										</label>
-										<input
-											id='phone'
-											type='tel'
-											className='form-control col-md-6'
-											defaultValue={phone}
-											onChange={this.onChange}
-										/>
+										<div className='col-md-6'>
+											<input
+												id='phone'
+												type='tel'
+												className='form-control'
+												defaultValue={phone}
+												onChange={this.onChangeFields}
+											/>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -197,245 +229,26 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 							<h3>Select category</h3>
 						</div>
 						<div className='col-lg-12'>
-							<div className='select-category'>
-								<div className='select-column w-25'>
-									<div className='select-colunm__title'>Categories</div>
-									<a
-										href=''
-										className='select-colunm__category'
-									>
-										Transport
-									</a>
-									<a
-										href=''
-										className='select-colunm__category select-colunm__category_active'
-									>
-										The property
-									</a>
-									<a
-										href=''
-										className='select-colunm__category '
-									>
-										Job
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>
-										The services
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>
-										Personal things
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>
-										For home and cottages
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>
-										Consumer electronics
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>
-										Hobbies and Recreation
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>
-										Animals
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>
-										For business
-									</a>
-								</div>
-								<div className='select-column select-column_right w-25'>
-									<div className='select-colunm__title'>Categories</div>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Transport
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>The property
-									</a>
-									<a
-										href=''
-										className='select-colunm__category '
-									>Job
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>The services
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Personal things
-									</a>
-									<a
-										href=''
-										className='select-colunm__category select-colunm__category_active'
-									>For home and
-										cottages
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Consumer electronics
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Hobbies and Recreation
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Animals
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>For business
-									</a>
-								</div>
-								<div className='select-column select-column_right w-25'>
-									<div className='select-colunm__title'>Categories</div>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Transport
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>The property
-									</a>
-									<a
-										href=''
-										className='select-colunm__category '
-									>Job
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>The services
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Personal things
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>For home and cottages
-									</a>
-									<a
-										href=''
-										className='select-colunm__category select-colunm__category_active'
-									>Consumer
-										electronics
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Hobbies and Recreation
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Animals
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>For business
-									</a>
-								</div>
-								<div className='select-column select-column_right w-25'>
-									<div className='select-colunm__title'>Categories</div>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Transport
-									</a>
-									<a
-										href=''
-										className='select-colunm__category select-colunm__category_active'
-									>The property
-									</a>
-									<a
-										href=''
-										className='select-colunm__category '
-									>Job
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>The services
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Personal things
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>For home and cottages
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Consumer electronics
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Hobbies and Recreation
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>Animals
-									</a>
-									<a
-										href=''
-										className='select-colunm__category'
-									>For business
-									</a>
-								</div>
-
-							</div>
+							<CategoriesSelector onSelectCategory={this.onSelectCategory}/>
 						</div>
 					</div>
 					<div className='row'>
 						<div className='col-lg-9 selected-category'>
 							<h3 className='selected-category__title'>Select category</h3>
-							<div className='breadcrumbs category-breadcrumbs'>
+							<div
+								className='breadcrumbs category-breadcrumbs'
+								style={{width: '100%'}}
+							>
 								<ol className='breadcrumb breadcrumb__inner'>
-									<li className='breadcrumb-item breadcrumbs__item'><a href='#'> All listings in
-										Berlin</a></li>
-									<li className='breadcrumb-item breadcrumbs__item'><a href='#'>Real estate</a></li>
-									<li className='breadcrumb-item breadcrumbs__item'><a href=''>Apartments</a></li>
-									<li className='breadcrumb-item breadcrumbs__item'><a href=''>Sell 3 839</a></li>
+									{selectedCategory.map((category, index) => (
+										<li
+											key={index}
+											className='breadcrumb-item breadcrumbs__item'
+										>
+											<a href=''>{category.title}</a>
+										</li>
+									))}
+
 								</ol>
 							</div>
 						</div>
@@ -445,41 +258,38 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 							defaultValue={title}
 							id={'title'}
 							title={'Ad title'}
-							onChange={this.onChange}
-							inputClass={'form-control col-md-6'}
+							onChange={this.onChangeFields}
+							inputClass={'col-md-9 col-lg-6'}
 						/>
 						<TextArea
 							defaultValue={description}
 							id={'description'}
 							title={'Advertisement description'}
-							onChange={this.onChange}
-							inputClass={'form-control col-md-6'}
+							onChange={this.onChangeFields}
+							inputClass={'col-md-9 col-lg-6'}
 						/>
 						<Input
 							defaultValue={price}
 							id={'price'}
 							title={'Price'}
-							onChange={this.onChange}
-							inputClass={'form-control col-md-3'}
+							onChange={this.onChangeFields}
+							inputClass={'col-md-3'}
 						/>
-						<div className='offer-form__item form-group row no-gutters align-items-center'>
+						<div className='offer-form__item form-group row align-items-center'>
 							<label
 								htmlFor=''
-								className='col-md-4 offer-form__label'
+								className='col-md-3 col-lg-4 offer-form__label'
 							>
 								Photo
 							</label>
-							<div className='offer-form-upload'>
-								<input
-									type='file'
-									className='form-control offer-form-upload__item'
-								/>
+							<div className='col-md-9 col-lg-6'>
+								<ImageSelector onUpdateImage={this.onUpdateImage}/>
 							</div>
 						</div>
 						<Lease
 							onSelectPlace={this.onSelectPlace}
 							onNext={this.onNext}
-							defaultValue={{ lat, lng }}
+							defaultValue={{lat, lng}}
 						/>
 					</div>
 				</div>
