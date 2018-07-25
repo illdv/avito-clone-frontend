@@ -5,6 +5,7 @@ import { removeElementByIndex } from 'client/spa/pages/createAd/utils';
 
 export interface Images {
 	blob: string;
+	file: any;
 }
 
 export interface IState {
@@ -41,7 +42,7 @@ export class ImageSelector extends Component<IProps, IState> {
 			reader.onload = e => {
 				this.onUpdateImage([
 					...this.state.images,
-					{ blob: e.target.result },
+					{ blob: e.target.result, file },
 				]);
 			};
 		});
@@ -70,6 +71,7 @@ export class ImageSelector extends Component<IProps, IState> {
 						className='form-control offer-form-upload__item'
 						accept='.jpeg, .bmp, .png, .svg'
 						onChange={this.onAddImage}
+						multiple
 						onClick={this.onClickAddImage}
 					/>
 				</div>

@@ -9,7 +9,6 @@ import { IAds } from 'client/common/ads/interface';
 import CategoriesSelector from 'client/spa/pages/createAd/CategoriesSelector';
 import { ICategory } from 'client/common/categories/interface';
 import { Images, ImageSelector } from 'client/spa/pages/createAd/ImageSelector';
-import { useOrDefault } from 'client/spa/pages/createAd/utils';
 
 export interface IAdsDataForCreate {
 	id: string;
@@ -102,7 +101,7 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 
 	static getDerivedStateFromProps(nextProps: IProps, prevState: IAdsDataForCreate): IAdsDataForCreate {
 
-		const { id, price, description, title, latitude, longitude, category_id, phone } = nextProps.data;
+		const { id, price, description, title, latitude, longitude, phone } = nextProps.data;
 		if (id !== prevState.id) {
 			return {
 				id,

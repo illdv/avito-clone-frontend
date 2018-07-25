@@ -1,3 +1,5 @@
+import { Images } from 'client/spa/pages/createAd/ImageSelector'
+
 export interface IType {
 	id: number;
 	name: string;
@@ -44,5 +46,5 @@ export interface ICreateAdRequest {
 	is_published: number;
 	is_vip: number;
 	/*phone: string;*/
-	images: any;
+	images: Images[];
 }
