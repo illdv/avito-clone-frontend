@@ -226,6 +226,7 @@ export const getCountries: prepareMethod = async (sugar, req) => {
 		const response = await getInstanseWithLanguageByReq(req).get('/countries');
 		return response.data;
 	} catch (err) {
+		console.log(err)
 		return [];
 	}
 };
@@ -235,6 +236,7 @@ export const getRegions: prepareMethod = async ({ query }, req) => {
 		const response = await getInstanseWithLanguageByReq(req).get(`/countries/${query.id}/regions/%20`);
 		return response.data;
 	} catch (err) {
+		console.log(err)
 		return [];
 	}
 };
@@ -244,6 +246,7 @@ export const getCities: prepareMethod = async ({ query }, req) => {
 		const response = await getInstanseWithLanguageByReq(req).get(`/regions/${query.id}/cities/%20`);
 		return response.data;
 	} catch (err) {
+		console.log(err)
 		return [];
 	}
 };
@@ -253,6 +256,7 @@ export const search: prepareMethod = async ({ query }, req) => {
 		const response = await getAdsByParams(query || {});
 		return response.data;
 	} catch (err) {
+		console.log(err)
 		return [];
 	}
 };
