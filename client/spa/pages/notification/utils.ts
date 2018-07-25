@@ -1,8 +1,8 @@
 import { FilterType } from 'client/spa/pages/notification/Notification';
 import { INotification } from 'client/common/notification/interface';
 
-const isRead   = (item: INotification) => item.isRead === true;
-const isNoRead = (item: INotification) => item.isRead === false;
+const isRead   = (item: INotification) => item.read_at !== null;
+const isNoRead = (item: INotification) => !isRead(item);
 
 export function filterNotification(selectedFilter: FilterType, items: INotification[]) {
 	if (selectedFilter === FilterType.NoRead) {

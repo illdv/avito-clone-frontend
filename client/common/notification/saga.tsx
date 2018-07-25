@@ -11,14 +11,7 @@ import { AxiosResponse } from 'axios';
 function* loading() {
 	try {
 		const response: AxiosResponse<INotification[]> = yield call(NotificationAPI.loading);
-		// yield put(NotificationActions.loading.SUCCESS(response.data));
-		yield put(NotificationActions.loading.SUCCESS([
-			{ id: '1', title: 'Notification 1', isRead: false },
-			{ id: '2', title: 'Notification 2', isRead: false },
-			{ id: '3', title: 'Notification 3', isRead: false },
-			{ id: '4', title: 'Notification 4', isRead: true },
-			{ id: '5', title: 'Notification 5', isRead: true },
-		]));
+		yield put(NotificationActions.loading.SUCCESS(response.data));
 	} catch (e) {
 		yield call(errorHandler, e);
 		Toasts.info('Failed notification loading');
@@ -30,6 +23,7 @@ function* read(action: Action<{ id: string }>) {
 	try {
 		yield call(NotificationAPI.read, action.payload.id);
 		yield put(NotificationActions.read.SUCCESS({}));
+		yield put(NotificationActions.loading.REQUEST({}));
 	} catch (e) {
 		yield call(errorHandler, e);
 		Toasts.error('Failed notification read');
