@@ -240,8 +240,11 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 								style={{width: '100%'}}
 							>
 								<ol className='breadcrumb breadcrumb__inner'>
-									{selectedCategory.map(category => (
-										<li className='breadcrumb-item breadcrumbs__item'>
+									{selectedCategory.map((category, index) => (
+										<li
+											key={index}
+											className='breadcrumb-item breadcrumbs__item'
+										>
 											<a href=''>{category.title}</a>
 										</li>
 									))}

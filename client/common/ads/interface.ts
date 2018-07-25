@@ -42,7 +42,7 @@ export interface IAds {
 	latitude?: number;
 	longitude?: number;
 	phone?: string;
-	image: Image[];
+	image?: Image[];
 }
 
 export interface ICreateAdRequest {
@@ -57,6 +57,6 @@ export interface ICreateAdRequest {
 	category_id: string;
 	is_published: number;
 	is_vip: number;
-	/*phone: string;*/
+	phone: string;
 	images: Images[];
 }
