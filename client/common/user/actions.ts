@@ -35,7 +35,7 @@ export interface IUserActions {
 
 	selectFavorite: IAsyncAction<{ id: string }>;
 	setFavorite: IAsyncAction<{ id: string }, { id: string }>;
-	removeFavorite: IAsyncAction<{ favoritesId: string[] }, { indexInFavorites: number }>;
+	removeFavorite: IAsyncAction<{ indexInFavorites: number }>;
 }
 
 export const UserActions: IUserActions = {

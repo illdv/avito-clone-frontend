@@ -108,7 +108,7 @@ function* changePassword(action) {
 	}
 }
 
-	function* loadingUserIfHasToken() {
+function* loadingUserIfHasToken() {
 	const token = CustomStorage.getToken();
 	if (token) {
 		yield put(UserActions.getProfile.REQUEST({}));
@@ -155,7 +155,14 @@ function* removeFavoriteAds(action) {
 	for (let i = 0; i <= favoritesIDs.length + 1; i++) {
 		const id = favoritesIDs[i];
 		yield put(UserActions.removeFavoritesAd.REQUEST({ id }));
-		// yield put(UserActions.removeFavorite.REQUEST({ id }));
+		const changedFavoriteAds = yield select(getUserFavoriteIds);
+		if (changedFavoriteAds.indexOf(id)) {
+			debugger;
+			const indexInFavorites: number = changedFavoriteAds.indexOf(id);
+			yield put(UserActions.removeFavorite.REQUEST({ indexInFavorites }));
+		}
+		yield call(synchronizeLocalStorage, changedFavoriteAds);
+
 	}
 	if (token) {
 		try {
@@ -213,7 +220,6 @@ function* watcherUser() {
 		takeEvery(UserActions.selectFavorite.REQUEST, selectFavorite),
 		takeEvery(UserActions.getFavoritesAds.REQUEST, getFavorites),
 		takeEvery(UserActions.removeFavoritesAds.REQUEST, removeFavoriteAds),
-
 	];
 }
 

@@ -56,7 +56,7 @@ reducer.on(UserActions.setFavorite.SUCCESS, (state, payload): IUserState => ({
 		]
 	},
 }));
-reducer.on(UserActions.removeFavorite.SUCCESS, (state, payload): IUserState => ({
+reducer.on(UserActions.removeFavorite.REQUEST, (state, payload): IUserState => ({
 		...state,
 		user: {
 			...state.user,
