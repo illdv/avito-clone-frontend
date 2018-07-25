@@ -38,11 +38,11 @@ class Notification extends Component<IProps, IState> {
 		selectedFilter: FilterType.All,
 	};
 
-	convertToItem = ({ id, title, isRead }: INotification) => {
+	convertToItem = ({ id, data, read_at }: INotification) => {
 
 		return (
 			<div
-				style={{ background: isRead ? '' : '#ffb91b9c' }}
+				style={{ background: read_at ? '' : '#ffb91b9c' }}
 				key={id}
 				className='offer-block__item'
 				onClick={this.onClick(id)}
@@ -52,7 +52,7 @@ class Notification extends Component<IProps, IState> {
 						<div className='col-9 d-flex'>
 							<div className='offer-block__info'>
 								<div>
-									<h5 style={{ margin: 10 }}>{title}</h5>
+									<h5 style={{ margin: 10 }}>{data.message}</h5>
 								</div>
 							</div>
 						</div>

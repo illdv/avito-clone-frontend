@@ -5,7 +5,7 @@ function loading() {
 }
 
 function read(id: string) {
-	return AxiosWrapper.put(`/notifications/${id}`);
+	return AxiosWrapper.put(`/notifications/${id}`, { action: 'markAsRead' });
 }
 
 export const NotificationAPI = {
