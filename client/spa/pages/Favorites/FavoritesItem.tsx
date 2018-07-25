@@ -4,7 +4,7 @@ import { IAds } from 'client/common/ads/interface';
 interface IFavoritesItem {
 	item: IAds;
 	onCheck: any;
-	checked: boolean;
+	checked: any;
 }
 
 const FavoritesItem: React.SFC<IFavoritesItem> = ({ item, onCheck, checked }) => {
@@ -15,7 +15,7 @@ const FavoritesItem: React.SFC<IFavoritesItem> = ({ item, onCheck, checked }) =>
 				type="checkbox"
 				className="favorites-page__input"
 				onChange={handleCheck}
-				checked={checked}
+				checked={!!(checked)}
 			/>
 			<div className="favourites-offer-block__inner">
 				<div className="row no-gutters">

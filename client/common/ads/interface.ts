@@ -50,3 +50,6 @@ export interface ICreateAdRequest {
 	is_published: number;
 	is_vip: number;
 }
+export interface IFavoritesAds {
+	(id: any): IAds;
+}

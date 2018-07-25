@@ -1,11 +1,11 @@
 import { createReducer } from 'redux-act';
 import { UserActions } from './actions';
-import { IAds } from 'client/common/ads/interface';
+import { IFavoritesAds } from 'client/common/ads/interface';
 
 export interface IUserState {
 	user: IUser;
 	isUserLoading: boolean;
-	favoritesAds: IAds[];
+	favoritesAds: IFavoritesAds;
 }
 
 const initialState = (): IUserState => ({
@@ -20,7 +20,7 @@ const initialState = (): IUserState => ({
 		favorites_ids: [],
 	},
 	isUserLoading: false,
-	favoritesAds: [],
+	favoritesAds: null,
 });
 
 const reducer = createReducer({}, initialState());
@@ -55,7 +55,6 @@ reducer.on(UserActions.setFavorite.SUCCESS, (state, payload): IUserState => ({
 			payload.id,
 		]
 	},
-	isUserLoading: false,
 }));
 reducer.on(UserActions.removeFavorite.SUCCESS, (state, payload): IUserState => ({
 		...state,
@@ -66,13 +65,20 @@ reducer.on(UserActions.removeFavorite.SUCCESS, (state, payload): IUserState => (
 				...state.user.favorites_ids.slice(payload.indexInFavorites + 1),
 			]
 		},
-		isUserLoading: false,
 	})
 );
-reducer.on(UserActions.getFavorites.SUCCESS, (state, payload): IUserState => ({
+reducer.on(UserActions.getFavoritesAds.SUCCESS, (state, payload): IUserState => ({
 		...state,
-		favoritesAds: [...payload.favoritesAds],
-		isUserLoading: false,
+		favoritesAds: { ...payload.favoritesAds },
 	})
 );
+reducer.on(UserActions.removeFavoritesAd.REQUEST, (state, payload): IUserState => {
+	const favorites = state.favoritesAds;
+	delete favorites[payload.id];
+	return ({
+		...state,
+		favoritesAds: favorites
+	});
+
+});
 export default reducer;

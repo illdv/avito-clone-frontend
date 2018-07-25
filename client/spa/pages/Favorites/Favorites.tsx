@@ -14,7 +14,7 @@ interface IFavorites {
 
 class Favorites extends React.Component<IFavorites, null> {
 	componentDidMount() {
-		this.props.userActions.getFavorites.REQUEST({});
+		this.props.userActions.getFavoritesAds.REQUEST({});
 	}
 	removeFavoriteAds = (favoritesId: string[])  => {
 		this.props.userActions.removeFavorite.REQUEST({favoritesId});

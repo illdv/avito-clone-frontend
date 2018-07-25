@@ -1,5 +1,5 @@
 import { createActionCreator, IAsyncAction } from './utils';
-import { IAds } from 'client/common/ads/interface';
+import { IAds, IFavoritesAds } from 'client/common/ads/interface';
 
 const createAsyncAction = createActionCreator('USER');
 
@@ -11,10 +11,13 @@ const initUser            = createAsyncAction('INIT_USER');
 const changePassword      = createAsyncAction('CHANGE_PASSWORD');
 const sendCode            = createAsyncAction('SEND_CODE');
 const resetPasswordByCode = createAsyncAction('RESET_PASSWORD_BY_CODE');
-const getFavorites        = createAsyncAction('GET_FAVORITE');
-const selectFavorite      = createAsyncAction('SELECT_FAVORITE');
-const setFavorite      = createAsyncAction('SET_FAVORITE');
-const removeFavorite      = createAsyncAction('REMOVE_FAVORITE');
+const getFavoritesAds     = createAsyncAction('GET_FAVORITE_ADS');
+const removeFavoritesAds  = createAsyncAction('REMOVE_FAVORITE_ADS');
+const removeFavoritesAd   = createAsyncAction('REMOVE_FAVORITE_AD');
+
+const selectFavorite = createAsyncAction('SELECT_FAVORITE');
+const setFavorite    = createAsyncAction('SET_FAVORITE');
+const removeFavorite = createAsyncAction('REMOVE_FAVORITE');
 
 export interface IUserActions {
 	login: IAsyncAction<ILoginRequest, { user: IUser, isRememberMe: boolean }>;
@@ -25,11 +28,16 @@ export interface IUserActions {
 	logout: IAsyncAction;
 	initUser: IAsyncAction;
 	changePassword: IAsyncAction<IChangePasswordRequest>;
-	getFavorites: IAsyncAction<{}, {favoritesAds: IAds[]}>;
-	selectFavorite: IAsyncAction<{id: string}>;
-	setFavorite: IAsyncAction<{id: string}, {id: string}>;
-	removeFavorite: IAsyncAction<{favoritesId: string[]}, {indexInFavorites: number}>;
+
+	getFavoritesAds: IAsyncAction<{}, { favoritesAds: IFavoritesAds }>;
+	removeFavoritesAds: IAsyncAction<{ favoritesId: string[] }>;
+	removeFavoritesAd: IAsyncAction<{ id: any }>;
+
+	selectFavorite: IAsyncAction<{ id: string }>;
+	setFavorite: IAsyncAction<{ id: string }, { id: string }>;
+	removeFavorite: IAsyncAction<{ favoritesId: string[] }, { indexInFavorites: number }>;
 }
+
 export const UserActions: IUserActions = {
 	login,
 	logout,
@@ -39,9 +47,11 @@ export const UserActions: IUserActions = {
 	changePassword,
 	sendCode,
 	resetPasswordByCode,
-	getFavorites,
+	getFavoritesAds,
+	removeFavoritesAds,
+	removeFavoritesAd,
 	selectFavorite,
 	setFavorite,
-	removeFavorite,
+	removeFavorite
 };
 

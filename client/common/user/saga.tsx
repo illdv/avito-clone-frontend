@@ -11,6 +11,7 @@ import { show } from 'client/common/modal-juggler/module';
 import { hideLoginModal } from 'client/ssr/modals/auth/loginModalTriggers';
 import { Toasts } from 'client/common/utils/Toasts';
 import { pushInRouter } from 'client/common/utils/utils';
+import { IAds } from 'client/common/ads/interface';
 
 export const getUserFavoriteIds = state => state.user.user.favorites_ids;
 export const getToken           = state => state.user.user.token;
@@ -134,22 +135,29 @@ function* selectFavorite(action) {
 		}
 	}
 }
+
 function* getFavorites() {
 	const favoritesID = yield call(readLocalStorage);
-	const {data} = yield call(UserAPI.getFavorites, { favorites_ids: favoritesID });
-	yield put(UserActions.getFavorites.SUCCESS({favoritesAds: data.data }));
+	try {
+		const { data }     = yield call(UserAPI.getFavorites, { favorites_ids: favoritesID });
+		const favoritesAds = yield call(fromArrayToObject, data.data);
+		yield put(UserActions.getFavoritesAds.SUCCESS({ favoritesAds }));
+	} catch (e) {
+		console.log(e);
+	}
 }
 
-function* removeFavorites(action) {
-	const favoritesID = action.payload.favoritesId;
-	const token = yield select(getToken);
-	const favoriteAds      = yield select(getUserFavoriteAds);
-	const indexInFavorites = favoriteAds.indexOf(favoritesID);
+function* removeFavoriteAds(action) {
+	const favoritesIDs = action.payload.favoritesId;
+	const token        = yield select(getToken);
 	// const favoritesID = yield call(readLocalStorage);
-	yield put(UserActions.removeFavorite.SUCCESS({indexInFavorites }));
+	for (let i = 0; i <= favoritesIDs.length + 1; i++) {
+		const id = favoritesIDs[i];
+		yield put(UserActions.removeFavoritesAd.REQUEST({ id }));
+	}
 	if (token) {
 		try {
-			yield call(UserAPI.deleteFavorites, { favorites_ids: favoritesID });
+			yield call(UserAPI.deleteFavorites, { favorites_ids: favoritesIDs });
 		} catch (e) {
 			console.log(e);
 		}
@@ -182,6 +190,14 @@ function readLocalStorage() {
 	return JSON.parse(CustomStorage.getItem('favorites_ids'));
 }
 
+function fromArrayToObject(adsCollection: IAds[]) {
+	return adsCollection.reduce((result, item) => {
+		const id   = item.id;
+		result[id] = item;
+		return result;
+	}, {});
+}
+
 function saveInStorege(id) {
 	const oldData = JSON.parse(CustomStorage.getItem('favorites_ids'));
 	if (oldData.length === 0) {
@@ -211,8 +227,9 @@ function* watcherUser() {
 		takeLatest(UserActions.changePassword.REQUEST, changePassword),
 		takeLatest(UserActions.sendCode.REQUEST, resetPassword),
 		takeEvery(UserActions.selectFavorite.REQUEST, selectFavorite),
-		takeEvery(UserActions.getFavorites.REQUEST, getFavorites),
-		takeEvery(UserActions.removeFavorite.REQUEST, removeFavorites),
+		takeEvery(UserActions.getFavoritesAds.REQUEST, getFavorites),
+		takeEvery(UserActions.removeFavorite.REQUEST, removeFavoriteAds),
+
 	];
 }
 

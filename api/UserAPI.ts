@@ -33,7 +33,6 @@ function getFavorites(request: IFavoritesRequest) {
 			list.push(template);
 		});
 		const string = list.join('&');
-		console.log('string', string);
 		return AxiosWrapper.get(`/favorites?${string}`);
 	}
 
