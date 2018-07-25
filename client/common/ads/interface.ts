@@ -1,3 +1,5 @@
+import { Images } from 'client/spa/pages/createAd/ImageSelector';
+
 export interface IType {
 	id: number;
 	name: string;
@@ -5,6 +7,17 @@ export interface IType {
 	created_at: string;
 	updated_at: string;
 	deleted_at?: any;
+}
+
+export interface Image {
+	id: number;
+	imageable_type: string;
+	imageable_id: number;
+	file_name: string;
+	file: string;
+	created_at: string;
+	updated_at: string;
+	file_url: string;
 }
 
 export interface IAds {
@@ -29,6 +42,7 @@ export interface IAds {
 	latitude?: number;
 	longitude?: number;
 	phone?: string;
+	image?: Image[];
 }
 
 export interface ICreateAdRequest {
@@ -43,6 +57,6 @@ export interface ICreateAdRequest {
 	category_id: string;
 	is_published: number;
 	is_vip: number;
-	/*phone: string;*/
-	images: any;
+	phone: string;
+	images: Images[];
 }

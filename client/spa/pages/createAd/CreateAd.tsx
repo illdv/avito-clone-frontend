@@ -7,9 +7,8 @@ import {IUserState} from 'client/common/user/reducer';
 import Lease from 'client/spa/pages/createAd/Lease';
 import {IAds} from 'client/common/ads/interface';
 import CategoriesSelector from 'client/spa/pages/createAd/CategoriesSelector';
-import {ICategory} from 'client/common/categories/interface';
-import {Images, ImageSelector} from 'client/spa/pages/createAd/ImageSelector';
-import {useOrDefault} from 'client/spa/pages/createAd/utils';
+import { ICategory } from 'client/common/categories/interface';
+import { Images, ImageSelector } from 'client/spa/pages/createAd/ImageSelector';
 
 export interface IAdsDataForCreate {
 	id: string;
@@ -106,7 +105,7 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 
 	static getDerivedStateFromProps(nextProps: IProps, prevState: IAdsDataForCreate): IAdsDataForCreate {
 
-		const {id, price, description, title, latitude, longitude, category_id, phone} = nextProps.data;
+		const {id, price, description, title, latitude, longitude, phone} = nextProps.data;
 		if (id !== prevState.id) {
 			return {
 				id,
@@ -241,8 +240,11 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 								style={{width: '100%'}}
 							>
 								<ol className='breadcrumb breadcrumb__inner'>
-									{selectedCategory.map(category => (
-										<li className='breadcrumb-item breadcrumbs__item'>
+									{selectedCategory.map((category, index) => (
+										<li
+											key={index}
+											className='breadcrumb-item breadcrumbs__item'
+										>
 											<a href=''>{category.title}</a>
 										</li>
 									))}

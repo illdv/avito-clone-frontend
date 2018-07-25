@@ -65,6 +65,7 @@ class CreateAdManager extends Component<IProps, IState> {
 			type_id: 1,
 			longitude: lng,
 			latitude: lat,
+			phone,
 			images,
 		});
 	}
