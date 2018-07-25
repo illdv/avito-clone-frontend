@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {Component} from 'react';
-import {connect, Dispatch} from 'react-redux';
-import {removeElementByIndex} from 'client/spa/pages/createAd/utils';
+import { Component } from 'react';
+import { connect, Dispatch } from 'react-redux';
+import { removeElementByIndex } from 'client/spa/pages/createAd/utils';
 
 export interface Images {
 	blob: string;
@@ -28,13 +28,13 @@ export class ImageSelector extends Component<IProps, IState> {
 		this.setState({
 			images: newImages,
 		});
-	};
+	}
 
 	/**
 	 * Use for loading image and add in state.
 	 * @param {any} target
 	 */
-	onAddImage = ({target}) => {
+	onAddImage = ({ target }) => {
 		const files = Object.values(target.files);
 		files.forEach((file: any) => {
 			const reader = new FileReader();
@@ -42,11 +42,11 @@ export class ImageSelector extends Component<IProps, IState> {
 			reader.onload = e => {
 				this.onUpdateImage([
 					...this.state.images,
-					{ blob: e.target.result , file},
+					{ blob: e.target.result, file },
 				]);
 			};
 		});
-	};
+	}
 
 	/**
 	 * Need for reset last images
@@ -54,15 +54,15 @@ export class ImageSelector extends Component<IProps, IState> {
 	 */
 	onClickAddImage = event => {
 		event.target.value = null;
-	};
+	}
 
 	deleteImage = (index: number) => () => {
 		const newFiles = removeElementByIndex(this.state.images, index);
 		this.onUpdateImage(newFiles);
-	};
+	}
 
 	render() {
-		const {images} = this.state;
+		const { images } = this.state;
 		return (
 			<>
 				<div className='offer-form-upload'>
@@ -78,7 +78,7 @@ export class ImageSelector extends Component<IProps, IState> {
 				<div className='uploaded-images'>
 					{
 						images.map((image, index) => (
-							<Image
+							<ImageComponent
 								key={index}
 								url={image.blob}
 								onClose={this.deleteImage(index)}
@@ -91,13 +91,16 @@ export class ImageSelector extends Component<IProps, IState> {
 	}
 }
 
-interface ImageProps {
+export interface ImageProps {
 	url: string;
 	onClose: () => void;
 }
 
-const Image = ({url, onClose}: ImageProps) => (
-	<div className='uploaded-img__container'>
+export const ImageComponent = ({ url, onClose }: ImageProps) => (
+	<div
+		style={{ maxWidth: 160 }}
+		className='uploaded-img__container'
+	>
 		<span
 			className='uploaded-img__remove'
 			onClick={onClose}

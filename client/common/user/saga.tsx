@@ -108,7 +108,7 @@ function* changePassword(action) {
 	}
 }
 
-function* loadingUserIfHasToken() {
+	function* loadingUserIfHasToken() {
 	const token = CustomStorage.getToken();
 	if (token) {
 		yield put(UserActions.getProfile.REQUEST({}));
@@ -132,7 +132,7 @@ function* selectFavorite(action) {
 		try {
 			yield call(UserAPI.postFavorites, { favorites_ids: changedFavoriteAds });
 		} catch (e) {
-			console.log(e);
+			yield call(errorHandler, e);
 		}
 	}
 }
@@ -144,13 +144,14 @@ function* getFavorites() {
 		const favoritesAds = yield call(fromArrayToObject, data.data);
 		yield put(UserActions.getFavoritesAds.SUCCESS({ favoritesAds }));
 	} catch (e) {
-		console.log(e);
+		yield call(errorHandler, e);
 	}
 }
 
 function* removeFavoriteAds(action) {
 	const favoritesIDs = action.payload.favoritesId;
 	const token        = yield select(getToken);
+	// const favoritesID = yield call(readLocalStorage);
 	for (let i = 0; i <= favoritesIDs.length + 1; i++) {
 		const id = favoritesIDs[i];
 		yield put(UserActions.removeFavoritesAd.REQUEST({ id }));
@@ -160,11 +161,10 @@ function* removeFavoriteAds(action) {
 		try {
 			yield call(UserAPI.deleteFavorites, { favorites_ids: favoritesIDs });
 		} catch (e) {
-			console.log(e);
+			yield call(errorHandler, e);
 		}
 	}
 }
-
 
 function synchronizeLocalStorage(favoritesList) {
 	CustomStorage.setItem('favorites_ids', JSON.stringify(favoritesList));

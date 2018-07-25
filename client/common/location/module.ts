@@ -57,7 +57,7 @@ const defaultState: ILocationStoreState = {
 
 const reducer = createReducer({}, defaultState);
 
-reducer.on(initialize, (state, payload): ILocationStoreState => payload);
+reducer.on(initialize, (state, payload = defaultState): ILocationStoreState => payload);
 
 reducer.on(setLoaded, (state, payload): ILocationStoreState => ({
 	...state,

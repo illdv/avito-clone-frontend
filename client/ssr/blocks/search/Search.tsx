@@ -207,11 +207,12 @@ class Search extends Component<ISearchProps, ISearchState> {
 					</div>
 					<div className='form-group col-6 col-md-3'>
 						<input
+							readOnly
 							type='text'
 							placeholder='Search'
-							value={this.localeName}
-							className='search__options form-control'
+							defaultValue={this.localeName}
 							onClick={this.showSearchLocationModal}
+							className='search__options form-control search_input--no-disable'
 						/>
 					</div>
 					<div className='form-group col-12 col-md-2'>

@@ -8,6 +8,12 @@ import withReduxSaga from 'next-redux-saga';
 import configureStore from '../client/common/store';
 import { initialize } from '../client/common/location/module';
 
+import { isServer } from '../client/common/utils/utils';
+
+if (isServer) {
+	types.disableChecking();
+}
+
 class ExampleApp extends App {
 	static async getInitialProps({Component, ctx}) {
 		types.clear();

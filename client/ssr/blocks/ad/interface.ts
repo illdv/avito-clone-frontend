@@ -24,10 +24,16 @@ export interface IAd {
 	price: string;
 	options: IVehicleFeature;
 	type: object;
-	random_ad: IAd;
+	similar_ad: ISimilarAd;
 	user: ISeller;
 	category_id: string;
 	city: IAdCity;
+	latitude: number;
+	longitude: number;
+}
+export interface ISimilarSortState {
+	similar_ad?: ISimilarAd;
+	filter?: string;
 }
 
 export interface ICrumb {
@@ -45,6 +51,10 @@ export interface IAdsState {
 	crumbs: ICrumb[];
 	lastCrumb: ICrumb;
 	images: IImage[];
+	default_map: {
+		lat: number;
+		lng: number;
+	};
 }
 
 export interface ISliderProps {
@@ -69,7 +79,6 @@ export interface ISellerProps {
 
 }
 
-
 export interface IVehicleFeature {
 	options: object;
 }
@@ -84,13 +93,38 @@ export interface ISimilarProps {
 	price: string;
 	userName: string;
 	description: string;
+	image: {
+		file_url: string;
+	};
 }
+
+export interface ISimilarState {
+	description: string;
+	title: string;
+	similar_ad: ISimilarAd;
+}
+
 export interface ISimilar {
-	random: IAd;
+	filter?: string;
+	similar_ad: ISimilarAd;
+	id_parent: string;
 }
 
 export interface IChart {
-	randomAd: IAd;
+	similar_ad: ISimilarAd;
+	id_parent: string;
+	default_map: {
+		lat: number;
+		lng: number;
+	};
+	isMarkerShown: {
+		lat: number;
+		lng: number;
+	},
+}
+
+export interface IChartState {
+	zoom: number;
 }
 
 export interface IFavorites {
@@ -100,4 +134,14 @@ export interface IFavorites {
 
 export interface IFavoriteState {
 	is_favorite: boolean;
+}
+
+export interface ISimilarAd {
+	id: string;
+	title: string;
+	images: any[];
+	description: string;
+	price: string;
+	user: ISeller;
+
 }

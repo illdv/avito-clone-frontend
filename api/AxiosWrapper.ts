@@ -17,8 +17,8 @@ function post(apiMethod: string, body: any = {}, config?: AxiosRequestConfig) {
 	return instance.post(apiMethod, body, config);
 }
 
-function put(apiMethod: string, body: any = {}) {
-	return instance.put(apiMethod, body);
+function put(apiMethod: string, body: any = {}, config?: AxiosRequestConfig) {
+	return instance.put(apiMethod, body, config);
 }
 
 function deleteResponse(apiMethod: string, body?: any) {

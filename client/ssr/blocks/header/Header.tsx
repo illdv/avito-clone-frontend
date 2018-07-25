@@ -21,6 +21,7 @@ import { getLocationState } from 'client/common/store/selectors';
 import { showLocationModal } from 'client/ssr/modals/location/locationModalTriggers';
 import SearchLocationModal from 'client/ssr/modals/location/SearchLocationModal';
 import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
+import { useOrDefault } from 'client/spa/pages/createAd/utils';
 
 require('../../../common/styles/main.sass');
 require('./Header.sass');
@@ -50,7 +51,7 @@ class Header extends Component<IProps, IState> {
 	}
 
 	componentDidMount(): void {
-		const {user} = this.props.user;
+		const { user } = this.props.user;
 		const token = CustomStorage.getToken();
 		if (!isServer() && !user.id && token) {
 			axios.defaults.headers.common.authorization = `Bearer ${token}`;
@@ -60,8 +61,7 @@ class Header extends Component<IProps, IState> {
 
 	renderLogin = () => {
 		const { user } = this.props.user;
-		const token    = user.token;
-		if (token) {
+		if (useOrDefault(() => user.email, null)) {
 			return (
 				<Link href={`/profile`}>
 					<a>{user.email}</a>

@@ -1,14 +1,16 @@
 import * as React from 'react';
-import {Component} from 'react';
-import {connect, Dispatch} from 'react-redux';
+import { Component } from 'react';
+import { connect, Dispatch } from 'react-redux';
 
-import {IRootState} from 'client/common/store/storeInterface';
-import {IUserState} from 'client/common/user/reducer';
+import { IRootState } from 'client/common/store/storeInterface';
+import { IUserState } from 'client/common/user/reducer';
 import Lease from 'client/spa/pages/createAd/Lease';
-import {IAds} from 'client/common/ads/interface';
+import { IAds, Image } from 'client/common/ads/interface';
 import CategoriesSelector from 'client/spa/pages/createAd/CategoriesSelector';
 import { ICategory } from 'client/common/categories/interface';
-import { Images, ImageSelector } from 'client/spa/pages/createAd/ImageSelector';
+import { ImageComponent, Images, ImageSelector } from 'client/spa/pages/createAd/ImageSelector';
+import { bindModuleAction } from 'client/common/user/utils';
+import { AdsActions, IAdsActions } from 'client/common/ads/actions';
 
 export interface IAdsDataForCreate {
 	id: string;
@@ -24,19 +26,23 @@ export interface IAdsDataForCreate {
 	locationName: string;
 	selectedCategory: ICategory[];
 	images: Images[];
+	imageBackend: Image[];
 }
 
 export interface IProps {
 	user?: IUserState;
 	onNext: (data: IAdsDataForCreate) => void;
 	data: IAds;
+	adsActions: IAdsActions;
 }
 
 const mapStateToProps = (state: IRootState) => ({
 	user: state.user,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({});
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+	adsActions: bindModuleAction(AdsActions, dispatch),
+});
 
 interface IPropsForInput {
 	id: string;
@@ -46,7 +52,7 @@ interface IPropsForInput {
 	onChange: (event) => void;
 }
 
-const Input = ({id, title, onChange, inputClass, defaultValue}: IPropsForInput) => (
+const Input = ({ id, title, onChange, inputClass, defaultValue }: IPropsForInput) => (
 	<div className='offer-form__item form-group row align-items-center'>
 		<label
 			htmlFor={id}
@@ -66,7 +72,7 @@ const Input = ({id, title, onChange, inputClass, defaultValue}: IPropsForInput) 
 	</div>
 );
 
-const TextArea = ({id, title, onChange, inputClass, defaultValue}: IPropsForInput) => (
+const TextArea = ({ id, title, onChange, inputClass, defaultValue }: IPropsForInput) => (
 	<div className='offer-form__item form-group row align-items-center'>
 		<label
 			htmlFor={id}
@@ -100,12 +106,13 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 		lat: 0,
 		lng: 0,
 		selectedCategory: [],
-		images: null,
+		images: [],
+		imageBackend: [],
 	};
 
 	static getDerivedStateFromProps(nextProps: IProps, prevState: IAdsDataForCreate): IAdsDataForCreate {
 
-		const {id, price, description, title, latitude, longitude, phone} = nextProps.data;
+		const { id, price, description, title, latitude, longitude, phone, images } = nextProps.data;
 		if (id !== prevState.id) {
 			return {
 				id,
@@ -121,15 +128,16 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 				locationName: '',
 				selectedCategory: [],
 				images: [],
+				imageBackend: images,
 			};
 		}
 		return null;
 	}
 
 	onChangeFields = event => {
-		const {id, value} = event.target;
+		const { id, value } = event.target;
 		this.setState({
-			fields: {...this.state.fields, [id]: value},
+			fields: { ...this.state.fields, [id]: value },
 		});
 	}
 
@@ -153,13 +161,21 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 	}
 
 	onSelectCategory = (selectedCategory: ICategory[]) => {
-		this.setState({selectedCategory});
+		this.setState({ selectedCategory });
+	}
+
+	deleteImageBackend = (id: string) => () => {
+		this.props.adsActions.deleteImage.REQUEST({ id });
+		this.setState({
+			imageBackend: this.state.imageBackend.filter(index => index.id !== id),
+		});
 	}
 
 	render() {
-		const {email, name} = this.props.user.user;
-		const {phone, description, price, title} = this.state.fields;
-		const {lng, lat, selectedCategory} = this.state;
+		const { email, name }                              = this.props.user.user;
+		const { phone, description, price, title }         = this.state.fields;
+		const { lng, lat, selectedCategory, imageBackend } = this.state;
+
 		return (
 			<section className='page'>
 				<div className='container page__container-sm'>
@@ -229,7 +245,7 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 							<h3>Select category</h3>
 						</div>
 						<div className='col-lg-12'>
-							<CategoriesSelector onSelectCategory={this.onSelectCategory}/>
+							<CategoriesSelector onSelectCategory={this.onSelectCategory} />
 						</div>
 					</div>
 					<div className='row'>
@@ -237,7 +253,7 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 							<h3 className='selected-category__title'>Select category</h3>
 							<div
 								className='breadcrumbs category-breadcrumbs'
-								style={{width: '100%'}}
+								style={{ width: '100%' }}
 							>
 								<ol className='breadcrumb breadcrumb__inner'>
 									{selectedCategory.map((category, index) => (
@@ -283,13 +299,27 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 								Photo
 							</label>
 							<div className='col-md-9 col-lg-6'>
-								<ImageSelector onUpdateImage={this.onUpdateImage}/>
+								<ImageSelector onUpdateImage={this.onUpdateImage} />
+								<div>
+									{
+										imageBackend
+										&&
+										imageBackend.map((image: Image) => (
+											<ImageComponent
+												key={image.id}
+												url={image.file_url}
+												onClose={this.deleteImageBackend(image.id)}
+											/>
+										))
+										|| null
+									}
+								</div>
 							</div>
 						</div>
 						<Lease
 							onSelectPlace={this.onSelectPlace}
 							onNext={this.onNext}
-							defaultValue={{lat, lng}}
+							defaultValue={{ lat, lng }}
 						/>
 					</div>
 				</div>
