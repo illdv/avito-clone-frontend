@@ -228,7 +228,7 @@ function* watcherUser() {
 		takeLatest(UserActions.sendCode.REQUEST, resetPassword),
 		takeEvery(UserActions.selectFavorite.REQUEST, selectFavorite),
 		takeEvery(UserActions.getFavoritesAds.REQUEST, getFavorites),
-		takeEvery(UserActions.removeFavorite.REQUEST, removeFavoriteAds),
+		takeEvery(UserActions.removeFavoritesAds.REQUEST, removeFavoriteAds),
 
 	];
 }

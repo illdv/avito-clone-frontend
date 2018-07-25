@@ -8,17 +8,18 @@ interface IFavoritesPageProps {
 }
 
 interface IFavoritesPageState {
-	selected: any[];
+	selected: Set<string>;
 	checkedAll: boolean;
 	adsCollection: IAds[];
 }
 
 class FavoritesPage extends React.Component<IFavoritesPageProps, IFavoritesPageState> {
 	state = {
-		selected: [],
+		selected: new Set(),
 		checkedAll: false,
-		adsCollection: []
+		adsCollection: [],
 	};
+
 	static getDerivedStateFromProps(nextProps, prevState){
 		let adsCollection;
 		function createAdsCollection(ads) {
@@ -41,14 +42,16 @@ class FavoritesPage extends React.Component<IFavoritesPageProps, IFavoritesPageS
 	}
 	handleRemove = () => {
 		const selected = this.state.selected;
-		this.props.removeFavoriteAds(selected);
-		this.setState({ checkedAll: false, selected: [] });
+		let array = Array.from(selected);
+		this.props.removeFavoriteAds(array);
+		selected.clear();
+		this.setState({ checkedAll: false, selected });
 	};
 
 	handleCheckAll = () => {
 		let {selected, adsCollection} = this.state;
 		if (this.state.checkedAll) {
-			selected = [];
+			selected.clear();
 		} else {
 			selected = this.getAllId(adsCollection);
 		}
@@ -57,42 +60,24 @@ class FavoritesPage extends React.Component<IFavoritesPageProps, IFavoritesPageS
 		this.setState({ checkedAll, selected });
 	};
 
-	handleCheck = (id: any, checked: boolean) => {
+	handleCheck = (id: string, checked: boolean) => {
 		let selected = this.state.selected;
 		if (checked) {
-			selected.push(id);
+			selected.add(id);
 		} else {
-			if (selected) {
-				const index = selected.indexOf(id);
-				selected    = {
-					...selected.slice(0, Number(index)),
-					...selected.slice(Number(index) + 1)
-				};
-			}
-
+			selected.delete(id);
 		}
 		this.setState({ selected });
 	};
 
 	private getAllId(adList: IAds[]) {
-		const idList = [];
-		adList.forEach(ad => idList.push(ad.id));
+		const idList = new Set();
+		adList.forEach(ad => idList.add(ad.id));
 		return idList;
-	}
-
-	isCheck = (id) => {
-		const { checkedAll, selected } = this.state;
-		console.log('selected1', selected);
-		return function () {
-			console.log('selected', selected);
-			return checkedAll || selected.indexOf(id)
-
-		}
 	}
 
 	render() {
 		const { checkedAll, selected, adsCollection} = this.state;
-
 		return (
 			<>
 				<div className="remove-offer">
@@ -114,7 +99,7 @@ class FavoritesPage extends React.Component<IFavoritesPageProps, IFavoritesPageS
 							key={ad.id}
 							item={ad}
 							onCheck={this.handleCheck}
-							checked={checkedAll || selected.indexOf(ad.id)}
+							checked={checkedAll || selected.has(ad.id)}
 						/>) :
 						<div>You don't have any favorites Ads </div>}
 				</div>
