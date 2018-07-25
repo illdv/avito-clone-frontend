@@ -131,9 +131,11 @@ export const category: prepareMethod = async ({params, query, path}, req) => {
 		paramsForReqCategory = { country_id: idCountry };
 	}
 
-	const { data: categories } = paramsForReqCategory
+	/* const { data: categories } = paramsForReqCategory
 		? await instance.get(`/categories/?${ queryString.stringify(paramsForReqCategory) }`)
-		: await instance.get('/categories');
+		: await instance.get('/categories'); */
+	
+	const { data: categories } = await instance.get('/categories');
 
 	try {
 		const categoryQueue    = findCategoriesQueueBySlug(categories, categorySlug);
@@ -240,6 +242,15 @@ export const getRegions: prepareMethod = async ({ query }, req) => {
 export const getCities: prepareMethod = async ({ query }, req) => {
 	try {
 		const response = await getInstanseWithLanguageByReq(req).get(`/regions/${query.id}/cities/%20`);
+		return response.data;
+	} catch (err) {
+		return [];
+	}
+};
+
+export const search: prepareMethod = async ({ query }, req) => {
+	try {
+		const response = await getAdsByParams(query || {});
 		return response.data;
 	} catch (err) {
 		return [];

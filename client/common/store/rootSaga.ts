@@ -5,6 +5,7 @@ import user from '../user/saga';
 import ads from '../ads/saga';
 import location from '../location/saga';
 import categories from '../categories/saga';
+import notification from '../notification/saga';
 
 export default function* rootSaga() {
 	yield all([
@@ -13,5 +14,6 @@ export default function* rootSaga() {
 		...user.map(fork),
 		...ads.map(fork),
 		...categories.map(fork),
+		...notification.map(fork),
 	]);
 }

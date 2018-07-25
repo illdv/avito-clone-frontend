@@ -25,6 +25,11 @@ const routes = [
 		page: '/category',
 		prepare: ['location', 'category'],
 	},
+	{
+		path: '/search',
+		page: '/search',
+		prepare: ['location', 'categories', 'search'],
+	},
 ] as IRoute[];
 
 export const getRoutes = () => routes;
