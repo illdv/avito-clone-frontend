@@ -23,6 +23,7 @@ const routes = [
 	{
 		path: '/favorites',
 		page: '/favorites',
+		prepare: ['location'],
 	},
 	{
 		path: '/category/:categorySlug?',

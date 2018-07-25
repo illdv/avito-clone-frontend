@@ -53,6 +53,7 @@ function* login(action: Action<ILoginRequest>) {
 		const response: AxiosResponse<ILoginResponse> = yield call(UserAPI.login, action.payload);
 		const { token, user }                         = response.data;
 		let favorites_ids;
+		debugger;
 		if (!user.favorites_ids.length) {
 			// favorites_ids = yield select(getUserFavorite);
 			favorites_ids = yield call(readLocalStorage);
@@ -108,7 +109,7 @@ function* changePassword(action) {
 	}
 }
 
-function* loadingUserIfHasToken() {
+	function* loadingUserIfHasToken() {
 	const token = CustomStorage.getToken();
 	if (token) {
 		yield put(UserActions.getProfile.REQUEST({}));
@@ -132,7 +133,7 @@ function* selectFavorite(action) {
 		try {
 			yield call(UserAPI.postFavorites, { favorites_ids: changedFavoriteAds });
 		} catch (e) {
-			console.log(e);
+			yield call(errorHandler, e);
 		}
 	}
 }
@@ -144,7 +145,7 @@ function* getFavorites() {
 		const favoritesAds = yield call(fromArrayToObject, data.data);
 		yield put(UserActions.getFavoritesAds.SUCCESS({ favoritesAds }));
 	} catch (e) {
-		console.log(e);
+		yield call(errorHandler, e);
 	}
 }
 
@@ -160,29 +161,11 @@ function* removeFavoriteAds(action) {
 		try {
 			yield call(UserAPI.deleteFavorites, { favorites_ids: favoritesIDs });
 		} catch (e) {
-			console.log(e);
+			yield call(errorHandler, e);
 		}
 	}
 }
 
-/*function saveInStorege() {
-	//Max Code
-	const oldData = JSON.parse(CustomStorage.getItem('favorites_ids'));
-	if (oldData.length === 0) {
-		CustomStorage.setItem('favorites_ids', JSON.stringify([this.props.id]));
-		return;
-	}
-	let newData      = [];
-	const isFavorite = oldData.indexOf(this.props.id);
-	if (isFavorite !== -1) {
-		oldData.splice(isFavorite, 1);
-		newData = oldData;
-	} else {
-		newData = oldData.concat(this.props.id);
-	}
-	CustomStorage.setItem('favorites_ids', JSON.stringify(newData));
-	return;
-}*/
 function synchronizeLocalStorage(favoritesList) {
 	CustomStorage.setItem('favorites_ids', JSON.stringify(favoritesList));
 }
