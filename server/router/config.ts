@@ -8,16 +8,17 @@ const routes = [
 	{
 		path: '/',
 		page: '/index',
-		prepare: ['ads', 'categories'],
+		prepare: ['location', 'ads', 'categories'],
 	},
 	{
 		path: '/ad/:id',
 		page: '/ad',
-		prepare: ['ad', 'categories'],
+		prepare: ['location', 'ad', 'categories'],
 	},
 	{
 		path: '/profile',
 		page: '/profile',
+		prepare: ['location'],
 	},
 	{
 		path: '/favorites',
@@ -26,7 +27,12 @@ const routes = [
 	{
 		path: '/category/:categorySlug?',
 		page: '/category',
-		prepare: ['category', 'categories'],
+		prepare: ['location', 'category'],
+	},
+	{
+		path: '/search',
+		page: '/search',
+		prepare: ['location', 'categories', 'search'],
 	},
 ] as IRoute[];
 

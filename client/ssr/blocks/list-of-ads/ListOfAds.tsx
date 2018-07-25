@@ -1,10 +1,10 @@
 import React from 'react';
-import { IAds } from 'client/common/ads/interface';
+import {IAds} from 'client/common/ads/interface';
 import Ad from 'client/ssr/blocks/list-of-ads/components/Ad';
 
 require('./ListOfAds.sass');
 
-export { IAds };
+export {IAds};
 
 export interface IAdsProps {
 	title: string;
@@ -13,14 +13,14 @@ export interface IAdsProps {
 
 class Ads extends React.PureComponent<IAdsProps> {
 	render() {
-		const { ads, title } = this.props;
+		const {ads, title} = this.props;
 
 		return (
-			<section className='section-lg'>
+			<section className='section-sm'>
 				<div className='container'>
-					<div className='row p-b-20'>
-						<div className='col-md-12 '>
-							<h3>{title}</h3>
+					<div className='row'>
+						<div className='col-12'>
+							<h3 className='m-b-20'>{title}</h3>
 						</div>
 					</div>
 					<div className='row'>
@@ -30,7 +30,7 @@ class Ads extends React.PureComponent<IAdsProps> {
 									key={ad.id}
 									className='col-md-4 col-lg-3'
 								>
-									<Ad data={ad} />
+									<Ad ads={ad} />
 								</div>
 							))
 						}

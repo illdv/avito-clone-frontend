@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { IFavorites, IFavoriteState } from 'client/ssr/blocks/ad/interface';
+import { CustomStorage } from 'client/common/user/CustomStorage';
 
 class ButtonFavorites extends Component <IFavorites, IFavoriteState> {
 	constructor(props) {
@@ -9,9 +10,7 @@ class ButtonFavorites extends Component <IFavorites, IFavoriteState> {
 	handleSelectFavorite = () => {
 		this.props.selectFavorite(this.props.id)
 	};
-	// formText = () => {
-	// 	return this.state.is_favorite ? 'Remove from favorites' : 'Add to favourites';
-	// };
+
 
 	render() {
 		return (

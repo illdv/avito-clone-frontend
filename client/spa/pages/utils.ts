@@ -1,14 +1,8 @@
-import { IAds } from 'client/common/ads/interface';
+import { IAds, MyAdsStatus } from 'client/common/ads/interface';
 
-export enum MyAdsStatus {
-	Disapproved = 'Disapproved',
-	Active      = 'Active',
-	Completed   = 'Completed',
-}
-
-const isDisapproved = (ad: IAds) => ad.is_approved === 0;
-const isActive      = (ad: IAds) => ad.is_active === 1;
-const isCompleted   = (ad: IAds) => ad.is_completed === 1;
+const isDisapproved = (ad: IAds) => ad.is_approved === false;
+const isActive      = (ad: IAds) => ad.is_active === true;
+const isCompleted   = (ad: IAds) => ad.is_completed === true;
 
 export function filterMyAds(selectedFilter: MyAdsStatus, ads: IAds[]) {
 	if (selectedFilter === MyAdsStatus.Active) {

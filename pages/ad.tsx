@@ -26,7 +26,11 @@ interface IAdsProps {
 
 class Ads extends React.Component<IAdsProps> {
 	static async getInitialProps({ query }) {
-		return { ad: query.ad, categories: query.categories };
+		return {
+			ad: query.ad,
+			location: query.location,
+			categories: query.categories,
+		};
 	}
 
 	render() {

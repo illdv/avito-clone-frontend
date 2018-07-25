@@ -105,7 +105,4 @@ const mapDispatchToProps = dispatch => ({
     hide: (name) => dispatch(hide(name))
 });
 
-export default (props: InitialModalProps) => {
-    const Component = connect(mapStateToProps, mapDispatchToProps)(ModalWrap);
-    return <Component {...props} />
-}
+export default connect(mapStateToProps, mapDispatchToProps)(ModalWrap);

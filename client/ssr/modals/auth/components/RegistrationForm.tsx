@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Component } from 'react';
-import { connect, Dispatch } from 'react-redux';
-import { IUserActions, UserActions } from 'client/common/user/actions';
-import { bindModuleAction } from 'client/common/user/utils';
+import {Component} from 'react';
+import {connect, Dispatch} from 'react-redux';
+import {IUserActions, UserActions} from 'client/common/user/actions';
+import {bindModuleAction} from 'client/common/user/utils';
 
 export interface IState {
 	fields: {
@@ -32,8 +32,8 @@ interface IInputProps {
 	onChange: (event) => void;
 }
 
-const Input = ({ id, title, onChange, placeholder, type }: IInputProps) => (
-	<div className='form-group row big-input'>
+const Input = ({id, title, onChange, placeholder, type}: IInputProps) => (
+	<div className='form-group row auth-input__wrapper'>
 		<label
 			className='col-sm-5 col-form-label '
 			htmlFor={id}
@@ -65,19 +65,19 @@ class RegistrationForm extends Component<IProps, IState> {
 	};
 
 	onChange = event => {
-		const { id, value } = event.target;
+		const {id, value} = event.target;
 		this.setState({
-			fields: { ...this.state.fields, [id]: value },
+			fields: {...this.state.fields, [id]: value},
 		});
 	}
 
 	onRegistration = () => {
-		this.props.userActions.register.REQUEST({ ...this.state.fields });
+		this.props.userActions.register.REQUEST({...this.state.fields});
 	}
 
 	render() {
 		return (
-			<div>
+			<div className='auth-form'>
 				<Input
 					title='Email'
 					id='email'
@@ -110,10 +110,10 @@ class RegistrationForm extends Component<IProps, IState> {
 					placeholder='Confirm password'
 					onChange={this.onChange}
 				/>
-				<div className='form-group col-sm-12 p-x-40 m-t-40'>
+				<div className='auth-modal-btn__container'>
 					<button
 						onClick={this.onRegistration}
-						className='btn orange-btn big-btn'
+						className='btn orange-btn auth-modal-btn'
 					>
 						Register
 					</button>

@@ -1,7 +1,6 @@
 import { createActionCreator, IAsyncAction } from 'client/common/user/utils';
-import { IAds, ICreateAdRequest } from 'client/common/ads/interface';
+import { IAds, ICreateAdRequest, AdsActionType } from 'client/common/ads/interface';
 import { PageName } from 'client/common/ads/reducer';
-import { MyAdsStatus } from 'client/spa/pages/utils';
 
 const createAsyncAction = createActionCreator('ADS');
 
@@ -29,7 +28,7 @@ export interface IAdsActions {
 	create: IAsyncAction<ICreateAdRequest>;
 	changePage: IAsyncAction<PageName>;
 	remove: IAsyncAction<{ id: string }>;
-	changeStatus: IAsyncAction<{ status: MyAdsStatus, id: string }>;
+	changeStatus: IAsyncAction<{ actionType: AdsActionType, id: string }>;
 	selectForEdit: IAsyncAction<{ id: string }>;
 	edit: IAsyncAction<IAds>;
 }
