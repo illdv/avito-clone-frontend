@@ -9,7 +9,6 @@ import BreadcrumbsWrap from 'client/ssr/wraps/BreadcrumbFromContext';
 import EmptySearch from 'client/ssr/blocks/empty-search/EmptySearch';
 import ListOfSubcategories from 'client/ssr/blocks/list-of-subcategories/ListOfSubcategories';
 
-
 interface adGroup {
 	title: string;
 	id: number;
