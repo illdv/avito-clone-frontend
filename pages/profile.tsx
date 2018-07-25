@@ -12,6 +12,7 @@ require('client/spa/pages/MyAds.sass');
 require('client/spa/pages/createAd/CreateAd.sass');
 require('client/spa/pages/ProfileSettings/ProfileSettings.sass');
 require('client/ssr/blocks/footer/Footer.sass');
+require('client/spa/pages/Favorites/FavoritesPage.sass');
 
 const isServer: boolean = typeof window === 'undefined';
 

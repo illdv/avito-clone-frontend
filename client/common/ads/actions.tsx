@@ -13,6 +13,7 @@ const selectForEdit = createAsyncAction('SELECT_FOR_EDIT');
 const edit          = createAsyncAction('EDIT');
 const deleteImage   = createAsyncAction('DELETE_IMAGE');
 
+
 export const AdsActions: IAdsActions = {
 	getMy,
 	create,

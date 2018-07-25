@@ -56,8 +56,8 @@ function useAction(id: string, actionType: AdsActionType) {
 	return AxiosWrapper.put(`/ads/${id}/state/${actionType}`);
 }
 
-function deleteImage(id: string) {
-	/*return AxiosWrapper.put(`/ads/${id}/state/${actionType}`);*/
+function similar(sort: string, id: string) {
+	return AxiosWrapper.get(`ad/${id}/similar/${sort}`);
 }
 
 export const AdsAPI = {
@@ -69,4 +69,5 @@ export const AdsAPI = {
 	edit,
 	useAction,
 	deleteImage,
+	similar,
 };
