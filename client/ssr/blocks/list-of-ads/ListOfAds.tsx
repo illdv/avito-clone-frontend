@@ -30,7 +30,7 @@ class Ads extends React.PureComponent<IAdsProps> {
 									key={ad.id}
 									className='col-md-4 col-lg-3'
 								>
-									<Ad data={ad}/>
+									<Ad ads={ad} />
 								</div>
 							))
 						}
