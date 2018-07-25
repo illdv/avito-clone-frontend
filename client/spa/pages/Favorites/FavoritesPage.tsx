@@ -4,6 +4,7 @@ import FavoritesItem from 'client/spa/pages/Favorites/FavoritesItem';
 
 interface IFavoritesPageProps {
 	ads: IAds[]
+	removeFavoriteAds: (id) => void;
 }
 
 interface IFavoritesPageState {
@@ -19,6 +20,8 @@ class FavoritesPage extends React.Component<IFavoritesPageProps, IFavoritesPageS
 
 	handleRemove = () => {
 		const selected = this.state.selected;
+		let array = Array.from(selected);
+		this.props.removeFavoriteAds(array);
 		selected.clear();
 		this.setState({ checkedAll: false, selected });
 	};
@@ -70,12 +73,14 @@ class FavoritesPage extends React.Component<IFavoritesPageProps, IFavoritesPageS
 					</button>
 				</div>
 				<div className="favourites-offer-block">
-					{ads ? ads.map(ad => <FavoritesItem
-						key={ad.id}
-						item={ad}
-						onCheck={this.handleCheck}
-						checked={checkedAll || selected.has(ad.id)}
-					/>) : <div>You don't have any favorites Ads </div>}
+					{ads ?
+						ads.map(ad => <FavoritesItem
+							key={ad.id}
+							item={ad}
+							onCheck={this.handleCheck}
+							checked={checkedAll || selected.has(ad.id)}
+						/>) :
+						<div>You don't have any favorites Ads </div>}
 				</div>
 			</>
 		);

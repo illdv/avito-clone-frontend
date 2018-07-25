@@ -52,8 +52,8 @@ class Header extends Component<IProps, IState> {
 
 	renderLogin = () => {
 		const { user } = this.props.user;
-
-		if (user) {
+		const token    = user.token;
+		if (token) {
 			return (
 				<Link href={`/profile`}>
 					<p>{user.email}</p>

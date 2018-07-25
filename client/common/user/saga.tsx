@@ -1,4 +1,4 @@
-import { call, put, take, takeEvery, takeLatest } from 'redux-saga/effects';
+import { call, put, select, take, takeEvery, takeLatest } from 'redux-saga/effects';
 import { Action } from 'redux-act';
 import axios, { AxiosResponse } from 'axios';
 
@@ -10,7 +10,11 @@ import { ModalNames } from 'client/common/modal-juggler/modalJugglerInterface';
 import { show } from 'client/common/modal-juggler/module';
 import { hideLoginModal } from 'client/ssr/modals/auth/loginModalTriggers';
 import { Toasts } from 'client/common/utils/Toasts';
-import { pushInRouter } from 'client/common/utils/utils'
+import { pushInRouter } from 'client/common/utils/utils';
+
+export const getUserFavoriteIds = state => state.user.user.favorites_ids;
+export const getToken           = state => state.user.user.token;
+export const getUserFavoriteAds = state => state.user.favoritesAds;
 
 function* saveTokenInStore(action: Action<{ user: IUser, isRememberMe: boolean }>) {
 	const { user: { token }, isRememberMe } = action.payload;
@@ -47,10 +51,18 @@ function* login(action: Action<ILoginRequest>) {
 		const { isRememberMe }                        = action.payload;
 		const response: AxiosResponse<ILoginResponse> = yield call(UserAPI.login, action.payload);
 		const { token, user }                         = response.data;
+		let favorites_ids;
+		if (!user.favorites_ids.length) {
+			// favorites_ids = yield select(getUserFavorite);
+			favorites_ids = yield call(readLocalStorage);
+		} else {
+			favorites_ids = user.favorites_ids;
+		}
 		yield put(UserActions.login.SUCCESS({
 			user: {
 				...user,
 				token,
+				favorites_ids
 			},
 			isRememberMe,
 		}));
@@ -101,6 +113,93 @@ function* loadingUserIfHasToken() {
 	}
 }
 
+function* selectFavorite(action) {
+	const selectedAdId     = action.payload.id;
+	const favoriteAds      = yield select(getUserFavoriteIds);
+	const indexInFavorites = favoriteAds.indexOf(selectedAdId);
+	if (indexInFavorites === -1) {
+		yield put(UserActions.setFavorite.SUCCESS({ id: selectedAdId }));
+	} else {
+		// yield call()
+		yield put(UserActions.removeFavorite.SUCCESS({ indexInFavorites }));
+	}
+	const changedFavoriteAds = yield select(getUserFavoriteIds);
+	yield call(synchronizeLocalStorage, changedFavoriteAds);
+	const token = yield select(getToken);
+	if (token) {
+		try {
+			yield call(UserAPI.postFavorites, { favorites_ids: changedFavoriteAds });
+		} catch (e) {
+			console.log(e);
+		}
+	}
+}
+function* getFavorites() {
+	const favoritesID = yield call(readLocalStorage);
+	const {data} = yield call(UserAPI.getFavorites, { favorites_ids: favoritesID });
+	yield put(UserActions.getFavorites.SUCCESS({favoritesAds: data.data }));
+}
+
+function* removeFavorites(action) {
+	const favoritesID = action.payload.favoritesId;
+	const token = yield select(getToken);
+	const favoriteAds      = yield select(getUserFavoriteAds);
+	const indexInFavorites = favoriteAds.indexOf(favoritesID);
+	// const favoritesID = yield call(readLocalStorage);
+	yield put(UserActions.removeFavorite.SUCCESS({indexInFavorites }));
+	if (token) {
+		try {
+			yield call(UserAPI.deleteFavorites, { favorites_ids: favoritesID });
+		} catch (e) {
+			console.log(e);
+		}
+	}
+}
+
+/*function saveInStorege() {
+	//Max Code
+	const oldData = JSON.parse(CustomStorage.getItem('favorites_ids'));
+	if (oldData.length === 0) {
+		CustomStorage.setItem('favorites_ids', JSON.stringify([this.props.id]));
+		return;
+	}
+	let newData      = [];
+	const isFavorite = oldData.indexOf(this.props.id);
+	if (isFavorite !== -1) {
+		oldData.splice(isFavorite, 1);
+		newData = oldData;
+	} else {
+		newData = oldData.concat(this.props.id);
+	}
+	CustomStorage.setItem('favorites_ids', JSON.stringify(newData));
+	return;
+}*/
+function synchronizeLocalStorage(favoritesList) {
+	CustomStorage.setItem('favorites_ids', JSON.stringify(favoritesList));
+}
+
+function readLocalStorage() {
+	return JSON.parse(CustomStorage.getItem('favorites_ids'));
+}
+
+function saveInStorege(id) {
+	const oldData = JSON.parse(CustomStorage.getItem('favorites_ids'));
+	if (oldData.length === 0) {
+		CustomStorage.setItem('favorites_ids', JSON.stringify([id]));
+		return;
+	}
+	let newData      = [];
+	const isFavorite = oldData.indexOf(this.props.id);
+	if (isFavorite !== -1) {
+		oldData.splice(isFavorite, 1);
+		newData = oldData;
+	} else {
+		newData = oldData.concat(this.props.id);
+	}
+	CustomStorage.setItem('favorites_ids', JSON.stringify(newData));
+	return;
+}
+
 function* watcherUser() {
 	yield [
 		takeEvery(UserActions.login.REQUEST, login),
@@ -111,6 +210,9 @@ function* watcherUser() {
 		takeEvery(UserActions.initUser.REQUEST, loadingUserIfHasToken),
 		takeLatest(UserActions.changePassword.REQUEST, changePassword),
 		takeLatest(UserActions.sendCode.REQUEST, resetPassword),
+		takeEvery(UserActions.selectFavorite.REQUEST, selectFavorite),
+		takeEvery(UserActions.getFavorites.REQUEST, getFavorites),
+		takeEvery(UserActions.removeFavorite.REQUEST, removeFavorites),
 	];
 }
 

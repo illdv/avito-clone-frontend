@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect, Dispatch } from 'react-redux';
 
 import Breadcrumbs from './components/Breadcrumbs';
 import SliderImages from './components/SliderImages';
@@ -10,6 +11,8 @@ import Feature from 'client/ssr/blocks/ad/components/Feature';
 import Description from 'client/ssr/blocks/ad/components/Description';
 import Link from 'next/link';
 import ButtonFavorites from 'client/ssr/blocks/ad/components/ButtonFavorites';
+import { bindModuleAction } from 'client/common/user/utils';
+import { UserActions } from 'client/common/user/actions';
 
 require('./Ad.sass');
 
@@ -51,7 +54,7 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 				href: '/' + encodeURI(category.title),
 			};
 		});
-	}
+	};
 
 	recurseGetAdCategories = (categories, idCategoryAd): any[] | null => {
 		return categories.reduce((acc, category) => {
@@ -75,8 +78,9 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 				}
 			}
 		}, false);
-	}
-	formationImages = (images):IImage[] => {
+	};
+
+	formationImages = (images): IImage[] => {
 		return images.map(image => {
 			return {
 				original: image.file_url,
@@ -84,14 +88,14 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 
 			};
 		});
-	}
+	};
 
 	constructor(props) {
 		super(props);
 
 		const queue       = this.recurseGetAdCategories(this.props.categories, this.props.ad.category_id);
 		const queueCrumbs = this.formatCategoriesToCrumbs(queue);
-		const slider = this.formationImages(this.props.ad.images);
+		const slider      = this.formationImages(this.props.ad.images);
 
 		const crumbs: ICrumb[] = [].concat(this.firstCrumbs, queueCrumbs, this.lastCrumbItem);
 		const images: IImage[] = [].concat(slider);
@@ -106,9 +110,7 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 	get firstCrumbs(): ICrumb {
 		return {
 			title: 'All listings in ' + this.props.ad.city.title,
-			// title: 'All listings in ' + 'Moscow',
 			href: encodeURI('/' + this.props.ad.city.title),
-			// href: encodeURI('/' + 'moscow'),
 		};
 	}
 
@@ -118,6 +120,10 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 			href: encodeURI('/' + this.props.ad.title.toLowerCase()),
 		};
 	}
+
+	selectFavorite = (id: string) => {
+		this.props.userActions.selectFavorite.REQUEST({ id });
+	};
 
 	render() {
 		return (
@@ -154,7 +160,10 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 							<span> {this.props.ad.total_visits} </span>
 							(Today's <span> {this.props.ad.today_visits}</span>)
 						</span>
-								<ButtonFavorites id={this.props.ad.id} />
+								<ButtonFavorites
+									id={this.props.ad.id}
+									selectFavorite={this.selectFavorite}
+								/>
 							</div>
 							<div className='col-md-12 col-lg-4'>
 						<span className='price'>
@@ -169,11 +178,15 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 							</div>
 						</div>
 						<div className='row p-y-20'>
-							<SliderImages images={this.state.images}/>
+							<SliderImages images={this.state.images} />
 							<Feature options={this.props.ad.options} />
 						</div>
 						<div className='row'>
-							<Seller seller={this.props.ad.user} city={this.props.ad.city.title} country={this.props.ad.city.country.title} />
+							<Seller
+								seller={this.props.ad.user}
+								city={this.props.ad.city.title}
+								country={this.props.ad.city.country.title}
+							/>
 						</div>
 					</div>
 				</section>
@@ -181,7 +194,7 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 					<div className='container'>
 						<Description body={this.props.ad.body} />
 						{/*<VehicleKit />*/}
-						<Chart randomAd={this.props.ad.random_ad}/>
+						<Chart randomAd={this.props.ad.random_ad} />
 					</div>
 				</section>
 			</React.Fragment>
@@ -189,4 +202,8 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 	}
 }
 
-export default Ads;
+
+const mapDispatchToProps = dispatch => ({
+	userActions: bindModuleAction(UserActions, dispatch),
+});
+export default connect(null, mapDispatchToProps)(Ads);

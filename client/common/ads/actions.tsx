@@ -12,9 +12,7 @@ const remove        = createAsyncAction('REMOVE');
 const changeStatus  = createAsyncAction('CHANGE_STATUS');
 const selectForEdit = createAsyncAction('SELECT_FOR_EDIT');
 const edit          = createAsyncAction('EDIT');
-const getFavorites = createAsyncAction('GET_FAVORITE');
-const selectFavorite = createAsyncAction('SELECT_FAVORITE');
-const removeFavorite = createAsyncAction('REMOVE_FAVORITE');
+
 
 export const AdsActions: IAdsActions = {
 	getMy,
@@ -24,9 +22,6 @@ export const AdsActions: IAdsActions = {
 	changeStatus,
 	selectForEdit,
 	edit,
-	getFavorites,
-	selectFavorite,
-	removeFavorite,
 };
 
 export interface IAdsActions {
@@ -37,7 +32,4 @@ export interface IAdsActions {
 	changeStatus: IAsyncAction<{ status: MyAdsStatus, id: string }>;
 	selectForEdit: IAsyncAction<{ id: string }>;
 	edit: IAsyncAction<IAds>;
-	getFavorites: IAsyncAction<{}>;
-	selectFavorite: IAsyncAction<{}>;
-	removeFavorite: IAsyncAction<{}>;
 }
