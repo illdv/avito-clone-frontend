@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import SimilarAds from 'client/ssr/blocks/ad/components/SimilarAds'
-import { IChart } from 'client/ssr/blocks/ad/interface'
+import SimilarAds from 'client/ssr/blocks/ad/components/SimilarAds';
+import { IChart } from 'client/ssr/blocks/ad/interface';
 
 class Chart extends Component<IChart> {
 	render() {

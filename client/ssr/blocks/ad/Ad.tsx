@@ -85,7 +85,7 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 		return {
 			title: 'All listings in ' + this.props.ad.city.title,
 			// title: 'All listings in ' + 'Moscow',
-			href: encodeURI('/city/' + this.props.ad.city.title),
+			href: encodeURI('/' + this.props.ad.city.title),
 			// href: encodeURI('/' + 'moscow'),
 		};
 	}
