@@ -173,6 +173,7 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 							similar_ad={this.props.ad.similar_ad}
 							id_parent={this.props.ad.id}
 							default_map={this.state.default_map}
+							isMarkerShown={this.state.default_map}
 						/>
 					</div>
 				</section>

@@ -114,6 +114,10 @@ export interface IChart {
 		lat: number;
 		lng: number;
 	};
+	isMarkerShown: {
+		lat: number;
+		lng: number;
+	},
 }
 
 export interface IChartState {
