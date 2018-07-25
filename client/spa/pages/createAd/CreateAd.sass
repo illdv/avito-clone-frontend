@@ -152,3 +152,35 @@
 .button_confirm
   padding: 10px 15px
   margin-left: 15px
+
+.uploaded-images
+  display: grid
+  grid-template-columns: repeat(5, 1fr)
+  grid-gap: 10px
+  padding-top: 20px
+
+.uploaded-img__container
+  position: relative
+
+.uploaded-img__remove
+  position: absolute
+  top: 2px
+  right: 2px
+  z-index: 100
+  background-color: white
+  width: 18px
+  height: 18px
+  display: flex
+  align-items: center
+  justify-content: center
+  border-radius: 50%
+  opacity: 0.8
+  cursor: pointer
+  font-size: 18px
+  &:hover
+    opacity: 1
+
+.uploaded-img
+  width: 100%
+  height: 100%
+  object-fit: cover

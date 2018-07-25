@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Component } from 'react';
-import { connect, Dispatch } from 'react-redux';
-import { IRootState } from 'client/common/store/storeInterface';
-import { IAdsDataForCreate } from 'client/spa/pages/createAd/CreateAd';
-import { IUserState } from 'client/common/user/reducer';
+import {Component} from 'react';
+import {connect, Dispatch} from 'react-redux';
+import {IRootState} from 'client/common/store/storeInterface';
+import {IAdsDataForCreate} from 'client/spa/pages/createAd/CreateAd';
+import {IUserState} from 'client/common/user/reducer';
 
 export interface IProps {
 	data: IAdsDataForCreate;
@@ -30,9 +30,9 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 class ConfirmAds extends Component<IProps, IState> {
 
 	render() {
-		const { selectedCategory, locationName }   = this.props.data;
-		const { description, price, title, phone } = this.props.data.fields;
-		const { email }                            = this.props.user.user;
+		const {selectedCategory, locationName} = this.props.data;
+		const {description, price, title, phone} = this.props.data.fields;
+		const {email} = this.props.user.user;
 
 		const category = selectedCategory.map(item => item.title).join('/');
 
@@ -47,15 +47,15 @@ class ConfirmAds extends Component<IProps, IState> {
 							<div className='confirm-contact-info'>
 								<h4 className='confirm-contact-info__title'>Contact information</h4>
 								<div>
-									<div className='confirm-contact-info__item row no-gutters align-items-center'>
+									<div className='confirm-contact-info__item row align-items-center'>
 										<span className='col-md-4'>Full name</span>
 										<span className='col-md-6'>Alex Smit</span>
 									</div>
-									<div className='confirm-contact-info__item row no-gutters align-items-center'>
+									<div className='confirm-contact-info__item row align-items-center'>
 										<span className='col-md-4'>Email</span>
 										<span className='col-md-6'>{email}</span>
 									</div>
-									<div className='confirm-contact-info__item row no-gutters align-items-center'>
+									<div className='confirm-contact-info__item row align-items-center'>
 										<span className='col-md-4'>Phone</span>
 										<span className='col-md-6'>{phone}</span>
 									</div>
@@ -64,27 +64,27 @@ class ConfirmAds extends Component<IProps, IState> {
 							<div className='confirm-offer-info'>
 								<h4 className='confirm-offer-info__title'>Ad information</h4>
 								<div>
-									<div className='confirm-offer-info__item row no-gutters align-items-center'>
+									<div className='confirm-offer-info__item row align-items-center'>
 										<span className='col-md-4'>City</span>
 										<span className='col-md-6'>{locationName}</span>
 									</div>
-									<div className='confirm-offer-info__item row no-gutters align-items-center'>
+									<div className='confirm-offer-info__item row align-items-center'>
 										<span className='col-md-4'>Title Ad</span>
 										<span className='col-md-6'>{title}</span>
 									</div>
-									<div className='confirm-offer-info__item row no-gutters align-items-center'>
+									<div className='confirm-offer-info__item row align-items-center'>
 										<span className='col-md-4'>Category</span>
 										<span className='col-md-6'>{category}</span>
 									</div>
-									<div className='confirm-offer-info__item row no-gutters align-items-center'>
+									<div className='confirm-offer-info__item row align-items-center'>
 										<span className='col-md-4'>Place of inspection</span>
 										<span className='col-md-6'>{locationName}</span>
 									</div>
-									<div className='confirm-offer-info__item row no-gutters align-items-center'>
+									<div className='confirm-offer-info__item row align-items-center'>
 										<span className='col-md-4'>Price</span>
 										<span className='col-md-6'>{price}</span>
 									</div>
-									<div className='confirm-offer-info__item row no-gutters align-items-center'>
+									<div className='confirm-offer-info__item row align-items-center'>
 										<span className='col-md-4'>Ad Description</span>
 										<span className='col-md-6'>{description}</span>
 									</div>
@@ -92,11 +92,11 @@ class ConfirmAds extends Component<IProps, IState> {
 							</div>
 						</div>
 					</div>
-					<div className='row no-gutters'>
+					<div className='row'>
 						<div className='col-md-12 col-lg-10 col-xl-7'>
 							<h4>Choose service</h4>
 							<div className='service-block'>
-								<div className='service-block__item row no-gutters'>
+								<div className='service-block__item row'>
 									<div className='col-md-1'>
 										<input
 											readOnly
@@ -116,7 +116,7 @@ class ConfirmAds extends Component<IProps, IState> {
 										<span className='price__discount'>A discount</span>
 									</div>
 								</div>
-								<div className='service-block__item row no-gutters'>
+								<div className='service-block__item row'>
 									<div className='col-md-1'>
 										<input
 											readOnly
@@ -135,7 +135,7 @@ class ConfirmAds extends Component<IProps, IState> {
 										<span className='price__discount'>A discount</span>
 									</div>
 								</div>
-								<div className='service-block__item row no-gutters'>
+								<div className='service-block__item row'>
 									<div className='col-md-1'>
 										<input
 											readOnly
@@ -153,16 +153,16 @@ class ConfirmAds extends Component<IProps, IState> {
 										<h5>67$</h5>
 										<span className='price__discount'>A discount</span>
 									</div>
-								</div>button
+								</div>
 							</div>
 							<div className='text-right'>
-								<a
+								{/*<a
 									onClick={this.props.onBack}
 									className='btn grey-btn-outline button_confirm'
 								>
-									<i className='fa fa-arrow-left' />
+									<i className='fa fa-arrow-left'/>
 									Back
-								</a>
+								</a>*/}
 								<a
 									onClick={this.props.onCreate}
 									className='btn orange-btn button_confirm'

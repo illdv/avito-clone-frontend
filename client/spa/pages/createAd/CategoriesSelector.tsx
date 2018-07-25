@@ -79,7 +79,7 @@ export class CategoriesSelector extends Component<IProps, IState> {
 				/>
 			);
 		} else {
-			return <div />;
+			return <div key={0} />;
 		}
 	}
 

@@ -1,8 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
 import {IAds} from 'client/common/ads/interface';
+import { extractPreviewImage } from 'client/ssr/blocks/ad/utils';
 
-export default ({data}: { data: IAds }) => (
+export default ({ ads }: { ads: IAds }) => (
 	<div className='ad__card'>
 		<div className='ad__img'>
 			<a href='#'>
@@ -13,17 +14,17 @@ export default ({data}: { data: IAds }) => (
 				/>
 			</a>
 			<img
-				src={'https://goo.gl/vLUXu9'}
+				src={extractPreviewImage(ads)}
 				alt='Dogs'
 			/>
 		</div>
 		<div className='ad__info'>
-			<Link href={`/ad/${data.id}`}>
-				<a><h6 className='ad__title'>{data.title}</h6></a>
+			<Link href={`/ad/${ads.id}`}>
+				<a><h6 className='ad__title'>{ads.title}</h6></a>
 			</Link>
-			<span>{data.price}</span>
-			<span>{data.description}</span>
-			<span>{data.updated_at}</span>
+			<span>{ads.price}</span>
+			<span>{ads.description}</span>
+			<span>{ads.updated_at}</span>
 		</div>
 	</div>
 );
