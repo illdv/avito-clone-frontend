@@ -1,13 +1,27 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import { connect, Dispatch } from 'react-redux';
+
 import SelectCategories from './components/SelectCategories';
-import {getCategories, Category} from 'client/ssr/blocks/categories/context';
+import { IRootState } from 'client/common/store/storeInterface';
+import { getLocationState } from 'client/common/store/selectors';
+import { getCategories, Category } from 'client/ssr/blocks/categories/context';
+import { ILocationStoreState } from 'client/common/location/module';
+
+import { showLocationModal } from 'client/ssr/modals/location/locationModalTriggers';
+import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
 
 require('./Search.sass');
 
 interface SearchProps {
 	categories: Category;
 	idActiveCategory: number;
+	locationState: ILocationStoreState;
 }
+
+const mapStateToProps = (state: IRootState) => ({
+	locationState: getLocationState(state),
+	user: state.user,
+});
 
 const getOption = option => (
 	<input name='name' className='search search__options form-control' placeholder={option.name}/>
@@ -76,6 +90,49 @@ class Search extends Component<SearchProps> {
 		return this.state.activeCategories[this.state.activeCategories.length - 1];
 	}
 
+	get localeName() {
+		const { idCity, idRegion, idCountry } = this.props.locationState.local;
+
+		if (idCity) {
+			if (this.props.locationState.loaded.local.cities.length > 0) {
+
+				const result = this.props.locationState.loaded.local.cities.filter(city => {
+					return city.city_id === idCity;
+				});
+
+				if (result.length > 0) {
+					return result[0].title; 
+				}
+			}
+		}
+
+		if (idRegion) {
+			if (this.props.locationState.loaded.local.regions.length > 0) {
+				const result = this.props.locationState.loaded.local.regions.filter(region => {
+					return region.region_id === idRegion;
+				});
+				if (result.length > 0) {
+					return result[0].title; 
+				}
+			}
+		}
+
+		if (idCountry) {
+			if (this.props.locationState.loaded.local.countries.length > 0) {
+				const result = this.props.locationState.loaded.local.countries.filter(country => {
+					return country.country_id === idCountry;
+				});
+				if (result.length > 0) {
+					return result[0].title; 
+				}
+			}
+		}
+
+		return 'World';
+	}
+
+	showSearchLocationModal = () => showLocationModal(ModalNames.searchLocation);
+
 	render() {
 		return (
 			<form action='#'>
@@ -89,7 +146,7 @@ class Search extends Component<SearchProps> {
 							parent={null}
 						/>
 					</div>
-					<div className='form-group col-6 col-md-3'>
+					<div className='form-group col-6 col-md-4'>
 						<input
 							type='text'
 							className='search__options form-control'
@@ -97,20 +154,15 @@ class Search extends Component<SearchProps> {
 							name='search'
 						/>
 					</div>
-					<div className='form-group col-6 col-md-2'>
-						<select name='country' className='search__options form-control'>
-							<option value=''>Germany</option>
-							<option value=''>United Arab Emirates</option>
-							<option value=''>Kuwait</option>
-							<option value=''>Other</option>
-						</select>
-					</div>
-					<div className='form-group col-6 col-md-2'>
-						<select name='city' className='search__options form-control'>
-							<option value=''>Berlin</option>
-							<option value=''>Dubai</option>
-							<option value=''>Moscow</option>
-						</select>
+					<div className='form-group col-6 col-md-3'>
+						<input
+							type='text'
+							name='city'
+							placeholder='Search'
+							defaultValue={this.localeName}
+							className='search__options form-control'
+							onClick={this.showSearchLocationModal}
+						/>
 					</div>
 					<div className='form-group col-12 col-md-2'>
 						<button className='btn orange-btn-outline search__button' type='submit'>
@@ -152,4 +204,4 @@ class Search extends Component<SearchProps> {
 	}
 }
 
-export default getCategories(Search);
+export default connect(mapStateToProps)(getCategories(Search));

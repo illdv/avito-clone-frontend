@@ -49,7 +49,7 @@ class ProfileMenu extends Component<IProps, IState> {
 					</div>
 				</div>
 				<div className='account-navigation'>
-					<ul className='list-unstyled'>
+					<ul className='list-unstyled m-b-0'>
 						<li className='account-navigation__item account-navigation__item--active'>
 							My announcements
 							{/*<span className='notification account__notification'/>*/}

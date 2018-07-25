@@ -1,7 +1,21 @@
 import { default as axios } from 'axios';
-import * as queryString from 'query-string'
+import * as queryString from 'query-string';
+import * as iplocation from 'iplocation';
 
-type prepareMethod = (params: any, query: any, path: string) => any;
+import {
+	findCategoriesQueueBySlug,
+	categoryQueueToBreadcrumbsFormat,
+	getSubcategoryByCategoryQueue,
+	getIdMainCategory,
+} from '../utils/categoryPrepare';
+
+interface ISugar {
+	params: any;
+	query: any;
+	path: string;
+} 
+
+type prepareMethod = (sugar: ISugar, req: any) => any;
 
 const instance = axios.create({
 	baseURL: process.env.API_URL,
@@ -19,15 +33,13 @@ export const ads: prepareMethod = async () => {
 	return axiosData.data.data;
 };
 
-export const ad: prepareMethod = async params => {
+export  const ad: prepareMethod = async ({ params }) => {
 	try {
 		const response = await instance.get(`/ads/${ params.id }`)
 		return response.data;
-	}
-	catch (error) {
+	} catch (error) {
 		console.log(error);
 	}
-
 };
 
 export const categories: prepareMethod = async () => {
@@ -36,87 +48,96 @@ export const categories: prepareMethod = async () => {
 };
 
 const getAdsByParams = async params => {
-	const response = await instance.get(`/ads?${ queryString.stringify(params) }`)
+	const response = await instance.get(`/ads/?${ queryString.stringify(params) }`)
 	return response.data;
-}
-
-const findCategoriesQueueBySlug = (categories, categorySlug): any[] | null => {
-	return categories.reduce((acc, category) => {
-		if (acc) {
-			return acc;
-		}
-
-		const slug = category.title.toLowerCase();
-
-		if (slug === categorySlug) {
-			return [category];
-		} else {
-			if (category.children.length > 0) {
-				const result = findCategoriesQueueBySlug(category.children, categorySlug);
-
-				if (result !== null) {
-					return [category].concat(result);
-				} else {
-					return null;
-				}
-			} else {
-				return null;
-			}
-		}
-	}, false);
 };
 
-const categoryQueueToBreadcrumbsFormat = categoryQueue => {
-	if (!categoryQueue && categoryQueue.length < 1) {
-		return []
+
+export const location: prepareMethod = async (sugar, req) => {
+	const ip = req.clientIp;
+
+	if (req.session.location) {
+		return req.session.location;
 	}
 
-	return categoryQueue.map((category, index, arr) => {
-		let totla;
-
-		if (index === arr.length - 1) {
-			totla = ` ${category.total_ads_count}`;
+	if (req.session.location === void 0) { // First request
+		try {
+			const location = await iplocation(ip);
+			/*
+				https://www.npmjs.com/package/iplocation
+			*/
+		   return undefined;
+		} catch (err) {
+			return undefined;
 		}
+	} else {
+		return req.session.location;
+	}
+
+} 
+
+export const category: prepareMethod = async ({params, query, path}) => {
+	const { categorySlug } = params;
+	const { data: categories } = await instance.get('/categories');
+	console.log('back');
+	try {
+		const categoryQueue    = findCategoriesQueueBySlug(categories, categorySlug);
+		const breadcrumbs      = categoryQueueToBreadcrumbsFormat(categoryQueue);
+		console.log('back', breadcrumbs);
+
+		const idActiveCategory = getIdMainCategory(categoryQueue);
+
+		const subcategories = getSubcategoryByCategoryQueue(categoryQueue);
+		let listAdsGroups   = [];
 
 		return {
-			name: category.title + (totla || ''),
-			href: `/category/${ encodeURI(category.title) }`,
+			categories,
+			breadcrumbs,
+			//subcategory
+			idActiveCategory,
+			subcategories,
+			listAdsGroups,
 		};
+	} catch (err) {
+		console.log('err');
+		return { categories, breadcrumbs: [], subcategory: [] };
+	}
+};
+
+const getInstanseWithLanguageByReq = req => {
+	return axios.create({
+		baseURL: process.env.API_FOR_LOCATION,
+		headers: {
+			'Content-Type': 'application/json',
+			'Accept': 'application/json',
+			'Accept-Language': req.headers['accept-language'],
+		},
 	});
-}
+};
 
-const getIdMainCategory = categoryQueue => {
-	return categoryQueue ? categoryQueue[0].id : null;
-}
-
-const getSubcategoryByCategoryQueue = async categoryQueue => {
-	if (!categoryQueue && categoryQueue.length < 1) {
+export const getCountries: prepareMethod = async (sugar, req) => {
+	try {
+		const response = await getInstanseWithLanguageByReq(req).get('/countries');
+		return response.data;
+	} catch (err) {
 		return [];
 	}
+};
 
-	const currentCategory = categoryQueue[categoryQueue.length - 1]; // Last children
-
-	return currentCategory.children
-}
-
-
-export const category: prepareMethod = async (params, query, path) => {
-	const { categorySlug }     = params;
-	const { data: categories } = await instance.get('/categories');
-
+export const getRegions: prepareMethod = async ({ query }, req) => {
 	try {
-        const categoryQueue = findCategoriesQueueBySlug(categories, categorySlug);
-        const breadcrumbs = categoryQueueToBreadcrumbsFormat(categoryQueue);
-        const subcategories = await getSubcategoryByCategoryQueue(categoryQueue);
-        const idActiveCategory = getIdMainCategory(categoryQueue);
-
-		return {
-            categories,
-            breadcrumbs,
-            subcategories,
-            idActiveCategory,
-        };
+		const response = await getInstanseWithLanguageByReq(req).get(`/countries/${query.id}/regions/%20`);
+		return response.data;
 	} catch (err) {
-		return { categories, breadcrumbs: [], subcategory: [] };
+		return [];
+	}
+};
+
+export const getCities: prepareMethod = async ({ query }, req) => {
+	try {
+		const response = await getInstanseWithLanguageByReq(req).get(`/regions/${query.id}/cities/%20`);
+		return response.data;
+	} catch (err) {
+		return [];
 	}
 };

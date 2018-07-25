@@ -1,18 +1,19 @@
 module.exports = {
-  "roots": [
-    "<rootDir>/server"
-  ],
-  "transform": {
-    "^.+\\.tsx?$": "ts-jest"
-  },
-    //TODO: fix path
-  "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(ts|js|tsx)?$",
-  "moduleFileExtensions": [
-    "ts",
-    "tsx",
-    "js",
-    "jsx",
-    "json",
-    "node"
-  ],
+	'roots': [
+		'<rootDir>/server',
+		'<rootDir>/client'
+	],
+	'transform': {
+		'^.+\\.tsx?$': 'ts-jest'
+	},
+
+	'testRegex': '(/__tests__/.*|(\\.|/)(test|spec))\\.(ts|js|tsx)?$',
+	'moduleFileExtensions': [
+		'ts',
+		'tsx',
+		'js',
+		'jsx',
+		'json',
+		'node'
+	],
 };

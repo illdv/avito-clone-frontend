@@ -1,6 +1,8 @@
 import * as i18nextMiddleware from 'i18next-express-middleware';
 import * as Backend from 'i18next-node-fs-backend';
+import * as session from 'express-session';
 import * as bodyParser from 'body-parser';
+import * as requestIp from 'request-ip';
 import * as express from 'express';
 import * as log4js from 'log4js';
 import * as path from 'path';
@@ -35,7 +37,18 @@ i18nInstance
 	// loaded translations we can bootstrap our routes
 	appNext.prepare()
 	.then(() => {
-		const server = express();
+        const server = express();
+        
+                server.enable('trust proxy');
+
+                server.use(requestIp.mw());
+
+                server.use(session({
+                    secret: 'keyboard cat',
+                    resave: false,
+                    saveUninitialized: true,
+                    cookie: { secure: true }
+                }))
 		
 				server.use(bodyParser.urlencoded({ extended: false }));
 				server.use(bodyParser.json());

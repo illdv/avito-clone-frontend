@@ -5,6 +5,8 @@ export enum ModalNames {
 	forgotPassword  = 'forgotPassword',
 	seller          = 'seller',
 	success         = 'success',
+	location        = 'location',
+	searchLocation  = 'searchLocation',
 }
 
 export interface IModal {
