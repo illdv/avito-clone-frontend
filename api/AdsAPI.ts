@@ -60,6 +60,10 @@ function similar(sort: string, id: string) {
 	return AxiosWrapper.get(`ad/${id}/similar/${sort}`);
 }
 
+function deleteImage(id: string) {
+	return AxiosWrapper.deleteResponse(`/images/${id}`);
+}
+
 export const AdsAPI = {
 	get,
 	getMy,
