@@ -1,13 +1,12 @@
-import * as React from 'react';
-import { Component } from 'react';
-import { connect, Dispatch } from 'react-redux';
-import { IRootState } from 'client/common/store/storeInterface';
-import { bindModuleAction } from 'client/common/user/utils';
-import { AdsActions, IAdsActions } from 'client/common/ads/actions';
-import { IAdsState } from 'client/common/ads/reducer';
-import { AdsActionType, IAds, MyAdsStatus } from 'client/common/ads/interface';
-import { filterMyAds } from 'client/spa/pages/utils';
-import { extractPreviewImage } from 'client/ssr/blocks/ad/utils'
+ import * as React from 'react';
+import {Component} from 'react';
+import {connect, Dispatch} from 'react-redux';
+import {IRootState} from 'client/common/store/storeInterface';
+import {bindModuleAction} from 'client/common/user/utils';
+import {AdsActions, IAdsActions} from 'client/common/ads/actions';
+import {IAdsState} from 'client/common/ads/reducer';
+import {IAds} from 'client/common/ads/interface';
+import {filterMyAds, MyAdsStatus} from 'client/spa/pages/utils';
 
 export interface IState {
 	selectedFilter: MyAdsStatus;
@@ -33,29 +32,28 @@ class MyAds extends Component<IProps, IState> {
 	};
 
 	onSelectFilter = (selectedFilter: MyAdsStatus) => () => {
-		this.setState({ selectedFilter });
-	}
+		this.setState({selectedFilter});
+	};
 
 	onRemove = (id: string) => () => {
-		this.props.adsActions.remove.REQUEST({ id });
-	}
+		this.props.adsActions.remove.REQUEST({id});
+	};
 
 	onEdit = (id: string) => () => {
-		this.props.adsActions.selectForEdit.REQUEST({ id });
-	}
+		this.props.adsActions.selectForEdit.REQUEST({id});
+	};
+
+	onChangeStatus = (status: MyAdsStatus, id: string) => () => {
+		this.props.adsActions.changeStatus.REQUEST({status, id});
+	};
 
 	onChangeActive = (id: string) => () => {
-		this.props.adsActions.changeStatus.REQUEST({ actionType: AdsActionType.Activate, id });
-		this.props.adsActions.changeStatus.REQUEST({ actionType: AdsActionType.Approve, id });
-	}
+		this.props.adsActions.changeStatus.REQUEST({status: MyAdsStatus.Active, id});
+		this.props.adsActions.changeStatus.REQUEST({status: MyAdsStatus.Disapproved, id});
+	};
 
-	onChangeComplete = (id: string) => () => {
-		this.props.adsActions.changeStatus.REQUEST({ actionType: AdsActionType.Complete, id });
-		this.props.adsActions.changeStatus.REQUEST({ actionType: AdsActionType.Deactivate, id });
-	}
-
-	ActiveButton = ({ id }: { id: string }) => {
-		const { selectedFilter } = this.state;
+	ActiveButton = ({id}: { id: string }) => {
+		const {selectedFilter} = this.state;
 		if (selectedFilter === MyAdsStatus.Disapproved) {
 			return (
 				<a
@@ -71,19 +69,19 @@ class MyAds extends Component<IProps, IState> {
 			return (
 				<a
 					className='btn orange-btn-outline publish-offer__button'
-					onClick={this.onChangeComplete(id)}
+					onClick={this.onChangeStatus(MyAdsStatus.Completed, id)}
 				>
 					Complete
 				</a>
 			);
 		}
 
-		return <div />;
-	}
+		return <div/>;
+	};
 
 	Item = (props: { ad: IAds, onRemove: () => void }) => {
-		const { ad, onRemove }     = props;
-		const { title, id, price } = ad;
+		const {ad, onRemove} = props;
+		const {title, id, price} = ad;
 
 		return (
 			<div
@@ -98,7 +96,7 @@ class MyAds extends Component<IProps, IState> {
 					<div className='row'>
 						<div className='col-9 d-flex'>
 							<img
-								src={extractPreviewImage(ad)}
+								src='/static/img/ads/ads3.png'
 								alt=''
 								className='offer-block__img'
 							/>
@@ -110,7 +108,7 @@ class MyAds extends Component<IProps, IState> {
 									<span className='d-inline-block offer-block__price'>{price}</span>
 								</div>
 								<div className='publish-offer'>
-									<this.ActiveButton id={ad.id} />
+									<this.ActiveButton id={ad.id}/>
 									<a
 										onClick={onRemove}
 										className='btn grey-btn-outline publish-offer__button'
@@ -128,19 +126,19 @@ class MyAds extends Component<IProps, IState> {
 								Edit
 							</a>
 							<div className='watcher'>
-								<i className='watcher__icon fa fa-eye' /> <span>---</span>
+								<i className='watcher__icon fa fa-eye'/> <span>---</span>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		);
-	}
+	};
 
 	FilterButton = (props: { buttonFilter: MyAdsStatus, ads: IAds[] }) => {
-		const { buttonFilter, ads } = props;
+		const {buttonFilter, ads} = props;
 
-		const cont     = filterMyAds(buttonFilter, ads).length;
+		const cont = filterMyAds(buttonFilter, ads).length;
 		const isActive = buttonFilter === this.state.selectedFilter;
 
 		return (
@@ -153,21 +151,21 @@ class MyAds extends Component<IProps, IState> {
 			</a>
 
 		);
-	}
+	};
 
 	componentDidMount(): void {
 		this.props.adsActions.getMy.REQUEST({});
 	}
 
 	render() {
-		const { isLoading, ads } = this.props.ads;
+		const {isLoading, ads} = this.props.ads;
 
 		if (isLoading) {
 			return <h1>Loading...</h1>;
 		}
 
 		const selectedFilter = this.state.selectedFilter;
-		const filteredAds    = filterMyAds(selectedFilter, ads);
+		const filteredAds = filterMyAds(selectedFilter, ads);
 
 		return (
 			<>

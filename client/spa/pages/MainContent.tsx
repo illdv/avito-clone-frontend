@@ -40,10 +40,10 @@ export class MainContent extends Component<IProps, IState> {
 			<section className='page'>
 				<div className='container page__container-lg'>
 					<div className='row'>
-						<div className='col-lg-3'>
+						<div className='col-lg-4 col-xl-3'>
 							<ProfileMenu show={this.onShow}/>
 						</div>
-						<div className='col-lg-9'>
+						<div className='col-lg-8 col-xl-9'>
 							{this.state.settings ? <ProfileSettings/> : <MyAds/>}
 						</div>
 					</div>
