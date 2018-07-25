@@ -77,7 +77,13 @@ class ProfileMenu extends Component<IProps, IState> {
 							className='account-navigation__item'
 						>
 							Notifications
-							<span className='notification account__notification'>{countNotReadNotification}</span>
+							{
+								countNotReadNotification
+								&&
+								<span className='notification account__notification'>{countNotReadNotification}</span>
+								||
+								<></>
+							}
 						</li>
 						<li
 							className='account-navigation__item'

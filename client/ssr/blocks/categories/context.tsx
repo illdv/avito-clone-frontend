@@ -12,7 +12,7 @@ export class SetCategories extends React.Component<IProviderProps> {
 	render() {
 		const { categories, children } = this.props;
 		return (
-			<Provider value={ categories }>
+			<Provider value={categories}>
 				{children}
 			</Provider>
 		);
@@ -21,6 +21,6 @@ export class SetCategories extends React.Component<IProviderProps> {
 
 export const getCategories = Component => props => (
 	<Consumer>
-		{ (categories: Category) => <Component { ...props } categories={ categories } /> }
+		{(categories: Category) => <Component {...props} categories={categories} />}
 	</Consumer>
 );

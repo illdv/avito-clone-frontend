@@ -6,6 +6,7 @@ interface IUser {
 	created_at: string;
 	updated_at: string;
 	token: string;
+	favorites_ids: any[];
 }
 
 interface ILoginRequest {
@@ -44,4 +45,11 @@ interface IResetPasswordByCodeRequest {
 	token: string;
 	password: string;
 	password_confirmation: string;
+}
+interface IFavoritesRequest {
+	favorites_ids: string[];
+}
+interface IPostFavoritesRequest extends IFavoritesRequest{
+}
+interface IDeleteFavoritesRequest extends IFavoritesRequest{
 }
