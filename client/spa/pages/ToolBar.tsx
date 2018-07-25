@@ -45,13 +45,13 @@ class ToolBar extends Component<IProps, IState> {
 										<a href='#'>
 											<i className='fas fa-comment-alt fa-lg'/>
 										</a>
-										<span className='notification main-navigation__notification'>3</span>
+										{/*<span className='notification main-navigation__notification'>3</span>*/}
 									</li>
 									<li className='main-navigation__item nav-item'>
 										<a href='#'>
 											<i className='fas fa-thumbs-up fa-lg'/>
 										</a>
-										<span className='notification main-navigation__notification'>3</span>
+										{/*<span className='notification main-navigation__notification'>3</span>*/}
 									</li>
 									<li className='main-navigation__item nav-item'>
 										<a href='#'>

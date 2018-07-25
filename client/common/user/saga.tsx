@@ -55,6 +55,7 @@ function* login(action: Action<ILoginRequest>) {
 			isRememberMe,
 		}));
 		hideLoginModal();
+		pushInRouter('/profile');
 	} catch (e) {
 		yield call(errorHandler, e);
 		yield put(UserActions.login.FAILURE({}));
