@@ -90,10 +90,10 @@ class MyAds extends Component<IProps, IState> {
 				key={id}
 				className='offer-block__item'
 			>
-				<input
+				{/*<input
 					className='custom-checkbox'
 					type='checkbox'
-				/>
+				/>*/}
 				<div className='offer-block__inner'>
 					<div className='row'>
 						<div className='col-9 d-flex'>
@@ -186,7 +186,7 @@ class MyAds extends Component<IProps, IState> {
 					/>
 				</div>
 				<div className='all-offers-selector'>
-					<input
+					{/*<input
 						className='custom-checkbox'
 						type='checkbox'
 					/>
@@ -195,7 +195,7 @@ class MyAds extends Component<IProps, IState> {
 					</button>
 					<button className='btn grey-btn-outline all-offers-selector__btn'>
 						Remove
-					</button>
+					</button>*/}
 				</div>
 				<div className='offer-block'>
 					{
