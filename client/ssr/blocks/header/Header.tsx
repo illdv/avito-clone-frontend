@@ -52,7 +52,7 @@ class Header extends Component<IProps, IState> {
 	componentDidMount(): void {
 		const {user} = this.props.user;
 		const token = CustomStorage.getToken();
-		if (!isServer() && !user && token) {
+		if (!isServer() && !user.id && token) {
 			axios.defaults.headers.common.authorization = `Bearer ${token}`;
 			this.props.userActions.initUser.REQUEST({});
 		}

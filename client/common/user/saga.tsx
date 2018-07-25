@@ -151,10 +151,10 @@ function* getFavorites() {
 function* removeFavoriteAds(action) {
 	const favoritesIDs = action.payload.favoritesId;
 	const token        = yield select(getToken);
-	// const favoritesID = yield call(readLocalStorage);
 	for (let i = 0; i <= favoritesIDs.length + 1; i++) {
 		const id = favoritesIDs[i];
 		yield put(UserActions.removeFavoritesAd.REQUEST({ id }));
+		// yield put(UserActions.removeFavorite.REQUEST({ id }));
 	}
 	if (token) {
 		try {
@@ -165,24 +165,7 @@ function* removeFavoriteAds(action) {
 	}
 }
 
-/*function saveInStorege() {
-	//Max Code
-	const oldData = JSON.parse(CustomStorage.getItem('favorites_ids'));
-	if (oldData.length === 0) {
-		CustomStorage.setItem('favorites_ids', JSON.stringify([this.props.id]));
-		return;
-	}
-	let newData      = [];
-	const isFavorite = oldData.indexOf(this.props.id);
-	if (isFavorite !== -1) {
-		oldData.splice(isFavorite, 1);
-		newData = oldData;
-	} else {
-		newData = oldData.concat(this.props.id);
-	}
-	CustomStorage.setItem('favorites_ids', JSON.stringify(newData));
-	return;
-}*/
+
 function synchronizeLocalStorage(favoritesList) {
 	CustomStorage.setItem('favorites_ids', JSON.stringify(favoritesList));
 }
