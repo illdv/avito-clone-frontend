@@ -24,20 +24,22 @@ if (isServer) {
 interface IIndexProps {
 	t: any;
 	categories: ICategories[];
-	ads: IAds[];
+    ads: IAds[];
+    location: any;
 }
 
 export class Index extends React.Component<IIndexProps> {
 	static async getInitialProps({ query }) {
 		console.log(query.ads);
 		return ({
-			ads: query.ads,
+            ads: query.ads,
+            location: query.location,
 			categories: query.categories,
 		});
 	}
 
 	render() {
-		const { categories } = this.props;
+		const { categories, location } = this.props;
 		return (
 			<React.Fragment>
 				<SetCategories categories={categories}>
@@ -48,7 +50,7 @@ export class Index extends React.Component<IIndexProps> {
 						/>
 						<title>Index page</title>
 					</Head>
-					<Header />
+					<Header location={location} />
 					<div className='header_bottom p-y-20'>
 						<div className='container'>
 							<Navbar />
