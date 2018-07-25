@@ -27,6 +27,7 @@ export interface IAdsDataForCreate {
 	selectedCategory: ICategory[];
 	images: Images[];
 	imageBackend: Image[];
+	defaultCategoryId: string;
 }
 
 export interface IProps {
@@ -108,11 +109,12 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 		selectedCategory: [],
 		images: [],
 		imageBackend: [],
+		defaultCategoryId: null,
 	};
 
 	static getDerivedStateFromProps(nextProps: IProps, prevState: IAdsDataForCreate): IAdsDataForCreate {
 
-		const { id, price, description, title, latitude, longitude, phone, images } = nextProps.data;
+		const { id, price, description, title, latitude, longitude, phone, images, category_id } = nextProps.data;
 		if (id !== prevState.id) {
 			return {
 				id,
@@ -129,6 +131,7 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 				selectedCategory: [],
 				images: [],
 				imageBackend: images,
+				defaultCategoryId: category_id,
 			};
 		}
 		return null;
@@ -172,9 +175,9 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 	}
 
 	render() {
-		const { email, name }                              = this.props.user.user;
-		const { phone, description, price, title }         = this.state.fields;
-		const { lng, lat, selectedCategory, imageBackend } = this.state;
+		const { email, name }                                                 = this.props.user.user;
+		const { phone, description, price, title }                            = this.state.fields;
+		const { lng, lat, selectedCategory, imageBackend, defaultCategoryId } = this.state;
 
 		return (
 			<section className='page'>
@@ -245,7 +248,10 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 							<h3>Select category</h3>
 						</div>
 						<div className='col-lg-12'>
-							<CategoriesSelector onSelectCategory={this.onSelectCategory} />
+							<CategoriesSelector
+								defaultCategoryId={defaultCategoryId}
+								onSelectCategory={this.onSelectCategory}
+							/>
 						</div>
 					</div>
 					<div className='row'>

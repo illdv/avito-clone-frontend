@@ -30,7 +30,7 @@ function create({ images, ...ads }: ICreateAdRequest) {
 	});
 }
 
-function edit({ images, ...ads }: IAds) {
+function edit({ images, is_published, is_vip, is_active, is_approved, is_completed, options, ...ads }: IAds) {
 
 	const files    = images.map(img => img.file);
 	const formData = new FormData();
@@ -43,7 +43,8 @@ function edit({ images, ...ads }: IAds) {
 		formData.append(key, value);
 	});
 
-	return AxiosWrapper.put(`/ads/${ads.id}`, formData, {
+	formData.append('_method', 'put');
+	return AxiosWrapper.post(`/ads/${ads.id}`, formData, {
 		headers: { 'Content-Type': 'multipart/form-data' },
 	});
 }

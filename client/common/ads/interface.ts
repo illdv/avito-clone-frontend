@@ -53,11 +53,11 @@ export interface IAds {
 	is_approved?: boolean;
 	is_active?: boolean;
 	is_completed?: boolean;
-	is_vip: boolean;
+	is_vip?: boolean;
 	created_at?: string;
 	updated_at?: string;
 	deleted_at?: any;
-	pivot: IPivot;
+	pivot?: IPivot;
 	city_id: number;
 	type?: IType;
 	options?: any[];
@@ -77,8 +77,6 @@ export interface ICreateAdRequest {
 	longitude: number;
 	latitude: number;
 	category_id: string;
-	is_published: boolean;
-	is_vip: boolean;
 	phone: string;
 	images: Images[];
 }
