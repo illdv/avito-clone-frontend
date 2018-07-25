@@ -31,7 +31,7 @@ export interface IType {
 }
 
 export interface Image {
-	id: number;
+	id: string;
 	imageable_type: string;
 	imageable_id: number;
 	file_name: string;
