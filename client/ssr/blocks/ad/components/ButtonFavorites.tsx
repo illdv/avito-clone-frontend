@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { IFavorites, IFavoriteState } from 'client/ssr/blocks/ad/interface';
-import { CustomStorage } from 'client/common/user/CustomStorage';
 
-class ButtonFavorites extends Component <IFavorites, IFavoriteState> {
+export class ButtonFavorites extends Component <IFavorites, IFavoriteState> {
 	constructor(props) {
 		super(props);
 	}
@@ -26,4 +25,5 @@ class ButtonFavorites extends Component <IFavorites, IFavoriteState> {
 
 }
 
-export default ButtonFavorites;
+
+

@@ -10,41 +10,12 @@ import {IAdsProps, IAdsState, ICrumb, IImage} from 'client/ssr/blocks/ad/interfa
 import Feature from 'client/ssr/blocks/ad/components/Feature';
 import Description from 'client/ssr/blocks/ad/components/Description';
 import Link from 'next/link';
-import ButtonFavorites from 'client/ssr/blocks/ad/components/ButtonFavorites';
 import { bindModuleAction } from 'client/common/user/utils';
 import { UserActions } from 'client/common/user/actions';
+import { ButtonFavorites} from 'client/ssr/blocks/ad/components/ButtonFavorites';
 
 require('./Ad.sass');
 
-// const images = [
-// 	{
-// 		original: '/static/img/ads/ads.png',
-// 		thumbnail: '/static/img/ads/ads.png',
-// 	},
-// 	{
-// 		original: '/static/img/ads/ads.png',
-// 		thumbnail: '/static/img/ads/ads.png',
-// 	},
-// 	{
-// 		original: '/static/img/ads/ads.png',
-// 		thumbnail: '/static/img/ads/ads.png',
-// 	},
-// 	{
-// 		original: '/static/img/ads/ads.png',
-// 		thumbnail: '/static/img/ads/ads.png',
-// 	},
-// 	{
-// 		original: '/static/img/ads/ads.png',
-// 		thumbnail: '/static/img/ads/ads.png',
-// 	},
-// ];
-
-const user = {
-	name: 'Andrey Beregovoi',
-	avatar: '/static/img/person.png',
-	address: 'Germany Berlin',
-	phone: '89995965664642',
-};
 
 class Ads extends React.Component <IAdsProps, IAdsState> {
 	formatCategoriesToCrumbs = (categories): ICrumb[] => {
@@ -127,7 +98,7 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 
 	render() {
 		return (
-			<React.Fragment>
+			<>
 				<section className='heading'>
 					<div className='container'>
 						<div className='row'>
@@ -140,8 +111,8 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 										<a className='back-next__link orange-text'>Back</a>
 									</Link>
 									<Link href={`${this.props.ad.next_ad}`}>
-										<a className='back-next__link orange-text'>
-											Next<i className='fas fa-arrow-right p-l-5 f-s-12 orange-text'/>
+										<a className='back-next__link orange-text'>Next
+											<i className='fas fa-arrow-right p-l-5 f-s-12 orange-text'/>
 										</a>
 									</Link>
 								</div>
@@ -161,7 +132,7 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 								<span className='p-l-15'>
 									<i className='fas fa-eye orange-text'/>
 									<span> {this.props.ad.total_visits} </span>
-									(Today's <span> {this.props.ad.today_visits}</span>)
+									(Today's<span> {this.props.ad.today_visits}</span>)
 								</span>
 								<ButtonFavorites
 									id={this.props.ad.id}
@@ -197,13 +168,12 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 						<Chart randomAd={this.props.ad.random_ad} />
 					</div>
 				</section>
-			</React.Fragment>
+			</>
 		);
 	}
 }
 
-
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 	userActions: bindModuleAction(UserActions, dispatch),
 });
 export default connect(null, mapDispatchToProps)(Ads);
