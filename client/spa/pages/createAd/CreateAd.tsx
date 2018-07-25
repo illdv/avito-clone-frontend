@@ -302,6 +302,8 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 								<ImageSelector onUpdateImage={this.onUpdateImage} />
 								<div>
 									{
+										imageBackend
+										&&
 										imageBackend.map((image: Image) => (
 											<ImageComponent
 												key={image.id}
@@ -309,6 +311,7 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 												onClose={this.deleteImageBackend(image.id)}
 											/>
 										))
+										|| null
 									}
 								</div>
 							</div>
