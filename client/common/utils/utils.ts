@@ -3,5 +3,5 @@ export function isServer(): boolean {
 }
 
 export function pushInRouter(href: string) {
-	window.location.href = href;
+	// window.location.href = href;
 }
