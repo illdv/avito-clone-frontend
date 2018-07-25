@@ -6,7 +6,7 @@ import SliderImages from './components/SliderImages';
 import Seller from './components/Seller';
 import Chart from './components/Chart';
 import NumberFormat from 'react-number-format';
-import {IAdsProps, IAdsState, ICrumb, IImage} from 'client/ssr/blocks/ad/interface';
+import { IAdsProps, IAdsState, ICrumb, IImage } from 'client/ssr/blocks/ad/interface';
 import Feature from 'client/ssr/blocks/ad/components/Feature';
 import Description from 'client/ssr/blocks/ad/components/Description';
 import Link from 'next/link';
@@ -17,13 +17,20 @@ import { ButtonFavorites} from 'client/ssr/blocks/ad/components/ButtonFavorites'
 require('./Ad.sass');
 
 
+const user = {
+	name: 'Andrey Beregovoi',
+	avatar: '/static/img/person.png',
+	address: 'Germany Berlin',
+	phone: '89995965664642',
+};
+
 class Ads extends React.Component <IAdsProps, IAdsState> {
 	formatCategoriesToCrumbs = (categories): ICrumb[] => {
 		return categories.map(category => {
 			return {
 				title: category.title,
-				href: '/' + encodeURI(category.title),
-			};
+				href: '/category/' + encodeURI(category.title),
+			}
 		});
 	};
 
@@ -50,7 +57,6 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 			}
 		}, false);
 	}
-
 	formationImages = (images): IImage[] => {
 		return images.map(image => {
 			return {
@@ -75,6 +81,10 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 			crumbs,
 			lastCrumb: queueCrumbs[queueCrumbs.length - 1],
 			images,
+			default_map: {
+				lat: this.props.ad.latitude,
+				lng: this.props.ad.longitude,
+			},
 		};
 	}
 
@@ -103,7 +113,7 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 					<div className='container'>
 						<div className='row'>
 							<div className='col-md-9'>
-								<Breadcrumbs breadcrumbs={this.state.crumbs}/>
+								<Breadcrumbs breadcrumbs={this.state.crumbs} />
 							</div>
 							<div className='col-md-3'>
 								<div className='back-next'>
@@ -126,13 +136,13 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 									added <span>{this.props.ad.created_at}</span>
 								</h6>
 								<span>
-									<i className='fas fa-sync-alt orange-text'/>
+									<i className='fas fa-sync-alt orange-text' />
 									<span> {this.props.ad.updated_at} </span>
 								</span>
 								<span className='p-l-15'>
-									<i className='fas fa-eye orange-text'/>
+									<i className='fas fa-eye orange-text' />
 									<span> {this.props.ad.total_visits} </span>
-									(Today's<span> {this.props.ad.today_visits}</span>)
+									(Today's <span> {this.props.ad.today_visits}</span>)
 								</span>
 								<ButtonFavorites
 									id={this.props.ad.id}
@@ -163,9 +173,14 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 				</section>
 				<section className='section-mb'>
 					<div className='container'>
-						<Description body={this.props.ad.body}/>
+						<Description body={this.props.ad.body} />
 						{/*<VehicleKit />*/}
-						<Chart randomAd={this.props.ad.random_ad} />
+						<Chart
+							similar_ad={this.props.ad.similar_ad}
+							id_parent={this.props.ad.id}
+							default_map={this.state.default_map}
+							isMarkerShown={this.state.default_map}
+						/>
 					</div>
 				</section>
 			</>
