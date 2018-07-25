@@ -14,6 +14,7 @@ import { bindModuleAction } from 'client/common/user/utils';
 import CreateAd, { IAdsDataForCreate } from 'client/spa/pages/createAd/CreateAd';
 import ProfileFooter from 'client/ssr/blocks/footer/ProfileFooter';
 import { INotificationActions, NotificationActions } from 'client/common/notification/actions';
+import { useOrDefault } from 'client/spa/pages/createAd/utils'
 
 export interface IState {
 }
@@ -56,8 +57,8 @@ export class Profile extends Component<IProps, IState> {
 	}
 
 	onSave = (data: IAdsDataForCreate) => {
-		const { lat, lng }                  = data;
-		const { description, price, title } = data.fields;
+		const { lat, lng, images, selectedCategory } = data;
+		const { description, price, title }          = data.fields;
 
 		const { selectedId, ads } = this.props.ads;
 
@@ -69,12 +70,11 @@ export class Profile extends Component<IProps, IState> {
 			description,
 			price,
 			body: '---',
-			is_published: false,
-			is_vip: false,
-			category_id: '1',
+			category_id: useOrDefault(() => selectedCategory[selectedCategory.length - 1].id, '1'),
 			type_id: 1,
 			longitude: lng,
 			latitude: lat,
+			images: images as any,
 		});
 	}
 
