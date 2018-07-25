@@ -6,10 +6,10 @@ import {ISimilar} from 'client/ssr/blocks/ad/interface';
 class SimilarAds extends Component <ISimilar> {
 	render() {
 		return (
-			<div className='col-lg-4'>
+			<div className='col-lg-4 pl-lg-3 py-md-5 py-lg-0'>
 				<div className='row align-items-center'>
 					<div className='col-md-12 col-lg-6'>
-						<h3 className='caption_no-color m-0'>Similar ads</h3>
+						<h3 className='caption_no-color m-0 mb-md-3'>Similar ads</h3>
 					</div>
 					<SimilarSortedBy/>
 				</div>

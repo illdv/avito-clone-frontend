@@ -34,7 +34,7 @@ class ButtonFavorites extends Component <IFavorites, IFavoriteState> {
 		return (
 			<React.Fragment>
 				<button
-					className='btn orange-btn-outline m-t-10 d-block'
+					className='btn orange-btn-outline my-3 d-block'
 					onClick={this.switchFavorite}
 				>Add to favourites
 				</button>
