@@ -30,11 +30,9 @@ export interface IState {
 }
 
 export interface IProps {
-	location: any;
 	user: IUserState;
 	userActions: IUserActions;
 	locationState: ILocationStoreState;
-	initializeLocation: (data: ILocationSession) => void;
 }
 
 const mapStateToProps = (state: IRootState) => ({
@@ -43,7 +41,6 @@ const mapStateToProps = (state: IRootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-	initializeLocation: (location) => dispatch(initialize(location)),
 	userActions: bindModuleAction(UserActions, dispatch),
 });
 
@@ -58,20 +55,6 @@ class Header extends Component<IProps, IState> {
 		if (!isServer() && !user && token) {
 			axios.defaults.headers.common.authorization = `Bearer ${token}`;
 			this.props.userActions.initUser.REQUEST({});
-		}
-		
-		const idCountry = Number(localStorage.getItem('idCountry')) || null;
-		const idRegion = Number(localStorage.getItem('idRegion')) || null;
-		const idCity = Number(localStorage.getItem('idCity')) || null;
-
-		if (idCity || idRegion || idCountry) {
-			this.props.initializeLocation({
-				idCountry,
-				idRegion,
-				idCity,
-			});
-		} else {
-			this.props.initializeLocation(null);
 		}
 	}
 
@@ -138,6 +121,10 @@ class Header extends Component<IProps, IState> {
 	}
 
 	showMainLocationModal = () => showLocationModal(ModalNames.location);
+
+	shouldComponentUpdate(newProps){
+		return JSON.stringify(this.props) !== JSON.stringify(newProps);
+	}
 
 	render() {
 		return (
