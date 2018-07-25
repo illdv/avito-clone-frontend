@@ -1,9 +1,14 @@
-import {Component} from 'react';
 import * as React from 'react';
-import {connect, Dispatch} from 'react-redux';
-import {IRootState} from 'client/common/store/storeInterface';
-import {bindModuleAction} from 'client/common/user/utils';
-import {IUserActions, UserActions} from 'client/common/user/actions';
+import { Component } from 'react';
+import { connect, Dispatch } from 'react-redux';
+
+import { IRootState } from 'client/common/store/storeInterface';
+import { bindModuleAction } from 'client/common/user/utils';
+import { IUserActions, UserActions } from 'client/common/user/actions';
+import { MenuItem } from 'client/spa/pages/MainContent';
+import { INotificationState } from 'client/common/notification/reducer';
+import { filterNotification } from 'client/spa/pages/notification/utils'
+import { FilterType } from 'client/spa/pages/notification/Notification'
 
 export interface IState {
 
@@ -11,11 +16,12 @@ export interface IState {
 
 export interface IProps {
 	userActions: IUserActions;
-	show: any;
+	onSelectMenuItem: (menuItem: MenuItem) => void;
+	notification: INotificationState;
 }
 
 const mapStateToProps = (state: IRootState) => ({
-	/// nameStore: state.nameStore
+	notification: state.notification,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
@@ -30,11 +36,16 @@ class ProfileMenu extends Component<IProps, IState> {
 		this.props.userActions.logout.REQUEST({});
 	}
 
-	onSettings = () => {
-		this.props.show({settings: true});
+	onSelectMenuItem = (menuItem: MenuItem) => () => {
+		this.props.onSelectMenuItem(menuItem);
 	}
 
 	render() {
+
+		const { data } = this.props.notification;
+
+		const countNotReadNotification = filterNotification(FilterType.NoRead, data).length;
+
 		return (
 			<div className='account'>
 				<div className='account__person'>
@@ -50,21 +61,27 @@ class ProfileMenu extends Component<IProps, IState> {
 				</div>
 				<div className='account-navigation'>
 					<ul className='list-unstyled m-b-0'>
-						<li className='account-navigation__item account-navigation__item--active'>
+						<li
+							onClick={this.onSelectMenuItem(MenuItem.MyAds)}
+							className='account-navigation__item account-navigation__item--active'
+						>
 							My announcements
 							{/*<span className='notification account__notification'/>*/}
 						</li>
 						<li className='account-navigation__item'>
 							Posts
-							<span className='notification account__notification'>3</span>
+							{/*<span className='notification account__notification'>3</span>*/}
 						</li>
-						<li className='account-navigation__item'>
+						<li
+							onClick={this.onSelectMenuItem(MenuItem.Notifications)}
+							className='account-navigation__item'
+						>
 							Notifications
-							{/*<span className='notification account__notification'>5</span>*/}
+							<span className='notification account__notification'>{countNotReadNotification}</span>
 						</li>
 						<li
 							className='account-navigation__item'
-							onClick={this.onSettings}
+							onClick={this.onSelectMenuItem(MenuItem.Settings)}
 						>
 							Settings
 							{/*<span className='notification account__notification'/>*/}
