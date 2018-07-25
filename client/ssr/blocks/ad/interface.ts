@@ -1,3 +1,5 @@
+import { IUserActions } from 'client/common/user/actions';
+
 export interface IAdCity {
 	title?: string|null;
 	country: IAdCountry;
@@ -36,6 +38,7 @@ export interface ICrumb {
 export interface IAdsProps {
 	ad: IAd;
 	categories: any[];
+	userActions: IUserActions;
 }
 
 export interface IAdsState {
@@ -92,6 +95,7 @@ export interface IChart {
 
 export interface IFavorites {
 	id: string;
+	selectFavorite: (id: string) => void;
 }
 
 export interface IFavoriteState {

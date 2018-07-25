@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {connect, Dispatch} from 'react-redux';
+import React, { Component } from 'react';
+import { connect, Dispatch } from 'react-redux';
 import Link from 'next/link';
 import axios from 'axios';
 
@@ -59,9 +59,9 @@ class Header extends Component<IProps, IState> {
 	}
 
 	renderLogin = () => {
-		const {user} = this.props.user;
-
-		if (user) {
+		const { user } = this.props.user;
+		const token    = user.token;
+		if (token) {
 			return (
 				<Link href={`/profile`}>
 					<a>{user.email}</a>
@@ -77,7 +77,25 @@ class Header extends Component<IProps, IState> {
 				Login
 			</button>
 		);
-	}
+	};
+
+	onFavorites = () => {
+		return (
+			<Link href={`/favorites`}>
+				<a
+					href='#'
+					className='header__favourites p-x-40'
+				>
+					<img
+						src='/static/img/icons/like.svg'
+						alt=''
+					/>
+					<span>Favourites</span>
+				</a>
+			</Link>
+		);
+
+	};
 
 	get localeName() {
 		const { idCity, idRegion, idCountry } = this.props.locationState.session;
@@ -90,7 +108,7 @@ class Header extends Component<IProps, IState> {
 				});
 
 				if (result.length > 0) {
-					return result[0].title; 
+					return result[0].title;
 				}
 			}
 		}
@@ -101,7 +119,7 @@ class Header extends Component<IProps, IState> {
 					return region.region_id === idRegion;
 				});
 				if (result.length > 0) {
-					return result[0].title; 
+					return result[0].title;
 				}
 			}
 		}
@@ -112,7 +130,7 @@ class Header extends Component<IProps, IState> {
 					return country.country_id === idCountry;
 				});
 				if (result.length > 0) {
-					return result[0].title; 
+					return result[0].title;
 				}
 			}
 		}
@@ -151,14 +169,7 @@ class Header extends Component<IProps, IState> {
 									</ul>
 									<ul className='navbar-nav'>
 										<li className='nav-item'>
-											<a href='#' className='header__favourites'>
-												<img
-													src='/static/img/icons/like.svg'
-													className='header__icon'
-													alt=''
-												/>
-												Favourites
-											</a>
+											{this.onFavorites()}
 										</li>
 										<li className='nav-item'>
 											{this.renderLogin()}
