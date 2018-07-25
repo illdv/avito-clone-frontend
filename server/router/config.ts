@@ -18,11 +18,12 @@ const routes = [
 	{
 		path: '/profile',
 		page: '/profile',
+		prepare: ['location'],
 	},
 	{
 		path: '/category/:categorySlug?',
 		page: '/category',
-		prepare: ['category'],
+		prepare: ['location', 'category'],
 	},
 ] as IRoute[];
 

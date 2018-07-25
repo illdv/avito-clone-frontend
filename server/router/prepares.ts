@@ -1,3 +1,4 @@
+import * as jsHttpCookie from 'cookie';
 import { default as axios } from 'axios';
 import * as queryString from 'query-string';
 import * as iplocation from 'iplocation';
@@ -12,9 +13,9 @@ import {
 } from '../utils/categoryPrepare';
 
 interface ISugar {
-	params: any;
-	query: any;
-	path: string;
+	params?: any;
+	query?: any;
+	path?: string;
 } 
 
 type prepareMethod = (sugar: ISugar, req: any) => any;
@@ -55,7 +56,7 @@ const getAdsByParams = async params => {
 };
 
 export const location: prepareMethod = async (sugar, req) => {
-	const ip = req.clientIp;
+	/* const ip = req.clientIp;
 
 	if (req.session.location) {
 		return req.session.location;
@@ -64,17 +65,64 @@ export const location: prepareMethod = async (sugar, req) => {
 	if (req.session.location === void 0) { // First request
 		try {
 			const location = await iplocation(ip);
-			/*
-				https://www.npmjs.com/package/iplocation
-			*/
 		   return undefined;
 		} catch (err) {
 			return undefined;
 		}
 	} else {
 		return req.session.location;
-	}
+	} */
 
+	if (req && req.headers) {
+		const cookies = req.headers.cookie;
+  
+		if (typeof cookies === 'string') {
+			const cookiesJSON = jsHttpCookie.parse(cookies);
+
+			const idCountry = cookiesJSON.idCountry ? Number(cookiesJSON.idCountry) : null;
+			const idRegion = cookiesJSON.idRegion ? Number(cookiesJSON.idRegion) : null;
+			const idCity = cookiesJSON.idCity ? Number(cookiesJSON.idCity) : null;
+
+			const countries = await getCountries(null, req);
+
+			let regions = [];
+
+			if (idCountry) {
+				regions = regions.concat(await getRegions({ query: { id: cookiesJSON.idCountry } }, req));
+			}
+
+			let cities = [];
+
+			if (idRegion) {
+				cities = cities.concat(await getCities({ query: { id: cookiesJSON.idRegion } }, req));
+			}
+
+			return {
+				session: {
+					idCountry,
+					idRegion,
+					idCity,
+				},
+				local: {
+					idCountry,
+					idRegion,
+					idCity,
+				},
+				loaded: {
+					session: {
+						countries,
+						regions,
+						cities,
+					},
+					local: {
+						countries,
+						regions,
+						cities,
+					},
+				}
+			};
+		}
+	}
 } 
 
 export const category: prepareMethod = async ({params, query, path}) => {

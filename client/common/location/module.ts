@@ -19,7 +19,7 @@ export const CHANGE_REGION_LOCAL = `${NS}CHANGE_REGION_LOCAL`;
 export const CHANGE_CITY_SESSION = `${NS}CHANGE_CITY_SESSION`;
 export const CHANGE_CITY_LOCAL = `${NS}CHANGE_CITY_LOCAL`;
 
-export const initialize = createAction(INITIALIZE, (data: ILocationSession) => data);
+export const initialize = createAction(INITIALIZE, (data: ILocationStoreState) => data);
 export const setLoaded  = createAction(SET_LOADED, (data: ILoaded) => data);
 export const changeState = createAction(CHANGE_STATE, (data: ILocationStoreState) => data);
 export const changeCountrySession = createAction(CHANGE_COUNTRY_SESSION, (id: number) => id);
@@ -56,18 +56,7 @@ const defaultState: ILocationStoreState = {
 
 const reducer = createReducer({}, defaultState);
 
-reducer.on(initialize, (state, payload: ILocationSession): ILocationStoreState => {
-
-	if (!payload) {
-		return state;
-	}
-
-	return {
-		...state,
-		session: payload,
-		local: payload,
-	};
-});
+reducer.on(initialize, (state, payload): ILocationStoreState => payload);
 
 reducer.on(setLoaded, (state, payload): ILocationStoreState => ({
 	...state,

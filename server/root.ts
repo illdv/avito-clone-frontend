@@ -39,7 +39,7 @@ i18nInstance
 	.then(() => {
         const server = express();
         
-                server.enable('trust proxy');
+                server.enable('trust proxy', 1);
 
                 server.use(requestIp.mw());
 

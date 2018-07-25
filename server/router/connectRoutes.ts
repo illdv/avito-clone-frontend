@@ -42,7 +42,7 @@ export const initialRoutes = (server, appNext) => {
 		}
 		
 		if (!prepares[prepareName]) {
-			res.staus(400).json({ error: 'Prepare not found' });
+			res.status(400).json({ error: 'Prepare not found' });
 		}
 
 		try {
