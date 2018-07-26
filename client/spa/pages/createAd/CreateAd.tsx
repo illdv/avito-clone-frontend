@@ -306,7 +306,7 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 							</label>
 							<div className='col-md-9 col-lg-6'>
 								<ImageSelector onUpdateImage={this.onUpdateImage} />
-								<div>
+								<>
 									{
 										imageBackend
 										&&
@@ -319,7 +319,7 @@ class CreateAd extends Component<IProps, IAdsDataForCreate> {
 										))
 										|| null
 									}
-								</div>
+								</>
 							</div>
 						</div>
 						<Lease

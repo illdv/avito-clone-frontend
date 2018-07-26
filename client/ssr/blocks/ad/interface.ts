@@ -113,18 +113,7 @@ export interface ISimilar {
 export interface IChart {
 	similar_ad: ISimilarAd;
 	id_parent: string;
-	default_map: {
-		lat: number;
-		lng: number;
-	};
-	isMarkerShown: {
-		lat: number;
-		lng: number;
-	},
-}
 
-export interface IChartState {
-	zoom: number;
 }
 
 export interface IFavorites {
@@ -144,4 +133,18 @@ export interface ISimilarAd {
 	price: string;
 	user: ISeller;
 
+}
+
+export interface IGMProps {
+	default_map: IGMMarkerProp;
+	isMarkerShown: IGMMarkerProp;
+}
+
+export interface IGMState {
+	zoom: number;
+}
+
+export interface IGMMarkerProp {
+	lat: number;
+	lng: number;
 }
