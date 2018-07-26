@@ -17,6 +17,38 @@ export const getUserFavoriteIds = state => state.user.user.favorites_ids;
 export const getToken           = state => state.user.user.token;
 export const getUserFavoriteAds = state => state.user.favoritesAds;
 
+function* loadingUserIfHasToken() {
+	const token = CustomStorage.getToken();
+	if (token) {
+		yield put(UserActions.getProfile.REQUEST({ token }));
+	}
+}
+
+function* getProfile(action: Action<{ token: string }>) {
+	try {
+		const response: AxiosResponse<IUser> = yield call(UserAPI.getProfile);
+		const user                           = response.data;
+		const isRememberMe                   = true;
+		const token                          = action.payload.token;
+		const favorites_ids                  = user.favorites_ids;
+
+		yield call(synchronizeLocalStorage, favorites_ids);
+		yield put(UserActions.getProfile.SUCCESS(user));
+		yield put(UserActions.login.SUCCESS({
+			user: {
+				...user,
+				token,
+				favorites_ids
+			},
+			isRememberMe,
+		}));
+
+	} catch (e) {
+		yield call(errorHandler, e);
+		yield put(UserActions.getProfile.FAILURE({}));
+	}
+}
+
 function* saveTokenInStore(action: Action<{ user: IUser, isRememberMe: boolean }>) {
 	const { user: { token }, isRememberMe } = action.payload;
 	if (isRememberMe) {
@@ -54,10 +86,11 @@ function* login(action: Action<ILoginRequest>) {
 		const { token, user }                         = response.data;
 		let favorites_ids;
 		if (!user.favorites_ids.length) {
-			// favorites_ids = yield select(getUserFavorite);
 			favorites_ids = yield call(readLocalStorage);
 		} else {
+			// Todo: add Comparison localstorage and remote server
 			favorites_ids = user.favorites_ids;
+			yield call(synchronizeLocalStorage, favorites_ids);
 		}
 		yield put(UserActions.login.SUCCESS({
 			user: {
@@ -87,16 +120,6 @@ function* register(action: Action<IRegisterRequest>) {
 	}
 }
 
-function* getProfile() {
-	try {
-		const response: AxiosResponse<IUser> = yield call(UserAPI.getProfile);
-		yield put(UserActions.getProfile.SUCCESS(response.data));
-	} catch (e) {
-		yield call(errorHandler, e);
-		yield put(UserActions.getProfile.FAILURE({}));
-	}
-}
-
 function* changePassword(action) {
 	try {
 		yield call(UserAPI.changePassword, action.payload);
@@ -108,32 +131,34 @@ function* changePassword(action) {
 	}
 }
 
-function* loadingUserIfHasToken() {
-	const token = CustomStorage.getToken();
-	if (token) {
-		yield put(UserActions.getProfile.REQUEST({}));
-	}
-}
-
 function* selectFavorite(action) {
 	const selectedAdId     = action.payload.id;
 	const favoriteAds      = yield select(getUserFavoriteIds);
 	const indexInFavorites = favoriteAds.indexOf(selectedAdId);
+	const token            = yield select(getToken);
+	let changedFavoriteAds;
 	if (indexInFavorites === -1) {
 		yield put(UserActions.setFavorite.SUCCESS({ id: selectedAdId }));
-	} else {
-		// yield call()
-		yield put(UserActions.removeFavorite.SUCCESS({ indexInFavorites }));
-	}
-	const changedFavoriteAds = yield select(getUserFavoriteIds);
-	yield call(synchronizeLocalStorage, changedFavoriteAds);
-	const token = yield select(getToken);
-	if (token) {
-		try {
-			yield call(UserAPI.postFavorites, { favorites_ids: changedFavoriteAds });
-		} catch (e) {
-			yield call(errorHandler, e);
+		changedFavoriteAds = yield select(getUserFavoriteIds);
+		if (token) {
+			try {
+				yield call(UserAPI.postFavorites, { favorites_ids: [selectedAdId] });
+			} catch (e) {
+				yield call(errorHandler, e);
+			}
 		}
+		yield call(synchronizeLocalStorage, changedFavoriteAds);
+	} else {
+		yield put(UserActions.removeFavorite.SUCCESS({ indexInFavorites }));
+		changedFavoriteAds = yield select(getUserFavoriteIds);
+		if (token) {
+			try {
+				yield call(UserAPI.deleteFavorites, { favorites_ids: [selectedAdId] });
+			} catch (e) {
+				yield call(errorHandler, e);
+			}
+		}
+		yield call(synchronizeLocalStorage, changedFavoriteAds);
 	}
 }
 
@@ -151,18 +176,16 @@ function* getFavorites() {
 function* removeFavoriteAds(action) {
 	const favoritesIDs = action.payload.favoritesId;
 	const token        = yield select(getToken);
-	// const favoritesID = yield call(readLocalStorage);
-	for (let i = 0; i <= favoritesIDs.length + 1; i++) {
+	for (let i = 0; i <= favoritesIDs.length - 1; ++i) {
 		const id = favoritesIDs[i];
 		yield put(UserActions.removeFavoritesAd.REQUEST({ id }));
-		const changedFavoriteAds = yield select(getUserFavoriteIds);
-		if (changedFavoriteAds.indexOf(id)) {
-			debugger;
-			const indexInFavorites: number = changedFavoriteAds.indexOf(id);
+		const favoriteIds              = yield select(getUserFavoriteIds);
+		const indexInFavorites: number = favoriteIds.indexOf(id);
+		if (indexInFavorites !== -1) {
 			yield put(UserActions.removeFavorite.REQUEST({ indexInFavorites }));
 		}
-		yield call(synchronizeLocalStorage, changedFavoriteAds);
-
+		const changedFavoriteIds = yield select(getUserFavoriteIds);
+		yield call(synchronizeLocalStorage, changedFavoriteIds);
 	}
 	if (token) {
 		try {
@@ -189,23 +212,6 @@ function fromArrayToObject(adsCollection: IAds[]) {
 	}, {});
 }
 
-function saveInStorege(id) {
-	const oldData = JSON.parse(CustomStorage.getItem('favorites_ids'));
-	if (oldData.length === 0) {
-		CustomStorage.setItem('favorites_ids', JSON.stringify([id]));
-		return;
-	}
-	let newData      = [];
-	const isFavorite = oldData.indexOf(this.props.id);
-	if (isFavorite !== -1) {
-		oldData.splice(isFavorite, 1);
-		newData = oldData;
-	} else {
-		newData = oldData.concat(this.props.id);
-	}
-	CustomStorage.setItem('favorites_ids', JSON.stringify(newData));
-	return;
-}
 
 function* watcherUser() {
 	yield [
