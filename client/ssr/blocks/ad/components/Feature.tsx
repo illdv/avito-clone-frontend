@@ -4,7 +4,7 @@ import {IVehicleFeature} from 'client/ssr/blocks/ad/interface';
 class Feature extends Component<IVehicleFeature> {
 	render() {
 		return (
-			<div className='col-lg-5'>
+			<div className='col-lg-5 px-lg-3 py-md-4 py-lg-0'>
 				{/*<h3 className='caption'>Vehicle Features</h3>*/}
 				<h3>Features</h3>
 				<ul className='ads-features'>

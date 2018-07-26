@@ -40,11 +40,13 @@
 .seller span 
     font-size: 13px
 
-
+.seller-info
+    flex-shrink: 0
 .seller img
     width: 50px
     height: 50px
     object-fit: cover
+    flex-shrink: 0
 
 .similar-ads
     padding-top: 20px
@@ -66,8 +68,9 @@
     height: 90px
     object-fit: cover
 
-
-
+.offer-location
+    min-height: 500px
+    height: 100%
 
 @media (max-width: 991px) 
     .ads-features
@@ -83,6 +86,6 @@
     
     .similar-ad
         width: 100%
-        max-height: 120px
         padding: 20px
-    
+
+
