@@ -38,7 +38,7 @@ class SimilarAds extends Component <ISimilar, ISimilarSortState> {
 				<div className='similar-ads-head'>
 					<div className='row align-items-center'>
 						<div className='col-md-12 col-lg-6'>
-							<h3 className='caption caption_no-color m-0'>Similar ads</h3>
+							<h3 className='caption_no-color m-0'>Similar ads</h3>
 						</div>
 						<SimilarSortedBy sort={this.handleChange}/>
 					</div>
