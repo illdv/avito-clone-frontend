@@ -60,14 +60,14 @@ export class LocationModal extends React.Component<ILocationModalProps> {
 	render() {
 		return (
 			<Modal name={this.props.name} useOnRequestClose={true} autocomplete='off'>
-				<div className='modal-content'>
+				<div className='modal-content location-modal'>
 					<div className='modal-header'>
 						<h4 className='modal-title' id='exampleModalLongTitle'>Choose your location</h4>
 						<button type='button' className='close' onClick={this.close} >
 							<span>&times;</span>
 						</button>
 					</div>
-					<div className='modal-body'>
+					<div className='modal-body '>
 						<div>
 							<form action='' className='choose-location'>
 								<div className='form-group row align-items-center'>
@@ -117,7 +117,7 @@ export class LocationModal extends React.Component<ILocationModalProps> {
 					</div>
 					{this.props.children}
 					<div className='modal-footer'>
-						<button type='button' className='btn button button_bright w-100' onClick={this.close}>Confirm location</button>
+						<button type='button' className='btn button orange-btn w-100' onClick={this.close}>Confirm location</button>
 					</div>
 				</div>
 			</Modal>

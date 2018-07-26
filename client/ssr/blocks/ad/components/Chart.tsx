@@ -15,11 +15,13 @@ class Chart extends Component<IChart, IChartState> {
 		return (
 			<div className='row p-t-60'>
 				<div className='col-lg-8'>
-					<GoogleMapReact
-						defaultCenter={this.props.default_map}
-						bootstrapURLKeys={{key: 'AIzaSyDG6zD5QGwF1c8B3vRrtHghVm0WI-poEjA'}}
-						defaultZoom={this.state.zoom}
-					/>
+					<div className="offer-location">
+						<GoogleMapReact
+							defaultCenter={this.props.default_map}
+							bootstrapURLKeys={{key: 'AIzaSyDG6zD5QGwF1c8B3vRrtHghVm0WI-poEjA'}}
+							defaultZoom={this.state.zoom}
+						/>
+					</div>
 				</div>
 				<SimilarAds similar_ad={this.props.similar_ad} id_parent={this.props.id_parent}/>
 			</div>
