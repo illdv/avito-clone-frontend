@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
+import queryString from 'query-string';
+import Router from 'next/router';
 
 import SelectCategories from './components/SelectCategories';
 import { IRootState } from 'client/common/store/storeInterface';
@@ -12,10 +14,16 @@ import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface'
 
 require('./Search.sass');
 
-interface SearchProps {
+interface ISearchProps {
 	categories: Category;
 	idActiveCategory: number;
 	locationState: ILocationStoreState;
+}
+
+interface ISearchState {
+	searchString: string;
+	activeCategories: any;
+	duplicateCategories: any;
 }
 
 const mapStateToProps = (state: IRootState) => ({
@@ -27,15 +35,23 @@ const getOption = option => (
 	<input name='name' className='search search__options form-control' placeholder={option.name}/>
 );
 
-class Search extends Component<SearchProps> {
+class Search extends Component<ISearchProps, ISearchState> {
 	constructor(props, context) {
 		super(props, context);
+
+		let search;
+
+		if (typeof window !== 'undefined') {
+			search = queryString.parse(window.location.search).search;
+		}
+
+		this.state = {
+			duplicateCategories: this.props.categories,
+			activeCategories: [],
+			searchString: search || '',
+		};
 	}
 
-	state = {
-		duplicateCategories: this.props.categories,
-		activeCategories: [],
-	};
 
 	onSelectCategory = category => {
 		if (category) {
@@ -47,7 +63,7 @@ class Search extends Component<SearchProps> {
 		} else {
 			this.setState({activeCategories: []});
 		}
-	};
+	}
 
 	onSelectSubcategory = (category, parent) => {
 		const categories = this.state.activeCategories;
@@ -72,7 +88,7 @@ class Search extends Component<SearchProps> {
 			});
 		}
 
-	};
+	}
 
 	get subcategories() {
 		return this.state.activeCategories;
@@ -131,11 +147,45 @@ class Search extends Component<SearchProps> {
 		return 'World';
 	}
 
+	changeSearchString = e => {
+		this.setState({
+			searchString: e.target.value,
+		});
+	}
+
 	showSearchLocationModal = () => showLocationModal(ModalNames.searchLocation);
+
+	onSubmit = e => {
+		e.preventDefault();
+		const { idCity, idRegion, idCountry } = this.props.locationState.local;
+		const query: any = {
+			search: this.state.searchString,
+		};
+
+		if (this.state.activeCategories.length > 0) {
+			query.category = this.state.activeCategories[this.state.activeCategories.length - 1].id;
+		}
+
+		if (idCity) {
+			query.city_id = idCity;
+		} else if (idRegion) {
+			query.region_id = idRegion;
+		} else if (idCountry) {
+			query.country_id = idCountry;
+		}
+
+		/* Router.push({
+			pathname: '/search',
+			query,
+		}); */
+
+		// alert(queryString.stringify(query));
+		window.location.href = `/search?${ queryString.stringify(query) }`;
+	}
 
 	render() {
 		return (
-			<form action='#'>
+			<form action='#' onSubmit={this.onSubmit}>
 				<div className='search form-inline form-row p-t-20'>
 					<div className='form-group col-6 col-md-3'>
 						<SelectCategories
@@ -148,20 +198,21 @@ class Search extends Component<SearchProps> {
 					</div>
 					<div className='form-group col-6 col-md-4'>
 						<input
-							type='text'
 							className='search__options form-control'
 							placeholder='Search'
 							name='search'
+							value={this.state.searchString}
+							onChange={this.changeSearchString}
 						/>
 					</div>
 					<div className='form-group col-6 col-md-3'>
 						<input
+							readOnly
 							type='text'
-							name='city'
 							placeholder='Search'
 							defaultValue={this.localeName}
-							className='search__options form-control'
 							onClick={this.showSearchLocationModal}
+							className='search__options form-control search_input--no-disable'
 						/>
 					</div>
 					<div className='form-group col-12 col-md-2'>

@@ -1,5 +1,5 @@
 import { AxiosWrapper } from './AxiosWrapper';
-import { IAds, ICreateAdRequest, AdsActionType } from 'client/common/ads/interface';
+import { AdsActionType, IAds, ICreateAdRequest } from 'client/common/ads/interface';
 
 function get() {
 	return AxiosWrapper.get('/ads');
@@ -30,8 +30,23 @@ function create({ images, ...ads }: ICreateAdRequest) {
 	});
 }
 
-function edit(request: IAds) {
-	return AxiosWrapper.put(`/ads/${request.id}`, request);
+function edit({ images, is_published, is_vip, is_active, is_approved, is_completed, options, ...ads }: IAds) {
+
+	const files    = images.map(img => img.file);
+	const formData = new FormData();
+	for (let i = 0; i < files.length; i++) {
+		const file = files[i];
+		formData.append(`images[${i}]`, file);
+	}
+
+	Object.entries(ads).forEach(([key, value]) => {
+		formData.append(key, value);
+	});
+
+	formData.append('_method', 'put');
+	return AxiosWrapper.post(`/ads/${ads.id}`, formData, {
+		headers: { 'Content-Type': 'multipart/form-data' },
+	});
 }
 
 function remove(id: string) {
@@ -42,6 +57,14 @@ function useAction(id: string, actionType: AdsActionType) {
 	return AxiosWrapper.put(`/ads/${id}/state/${actionType}`);
 }
 
+function similar(sort: string, id: string) {
+	return AxiosWrapper.get(`ad/${id}/similar/${sort}`);
+}
+
+function deleteImage(id: string) {
+	return AxiosWrapper.deleteResponse(`/images/${id}`);
+}
+
 export const AdsAPI = {
 	get,
 	getMy,
@@ -50,4 +73,6 @@ export const AdsAPI = {
 	remove,
 	edit,
 	useAction,
+	deleteImage,
+	similar,
 };

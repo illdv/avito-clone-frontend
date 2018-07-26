@@ -77,6 +77,18 @@ function* edit(action: Action<IAds>) {
 	}
 }
 
+function* deleteImage(action: Action<{ id: string }>) {
+	try {
+		yield call(AdsAPI.deleteImage, action.payload.id);
+		yield put(AdsActions.deleteImage.SUCCESS({}));
+		Toasts.info('Image deleted');
+	} catch (e) {
+		yield call(errorHandler, e);
+		Toasts.info('Failed delete image');
+		yield put(AdsActions.deleteImage.FAILURE({}));
+	}
+}
+
 function* watcherUser() {
 	yield [
 		takeEvery(AdsActions.getMy.REQUEST, getMy),
@@ -84,6 +96,7 @@ function* watcherUser() {
 		takeEvery(AdsActions.remove.REQUEST, remove),
 		takeEvery(AdsActions.changeStatus.REQUEST, changeStatus),
 		takeEvery(AdsActions.edit.REQUEST, edit),
+		takeEvery(AdsActions.deleteImage.REQUEST, deleteImage),
 	];
 }
 

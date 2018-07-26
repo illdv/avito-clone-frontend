@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 
 export interface IProps {
-	onSelectPlace: (name: string, id: string, location: any) => void;
-	onNext: () => void;
+	onSelectPlace?: (name: string, id: string, location: any) => void;
+	onNext?: () => void;
 	defaultValue?: {
 		lat: number,
 		lng: number,

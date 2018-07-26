@@ -1,9 +1,10 @@
-import React, {Component} from 'react';
-import {ISimilarProps} from 'client/ssr/blocks/ad/interface';
+import React, { Component } from 'react';
+import { ISimilarProps, ISimilarState } from 'client/ssr/blocks/ad/interface';
 import NumberFormat from 'react-number-format';
 import Link from 'next/link';
 
-class SimilarRandomAd extends Component<ISimilarProps> {
+class SimilarRandomAd extends Component<ISimilarProps, ISimilarState> {
+
 	render() {
 		return (
 			<div className='similar-ad'>
@@ -26,7 +27,7 @@ class SimilarRandomAd extends Component<ISimilarProps> {
 					</div>
 					<div className='col-md-6 col-lg-5 text-right'>
 						<img
-							src='/static/img/ads/ads3.png'
+							src={this.props.image.file_url}
 							alt=''
 							className='right'
 						/>

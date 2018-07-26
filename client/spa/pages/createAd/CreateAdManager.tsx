@@ -11,6 +11,7 @@ import { IAdsState } from 'client/ssr/blocks/ad/interface';
 import { IAds } from 'client/common/ads/interface';
 import { generateId } from 'client/spa/pages/utils';
 import { IUserState } from 'client/common/user/reducer';
+import { useOrDefault } from 'client/spa/pages/createAd/utils';
 
 export interface IState {
 	data: IAdsDataForCreate;
@@ -59,9 +60,7 @@ class CreateAdManager extends Component<IProps, IState> {
 			city_id: 1,
 			price,
 			body: '123213',
-			is_published: false,
-			is_vip: false,
-			category_id: selectedCategory[selectedCategory.length - 1].id,
+			category_id: useOrDefault(() => selectedCategory[selectedCategory.length - 1].id, '1'),
 			type_id: 1,
 			longitude: lng,
 			latitude: lat,
@@ -91,9 +90,7 @@ class CreateAdManager extends Component<IProps, IState> {
 			city_id: 1,
 			price: '',
 			body: '123213',
-			is_published: true,
-			is_vip: false,
-			category_id: '1',
+			category_id: null,
 			type_id: 1,
 			longitude: 55.75222,
 			latitude: 37.61140,

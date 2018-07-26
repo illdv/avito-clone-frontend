@@ -1,13 +1,20 @@
-import {Component} from 'react';
 import * as React from 'react';
-import {connect, Dispatch} from 'react-redux';
-import {IRootState} from 'client/common/store/storeInterface';
+import { Component } from 'react';
+import { connect, Dispatch } from 'react-redux';
+import { IRootState } from 'client/common/store/storeInterface';
 import ProfileMenu from 'client/spa/pages/ProfileMenu';
 import MyAds from 'client/spa/pages/MyAds';
 import ProfileSettings from 'client/spa/pages/ProfileSettings/ProfileSettings';
+import Notification from 'client/spa/pages/notification/Notification';
+
+export enum MenuItem {
+	Settings      = 'Settings',
+	Notifications = 'Notifications',
+	MyAds         = 'MyAds',
+}
 
 export interface IState {
-	settings: boolean;
+	selectItem: MenuItem;
 }
 
 export interface IProps {
@@ -28,11 +35,24 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 
 export class MainContent extends Component<IProps, IState> {
 	state: IState = {
-		settings: false,
+		selectItem: MenuItem.MyAds,
 	};
 
-	onShow = window => {
-		window.settings ? this.setState({settings: !this.state.settings}) : null;
+	onSelectMenuItem = (menuItem: MenuItem) => {
+		this.setState({ selectItem: menuItem });
+	}
+
+	renderContent = () => {
+		switch (this.state.selectItem) {
+			case MenuItem.MyAds:
+				return <MyAds />;
+			case MenuItem.Notifications:
+				return <Notification />;
+			case MenuItem.Settings:
+				return <ProfileSettings />;
+			default:
+				return <MyAds />;
+		}
 	}
 
 	render() {
@@ -40,11 +60,11 @@ export class MainContent extends Component<IProps, IState> {
 			<section className='page'>
 				<div className='container page__container-lg'>
 					<div className='row'>
-						<div className='col-lg-4 col-xl-3'>
-							<ProfileMenu show={this.onShow}/>
+						<div className='col-lg-3'>
+							<ProfileMenu onSelectMenuItem={this.onSelectMenuItem} />
 						</div>
-						<div className='col-lg-8 col-xl-9'>
-							{this.state.settings ? <ProfileSettings/> : <MyAds/>}
+						<div className='col-lg-9'>
+							{this.renderContent()}
 						</div>
 					</div>
 				</div>

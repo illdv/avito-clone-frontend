@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {connect, Dispatch} from 'react-redux';
+import React, { Component } from 'react';
+import { connect, Dispatch } from 'react-redux';
 import Link from 'next/link';
 import axios from 'axios';
 
@@ -21,6 +21,7 @@ import { getLocationState } from 'client/common/store/selectors';
 import { showLocationModal } from 'client/ssr/modals/location/locationModalTriggers';
 import SearchLocationModal from 'client/ssr/modals/location/SearchLocationModal';
 import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
+import { useOrDefault } from 'client/spa/pages/createAd/utils';
 
 require('../../../common/styles/main.sass');
 require('./Header.sass');
@@ -30,11 +31,9 @@ export interface IState {
 }
 
 export interface IProps {
-	location: any;
 	user: IUserState;
 	userActions: IUserActions;
 	locationState: ILocationStoreState;
-	initializeLocation: (data: ILocationSession) => void;
 }
 
 const mapStateToProps = (state: IRootState) => ({
@@ -43,7 +42,6 @@ const mapStateToProps = (state: IRootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-	initializeLocation: (location) => dispatch(initialize(location)),
 	userActions: bindModuleAction(UserActions, dispatch),
 });
 
@@ -53,32 +51,17 @@ class Header extends Component<IProps, IState> {
 	}
 
 	componentDidMount(): void {
-		const {user} = this.props.user;
+		const { user } = this.props.user;
 		const token = CustomStorage.getToken();
-		if (!isServer() && !user && token) {
+		if (!isServer() && !user.id && token) {
 			axios.defaults.headers.common.authorization = `Bearer ${token}`;
 			this.props.userActions.initUser.REQUEST({});
-		}
-		
-		const idCountry = Number(localStorage.getItem('idCountry')) || null;
-		const idRegion = Number(localStorage.getItem('idRegion')) || null;
-		const idCity = Number(localStorage.getItem('idCity')) || null;
-
-		if (idCity || idRegion || idCountry) {
-			this.props.initializeLocation({
-				idCountry,
-				idRegion,
-				idCity,
-			});
-		} else {
-			this.props.initializeLocation(null);
 		}
 	}
 
 	renderLogin = () => {
-		const {user} = this.props.user;
-
-		if (user) {
+		const { user } = this.props.user;
+		if (useOrDefault(() => user.email, null)) {
 			return (
 				<Link href={`/profile`}>
 					<a>{user.email}</a>
@@ -94,7 +77,25 @@ class Header extends Component<IProps, IState> {
 				Login
 			</button>
 		);
-	}
+	};
+
+	onFavorites = () => {
+		return (
+			<Link href={`/favorites`}>
+				<a
+					href='#'
+					className='header__favourites p-x-40'
+				>
+					<img
+						src='/static/img/icons/like.svg'
+						alt=''
+					/>
+					<span>Favourites</span>
+				</a>
+			</Link>
+		);
+
+	};
 
 	get localeName() {
 		const { idCity, idRegion, idCountry } = this.props.locationState.session;
@@ -107,7 +108,7 @@ class Header extends Component<IProps, IState> {
 				});
 
 				if (result.length > 0) {
-					return result[0].title; 
+					return result[0].title;
 				}
 			}
 		}
@@ -118,7 +119,7 @@ class Header extends Component<IProps, IState> {
 					return region.region_id === idRegion;
 				});
 				if (result.length > 0) {
-					return result[0].title; 
+					return result[0].title;
 				}
 			}
 		}
@@ -129,7 +130,7 @@ class Header extends Component<IProps, IState> {
 					return country.country_id === idCountry;
 				});
 				if (result.length > 0) {
-					return result[0].title; 
+					return result[0].title;
 				}
 			}
 		}
@@ -138,6 +139,10 @@ class Header extends Component<IProps, IState> {
 	}
 
 	showMainLocationModal = () => showLocationModal(ModalNames.location);
+
+	shouldComponentUpdate(newProps){
+		return JSON.stringify(this.props) !== JSON.stringify(newProps);
+	}
 
 	render() {
 		return (
@@ -164,14 +169,7 @@ class Header extends Component<IProps, IState> {
 									</ul>
 									<ul className='navbar-nav'>
 										<li className='nav-item'>
-											<a href='#' className='header__favourites'>
-												<img
-													src='/static/img/icons/like.svg'
-													className='header__icon'
-													alt=''
-												/>
-												Favourites
-											</a>
+											{this.onFavorites()}
 										</li>
 										<li className='nav-item'>
 											{this.renderLogin()}

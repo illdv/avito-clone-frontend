@@ -1,4 +1,6 @@
+import jsCookie from 'js-cookie';
 import { select, takeEvery, call, put } from 'redux-saga/effects';
+
 import { get } from '../loader-prepare/loaderPrepare';
 import { Toasts } from '../../common/utils/Toasts';
 
@@ -20,59 +22,22 @@ import {
 } from './module';
 
 function* sagaInitializeLocation(action) {
+	const payload: ILocationStoreState = action.payload;
 
-	const payload: ILocationSession = action.payload;
-	const locationState: ILocationStoreState = yield select(getLocationState);
-
-	const getCountries: any = yield call(get, 'getCountries');
-	const countries = getCountries.data;
-
-	if (!payload) {
-		yield put(changeState({
-			...locationState,
-			loaded: {
-				session: {
-					...locationState.loaded.session,
-					countries,
-				},
-				local: {
-					...locationState.loaded.local,
-					countries,
-				},
-			},
-		}));
-		
-		showLocationModal(ModalNames.location);
-		return null;
+	if (!payload.session.idCity && !payload.session.idRegion && !payload.session.idCountry) {
+		if (localStorage.getItem('location-ask') !== 'no-ask') {
+			showLocationModal(ModalNames.location);
+		}
 	}
-
-	const getRegions = yield call(get, 'getRegions', { id: payload.idCountry });
-	const regions = getRegions.data;
-
-	const getCities = yield call(get, 'getCities', { id: payload.idRegion });
-	const cities = getCities.data;
-
-	yield put(changeState({
-		...locationState,
-		loaded: {
-			session: {
-				countries,
-				regions,
-				cities,
-			},
-			local: {
-				countries,
-				regions,
-				cities,
-			},
-		},
-	}));
-
 }
 
 function* sagaChangeCountryForSession(action) {
 	const locationState: ILocationStoreState = yield select(getLocationState);
 	const idCountry: number = action.payload;
+
+	jsCookie.set('idCountry', idCountry);
+	jsCookie.set('idRegion', null);
+	jsCookie.set('idCity', null);
 
 	if (!idCountry || locationState.session.idCountry === idCountry) {
 		yield put(changeState({
@@ -104,8 +69,6 @@ function* sagaChangeCountryForSession(action) {
 		try {
 			const getRegions = yield call(get, 'getRegions', { id: idCountry });
 			const regions: IRegion[] = getRegions.data;
-			
-			localStorage.setItem('idCountry', String(idCountry));
 
 			yield put(changeState({
 				...locationState,
@@ -190,6 +153,9 @@ function* sagaChangeRegionForSession(action) {
 	const locationState: ILocationStoreState = yield select(getLocationState);
 	const idRegion: number = action.payload;
 
+	jsCookie.set('idRegion', idRegion);
+	jsCookie.set('idCity', null);
+
 	if (!idRegion || locationState.session.idRegion === idRegion) {
 		yield put(changeState({
 			...locationState,
@@ -208,8 +174,6 @@ function* sagaChangeRegionForSession(action) {
 		try {
 			const getCities = yield call(get, 'getCities', { id: idRegion });
 			const cities: ICity[] = getCities.data;
-			
-			localStorage.setItem('idRegion', String(idRegion));
 
 			yield put(changeState({
 				...locationState,
@@ -286,7 +250,7 @@ function* sagaChangeCityForSession(action) {
 	const locationState: ILocationStoreState = yield select(getLocationState);
 	const idCity: number = action.payload;
 
-	localStorage.setItem('idCity', String(idCity));
+	jsCookie.set('idCity', idCity);
 
 	if (!idCity || locationState.local.idCity === idCity) {
 		yield put(changeState({

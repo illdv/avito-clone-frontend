@@ -1,5 +1,5 @@
 import { createActionCreator, IAsyncAction } from 'client/common/user/utils';
-import { IAds, ICreateAdRequest, AdsActionType } from 'client/common/ads/interface';
+import { AdsActionType, IAds, ICreateAdRequest } from 'client/common/ads/interface';
 import { PageName } from 'client/common/ads/reducer';
 
 const createAsyncAction = createActionCreator('ADS');
@@ -11,6 +11,8 @@ const remove        = createAsyncAction('REMOVE');
 const changeStatus  = createAsyncAction('CHANGE_STATUS');
 const selectForEdit = createAsyncAction('SELECT_FOR_EDIT');
 const edit          = createAsyncAction('EDIT');
+const deleteImage   = createAsyncAction('DELETE_IMAGE');
+
 
 export const AdsActions: IAdsActions = {
 	getMy,
@@ -20,6 +22,7 @@ export const AdsActions: IAdsActions = {
 	changeStatus,
 	selectForEdit,
 	edit,
+	deleteImage,
 };
 
 export interface IAdsActions {
@@ -30,4 +33,5 @@ export interface IAdsActions {
 	changeStatus: IAsyncAction<{ actionType: AdsActionType, id: string }>;
 	selectForEdit: IAsyncAction<{ id: string }>;
 	edit: IAsyncAction<IAds>;
+	deleteImage: IAsyncAction<{ id: string }>;
 }

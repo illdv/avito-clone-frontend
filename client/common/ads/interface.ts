@@ -15,6 +15,12 @@ export enum AdsActionType {
 	Uncomplete = 'uncomplete',
 }
 
+export interface IPivot {
+	ad_id: number;
+	option_id: number;
+	value: string;
+}
+
 export interface IType {
 	id: number;
 	name: string;
@@ -25,7 +31,7 @@ export interface IType {
 }
 
 export interface Image {
-	id: number;
+	id: string;
 	imageable_type: string;
 	imageable_id: number;
 	file_name: string;
@@ -47,10 +53,11 @@ export interface IAds {
 	is_approved?: boolean;
 	is_active?: boolean;
 	is_completed?: boolean;
-	is_vip: boolean;
+	is_vip?: boolean;
 	created_at?: string;
 	updated_at?: string;
 	deleted_at?: any;
+	pivot?: IPivot;
 	city_id: number;
 	type?: IType;
 	options?: any[];
@@ -70,8 +77,9 @@ export interface ICreateAdRequest {
 	longitude: number;
 	latitude: number;
 	category_id: string;
-	is_published: boolean;
-	is_vip: boolean;
 	phone: string;
 	images: Images[];
+}
+export interface IFavoritesAds {
+	(id: any): IAds;
 }
