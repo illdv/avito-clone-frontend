@@ -67,6 +67,8 @@ export interface IImage {
 }
 
 export interface ISeller {
+	id: number;
+	email: string;
 	phone: string;
 	name: string;
 	created_at: string;

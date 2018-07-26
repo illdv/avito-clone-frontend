@@ -16,14 +16,6 @@ import { ButtonFavorites} from 'client/ssr/blocks/ad/components/ButtonFavorites'
 
 require('./Ad.sass');
 
-
-const user = {
-	name: 'Andrey Beregovoi',
-	avatar: '/static/img/person.png',
-	address: 'Germany Berlin',
-	phone: '89995965664642',
-};
-
 class Ads extends React.Component <IAdsProps, IAdsState> {
 	formatCategoriesToCrumbs = (categories): ICrumb[] => {
 		return categories.map(category => {
