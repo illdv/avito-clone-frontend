@@ -11,12 +11,14 @@ import { isContainsId, useOrDefault } from 'client/spa/pages/createAd/utils';
 
 export interface IState {
 	selectedCategory: ICategory[];
+	defaultCategoryId: string;
 }
 
 export interface IProps {
 	categoryActions: ICategoryActions;
 	categories: ICategoryState;
 	onSelectCategory: (selectedCategory: ICategory[]) => void;
+	defaultCategoryId: string;
 }
 
 const mapStateToProps = (state: IRootState) => ({
@@ -31,7 +33,24 @@ export class CategoriesSelector extends Component<IProps, IState> {
 
 	state: IState = {
 		selectedCategory: [],
+		defaultCategoryId: null,
 	};
+
+	static getDerivedStateFromProps(nextProps: IProps, prevState: IState): IState {
+
+		const { defaultCategoryId, categories } = nextProps;
+		const { data }                          = categories;
+		if (data.length !== 0) {
+			if (defaultCategoryId !== null && defaultCategoryId !== prevState.defaultCategoryId) {
+				// noinspection TsLint
+				return {
+					defaultCategoryId,
+					selectedCategory: findCategoriesQueueById(data, parseInt(defaultCategoryId)),
+				};
+			}
+		}
+		return null;
+	}
 
 	onClickCategory = (selectCategory: ICategory) => () => {
 
@@ -89,6 +108,7 @@ export class CategoriesSelector extends Component<IProps, IState> {
 
 	render() {
 		const categories = this.props.categories.data;
+
 		return (
 			<div className='select-category'>
 				<CategoryList
@@ -102,6 +122,36 @@ export class CategoriesSelector extends Component<IProps, IState> {
 		);
 	}
 }
+
+export const findCategoriesQueueById = (categories: ICategory[], findId): any[] | null => {
+	if (!findId) {
+		return [];
+	}
+
+	return categories.reduce((acc, category) => {
+		if (acc) {
+			return acc;
+		}
+
+		const id = category.id;
+
+		if (id === findId) {
+			return [category];
+		} else {
+			if (category.children.length > 0) {
+				const result = findCategoriesQueueById(category.children, findId);
+
+				if (result !== null) {
+					return [category].concat(result);
+				} else {
+					return null;
+				}
+			} else {
+				return null;
+			}
+		}
+	}, false as any);
+};
 
 function activeClassName(isActive: boolean) {
 	if (isActive) {
