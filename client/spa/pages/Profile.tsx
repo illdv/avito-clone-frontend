@@ -6,15 +6,14 @@ import { IRootState } from 'client/common/store/storeInterface';
 import ToolBar from 'client/spa/pages/ToolBar';
 import { MainContent } from 'client/spa/pages/MainContent';
 import { CustomStorage } from 'client/common/user/CustomStorage';
-import CreateAdManager from 'client/spa/pages/createAd/CreateAdManager';
+import CreateAd from 'client/spa/pages/create-ad/CreateAd';
 import { pushInRouter } from 'client/common/utils/utils';
 import { IAdsState, PageName } from 'client/common/ads/reducer';
 import { AdsActions, IAdsActions } from 'client/common/ads/actions';
 import { bindModuleAction } from 'client/common/user/utils';
-import CreateAd, { IAdsDataForCreate } from 'client/spa/pages/createAd/CreateAd';
+import EditAd from 'client/spa/pages/create-ad/EditAd';
 import ProfileFooter from 'client/ssr/blocks/footer/ProfileFooter';
 import { INotificationActions, NotificationActions } from 'client/common/notification/actions';
-import { useOrDefault } from 'client/spa/pages/createAd/utils'
 
 export interface IState {
 }
@@ -56,7 +55,7 @@ export class Profile extends Component<IProps, IState> {
 		}
 	}
 
-	onSave = (data: IAdsDataForCreate) => {
+	/* onSave = (data: IAdsDataForCreate) => {
 		const { lat, lng, images, selectedCategory } = data;
 		const { description, price, title }          = data.fields;
 
@@ -76,7 +75,7 @@ export class Profile extends Component<IProps, IState> {
 			latitude: lat,
 			images: images as any,
 		});
-	}
+	} */
 
 	render() {
 
@@ -86,7 +85,7 @@ export class Profile extends Component<IProps, IState> {
 			return (
 				<div>
 					<ToolBar onCreateAd={this.onClickCreateAd} />
-					<CreateAdManager />
+					<CreateAd />
 				</div>
 			);
 		}
@@ -96,10 +95,7 @@ export class Profile extends Component<IProps, IState> {
 			return (
 				<div>
 					<ToolBar onCreateAd={this.onClickCreateAd} />
-					<CreateAd
-						data={selectedAd}
-						onNext={this.onSave}
-					/>
+					<EditAd initialAd={selectedAd} />
 				</div>
 			);
 		}
