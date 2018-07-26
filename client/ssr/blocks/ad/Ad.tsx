@@ -141,7 +141,7 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 									selectFavorite={this.selectFavorite}
 								/>
 							</div>
-							<div className='col-md-12 col-lg-4 price'>
+							<div className='col-md-12 col-lg-4 price my-md-3 my-lg-0'>
 								<NumberFormat
 									value={this.props.ad.price}
 									displayType={'text'}

@@ -4,8 +4,8 @@ require('./ListOfSubcategories.sass');
 
 const ListOfSubcategories = ({ subcategories }: { subcategories: any[] }) => (
 	<div className='row'>
-		<div className='col-md-12 list-of-types'>
-			<ul className='list-unstyled'>
+		<div className='col-md-12 '>
+			<ul className='list-of-types list-unstyled'>
 				{
 					subcategories.map(subcategory => (
 						<li key={subcategory.id} >

@@ -15,7 +15,7 @@ export class ButtonFavorites extends Component <IFavorites, IFavoriteState> {
 		return (
 			<React.Fragment>
 				<button
-					className='btn orange-btn-outline m-t-10 d-block no-b-r'
+					className='btn orange-btn-outline m-t-10 d-block no-b-r my-md-3'
 					onClick={this.handleSelectFavorite}
 				>Add to favourites
 				</button>
