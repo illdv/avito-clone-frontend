@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import SimilarAds from 'client/ssr/blocks/ad/components/SimilarAds';
-import { IChart, IChartState } from 'client/ssr/blocks/ad/interface';
+import { IChart } from 'client/ssr/blocks/ad/interface';
 
 class Chart extends Component<IChart> {
-
 
 	render() {
 		return (
@@ -13,7 +12,7 @@ class Chart extends Component<IChart> {
 							PLACE CHART
 					</div>
 				</div>
-				<SimilarAds similar_ad={this.props.similar_ad} id_parent={this.props.id_parent}/>
+				<SimilarAds similar_ad={this.props.similar_ads} id_parent={this.props.id_parent}/>
 			</div>
 		);
 	}

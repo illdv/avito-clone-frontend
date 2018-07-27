@@ -179,7 +179,7 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 						<Kit/>
 						<PlaceMap default_map={this.state.default_map} isMarkerShown={this.state.default_map}/>
 						<Chart
-							similar_ad={this.props.ad.similar_ad}
+							similar_ads={this.props.similar}
 							id_parent={this.props.ad.id}
 						/>
 					</div>

@@ -32,7 +32,7 @@ export interface IAd {
 	longitude: number;
 }
 export interface ISimilarSortState {
-	similar_ad?: ISimilarAd;
+	similar_ad?: any[];
 	filter?: string;
 }
 
@@ -44,6 +44,7 @@ export interface ICrumb {
 export interface IAdsProps {
 	ad: IAd;
 	categories: any[];
+	similar: any[];
 	userActions: IUserActions;
 }
 
@@ -106,12 +107,12 @@ export interface ISimilarState {
 
 export interface ISimilar {
 	filter?: string;
-	similar_ad: ISimilarAd;
+	similar_ad: any[];
 	id_parent: string;
 }
 
 export interface IChart {
-	similar_ad: ISimilarAd;
+	similar_ads: any[];
 	id_parent: string;
 
 }
