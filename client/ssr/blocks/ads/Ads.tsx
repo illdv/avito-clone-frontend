@@ -25,7 +25,6 @@ class Ads extends React.Component<IAdsProps> {
 
 	render() {
 		const {ads, title} = this.props;
-		console.log('newProps', this.props);
 
 		return (
 			<section className='section-sm'>
