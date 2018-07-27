@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { IGMProps, IGMState } from 'client/ssr/blocks/ad/interface';
 import Mapster from 'client/ssr/blocks/ad/components/Mapster';
 
-const Maps = Mapster;
-
 class PlaceMap extends Component<IGMProps, IGMState> {
 
 	onClick = () => {
@@ -32,15 +30,16 @@ class PlaceMap extends Component<IGMProps, IGMState> {
 						className='btn orange-btn-outline'
 						onClick={this.onClick}
 					>
-						Hide Map
+						{this.state.show ? 'Hide Map' : 'Show Map'}
 					</button>
 				</div>
 				{
-					this.state.show && <Mapster
-						default_map={this.props.default_map}
-						isMarkerShown={this.props.default_map}
-						zoom={this.state.zoom}
-					/>
+					this.state.show &&
+							<Mapster
+								default_map={this.props.default_map}
+								isMarkerShown={this.props.default_map}
+								zoom={this.state.zoom}
+							/>
 				}
 			</div>
 		);
