@@ -116,12 +116,16 @@ export class ProfileSettings extends React.Component<IProps, IState> {
 
 	get avatar() {
 		return (
-			<img
-				alt=''
-				src={this.state.preview || this.defaultImage}
-				className='account__img account__img_big'
+			<div
+				className='avatar__container'
 				onClick={this.onShowAvatarEditor}
-			/>
+			>
+				<img
+					alt=''
+					src={this.state.preview || this.defaultImage}
+					className='account__img account__img_big'
+				/>
+			</div>
 		);
 	}
 
