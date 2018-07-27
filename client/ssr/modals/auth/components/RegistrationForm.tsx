@@ -92,7 +92,7 @@ class RegistrationForm extends Component<IProps, IState> {
 				/>
 				<Input
 					title='Phone'
-					id='tel'
+					id='phone'
 					placeholder='Enter your phone'
 					onChange={this.onChange}
 				/>

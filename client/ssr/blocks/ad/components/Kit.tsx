@@ -5,7 +5,7 @@ class Kit extends Component {
 		return (
 			<div className='row p-t-60 p-b-60'>
 				<div className='col-md-12 col-lg-10'>
-					<h3 className='caption m-b-30'>Vehicle kit</h3>
+					<h3 className='m-b-30'>Kit</h3>
 					<ul className='list-unstyled three-columns'>
 						<li>Climate Management</li>
 						<li>The climate is multi-zone</li>
