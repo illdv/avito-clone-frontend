@@ -89,6 +89,7 @@ class Header extends Component<IProps, IState> {
 					<img
 						src='/static/img/icons/like.svg'
 						alt=''
+						className="pr-2"
 					/>
 					<span>Favourites</span>
 				</a>
