@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import SimilarSortedBy from 'client/ssr/blocks/ad/components/SimilarSortedBy';
 import SimilarRandomAd from 'client/ssr/blocks/ad/components/SimilarRandomAd';
-import {ISimilarProps, ISimilarSortState} from 'client/ssr/blocks/ad/interface';
-import {AdsAPI} from 'api/AdsAPI';
+import { ISimilarProps, ISimilarSortState } from 'client/ssr/blocks/ad/interface';
+import { AdsAPI } from 'api/AdsAPI';
 
 class SimilarAds extends Component <ISimilarProps, ISimilarSortState> {
 	handleChange = (sorted) => {
@@ -23,14 +23,6 @@ class SimilarAds extends Component <ISimilarProps, ISimilarSortState> {
 			filter: '',
 		};
 	}
-
-	// componentDidMount() {
-	// 	this.interval = setInterval(() => this.handleChange(this.state.filter), 30000);
-	// }
-	//
-	// componentWillUnmount() {
-	// 	clearInterval(this.interval);
-	// }
 
 	render() {
 		return (

@@ -46,16 +46,6 @@ export  const ad: prepareMethod = async ({ params }) => {
 	}
 };
 
-export const similar: prepareMethod = async ({params}) => {
-	try {
-		const response = await instance.get(`/ad/${params.id}/similar/`);
-		return response.data;
-	} catch (error) {
-		console.log(error);
-	}
-
-};
-
 export const categories: prepareMethod = async () => {
 	const response = await instance.get('/categories');
 	return response.data;
