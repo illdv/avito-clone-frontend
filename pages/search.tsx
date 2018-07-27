@@ -5,7 +5,7 @@ import { types } from 'redux-act';
 import { withI18next } from '../common/lib/withI18next';
 
 import { SetCategories } from 'client/ssr/blocks/categories/context';
-import { IAds } from 'client/ssr/blocks/list-of-ads/ListOfAds';
+import { IAds } from 'client/ssr/blocks/ads/ListOfAds';
 
 import SearchPage from 'client/ssr/pages/Search';
 

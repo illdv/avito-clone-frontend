@@ -7,13 +7,13 @@ import { withI18next } from '../common/lib/withI18next';
 import Header from '../client/ssr/blocks/header/Header';
 import Navbar from '../client/ssr/blocks/navbar/Navbar';
 import Search from '../client/ssr/blocks/search/Search';
-import ListOfAds from '../client/ssr/blocks/list-of-ads/ListOfAds';
 import { ToastContainer } from 'react-toastify';
 import { IAds } from 'client/common/ads/interface';
 import { SetCategories } from 'client/ssr/blocks/categories/context';
 import Categories from 'client/ssr/blocks/categories/Categories';
 import Footer from 'client/ssr/blocks/footer/Footer';
 import { ICategories } from 'client/common/categories/interface'
+import Ads from 'client/ssr/blocks/ads/Ads';
 
 const isServer: boolean = typeof window === 'undefined';
 
@@ -57,12 +57,12 @@ export class Index extends React.Component<IIndexProps> {
 						</div>
 					</div>
 					<Categories />
-					<ListOfAds
+					<Ads
 						title='Vip ads'
 						ads={this.props.ads}
 					/>
 
-					<ListOfAds
+					<Ads
 						title='Houses, villas, cottages'
 						ads={this.props.ads}
 					/>

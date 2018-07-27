@@ -34,6 +34,14 @@ function getToken() {
     return getItem(tokenKey);
 }
 
+export function synchronizeFavoritesLocalStorage(favoritesList) {
+	CustomStorage.setItem('favorites_ids', JSON.stringify(favoritesList));
+}
+
+export function getFavoritesFromLocalStorage(): string[] {
+	return JSON.parse(CustomStorage.getItem('favorites_ids'));
+}
+
 export const CustomStorage = {
     setAndRememberItem,
     setItem,

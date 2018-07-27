@@ -34,7 +34,7 @@ class Chart extends Component<IChart> {
 					</div>
 				</div>
 				<SimilarAds
-					similar_ad={this.props.similar_ads}
+					similar_ads={this.props.similar_ads}
 					id_parent={this.props.id_parent}
 				/>
 			</div>
