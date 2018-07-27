@@ -6,6 +6,7 @@ export interface IProps {
 	selectedCategories: ICategory[];
 	email: string;
 	phone: string;
+	fullName: string;
 	locationName: string;
 	title: string;
 	price: string;
@@ -16,6 +17,7 @@ export interface IProps {
 
 const ConfirmAd = ({
 	selectedCategories,
+	fullName,
 	email,
 	phone,
 	locationName,
@@ -40,7 +42,7 @@ const ConfirmAd = ({
 							<div>
 								<div className='confirm-contact-info__item row align-items-center'>
 									<span className='col-md-4'>Full name</span>
-									<span className='col-md-6'>Alex Smit</span>
+									<span className='col-md-6'>{fullName}</span>
 								</div>
 								<div className='confirm-contact-info__item row align-items-center'>
 									<span className='col-md-4'>Email</span>
