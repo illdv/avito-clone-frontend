@@ -26,21 +26,6 @@ class SimilarAds extends Component <ISimilarProps, ISimilarSortState> {
 				</div>
 			);
 		}
-
-		this.state.similar_ad.map((sim) => {
-			return (
-				<SimilarRandomAd
-					id={sim.id}
-					title={sim.title}
-					price={sim.price}
-					userName={sim.user.name}
-					description={sim.description}
-					image={sim.images[0]}
-					key={sim.id}
-				/>
-			);
-		});
-
 	};
 
 	constructor(props) {
@@ -63,7 +48,19 @@ class SimilarAds extends Component <ISimilarProps, ISimilarSortState> {
 					</div>
 					<div className='similar-ads-tiles'>
 						{
-							this.checkLength()
+							this.state.similar_ad.map((sim) => {
+								return (
+									<SimilarRandomAd
+										id={sim.id}
+										title={sim.title}
+										price={sim.price}
+										userName={sim.user.name}
+										description={sim.description}
+										image={sim.images[0]}
+										key={sim.id}
+									/>
+								);
+							})
 						}
 					</div>
 				</div>
