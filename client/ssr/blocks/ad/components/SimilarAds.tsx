@@ -1,20 +1,20 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import SimilarSortedBy from 'client/ssr/blocks/ad/components/SimilarSortedBy';
 import SimilarRandomAd from 'client/ssr/blocks/ad/components/SimilarRandomAd';
-import { ISimilar, ISimilarSortState } from 'client/ssr/blocks/ad/interface';
-import { AdsAPI } from 'api/AdsAPI';
+import {ISimilar, ISimilarSortState} from 'client/ssr/blocks/ad/interface';
+import {AdsAPI} from 'api/AdsAPI';
 
 class SimilarAds extends Component <ISimilar, ISimilarSortState> {
 	handleChange = (sorted) => {
 		let field = 'sort-' + sorted;
 		if (sorted !== this.state.filter) {
-			this.setState({ filter: sorted });
+			this.setState({filter: sorted});
 		}
 		AdsAPI.similar(field, this.props.id_parent)
 			.then((response) => {
-				this.setState({ similar_ad: response.data });
+				this.setState({similar_ad: response.data});
 			});
-	};
+	}
 
 	constructor(props) {
 		super(props);
@@ -40,7 +40,7 @@ class SimilarAds extends Component <ISimilar, ISimilarSortState> {
 						<div className='col-md-12 col-lg-6'>
 							<h3 className='caption_no-color m-0 pb-md-3 pb-lg-0'>Similar ads</h3>
 						</div>
-						<SimilarSortedBy sort={this.handleChange} />
+						<SimilarSortedBy sort={this.handleChange}/>
 					</div>
 					<div className='similar-ads-tiles'>
 						{
@@ -58,7 +58,6 @@ class SimilarAds extends Component <ISimilar, ISimilarSortState> {
 								);
 							})
 						}
-
 					</div>
 				</div>
 			</div>
