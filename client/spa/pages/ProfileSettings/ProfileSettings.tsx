@@ -1,24 +1,61 @@
 import * as React from 'react';
 import {connect, Dispatch} from 'react-redux';
+import Avatar from 'react-avatar-edit';
+
 import {IUserActions, UserActions} from 'client/common/user/actions';
 import {bindModuleAction} from 'client/common/user/utils';
+import { IRootState } from '../../../common/store/storeInterface';
+
+enum FieldsNames {
+	fullName = 'fullName',
+	email = 'email',
+	phone = 'phone',
+}
+
+interface IFields {
+	[FieldsNames.fullName]: string;
+	[FieldsNames.email]: string;
+	[FieldsNames.phone]: string;
+}
 
 interface IState {
 	passwordFields: IChangePasswordRequest;
+	fields: IFields;
+	preview: string;
+	editAvatar: boolean;
+	file: any;
 }
 
 interface IProps {
+	user: IUser,
 	userActions: IUserActions;
 }
 
 export class ProfileSettings extends React.Component<IProps, IState> {
-	state = {
-		passwordFields: {
-			old_password: '',
-			password: '',
-			password_confirmation: '',
-		},
-	};
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			passwordFields: {
+				old_password: '',
+				password: '',
+				password_confirmation: '',
+			},
+			fields: {
+				fullName: this.props.user.name,
+				email: this.props.user.email,
+				phone: this.props.user.phone,
+			},
+			preview: null,
+			editAvatar: false,
+			file: null,
+		};
+	}
+
+	get defaultImage() {
+		return this.props.user.image.file_url || '/static/img/person.png';
+	}
+
 	onChange = event => {
 		const {id, value} = event.target;
 		this.setState({
@@ -30,6 +67,83 @@ export class ProfileSettings extends React.Component<IProps, IState> {
 		const {old_password, password, password_confirmation} = this.state.passwordFields;
 		this.props.userActions.changePassword.REQUEST({old_password, password, password_confirmation});
 	}
+	
+	onFileLoad = file => this.setState({ file });
+	
+	onCrop = preview => this.setState({ preview });
+
+	onShowAvatarEditor = () => this.setState({ editAvatar: true });
+
+	onHideAvatarEditor = () => this.setState({ editAvatar: false, preview: null });
+
+	onSaveCrop = () => this.setState({ editAvatar: false });
+
+	creatorChangeFieldValue = (fieldName: FieldsNames) => (e: React.ChangeEvent<HTMLInputElement>) => {
+		this.setState({
+			fields: {
+				...this.state.fields,
+				[fieldName]: e.target.value,
+			},
+		});
+	}
+
+	onChangeProfile = () => {
+		const data: IChangeProfileRequest = {
+			name: this.state.fields.fullName,
+			email: this.state.fields.email,
+			phone: this.state.fields.phone,
+		};
+
+		if (this.state.file) {
+			fetch(this.state.preview)
+				.then(res => res.blob())
+				.then(blob => {
+					data.image = new File([blob], 'avatar');
+					this.props.userActions.changeProfile.REQUEST(data);
+				});
+
+		} else {
+			this.props.userActions.changeProfile.REQUEST(data);
+		}
+
+	}
+
+	get avatar() {
+		return (
+			<img
+				alt=''
+				src={this.state.preview || this.defaultImage}
+				className='account__img account__img_big'
+				onClick={this.onShowAvatarEditor}
+			/>
+		);
+	}
+
+	get avatarEditor() {
+		return (
+			<div>
+				<Avatar
+					width={ 230 }
+					height={ 120 }
+					onCrop={ this.onCrop }
+					src={ this.state.preview }
+					onFileLoad={ this.onFileLoad }
+					onClose={ this.onHideAvatarEditor }
+				/>
+				{
+					this.state.preview && 
+					<button
+						onClick={ this.onSaveCrop }
+						className='btn orange-btn-outline publish-offer__button'
+					>
+						Crop
+					</button>
+				}
+			</div>
+		);
+	}
+
+	deleteAccount = () => this.props.userActions.deleteAccount.REQUEST({});
 
 	render() {
 		return (
@@ -38,11 +152,13 @@ export class ProfileSettings extends React.Component<IProps, IState> {
 					<h5>Contact Information</h5>
 					<p>The photo</p>
 					<div className='account__person'>
-						<img
-							src='/static/img/person.png'
-							alt=''
-							className='account__img account__img_big'
-						/>
+						{
+							this.state.editAvatar
+							?
+								this.avatarEditor
+							:
+								this.avatar
+						}
 					</div>
 					<form>
 						<div className='form-group row'>
@@ -58,22 +174,8 @@ export class ProfileSettings extends React.Component<IProps, IState> {
 									className='form-control'
 									id='full-name'
 									placeholder='Full name'
-								/>
-							</div>
-						</div>
-						<div className='form-group row'>
-							<label
-								htmlFor='city'
-								className='col-sm-2 col-form-label profile-info__label'
-							>
-								City
-							</label>
-							<div className='col-sm-4'>
-								<input
-									type='text'
-									className='form-control'
-									id='city'
-									placeholder='City'
+									value={ this.state.fields.fullName }
+									onChange={ this.creatorChangeFieldValue(FieldsNames.fullName) }
 								/>
 							</div>
 						</div>
@@ -90,6 +192,8 @@ export class ProfileSettings extends React.Component<IProps, IState> {
 									className='form-control'
 									id='email'
 									placeholder='Email'
+									value={ this.state.fields.email }
+									onChange={ this.creatorChangeFieldValue(FieldsNames.email) }
 								/>
 							</div>
 						</div>
@@ -106,11 +210,13 @@ export class ProfileSettings extends React.Component<IProps, IState> {
 									className='form-control'
 									id='phone'
 									placeholder='+987 654 321 000'
+									value={ this.state.fields.phone }
+									onChange={ this.creatorChangeFieldValue(FieldsNames.phone) }
 								/>
 							</div>
 						</div>
 						<div className='text-center'>
-							<a className='btn button orange-btn-outline profile-info__button'>Save</a>
+							<a className='btn button orange-btn-outline profile-info__button'  onClick={this.onChangeProfile}>Save</a>
 						</div>
 					</form>
 				</div>
@@ -293,7 +399,12 @@ export class ProfileSettings extends React.Component<IProps, IState> {
 					<p>If you want to permanently delete your account and all your ads, click on the 'Delete account'
 						button.</p>
 					<div className='text-center'>
-						<a className='btn button orange-btn-outline profile-info__button'>Delete account</a>
+						<a
+							className='btn button orange-btn-outline profile-info__button'
+							onClick={this.deleteAccount}
+						>
+							Delete account
+						</a>
 					</div>
 				</div>
 			</>
@@ -301,8 +412,12 @@ export class ProfileSettings extends React.Component<IProps, IState> {
 	}
 }
 
+const mpStateToProprs = (state: IRootState) => ({
+	user: state.user.user,
+});
+
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 	userActions: bindModuleAction(UserActions, dispatch),
 });
 
-export default connect(null, mapDispatchToProps)(ProfileSettings);
+export default connect(mpStateToProprs, mapDispatchToProps)(ProfileSettings);
