@@ -1,17 +1,26 @@
 import React from 'react';
+import { connect, Dispatch } from 'react-redux';
 import {IAds} from 'client/common/ads/interface';
-import Ad from 'client/ssr/blocks/list-of-ads/components/Ad';
+import AdCard from 'client/ssr/blocks/ads/components/AdCard';
+import { bindModuleAction } from 'client/common/user/utils';
+import { IUserActions, UserActions } from 'client/common/user/actions';
 
-require('./ListOfAds.sass');
+require('./Ads.sass');
 
 export {IAds};
 
 export interface IAdsProps {
 	title: string;
 	ads: IAds[];
+	userActions: IUserActions;
 }
 
 class Ads extends React.PureComponent<IAdsProps> {
+	addToFavorites = (id: string) => {
+		this.props.userActions.selectFavorite.REQUEST({ id });
+
+	};
+
 	render() {
 		const {ads, title} = this.props;
 
@@ -30,7 +39,7 @@ class Ads extends React.PureComponent<IAdsProps> {
 									key={ad.id}
 									className='col-md-4 col-lg-3'
 								>
-									<Ad ads={ad} />
+									<AdCard ads={ad} addToFavorites={this.addToFavorites}/>
 								</div>
 							))
 						}
@@ -41,4 +50,8 @@ class Ads extends React.PureComponent<IAdsProps> {
 	}
 }
 
-export default Ads;
+
+const mapDispatchToProps = dispatch => ({
+	userActions: bindModuleAction(UserActions, dispatch),
+});
+export default connect(null, mapDispatchToProps)(Ads);

@@ -4,7 +4,7 @@ import Header from 'client/ssr/blocks/header/Header';
 import Navbar from 'client/ssr/blocks/navbar/Navbar';
 import Search from 'client/ssr/blocks/search/Search';
 import Footer from 'client/ssr/blocks/footer/Footer';
-import ListOfAds, { IAds } from 'client/ssr/blocks/list-of-ads/ListOfAds';
+import ListOfAds, { IAds } from 'client/ssr/blocks/ads/ListOfAds';
 import BreadcrumbsWrap from 'client/ssr/wraps/BreadcrumbFromContext';
 import EmptySearch from 'client/ssr/blocks/empty-search/EmptySearch';
 import ListOfSubcategories from 'client/ssr/blocks/list-of-subcategories/ListOfSubcategories';

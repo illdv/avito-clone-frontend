@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import FavoritesMenu from 'client/spa/pages/Favorites/FavoritesMenu';
-import FavoritesPage from 'client/spa/pages/Favorites/FavoritesPage';
+import FavoritesMenu from 'client/spa/pages/favorites/FavoritesMenu';
+import FavoritesPage from 'client/spa/pages/favorites/FavoritesPage';
 import { bindModuleAction } from 'client/common/user/utils';
 import { IRootState } from 'client/common/store/storeInterface';
 import { IUserActions, UserActions } from 'client/common/user/actions';

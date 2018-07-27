@@ -4,14 +4,14 @@ import Head from 'next/head';
 import Header from '../client/ssr/blocks/header/Header';
 import { types } from 'redux-act';
 import ToolBar from 'client/spa/pages/ToolBar';
-import Favorites from 'client/spa/pages/Favorites/Favorites';
+import Favorites from 'client/spa/pages/favorites/Favorites';
 
 
 require('client/spa/pages/Helpers.sass');
 require('client/spa/pages/ToolBar.sass');
 require('client/spa/pages/MyAds.sass');
 require('client/spa/pages/create-ad/CreateAd.sass');
-require('client/spa/pages/Favorites/FavoritesPage.sass');
+require('client/spa/pages/favorites/FavoritesPage.sass');
 
 const isServer: boolean = typeof window === 'undefined';
 
