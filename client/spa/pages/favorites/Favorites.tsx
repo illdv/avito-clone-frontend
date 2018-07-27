@@ -27,10 +27,11 @@ class Favorites extends React.Component<IFavorites, null> {
 			<section className='page'>
 				<div className='container'>
 					<div className='row'>
-						<div className='col-lg-3'>
+						{/* <div className='col-lg-3'>
 							<FavoritesMenu/>
-						</div>
-						<div className='col-lg-9'>
+						</div> */}
+						{/* <div className='col-lg-9'> */}
+						<div className='col-lg-12'>
 							<FavoritesPage ads={favoriteAds} removeFavoriteAds={this.removeFavoriteAds}/>
 						</div>
 					</div>

@@ -22,7 +22,7 @@ const FavoritesItem: React.SFC<IFavoritesItem> = ({item, onCheck, checked}) => {
 					<div className='col-9 d-flex'>
 						<img
 							// TODO: add image
-							src='/static/img/ads/ads3.png'
+							src={item.images[0].file_url}
 							alt=''
 							className='offer-block__img'
 						/>
@@ -33,6 +33,7 @@ const FavoritesItem: React.SFC<IFavoritesItem> = ({item, onCheck, checked}) => {
 							>
 								<h5>{item.title}</h5>
 							</a>
+							<span>{item.description.slice(0, 110) + '...'}</span>{/* TODO fix slice */}
 							<span className='d-inline-block favourites-offer-block_price'>{item.price} $</span>
 						</div>
 					</div>
