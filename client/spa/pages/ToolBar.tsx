@@ -39,19 +39,17 @@ class ToolBar extends Component<IProps, IState> {
 							</a>
 						</div>
 						<div className='col-md-8 col-lg-8 d-flex justify-content-end align-items-center'>
-							<nav className='navbar'>
+							{/* <nav className='navbar'>
 								<ul className='main-navigation navbar-nav'>
 									<li className='main-navigation__item nav-item'>
 										<a href='#'>
 											<i className='fas fa-comment-alt fa-lg'/>
 										</a>
-										{/*<span className='notification main-navigation__notification'>3</span>*/}
 									</li>
 									<li className='main-navigation__item nav-item'>
 										<a href='#'>
 											<i className='fas fa-thumbs-up fa-lg'/>
 										</a>
-										{/*<span className='notification main-navigation__notification'>3</span>*/}
 									</li>
 									<li className='main-navigation__item nav-item'>
 										<a href='#'>
@@ -64,7 +62,7 @@ class ToolBar extends Component<IProps, IState> {
 										</a>
 									</li>
 								</ul>
-							</nav>
+							</nav> */}
 							<button
 								className='btn orange-btn'
 								onClick={this.props.onCreateAd}
