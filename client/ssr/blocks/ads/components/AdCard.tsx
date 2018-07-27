@@ -46,7 +46,7 @@ export default ({ user, ads, addToFavorites }: { user: IUser, ads: IAds, addToFa
 					<a><h6 className='ad__title'>{ads.title}</h6></a>
 				</Link>
 				<span>{ads.price}</span>
-				<span>{ads.description}</span>
+				<span>{ads.description.slice(0, 110) + '...'}</span>{/* TODO fix slice */}
 				<span>{ads.updated_at}</span>
 			</div>
 		</div>
