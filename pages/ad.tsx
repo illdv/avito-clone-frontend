@@ -20,23 +20,24 @@ if (isServer) {
 }
 
 interface IAdsProps {
-	ad: IAd;
+	response: {
+		ad: IAd;
+		similars: any[]
+	},
 	categories: any[];
-	similar: any[];
 }
 
 class Ads extends React.Component<IAdsProps> {
 	static async getInitialProps({ query }) {
 		return {
-			ad: query.ad,
+			response: query.ad,
 			location: query.location,
 			categories: query.categories,
-			similar: query.similar,
 		};
 	}
 
 	render() {
-		if (!this.props.ad) {
+		if (!this.props.response.ad) {
 			return <Error statusCode={404} />;
 		}
 
@@ -51,11 +52,11 @@ class Ads extends React.Component<IAdsProps> {
 						</div>
 					</div>
 					<Ad
-						ad={this.props.ad}
+						ad={this.props.response.ad}
 						categories={this.props.categories}
-						similar={this.props.similar}
+						similar={this.props.response.similars}
 					/>
-					<SellerModal seller={this.props.ad.user} />
+					<SellerModal seller={this.props.response.ad.user} />
 					<Footer />
 				</SetCategories>
 			</React.Fragment>
