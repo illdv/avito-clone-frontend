@@ -22,7 +22,7 @@ const Seller = ({ seller, country, city, user }: IProps) => (
 		<div className='seller d-flex'>
 			<div className='d-flex align-items-center'>
 				<img
-					src={avatar}
+					src={ seller.image && seller.image.file_url || avatar}
 					alt=''
 					className='round-img m-r-10'
 				/>

@@ -13,7 +13,7 @@ const routes = [
 	{
 		path: '/ad/:id',
 		page: '/ad',
-		prepare: ['location', 'ad', 'categories', 'similar'],
+		prepare: ['location', 'ad', 'categories'],
 	},
 	{
 		path: '/profile',

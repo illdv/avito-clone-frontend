@@ -18,7 +18,7 @@ interface IProps {
 }
 
 const mapStateToProps = (state: IRootState) => ({
-	location: state.loation,
+	location: state.location,
 	user: state.user,
 });
 
