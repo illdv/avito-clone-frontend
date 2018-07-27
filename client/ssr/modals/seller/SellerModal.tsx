@@ -18,7 +18,7 @@ class SellerModal extends Component<ISellerProps> {
 				name={ModalNames.seller}
 				useOnRequestClose={true}
 			>
-				<div className='seller-modal'>
+				<div className='seller-modal modal-content'>
 					<div className='modal-header no-border'>
 						<h2
 							className='modal-title'
