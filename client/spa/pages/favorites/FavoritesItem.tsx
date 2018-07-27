@@ -21,14 +21,13 @@ const FavoritesItem: React.SFC<IFavoritesItem> = ({item, onCheck, checked}) => {
 				<div className='row'>
 					<div className='col-9 d-flex'>
 						<img
-							// TODO: add image
 							src={item.images[0].file_url}
 							alt=''
 							className='offer-block__img'
 						/>
 						<div className='offer-block__info'>
 							<a
-								href='#'
+								href={`/ad/${item.id}`}
 								className='f-s-16'
 							>
 								<h5>{item.title}</h5>
