@@ -50,23 +50,18 @@ reducer.on(UserActions.setFavorite.SUCCESS, (state, payload): IUserState => ({
 	...state,
 	user: {
 		...state.user,
-		favorites_ids: [
-			...state.user.favorites_ids,
-			payload.id,
-		]
+		favorites_ids: payload.favoritesIds
 	},
 }));
 reducer.on(UserActions.removeFavorite.SUCCESS, (state, payload): IUserState => ({
 		...state,
 		user: {
 			...state.user,
-			favorites_ids: [
-				...state.user.favorites_ids.slice(0, payload.indexInFavorites),
-				...state.user.favorites_ids.slice(payload.indexInFavorites + 1),
-			]
+			favorites_ids: payload.favoritesIds
 		},
 	})
 );
+
 reducer.on(UserActions.getFavoritesAds.SUCCESS, (state, payload): IUserState => ({
 		...state,
 		favoritesAds: { ...payload.favoritesAds },

@@ -41,9 +41,13 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 	}
 
 	static getDerivedStateFromProps(props) {
-		return {
-			isFavorite: !!(props.favoriteAdsIds.indexOf(props.ad.id))
-		};
+		let isFavorite;
+		try {
+			isFavorite = props.favoriteAdsIds.indexOf(props.ad.id) !== -1;
+		} catch (e) {
+			console.log(e);
+		}
+		return { isFavorite };
 	}
 
 	formatCategoriesToCrumbs = (categories): ICrumb[] => {
@@ -107,8 +111,8 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 	};
 
 	render() {
-		const { similar, ad }                                                 = this.props;
-		const { crumbs, lastCrumb, images, default_map, isFavorite } = this.state;
+		const { similar, ad }                           = this.props;
+		const { crumbs, lastCrumb, images, isFavorite } = this.state;
 		return (
 			<>
 				<section className='heading'>
@@ -177,8 +181,11 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 				<section className='section-mb'>
 					<div className='container'>
 						<Description body={ad.body} />
-						<Kit/>
-						<PlaceMap default_map={this.state.default_map} isMarkerShown={this.state.default_map}/>
+						<Kit />
+						<PlaceMap
+							default_map={this.state.default_map}
+							isMarkerShown={this.state.default_map}
+						/>
 						<Chart
 							similar_ads={similar}
 							id_parent={ad.id}
