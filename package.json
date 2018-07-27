@@ -39,6 +39,7 @@
     "react": "^16.4.1",
     "react-avatar-edit": "^0.6.0",
     "react-avatar-editor": "^11.0.4",
+    "react-chartjs": "^1.2.0",
     "react-dom": "^16.4.1",
     "react-i18next": "^7.8.1",
     "react-image-gallery": "^0.8.9",

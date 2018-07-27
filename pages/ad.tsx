@@ -22,6 +22,7 @@ if (isServer) {
 interface IAdsProps {
 	ad: IAd;
 	categories: any[];
+	similar: any[];
 }
 
 class Ads extends React.Component<IAdsProps> {
@@ -30,6 +31,7 @@ class Ads extends React.Component<IAdsProps> {
 			ad: query.ad,
 			location: query.location,
 			categories: query.categories,
+			similar: query.similar,
 		};
 	}
 
@@ -51,6 +53,7 @@ class Ads extends React.Component<IAdsProps> {
 					<Ad
 						ad={this.props.ad}
 						categories={this.props.categories}
+						similar={this.props.similar}
 					/>
 					<SellerModal seller={this.props.ad.user} />
 					<Footer />
