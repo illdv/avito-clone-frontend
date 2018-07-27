@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Modal from '../../../common/modal-juggler/Modal';
-import {ModalNames} from 'client/common/modal-juggler/modalJugglerInterface';
-import {hideSellerModal} from 'client/ssr/modals/seller/SellerModalTriger';
+import { ModalNames } from 'client/common/modal-juggler/modalJugglerInterface';
+import { hideSellerModal } from 'client/ssr/modals/seller/SellerModalTriger';
 import NumberFormat from 'react-number-format';
 import { ISeller } from 'client/ssr/blocks/ad/interface';
 
