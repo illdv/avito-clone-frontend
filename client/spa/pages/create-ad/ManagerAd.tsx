@@ -187,6 +187,7 @@ class ManagerAd extends React.Component<IProps, IState> {
 			return (
 				<ConfirmAd
 					selectedCategories={ this.state.selectedCategories }
+					fullName={ this.state.sellerInfoFields.name.value }
 					email={ this.state.sellerInfoFields.email.value }
 					phone={ this.state.sellerInfoFields.phone.value }
 

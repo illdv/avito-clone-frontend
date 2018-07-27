@@ -16,20 +16,21 @@ class Favorites extends React.Component<IFavorites, null> {
 	componentDidMount() {
 		this.props.userActions.getFavoritesAds.REQUEST({});
 	}
-	removeFavoriteAds = (favoritesId: string[])  => {
+
+	removeFavoriteAds = (favoritesId: string[]) => {
 		this.props.userActions.removeFavoritesAds.REQUEST({favoritesId});
-	};
+	}
 
 	render() {
 		const {favoriteAds} = this.props;
 		return (
-			<section className="page">
-				<div className="container page__container-lg">
-					<div className="row">
-						<div className="col-lg-3">
-							<FavoritesMenu />
+			<section className='page'>
+				<div className='container'>
+					<div className='row'>
+						<div className='col-lg-3'>
+							<FavoritesMenu/>
 						</div>
-						<div className="col-lg-9">
+						<div className='col-lg-9'>
 							<FavoritesPage ads={favoriteAds} removeFavoriteAds={this.removeFavoriteAds}/>
 						</div>
 					</div>

@@ -3,7 +3,7 @@ import { IAds } from 'client/common/ads/interface';
 import FavoritesItem from 'client/spa/pages/favorites/FavoritesItem';
 
 interface IFavoritesPageProps {
-	ads: IAds[]
+	ads: IAds[];
 	removeFavoriteAds: (id) => void;
 }
 
@@ -20,8 +20,9 @@ class FavoritesPage extends React.Component<IFavoritesPageProps, IFavoritesPageS
 		adsCollection: [],
 	};
 
-	static getDerivedStateFromProps(nextProps, prevState){
+	static getDerivedStateFromProps(nextProps, prevState) {
 		let adsCollection;
+
 		function createAdsCollection(ads) {
 			const adsCollection = [];
 			Object.keys(ads).map((ad) => {
@@ -37,16 +38,17 @@ class FavoritesPage extends React.Component<IFavoritesPageProps, IFavoritesPageS
 			console.log('Error adsCollection', adsCollection);
 		}
 		return {
-			adsCollection
-		}
+			adsCollection,
+		};
 	}
+
 	handleRemove = () => {
 		const selected = this.state.selected;
 		let array = Array.from(selected);
 		this.props.removeFavoriteAds(array);
 		selected.clear();
-		this.setState({ checkedAll: false, selected });
-	};
+		this.setState({checkedAll: false, selected});
+	}
 
 	handleCheckAll = () => {
 		let {selected, adsCollection} = this.state;
@@ -57,8 +59,8 @@ class FavoritesPage extends React.Component<IFavoritesPageProps, IFavoritesPageS
 		}
 		const checkedAll = !this.state.checkedAll;
 
-		this.setState({ checkedAll, selected });
-	};
+		this.setState({checkedAll, selected});
+	}
 
 	handleCheck = (id: string, checked: boolean) => {
 		let selected = this.state.selected;
@@ -67,8 +69,8 @@ class FavoritesPage extends React.Component<IFavoritesPageProps, IFavoritesPageS
 		} else {
 			selected.delete(id);
 		}
-		this.setState({ selected });
-	};
+		this.setState({selected});
+	}
 
 	private getAllId(adList: IAds[]) {
 		const idList = new Set();
@@ -77,23 +79,23 @@ class FavoritesPage extends React.Component<IFavoritesPageProps, IFavoritesPageS
 	}
 
 	render() {
-		const { checkedAll, selected, adsCollection} = this.state;
+		const {checkedAll, selected, adsCollection} = this.state;
 		return (
 			<>
-				<div className="remove-offer">
+				<div className='remove-offer'>
 					<input
-						type="checkbox"
-						className="favorites-page__input"
+						type='checkbox'
+						className='custom-checkbox favorites-page__input'
 						onChange={this.handleCheckAll}
 						checked={checkedAll}
 					/>
 					<button
-						className="btn button button_dark-outline w-25 remove-offer__button"
+						className='btn grey-btn-outline w-25 remove-offer__button'
 						onClick={this.handleRemove}
 					>Remove
 					</button>
 				</div>
-				<div className="favourites-offer-block">
+				<div className='favourites-offer-block'>
 					{adsCollection ?
 						adsCollection.map(ad => <FavoritesItem
 							key={ad.id}

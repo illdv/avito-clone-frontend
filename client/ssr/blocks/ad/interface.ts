@@ -92,7 +92,7 @@ export interface IDescription {
 	body: string;
 }
 
-export interface ISimilarProps {
+export interface ISimilarRandomProps {
 	id?: string|null;
 	title: string;
 	price: string;
@@ -103,13 +103,17 @@ export interface ISimilarProps {
 	};
 }
 
+export interface ISimilarRandomState {
+	description: string;
+	title: string;
+	similar_ad: ISimilarAd;
+}
 export interface ISimilarState {
 	description: string;
 	title: string;
 	similar_ad: ISimilarAd;
 }
-
-export interface ISimilar {
+export interface ISimilarProps {
 	filter?: string;
 	similar_ads: any[];
 	id_parent: string;
@@ -144,10 +148,12 @@ export interface ISimilarAd {
 export interface IGMProps {
 	default_map: IGMMarkerProp;
 	isMarkerShown: IGMMarkerProp;
+	zoom?: number;
 }
 
 export interface IGMState {
-	zoom: number;
+	zoom?: number;
+	show?: boolean;
 }
 
 export interface IGMMarkerProp {

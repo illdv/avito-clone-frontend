@@ -135,6 +135,17 @@ function* changePassword(action) {
 	}
 }
 
+function* changeProfile(action) {
+	try {
+		const response = yield call(UserAPI.changeProfile, action.payload);
+		yield put(UserActions.changeProfile.SUCCESS(response.data));
+		Toasts.info('Profile changed');
+	} catch (e) {
+		yield call(errorHandler, e);
+		yield put(UserActions.changeProfile.FAILURE({}));
+	}
+}
+
 function* selectFavorite(action) {
 	const selectedAdId = action.payload.id;
 	const token        = yield select(getToken);
@@ -182,8 +193,10 @@ function* removeFavoriteSaga(favoriteAds, selectedAdId, token, indexInFavorites)
 		} catch (e) {
 			yield call(errorHandler, e);
 		}
+		yield call(synchronizeLocalStorage, changedFavoriteAds);
 	}
 }
+
 function* getFavorites() {
 	const favoritesID = yield call(getFavoritesFromLocalStorage);
 	try {
@@ -218,6 +231,15 @@ function* removeFavoriteAds(action) {
 	}
 }
 
+function* deleteAccount() {
+	try {
+		yield call(UserAPI.deleteAccount);
+		yield call(clearToken);
+	} catch (err) {
+		yield call(errorHandler, err);
+	}
+}
+
 
 function fromArrayToObject(adsCollection: IAds[]) {
 	return adsCollection.reduce((result, item) => {
@@ -238,9 +260,11 @@ function* watcherUser() {
 		takeEvery(UserActions.initUser.REQUEST, loadingUserIfHasToken),
 		takeLatest(UserActions.changePassword.REQUEST, changePassword),
 		takeLatest(UserActions.sendCode.REQUEST, resetPassword),
+		takeEvery(UserActions.changeProfile.REQUEST, changeProfile),
 		takeEvery(UserActions.selectFavorite.REQUEST, selectFavorite),
 		takeEvery(UserActions.getFavoritesAds.REQUEST, getFavorites),
 		takeEvery(UserActions.removeFavoritesAds.REQUEST, removeFavoriteAds),
+		takeEvery(UserActions.deleteAccount.REQUEST, deleteAccount),
 	];
 }
 

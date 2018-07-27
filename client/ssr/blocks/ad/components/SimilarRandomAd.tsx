@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { ISimilarProps, ISimilarState } from 'client/ssr/blocks/ad/interface';
+import { ISimilarProps, ISimilarRandomProps, ISimilarRandomState, ISimilarState } from 'client/ssr/blocks/ad/interface';
 import NumberFormat from 'react-number-format';
 import Link from 'next/link';
 
-class SimilarRandomAd extends Component<ISimilarProps, ISimilarState> {
+class SimilarRandomAd extends Component<ISimilarRandomProps, ISimilarRandomState> {
 
 	render() {
 		return (

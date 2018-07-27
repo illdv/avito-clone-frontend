@@ -15,12 +15,14 @@ export interface IState {
 }
 
 export interface IProps {
+	user: IUser;
 	userActions: IUserActions;
 	onSelectMenuItem: (menuItem: MenuItem) => void;
 	notification: INotificationState;
 }
 
 const mapStateToProps = (state: IRootState) => ({
+	user: state.user.user,
 	notification: state.notification,
 });
 
@@ -40,6 +42,10 @@ class ProfileMenu extends Component<IProps, IState> {
 		this.props.onSelectMenuItem(menuItem);
 	}
 
+	get userImage() {
+		return this.props.user && this.props.user.image && this.props.user.image.file_url || '/static/img/person.png';
+	}
+
 	render() {
 
 		const { data } = this.props.notification;
@@ -48,15 +54,16 @@ class ProfileMenu extends Component<IProps, IState> {
 
 		return (
 			<div className='account'>
-				<div className='account__person'>
+				<div className='account__person' onClick={this.onSelectMenuItem(MenuItem.Settings)}>
 					<img
-						src='/static/img/person.png'
+						src={ this.userImage }
 						alt=''
 						className='account__img'
 					/>
 					<div>
-						<h6 className='account__name'>Andy Kartman</h6>
-						<span className='account__location'>Germany Berlin</span>
+						<h6 className='account__name'>{ this.props.user.name }</h6>
+						<span className='account__location'>{ this.props.user.email }</span>
+						{/* TODO change email in location */}
 					</div>
 				</div>
 				<div className='account-navigation'>
