@@ -8,6 +8,7 @@ const logout              = createAsyncAction('LOGOUT');
 const register            = createAsyncAction('REGISTER');
 const getProfile          = createAsyncAction('GET_PROFILE');
 const initUser            = createAsyncAction('INIT_USER');
+const changeProfile       = createAsyncAction('CHANGE_PROFILE');
 const changePassword      = createAsyncAction('CHANGE_PASSWORD');
 const sendCode            = createAsyncAction('SEND_CODE');
 const resetPasswordByCode = createAsyncAction('RESET_PASSWORD_BY_CODE');
@@ -25,11 +26,12 @@ export interface IUserActions {
 	getProfile: IAsyncAction<{token: string}, IUser>;
 	login: IAsyncAction<ILoginRequest, { user: IUser, isRememberMe: boolean }>;
 	logout: IAsyncAction;
+	changeProfile: IAsyncAction<IChangeProfileRequest, IChangeProfileResponse>;
 	changePassword: IAsyncAction<IChangePasswordRequest>;
 	sendCode: IAsyncAction<ISendCodeToEmailRequest>;
 	resetPasswordByCode: IAsyncAction<IResetPasswordByCodeRequest>;
 
-	getFavoritesAds: IAsyncAction<{}, { favoritesAds: IFavoritesAds }>;
+	getFavoritesAds: IAsyncAction<{}, { favoritesAds: IAds[] }>;
 	removeFavoritesAds: IAsyncAction<{ favoritesId: string[] }>;
 	removeFavoritesAd: IAsyncAction<{ id: any }>;
 
@@ -44,6 +46,7 @@ export const UserActions: IUserActions = {
 	register,
 	getProfile,
 	initUser,
+	changeProfile,
 	changePassword,
 	sendCode,
 	resetPasswordByCode,
@@ -52,6 +55,5 @@ export const UserActions: IUserActions = {
 	removeFavoritesAd,
 	selectFavorite,
 	setFavorite,
-	removeFavorite
+	removeFavorite,
 };
-

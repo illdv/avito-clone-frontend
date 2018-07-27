@@ -131,6 +131,17 @@ function* changePassword(action) {
 	}
 }
 
+function* changeProfile(action) {
+	try {
+		const response = yield call(UserAPI.changeProfile, action.payload);
+		yield put(UserActions.changeProfile.SUCCESS(response.data));
+		Toasts.info('Profile changed');
+	} catch (e) {
+		yield call(errorHandler, e);
+		yield put(UserActions.changeProfile.FAILURE({}));
+	}
+}
+
 function* selectFavorite(action) {
 	const selectedAdId     = action.payload.id;
 	const favoriteAds      = yield select(getUserFavoriteIds);
@@ -223,6 +234,7 @@ function* watcherUser() {
 		takeEvery(UserActions.initUser.REQUEST, loadingUserIfHasToken),
 		takeLatest(UserActions.changePassword.REQUEST, changePassword),
 		takeLatest(UserActions.sendCode.REQUEST, resetPassword),
+		takeEvery(UserActions.changeProfile.REQUEST, changeProfile),
 		takeEvery(UserActions.selectFavorite.REQUEST, selectFavorite),
 		takeEvery(UserActions.getFavoritesAds.REQUEST, getFavorites),
 		takeEvery(UserActions.removeFavoritesAds.REQUEST, removeFavoriteAds),

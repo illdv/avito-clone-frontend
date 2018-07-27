@@ -7,6 +7,18 @@ interface IUser {
 	updated_at: string;
 	token: string;
 	favorites_ids: any[];
+	image: IImage;
+}
+
+interface IImage {
+	id: string;
+	imageable_type: string;
+	imageable_id: number;
+	file_name: string;
+	file: string;
+	created_at: string;
+	updated_at: string;
+	file_url: string;
 }
 
 interface ILoginRequest {
@@ -34,6 +46,24 @@ interface IChangePasswordRequest {
 	old_password: string;
 	password: string;
 	password_confirmation: string;
+}
+
+interface IChangeProfileRequest {
+	name: string;
+	email: string;
+	phone: string;
+	image?: any;
+}
+
+interface IChangeProfileResponse {
+	id: number;
+	name: string;
+	email: string;
+	phone: string;
+	created_at: string;
+	updated_at: string;
+	favorites_ids: number[];
+	image: IImage;
 }
 
 interface ISendCodeToEmailRequest {
