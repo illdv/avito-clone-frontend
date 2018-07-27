@@ -85,6 +85,7 @@ class Header extends Component<IProps, IState> {
 			count = getFavoritesFromLocalStorage().length;
 		} catch (e) {
 		}
+		console.log(count);
 		return (
 			<Link href={`/favorites`}>
 				<a
@@ -97,7 +98,7 @@ class Header extends Component<IProps, IState> {
 						className='header__icon'
 					/>
 					<span>Favourites</span>
-					{count && <span className="notification account__notification">{count}</span>}
+					 {count && count !=='0' && <span className="notification account__notification"> {count}</span>}
 				</a>
 			</Link>
 		);

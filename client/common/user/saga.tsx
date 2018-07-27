@@ -36,7 +36,6 @@ function* getProfile(action: Action<{ token: string }>) {
 		const token                          = action.payload.token;
 		const favorites_ids                  = user.favorites_ids;
 
-		yield call(synchronizeFavoritesLocalStorage, favorites_ids);
 		yield put(UserActions.getProfile.SUCCESS(user));
 		yield put(UserActions.login.SUCCESS({
 			user: {
@@ -199,7 +198,7 @@ function* removeFavoriteSaga(favoriteAds, selectedAdId, token, indexInFavorites)
 }
 
 function* removeFavoriteAds(action) {
-	const selectedFavoriteIds     = action.payload.favoritesIds;
+	const selectedFavoriteIds     = action.payload.favoritesId;
 	const token                   = yield select(getToken);
 	const localStorageFavoriteIds = yield call(getFavoritesFromLocalStorage);
 	const favoritesIds            = localStorageFavoriteIds.filter(storageId => {
@@ -207,7 +206,7 @@ function* removeFavoriteAds(action) {
 	});
 
 	yield put(UserActions.removeFavorite.SUCCESS({ favoritesIds }));
-	yield put(UserActions.removeFavoritesAds.SUCCESS({ favoritesIds }));
+	yield put(UserActions.removeFavoritesAds.SUCCESS({ favoritesIds: selectedFavoriteIds }));
 	yield call(synchronizeFavoritesLocalStorage, favoritesIds);
 
 	if (token) {

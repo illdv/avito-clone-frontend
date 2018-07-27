@@ -80,7 +80,8 @@ reducer.on(UserActions.getFavoritesAds.SUCCESS, (state, payload): IUserState => 
 	favoritesAds: { ...payload.favoritesAds },
 }));
 
-reducer.on(UserActions.removeFavoritesAd.SUCCESS, (state, payload): IUserState => {
+reducer.on(UserActions.removeFavoritesAds.SUCCESS, (state, payload): IUserState => {
+	debugger;
 	const favorites = { ...state.favoritesAds };
 
 	payload.favoritesIds.forEach(id => delete favorites[id]);
