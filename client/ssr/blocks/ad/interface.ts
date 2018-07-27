@@ -59,10 +59,10 @@ export interface IAdsState {
 }
 
 export interface ISliderProps {
-	images: IImage[];
+	images: ISlide[];
 }
 
-export interface IImage {
+export interface ISlide {
 	original: string;
 	thumbnail: string;
 }
@@ -73,6 +73,7 @@ export interface ISeller {
 	phone: string;
 	name: string;
 	created_at: string;
+	image: IImage;
 }
 
 export interface ISellerProps {

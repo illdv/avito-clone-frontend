@@ -15,7 +15,7 @@ interface IProps {
 }
 
 const mapStateToProps = (state: IRootState) => ({
-	location: state.loation,
+	location: state.location,
 	user: state.user,
 });
 
@@ -26,7 +26,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 class CreateAd extends React.Component<IProps> {
 
 	onSave = (state: IManagerState) => {
-
 		const selectedCategories = state.selectedCategories;
 
 		this.props.adsActions.create.REQUEST({
