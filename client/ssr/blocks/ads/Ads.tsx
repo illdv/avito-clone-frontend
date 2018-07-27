@@ -4,12 +4,14 @@ import {IAds} from 'client/common/ads/interface';
 import AdCard from 'client/ssr/blocks/ads/components/AdCard';
 import { bindModuleAction } from 'client/common/user/utils';
 import { IUserActions, UserActions } from 'client/common/user/actions';
+import { IRootState } from '../../../common/store/storeInterface';
 
 require('./Ads.sass');
 
 export {IAds};
 
 export interface IAdsProps {
+	user: IUser;
 	title: string;
 	ads: IAds[];
 	userActions: IUserActions;
@@ -39,7 +41,7 @@ class Ads extends React.PureComponent<IAdsProps> {
 									key={ad.id}
 									className='col-md-4 col-lg-3'
 								>
-									<AdCard ads={ad} addToFavorites={this.addToFavorites}/>
+									<AdCard user={this.props.user} ads={ad} addToFavorites={this.addToFavorites}/>
 								</div>
 							))
 						}
@@ -50,8 +52,12 @@ class Ads extends React.PureComponent<IAdsProps> {
 	}
 }
 
+const mapStateToProps = (state: IRootState) => ({
+	user: state.user.user,
+});
 
 const mapDispatchToProps = dispatch => ({
 	userActions: bindModuleAction(UserActions, dispatch),
 });
-export default connect(null, mapDispatchToProps)(Ads);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Ads);

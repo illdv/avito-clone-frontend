@@ -10,6 +10,6 @@ export interface IRootState {
 	user: IUserState;
 	ads: IAdsState;
 	categories: ICategoryState;
-	loation: ILocationStoreState;
+	location: ILocationStoreState;
 	notification: INotificationState;
 }
