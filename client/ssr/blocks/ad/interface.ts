@@ -45,6 +45,7 @@ export interface IAdsProps {
 	ad: IAd;
 	categories: any[];
 	userActions: IUserActions;
+	favoriteAdsIds: string[];
 }
 
 export interface IAdsState {
@@ -55,6 +56,7 @@ export interface IAdsState {
 		lat: number;
 		lng: number;
 	};
+	isFavorite: boolean;
 }
 
 export interface ISliderProps {
@@ -132,6 +134,7 @@ export interface IChartState {
 export interface IFavorites {
 	id: string;
 	selectFavorite: (id: string) => void;
+	isFavorite: boolean;
 }
 
 export interface IFavoriteState {
