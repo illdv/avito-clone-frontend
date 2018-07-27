@@ -7,7 +7,6 @@ import { withI18next } from '../common/lib/withI18next';
 import { SetBreadcrumbs } from 'client/ssr/contexts/Breadcrumbs';
 import { SetCategories } from 'client/ssr/blocks/categories/context';
 import { IBreadcrumb } from 'client/ssr/interfaces/breadcrumbs';
-import { IAdsProps } from 'client/ssr/blocks/ads/ListOfAds';
 
 import CategoryPage from 'client/ssr/pages/Category';
 
@@ -44,7 +43,7 @@ class Category extends React.Component<ICategoryProps> {
 	}
 
 	render() {
-		const { mainCategoryId, categories, subcategories, breadcrumbs, adGroupList, mainCategory } = this.props;
+		const { mainCategoryId, categories, subcategories, breadcrumbs, adGroupList } = this.props;
 		return (
 			<SetCategories categories={ categories }>
 				<SetBreadcrumbs breadCrumbs={ breadcrumbs }>
