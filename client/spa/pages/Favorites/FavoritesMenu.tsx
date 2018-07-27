@@ -6,7 +6,7 @@ interface IFavoritesMenu {
 const FavoritesMenu: React.SFC<IFavoritesMenu> = ({}) => {
 	return (
 		<div
-			className='accordion'
+			className='accordion favorites__menu'
 			id='accordionExample'
 		>
 			<div className='accordion__card card'>
