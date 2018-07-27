@@ -62,6 +62,10 @@ function deleteFavorites(request: IDeleteFavoritesRequest) {
 	return AxiosWrapper.deleteResponse('/favorites', request);
 }
 
+function deleteAccount() {
+	return AxiosWrapper.deleteResponse('/profile');
+}
+
 export const UserAPI = {
 	changeProfile,
 	changePassword,
@@ -73,4 +77,5 @@ export const UserAPI = {
 	postFavorites,
 	deleteFavorites,
 	getFavorites,
+	deleteAccount,
 };

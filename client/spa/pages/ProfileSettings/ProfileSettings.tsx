@@ -143,6 +143,8 @@ export class ProfileSettings extends React.Component<IProps, IState> {
 		);
 	}
 
+	deleteAccount = () => this.props.userActions.deleteAccount.REQUEST({});
+
 	render() {
 		return (
 			<>
@@ -397,7 +399,12 @@ export class ProfileSettings extends React.Component<IProps, IState> {
 					<p>If you want to permanently delete your account and all your ads, click on the 'Delete account'
 						button.</p>
 					<div className='text-center'>
-						<a className='btn button orange-btn-outline profile-info__button'>Delete account</a>
+						<a
+							className='btn button orange-btn-outline profile-info__button'
+							onClick={this.deleteAccount}
+						>
+							Delete account
+						</a>
 					</div>
 				</div>
 			</>
