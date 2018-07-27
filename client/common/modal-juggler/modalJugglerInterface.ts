@@ -7,6 +7,7 @@ export enum ModalNames {
 	success         = 'success',
 	location        = 'location',
 	searchLocation  = 'searchLocation',
+	confirmationAccountDeletion = 'confirmationAccountDeletion',
 }
 
 export interface IModal {

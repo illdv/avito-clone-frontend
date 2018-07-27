@@ -6,6 +6,12 @@ import {IUserActions, UserActions} from 'client/common/user/actions';
 import {bindModuleAction} from 'client/common/user/utils';
 import { IRootState } from '../../../common/store/storeInterface';
 
+import ConfirmationAccountDeletionModal from '../../modals/confirmation-account-deletion/ConfirmationAccountDeletionModal';
+
+import {
+	showConfirmationAccountDeletionModal,
+} from '../../modals/confirmation-account-deletion/confirmationAccountDeletionModalTriggers';
+
 enum FieldsNames {
 	fullName = 'fullName',
 	email = 'email',
@@ -53,7 +59,7 @@ export class ProfileSettings extends React.Component<IProps, IState> {
 	}
 
 	get defaultImage() {
-		return this.props.user.image.file_url || '/static/img/person.png';
+		return this.props.user && this.props.user.image && this.props.user.image.file_url || '/static/img/person.png';
 	}
 
 	onChange = event => {
@@ -110,12 +116,16 @@ export class ProfileSettings extends React.Component<IProps, IState> {
 
 	get avatar() {
 		return (
-			<img
-				alt=''
-				src={this.state.preview || this.defaultImage}
-				className='account__img account__img_big'
+			<div
+				className='avatar__container'
 				onClick={this.onShowAvatarEditor}
-			/>
+			>
+				<img
+					alt=''
+					src={this.state.preview || this.defaultImage}
+					className='account__img account__img_big'
+				/>
+			</div>
 		);
 	}
 
@@ -148,6 +158,7 @@ export class ProfileSettings extends React.Component<IProps, IState> {
 	render() {
 		return (
 			<>
+				<ConfirmationAccountDeletionModal deleteAccountCallback={ this.deleteAccount } />
 				<div className='profile-info'>
 					<h5>Contact Information</h5>
 					<p>The photo</p>
@@ -401,7 +412,7 @@ export class ProfileSettings extends React.Component<IProps, IState> {
 					<div className='text-center'>
 						<a
 							className='btn button orange-btn-outline profile-info__button'
-							onClick={this.deleteAccount}
+							onClick={showConfirmationAccountDeletionModal}
 						>
 							Delete account
 						</a>
