@@ -1,5 +1,5 @@
 import { AxiosWrapper } from './AxiosWrapper';
-import { AdsActionType, IAds, ICreateAdRequest } from 'client/common/ads/interface';
+import { AdsActionType, IAds, ICreateAdRequest, IEditAdRequest } from 'client/common/ads/interface';
 
 function get() {
 	return AxiosWrapper.get('/ads');
@@ -30,7 +30,7 @@ function create({ images, ...ads }: ICreateAdRequest) {
 	});
 }
 
-function edit({ images, is_published, is_vip, is_active, is_approved, is_completed, options, ...ads }: IAds) {
+function edit({ images, ...ads }: IEditAdRequest) {
 
 	const files    = images.map(img => img.file);
 	const formData = new FormData();
@@ -44,7 +44,7 @@ function edit({ images, is_published, is_vip, is_active, is_approved, is_complet
 	});
 
 	formData.append('_method', 'put');
-	return AxiosWrapper.post(`/ads/${ads.id}`, formData, {
+	return AxiosWrapper.post(`/ads/${ String(ads.ad_id) }`, formData, {
 		headers: { 'Content-Type': 'multipart/form-data' },
 	});
 }

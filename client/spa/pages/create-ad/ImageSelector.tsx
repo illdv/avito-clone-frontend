@@ -1,33 +1,17 @@
-import * as React from 'react';
-import { Component } from 'react';
-import { connect, Dispatch } from 'react-redux';
-import { removeElementByIndex } from 'client/spa/pages/createAd/utils';
+import React, { Component } from 'react';
 
-export interface Images {
-	blob: string;
-	file: any;
-}
-
-export interface IState {
-	images: Images[];
-}
+import { IAttachedImage } from './interface';
 
 export interface IProps {
-	onUpdateImage: (images: Images[]) => void;
+	attachedImages: IAttachedImage[];
+	deleteImage(index: number): void;
+	onUpdateImages(images: IAttachedImage[]): void;
 }
 
-export class ImageSelector extends Component<IProps, IState> {
+export class ImageSelector extends Component<IProps> {
 
-	state: IState = {
-		images: [],
-	};
-
-	onUpdateImage = (newImages: Images[]) => {
-		this.props.onUpdateImage(newImages);
-
-		this.setState({
-			images: newImages,
-		});
+	onUpdateImages = (newImages: IAttachedImage[]) => {
+		this.props.onUpdateImages(newImages);
 	}
 
 	/**
@@ -40,9 +24,13 @@ export class ImageSelector extends Component<IProps, IState> {
 			const reader = new FileReader();
 			reader.readAsDataURL(file);
 			reader.onload = e => {
-				this.onUpdateImage([
-					...this.state.images,
-					{ blob: e.target.result, file },
+				this.onUpdateImages([
+					...this.props.attachedImages,
+					{
+						isBackend: false,
+						base64: e.target.result,
+						file,
+					},
 				]);
 			};
 		});
@@ -56,13 +44,10 @@ export class ImageSelector extends Component<IProps, IState> {
 		event.target.value = null;
 	}
 
-	deleteImage = (index: number) => () => {
-		const newFiles = removeElementByIndex(this.state.images, index);
-		this.onUpdateImage(newFiles);
-	}
+	deleteImage = (index: number) => () => this.props.deleteImage(index);
 
 	render() {
-		const { images } = this.state;
+		const { attachedImages } = this.props;
 		return (
 			<>
 				<div className='offer-form-upload'>
@@ -77,11 +62,11 @@ export class ImageSelector extends Component<IProps, IState> {
 				</div>
 				<div className='uploaded-images'>
 					{
-						images.map((image, index) => (
+						attachedImages.map((image, index) => (
 							<ImageComponent
 								key={index}
-								url={image.blob}
-								onClose={this.deleteImage(index)}
+								url={image.base64}
+								onDelete={ this.deleteImage(index) }
 							/>
 						))
 					}
@@ -93,14 +78,14 @@ export class ImageSelector extends Component<IProps, IState> {
 
 export interface ImageProps {
 	url: string;
-	onClose: () => void;
+	onDelete: () => void;
 }
 
-export const ImageComponent = ({ url, onClose }: ImageProps) => (
+export const ImageComponent = ({ url, onDelete }: ImageProps) => (
 	<div className='uploaded-img__container'>
 		<span
 			className='uploaded-img__remove'
-			onClick={onClose}
+			onClick={onDelete}
 		>
 			&times;
 		</span>

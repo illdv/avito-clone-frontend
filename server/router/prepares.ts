@@ -46,6 +46,16 @@ export  const ad: prepareMethod = async ({ params }) => {
 	}
 };
 
+export const similar: prepareMethod = async ({params}) => {
+	try {
+		const response = await instance.get(`/ad/${params.id}/similar/`);
+		return response.data;
+	} catch (error) {
+		console.log(error);
+	}
+
+};
+
 export const categories: prepareMethod = async () => {
 	const response = await instance.get('/categories');
 	return response.data;
@@ -55,6 +65,7 @@ const getAdsByParams = async params => {
 	const response = await instance.get(`/ads/?${ queryString.stringify(params) }`)
 	return response.data;
 };
+
 
 export const location: prepareMethod = async (sugar, req) => {
 	/* const ip = req.clientIp;

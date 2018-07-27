@@ -13,16 +13,10 @@ import Link from 'next/link';
 import { bindModuleAction } from 'client/common/user/utils';
 import { UserActions } from 'client/common/user/actions';
 import { ButtonFavorites} from 'client/ssr/blocks/ad/components/ButtonFavorites';
+import Kit from 'client/ssr/blocks/ad/components/Kit';
+import PlaceMap from 'client/ssr/blocks/ad/components/PlaceMap';
 
 require('./Ad.sass');
-
-
-const user = {
-	name: 'Andrey Beregovoi',
-	avatar: '/static/img/person.png',
-	address: 'Germany Berlin',
-	phone: '89995965664642',
-};
 
 class Ads extends React.Component <IAdsProps, IAdsState> {
 	formatCategoriesToCrumbs = (categories): ICrumb[] => {
@@ -174,12 +168,11 @@ class Ads extends React.Component <IAdsProps, IAdsState> {
 				<section className='section-mb'>
 					<div className='container'>
 						<Description body={this.props.ad.body} />
-						{/*<VehicleKit />*/}
+						<Kit/>
+						<PlaceMap default_map={this.state.default_map} isMarkerShown={this.state.default_map}/>
 						<Chart
-							similar_ad={this.props.ad.similar_ad}
+							similar_ads={this.props.similar}
 							id_parent={this.props.ad.id}
-							default_map={this.state.default_map}
-							isMarkerShown={this.state.default_map}
 						/>
 					</div>
 				</section>

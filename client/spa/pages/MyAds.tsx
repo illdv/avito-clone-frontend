@@ -97,14 +97,16 @@ class MyAds extends Component<IProps, IState> {
 				<div className='offer-block__inner'>
 					<div className='row'>
 						<div className='col-9 d-flex'>
-							<img
-								src={extractPreviewImage(ad)}
-								alt=''
-								className='offer-block__img'
-							/>
+							<a href={`/ad/${id}`}>
+								<img
+									src={extractPreviewImage(ad)}
+									alt=''
+									className='offer-block__img'
+								/>
+							</a>
 							<div className='offer-block__info'>
 								<div>
-									<a href='#'>
+									<a href={`/ad/${id}`}>
 										<h5>{title}</h5>
 									</a>
 									<span className='d-inline-block offer-block__price'>{price}</span>

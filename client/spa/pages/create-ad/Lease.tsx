@@ -1,12 +1,10 @@
 import React, {Component} from 'react';
 
+import { ILocation } from './interface';
+
 export interface IProps {
-	onSelectPlace?: (name: string, id: string, location: any) => void;
-	onNext?: () => void;
-	defaultValue?: {
-		lat: number,
-		lng: number,
-	};
+	onSelectLocation: (location: ILocation) => void;
+	location: ILocation;
 }
 
 class Lease extends Component<IProps> {
@@ -24,14 +22,18 @@ class Lease extends Component<IProps> {
 
 			window.document.body.appendChild(lazyScript);
 		}
-		this.initAutocomplete = this.initAutocomplete.bind(this);
 
 	}
 
+	windowLink: any;
+	searchBox: any;
+	map: any;
+
 	// Фунуция collback
-	initAutocomplete() {
-		const {lat, lng} = this.props.defaultValue;
-		const google = window.google;
+	initAutocomplete = () => {
+		const {lat, lng} = this.props.location;
+
+		const google = this.windowLink.google;
 		const map = new google.maps.Map(this.map, {
 			center: {lat, lng},
 			zoom: 17,
@@ -77,7 +79,12 @@ class Lease extends Component<IProps> {
 					position: place.geometry.location,
 				}));
 
-				this.props.onSelectPlace(place.name, place.id, place.geometry.location);
+				this.props.onSelectLocation({
+					name: place.name, 
+					id: place.id,
+					lat: place.geometry.location.lat(),
+					lng: place.geometry.location.lng(),
+				});
 
 				if (place.geometry.viewport) {
 					// Only geocodes have viewport.
@@ -95,9 +102,10 @@ class Lease extends Component<IProps> {
 			return;
 		}// Если window отсутствует, значит это серверный рендеринг. На сервере крту мы не рендерим
 
-		window.initAutocomplete = this.initAutocomplete;
+		this.windowLink = window;
+		this.windowLink.initAutocomplete = this.initAutocomplete;
 
-		if (window.google !== void 0) {
+		if (this.windowLink.google !== void 0) {
 			this.initAutocomplete();
 		}
 
@@ -125,13 +133,6 @@ class Lease extends Component<IProps> {
 						ref={el => this.map = el}
 						className='map__location-irame'
 					/>
-					<button
-						type='submit'
-						className='btn orange-btn w-25'
-						onClick={this.props.onNext}
-					>
-						Continue
-					</button>
 				</div>
 			</div>
 		);

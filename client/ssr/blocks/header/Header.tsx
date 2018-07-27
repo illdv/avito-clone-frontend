@@ -21,7 +21,7 @@ import {getLocationState} from 'client/common/store/selectors';
 import {showLocationModal} from 'client/ssr/modals/location/locationModalTriggers';
 import SearchLocationModal from 'client/ssr/modals/location/SearchLocationModal';
 import {ModalNames} from '../../../common/modal-juggler/modalJugglerInterface';
-import {useOrDefault} from 'client/spa/pages/createAd/utils';
+import {useOrDefault} from 'client/spa/pages/create-ad/utils';
 
 require('../../../common/styles/main.sass');
 require('./Header.sass');

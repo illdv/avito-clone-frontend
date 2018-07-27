@@ -10,7 +10,7 @@ import Favorites from 'client/spa/pages/Favorites/Favorites';
 require('client/spa/pages/Helpers.sass');
 require('client/spa/pages/ToolBar.sass');
 require('client/spa/pages/MyAds.sass');
-require('client/spa/pages/createAd/CreateAd.sass');
+require('client/spa/pages/create-ad/CreateAd.sass');
 require('client/spa/pages/Favorites/FavoritesPage.sass');
 
 const isServer: boolean = typeof window === 'undefined';

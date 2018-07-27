@@ -1,4 +1,4 @@
-import { Images } from 'client/spa/pages/createAd/ImageSelector';
+import { IAttachedImage } from 'client/spa/pages/create-ad/interface';
 
 export enum MyAdsStatus {
 	Disapproved = 'Disapproved',
@@ -78,8 +78,24 @@ export interface ICreateAdRequest {
 	latitude: number;
 	category_id: string;
 	phone: string;
-	images: Images[];
+	images: IAttachedImage[];
 }
+
+export interface IEditAdRequest {
+	ad_id: string;
+	title: string;
+	description: string;
+	body: string;
+	type_id: number;
+	city_id: number;
+	category_id: string;
+	price: string;
+	longitude: number;
+	latitude: number;
+	phone: string;
+	images: IAttachedImage[];
+}
+
 export interface IFavoritesAds {
 	(id: any): IAds;
 }

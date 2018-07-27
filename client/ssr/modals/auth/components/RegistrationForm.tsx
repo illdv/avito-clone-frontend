@@ -46,7 +46,7 @@ const Input = ({id, title, onChange, placeholder, type}: IInputProps) => (
 			id={id}
 			autoComplete='off'
 			className='col-sm-6'
-			onChange={this.onChange}
+			onChange={onChange}
 			placeholder={placeholder}
 		/>
 	</div>
