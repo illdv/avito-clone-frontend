@@ -34,8 +34,8 @@ export interface IUserActions {
 	deleteAccount: IAsyncAction;
 
 	getFavoritesAds: IAsyncAction<{}, { favoritesAds: IAds[] }>;
-	removeFavoritesAds: IAsyncAction<{ favoritesId: string[] }>;
-	removeFavoritesAd: IAsyncAction<{ id: any }>;
+	removeFavoritesAds: IAsyncAction<{ favoritesIds: string[] }>;
+	removeFavoritesAd: IAsyncAction<{ id: any }, {favoritesIds: string[]}>;
 
 	selectFavorite: IAsyncAction<{ id: string }>;
 	setFavorite: IAsyncAction<{ id: string }, { favoritesIds: string[] }>;
