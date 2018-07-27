@@ -9,13 +9,16 @@ import { AdsActions, IAdsActions } from 'client/common/ads/actions';
 import { IRootState } from '../../../common/store/storeInterface';
 
 import { useOrDefault } from './utils';
+import { ILocationStoreState } from 'client/common/location/locationInterface';
 
 interface IProps {
+	location: ILocationStoreState;
 	initialAd: IAds;
 	adsActions: IAdsActions;
 }
 
 const mapStateToProps = (state: IRootState) => ({
+	location: state.loation,
 	user: state.user,
 });
 
@@ -36,7 +39,7 @@ class EditAd extends React.Component<IProps> {
 			title: state.adInfoFields.title.value,
 			description: state.adInfoFields.description.value,
 			type_id: this.props.initialAd.type_id,
-			city_id: this.props.initialAd.city_id,
+			city_id: this.props.location.session.idCity,
 			category_id: useOrDefault(() => selectedCategories[selectedCategories.length - 1].id, '1'),
 			body: '1212',
 			longitude: state.location.lng,
