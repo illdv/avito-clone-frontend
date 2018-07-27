@@ -97,10 +97,7 @@ export interface ImageProps {
 }
 
 export const ImageComponent = ({ url, onClose }: ImageProps) => (
-	<div
-		style={{ maxWidth: 160 }}
-		className='uploaded-img__container'
-	>
+	<div className='uploaded-img__container'>
 		<span
 			className='uploaded-img__remove'
 			onClick={onClose}

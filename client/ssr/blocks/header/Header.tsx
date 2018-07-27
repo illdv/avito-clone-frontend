@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { connect, Dispatch } from 'react-redux';
+import React, {Component} from 'react';
+import {connect, Dispatch} from 'react-redux';
 import Link from 'next/link';
 import axios from 'axios';
 
@@ -16,12 +16,12 @@ import {CustomStorage} from 'client/common/user/CustomStorage';
 import ResetPasswordModal from 'client/ssr/modals/forgot-password/ResetPasswordModal';
 import SuccessModal from 'client/ssr/modals/success/SuccessModal';
 import MainLocationModal from 'client/ssr/modals/location/MainLocationModal';
-import { initialize, ILocationSession, ILocationStoreState } from 'client/common/location/module';
-import { getLocationState } from 'client/common/store/selectors';
-import { showLocationModal } from 'client/ssr/modals/location/locationModalTriggers';
+import {initialize, ILocationSession, ILocationStoreState} from 'client/common/location/module';
+import {getLocationState} from 'client/common/store/selectors';
+import {showLocationModal} from 'client/ssr/modals/location/locationModalTriggers';
 import SearchLocationModal from 'client/ssr/modals/location/SearchLocationModal';
-import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
-import { useOrDefault } from 'client/spa/pages/createAd/utils';
+import {ModalNames} from '../../../common/modal-juggler/modalJugglerInterface';
+import {useOrDefault} from 'client/spa/pages/createAd/utils';
 
 require('../../../common/styles/main.sass');
 require('./Header.sass');
@@ -51,7 +51,7 @@ class Header extends Component<IProps, IState> {
 	}
 
 	componentDidMount(): void {
-		const { user } = this.props.user;
+		const {user} = this.props.user;
 		const token = CustomStorage.getToken();
 		if (!isServer() && !user.id && token) {
 			axios.defaults.headers.common.authorization = `Bearer ${token}`;
@@ -60,7 +60,7 @@ class Header extends Component<IProps, IState> {
 	}
 
 	renderLogin = () => {
-		const { user } = this.props.user;
+		const {user} = this.props.user;
 		if (useOrDefault(() => user.email, null)) {
 			return (
 				<Link href={`/profile`}>
@@ -77,29 +77,28 @@ class Header extends Component<IProps, IState> {
 				Login
 			</button>
 		);
-	};
+	}
 
 	onFavorites = () => {
 		return (
 			<Link href={`/favorites`}>
 				<a
 					href='#'
-					className='header__favourites p-x-40'
+					className='header__favourites'
 				>
 					<img
 						src='/static/img/icons/like.svg'
 						alt=''
-						className="pr-2"
+						className='header__icon'
 					/>
 					<span>Favourites</span>
 				</a>
 			</Link>
 		);
-
-	};
+	}
 
 	get localeName() {
-		const { idCity, idRegion, idCountry } = this.props.locationState.session;
+		const {idCity, idRegion, idCountry} = this.props.locationState.session;
 
 		if (idCity) {
 			if (this.props.locationState.loaded.session.cities.length > 0) {
@@ -141,19 +140,19 @@ class Header extends Component<IProps, IState> {
 
 	showMainLocationModal = () => showLocationModal(ModalNames.location);
 
-	shouldComponentUpdate(newProps){
+	shouldComponentUpdate(newProps) {
 		return JSON.stringify(this.props) !== JSON.stringify(newProps);
 	}
 
 	render() {
 		return (
 			<header>
-				<LoginModal />
-				<SendCodeToEmailModal />
-				<ResetPasswordModal />
-				<SuccessModal />
-				<MainLocationModal />
-				<SearchLocationModal />
+				<LoginModal/>
+				<SendCodeToEmailModal/>
+				<ResetPasswordModal/>
+				<SuccessModal/>
+				<MainLocationModal/>
+				<SearchLocationModal/>
 				<div className='header header-top'>
 					<div className='container'>
 						<div className='row'>
@@ -162,8 +161,8 @@ class Header extends Component<IProps, IState> {
 									<ul className='navbar-nav'>
 										<li className='nav-item'>
 											<a href='#' className='header__location'>
-												<i className='header__icon fas fa-map-marker-alt' />
-												<span onClick={this.showMainLocationModal}>{ this.localeName }</span>
+												<i className='header__icon fas fa-map-marker-alt'/>
+												<span onClick={this.showMainLocationModal}>{this.localeName}</span>
 											</a>
 										</li>
 										<LanguageDropdown/>
