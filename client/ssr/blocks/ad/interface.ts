@@ -46,6 +46,7 @@ export interface IAdsProps {
 	categories: any[];
 	similar: any[];
 	userActions: IUserActions;
+	favoriteAdsIds: string[];
 }
 
 export interface IAdsState {
@@ -56,6 +57,7 @@ export interface IAdsState {
 		lat: number;
 		lng: number;
 	};
+	isFavorite: boolean;
 }
 
 export interface ISliderProps {
@@ -90,7 +92,7 @@ export interface IDescription {
 	body: string;
 }
 
-export interface ISimilarProps {
+export interface ISimilarRandomProps {
 	id?: string|null;
 	title: string;
 	price: string;
@@ -101,15 +103,19 @@ export interface ISimilarProps {
 	};
 }
 
+export interface ISimilarRandomState {
+	description: string;
+	title: string;
+	similar_ad: ISimilarAd;
+}
 export interface ISimilarState {
 	description: string;
 	title: string;
 	similar_ad: ISimilarAd;
 }
-
-export interface ISimilar {
+export interface ISimilarProps {
 	filter?: string;
-	similar_ad: any[];
+	similar_ads: any[];
 	id_parent: string;
 }
 
@@ -122,6 +128,7 @@ export interface IChart {
 export interface IFavorites {
 	id: string;
 	selectFavorite: (id: string) => void;
+	isFavorite: boolean;
 }
 
 export interface IFavoriteState {

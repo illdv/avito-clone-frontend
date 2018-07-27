@@ -1,11 +1,11 @@
 import { createReducer } from 'redux-act';
 import { UserActions } from './actions';
-import { IAds } from 'client/common/ads/interface';
+import { IFavoritesAds } from 'client/common/ads/interface';
 
 export interface IUserState {
 	user: IUser;
 	isUserLoading: boolean;
-	favoritesAds: IAds[];
+	favoritesAds: IFavoritesAds;
 }
 
 const initialState = (): IUserState => ({
@@ -51,23 +51,18 @@ reducer.on(UserActions.setFavorite.SUCCESS, (state, payload): IUserState => ({
 	...state,
 	user: {
 		...state.user,
-		favorites_ids: [
-			...state.user.favorites_ids,
-			payload.id,
-		]
+		favorites_ids: payload.favoritesIds
 	},
 }));
 reducer.on(UserActions.removeFavorite.SUCCESS, (state, payload): IUserState => ({
 		...state,
 		user: {
 			...state.user,
-			favorites_ids: [
-				...state.user.favorites_ids.slice(0, payload.indexInFavorites),
-				...state.user.favorites_ids.slice(payload.indexInFavorites + 1),
-			]
+			favorites_ids: payload.favoritesIds
 		},
 	})
 );
+
 
 reducer.on(UserActions.changeProfile.SUCCESS, (state, payload): IUserState => ({
 	...state,
