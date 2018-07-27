@@ -141,10 +141,12 @@ export interface ISimilarAd {
 export interface IGMProps {
 	default_map: IGMMarkerProp;
 	isMarkerShown: IGMMarkerProp;
+	zoom?: number;
 }
 
 export interface IGMState {
-	zoom: number;
+	zoom?: number;
+	show?: boolean;
 }
 
 export interface IGMMarkerProp {

@@ -36,7 +36,7 @@ class SimilarAds extends Component <ISimilar, ISimilarSortState> {
 		return (
 			<div className='col-lg-4'>
 				<div className='similar-ads-head'>
-					<div className='row align-items-center pb-3'>
+					<div className='row align-items-center p-b-20'>
 						<div className='col-md-12 col-lg-6'>
 							<h3 className='caption_no-color m-0 pb-md-3 pb-lg-0'>Similar ads</h3>
 						</div>
