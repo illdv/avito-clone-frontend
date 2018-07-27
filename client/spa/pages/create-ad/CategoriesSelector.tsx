@@ -7,7 +7,7 @@ import { ICategory } from 'client/common/categories/interface';
 import { bindModuleAction } from 'client/common/user/utils';
 import { CategoryActions, ICategoryActions } from 'client/common/categories/actions';
 import { ICategoryState } from 'client/common/categories/reducer';
-import { isContainsId, useOrDefault } from 'client/spa/pages/createAd/utils';
+import { isContainsId, useOrDefault } from 'client/spa/pages/create-ad/utils';
 
 export interface IState {
 	selectedCategory: ICategory[];
@@ -17,7 +17,7 @@ export interface IState {
 export interface IProps {
 	categoryActions: ICategoryActions;
 	categories: ICategoryState;
-	onSelectCategory: (selectedCategory: ICategory[]) => void;
+	onSelectCategories: (selectedCategories: ICategory[]) => void;
 	defaultCategoryId: string;
 }
 
@@ -69,7 +69,7 @@ export class CategoriesSelector extends Component<IProps, IState> {
 			selectCategory,
 		];
 
-		this.props.onSelectCategory(newSelectedCategory);
+		this.props.onSelectCategories(newSelectedCategory);
 
 		this.setState({ selectedCategory: newSelectedCategory });
 	}

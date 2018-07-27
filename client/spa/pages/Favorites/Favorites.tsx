@@ -17,7 +17,7 @@ class Favorites extends React.Component<IFavorites, null> {
 		this.props.userActions.getFavoritesAds.REQUEST({});
 	}
 	removeFavoriteAds = (favoritesId: string[])  => {
-		this.props.userActions.removeFavorite.REQUEST({favoritesId});
+		this.props.userActions.removeFavoritesAds.REQUEST({favoritesId});
 	};
 
 	render() {

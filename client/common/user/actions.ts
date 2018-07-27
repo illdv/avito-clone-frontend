@@ -20,14 +20,14 @@ const setFavorite    = createAsyncAction('SET_FAVORITE');
 const removeFavorite = createAsyncAction('REMOVE_FAVORITE');
 
 export interface IUserActions {
-	login: IAsyncAction<ILoginRequest, { user: IUser, isRememberMe: boolean }>;
 	register: IAsyncAction<IRegisterRequest>;
-	getProfile: IAsyncAction<{}, IUser>;
+	initUser: IAsyncAction<{}, {token: string}>;
+	getProfile: IAsyncAction<{token: string}, IUser>;
+	login: IAsyncAction<ILoginRequest, { user: IUser, isRememberMe: boolean }>;
+	logout: IAsyncAction;
+	changePassword: IAsyncAction<IChangePasswordRequest>;
 	sendCode: IAsyncAction<ISendCodeToEmailRequest>;
 	resetPasswordByCode: IAsyncAction<IResetPasswordByCodeRequest>;
-	logout: IAsyncAction;
-	initUser: IAsyncAction;
-	changePassword: IAsyncAction<IChangePasswordRequest>;
 
 	getFavoritesAds: IAsyncAction<{}, { favoritesAds: IFavoritesAds }>;
 	removeFavoritesAds: IAsyncAction<{ favoritesId: string[] }>;
@@ -35,7 +35,7 @@ export interface IUserActions {
 
 	selectFavorite: IAsyncAction<{ id: string }>;
 	setFavorite: IAsyncAction<{ id: string }, { id: string }>;
-	removeFavorite: IAsyncAction<{ favoritesId: string[] }, { indexInFavorites: number }>;
+	removeFavorite: IAsyncAction< {}, { indexInFavorites: number }>;
 }
 
 export const UserActions: IUserActions = {
