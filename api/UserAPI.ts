@@ -12,6 +12,22 @@ function changePassword(request: IChangePasswordRequest) {
 	return AxiosWrapper.put('/change-password', request);
 }
 
+function changeProfile({ image,  ...data }: IChangeProfileRequest) {
+	const formData = new FormData();
+
+	formData.append('image', image);
+
+	Object.entries(data).forEach(([key, value]) => {
+		formData.append(key, value);
+	});
+
+	formData.append('_method', 'put');
+
+	return AxiosWrapper.post('/profile', formData, {
+		headers: { 'Content-Type': 'multipart/form-data' },
+	});
+}
+
 function register(registerRequest) {
 	return AxiosWrapper.post('/register', { ...registerRequest });
 }
@@ -47,6 +63,7 @@ function deleteFavorites(request: IDeleteFavoritesRequest) {
 }
 
 export const UserAPI = {
+	changeProfile,
 	changePassword,
 	login,
 	register,
