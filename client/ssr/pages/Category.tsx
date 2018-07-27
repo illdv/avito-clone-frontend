@@ -4,7 +4,7 @@ import Header from 'client/ssr/blocks/header/Header';
 import Navbar from 'client/ssr/blocks/navbar/Navbar';
 import Search from 'client/ssr/blocks/search/Search';
 import Footer from 'client/ssr/blocks/footer/Footer';
-import ListOfAds, { IAds } from 'client/ssr/blocks/ads/ListOfAds';
+import Ads, { IAds } from 'client/ssr/blocks/ads/Ads';
 import BreadcrumbsWrap from 'client/ssr/wraps/BreadcrumbFromContext';
 import EmptySearch from 'client/ssr/blocks/empty-search/EmptySearch';
 import ListOfSubcategories from 'client/ssr/blocks/list-of-subcategories/ListOfSubcategories';
@@ -52,7 +52,7 @@ class Category extends React.Component<ICategoryPageProps> {
 							category.ads.length > 0
 								?
 									<React.Fragment key={category.id}>
-										<ListOfAds
+										<Ads
 											title={category.title}
 											ads={category.ads}
 										/>
