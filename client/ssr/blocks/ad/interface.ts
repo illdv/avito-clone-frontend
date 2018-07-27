@@ -32,7 +32,7 @@ export interface IAd {
 	longitude: number;
 }
 export interface ISimilarSortState {
-	similar_ad?: ISimilarAd;
+	similar_ad?: any[];
 	filter?: string;
 }
 
@@ -44,6 +44,7 @@ export interface ICrumb {
 export interface IAdsProps {
 	ad: IAd;
 	categories: any[];
+	similar: any[];
 	userActions: IUserActions;
 	favoriteAdsIds: string[];
 }
@@ -110,25 +111,14 @@ export interface ISimilarState {
 
 export interface ISimilar {
 	filter?: string;
-	similar_ad: ISimilarAd;
+	similar_ads: any[];
 	id_parent: string;
 }
 
 export interface IChart {
-	similar_ad: ISimilarAd;
+	similar_ads: any[];
 	id_parent: string;
-	default_map: {
-		lat: number;
-		lng: number;
-	};
-	isMarkerShown: {
-		lat: number;
-		lng: number;
-	},
-}
 
-export interface IChartState {
-	zoom: number;
 }
 
 export interface IFavorites {
@@ -149,4 +139,18 @@ export interface ISimilarAd {
 	price: string;
 	user: ISeller;
 
+}
+
+export interface IGMProps {
+	default_map: IGMMarkerProp;
+	isMarkerShown: IGMMarkerProp;
+}
+
+export interface IGMState {
+	zoom: number;
+}
+
+export interface IGMMarkerProp {
+	lat: number;
+	lng: number;
 }

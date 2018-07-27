@@ -13,6 +13,8 @@ import Link from 'next/link';
 import { bindModuleAction } from 'client/common/user/utils';
 import { UserActions } from 'client/common/user/actions';
 import { ButtonFavorites } from 'client/ssr/blocks/ad/components/ButtonFavorites';
+import Kit from 'client/ssr/blocks/ad/components/Kit';
+import PlaceMap from 'client/ssr/blocks/ad/components/PlaceMap';
 
 require('./Ad.sass');
 
@@ -105,7 +107,7 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 	};
 
 	render() {
-		const { ad }                                                 = this.props;
+		const { similar, ad }                                                 = this.props;
 		const { crumbs, lastCrumb, images, default_map, isFavorite } = this.state;
 		return (
 			<>
@@ -175,12 +177,11 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 				<section className='section-mb'>
 					<div className='container'>
 						<Description body={ad.body} />
-						{/*<VehicleKit />*/}
+						<Kit/>
+						<PlaceMap default_map={this.state.default_map} isMarkerShown={this.state.default_map}/>
 						<Chart
-							similar_ad={ad.similar_ad}
+							similar_ads={similar}
 							id_parent={ad.id}
-							default_map={default_map}
-							isMarkerShown={default_map}
 						/>
 					</div>
 				</section>
