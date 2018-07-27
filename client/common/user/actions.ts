@@ -15,6 +15,7 @@ const resetPasswordByCode = createAsyncAction('RESET_PASSWORD_BY_CODE');
 const getFavoritesAds     = createAsyncAction('GET_FAVORITE_ADS');
 const removeFavoritesAds  = createAsyncAction('REMOVE_FAVORITE_ADS');
 const removeFavoritesAd   = createAsyncAction('REMOVE_FAVORITE_AD');
+const deleteAccount       = createAsyncAction('DELETE_ACCOUNT');
 
 const selectFavorite = createAsyncAction('SELECT_FAVORITE');
 const setFavorite    = createAsyncAction('SET_FAVORITE');
@@ -30,6 +31,7 @@ export interface IUserActions {
 	changePassword: IAsyncAction<IChangePasswordRequest>;
 	sendCode: IAsyncAction<ISendCodeToEmailRequest>;
 	resetPasswordByCode: IAsyncAction<IResetPasswordByCodeRequest>;
+	deleteAccount: IAsyncAction;
 
 	getFavoritesAds: IAsyncAction<{}, { favoritesAds: IAds[] }>;
 	removeFavoritesAds: IAsyncAction<{ favoritesId: string[] }>;
@@ -56,4 +58,5 @@ export const UserActions: IUserActions = {
 	selectFavorite,
 	setFavorite,
 	removeFavorite,
+	deleteAccount,
 };

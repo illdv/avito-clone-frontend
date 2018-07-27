@@ -207,6 +207,15 @@ function* removeFavoriteAds(action) {
 	}
 }
 
+function* deleteAccount() {
+	try {
+		yield call(UserAPI.deleteAccount);
+		yield call(clearToken);
+	} catch (err) {
+		yield call(errorHandler, err);
+	}
+}
+
 function synchronizeLocalStorage(favoritesList) {
 	CustomStorage.setItem('favorites_ids', JSON.stringify(favoritesList));
 }
@@ -238,6 +247,7 @@ function* watcherUser() {
 		takeEvery(UserActions.selectFavorite.REQUEST, selectFavorite),
 		takeEvery(UserActions.getFavoritesAds.REQUEST, getFavorites),
 		takeEvery(UserActions.removeFavoritesAds.REQUEST, removeFavoriteAds),
+		takeEvery(UserActions.deleteAccount.REQUEST, deleteAccount),
 	];
 }
 
