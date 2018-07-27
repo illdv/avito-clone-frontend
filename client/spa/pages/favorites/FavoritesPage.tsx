@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {IAds} from 'client/common/ads/interface';
-import FavoritesItem from 'client/spa/pages/Favorites/FavoritesItem';
+import { IAds } from 'client/common/ads/interface';
+import FavoritesItem from 'client/spa/pages/favorites/FavoritesItem';
 
 interface IFavoritesPageProps {
 	ads: IAds[];

@@ -18,22 +18,29 @@ export class ConformationAccountDeletion extends React.Component<IProps> {
 		return (
 			<Modal name={ ModalNames.confirmationAccountDeletion } useOnRequestClose={true} autocomplete='off'>
 				<div className='modal-content location-modal'>
-					<div className='modal-header'>
-						<h4 className='modal-title' id='exampleModalLongTitle'>Confirmation</h4>
+					<div className='modal-header p-x-20'>
+						<h4 className='modal-title' id='exampleModalLongTitle'>Delete your account</h4>
 						<button type='button' className='close' onClick={this.close} >
 							<span>&times;</span>
 						</button>
 					</div>
-					<div className='modal-body '>
-						<h1>Body</h1>
+					<div className='modal-body text-center p-y-50 p-x-20'>
+						<h5>Are you sure you want to delete your account?</h5>
 					</div>
-					<div className='modal-footer'>
+					<div className='modal-footer p-20'>
 						<button
 							type='button'
-							className='btn button orange-btn w-100'
+							className='btn orange-btn w-50'
 							onClick={this.deleteAccount}
 						>
-								Delete account
+								Confirm
+						</button>
+						<button
+							type='button'
+							className='btn grey-btn-outline w-50'
+							onClick={this.close}
+						>
+								Cancel
 						</button>
 					</div>
 				</div>

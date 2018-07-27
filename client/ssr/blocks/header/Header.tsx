@@ -6,13 +6,13 @@ import axios from 'axios';
 import LoginModal from '../../modals/auth/AuthModal';
 import SendCodeToEmailModal from '../../modals/forgot-password/SendCodeToEmail';
 import LanguageDropdown from './components/LanguageDropdown';
-import {showLoginModal} from 'client/ssr/modals/auth/loginModalTriggers';
-import {IRootState} from 'client/common/store/storeInterface';
-import {IUserState} from 'client/common/user/reducer';
-import {IUserActions, UserActions} from 'client/common/user/actions';
-import {bindModuleAction} from 'client/common/user/utils';
-import {isServer} from 'client/common/utils/utils';
-import {CustomStorage} from 'client/common/user/CustomStorage';
+import { showLoginModal } from 'client/ssr/modals/auth/loginModalTriggers';
+import { IRootState } from 'client/common/store/storeInterface';
+import { IUserState } from 'client/common/user/reducer';
+import { IUserActions, UserActions } from 'client/common/user/actions';
+import { bindModuleAction } from 'client/common/user/utils';
+import { isServer } from 'client/common/utils/utils';
+import { CustomStorage, getFavoritesFromLocalStorage } from 'client/common/user/CustomStorage';
 import ResetPasswordModal from 'client/ssr/modals/forgot-password/ResetPasswordModal';
 import SuccessModal from 'client/ssr/modals/success/SuccessModal';
 import MainLocationModal from 'client/ssr/modals/location/MainLocationModal';
@@ -52,7 +52,7 @@ class Header extends Component<IProps, IState> {
 
 	componentDidMount(): void {
 		const {user} = this.props.user;
-		const token = CustomStorage.getToken();
+		const token    = CustomStorage.getToken();
 		if (!isServer() && !user.id && token) {
 			axios.defaults.headers.common.authorization = `Bearer ${token}`;
 			this.props.userActions.initUser.REQUEST({});
@@ -80,11 +80,16 @@ class Header extends Component<IProps, IState> {
 	}
 
 	onFavorites = () => {
+		let count;
+		try {
+			count = getFavoritesFromLocalStorage().length;
+		} catch (e) {
+		}
 		return (
 			<Link href={`/favorites`}>
 				<a
 					href='#'
-					className='header__favourites'
+					className='header__favourites '
 				>
 					<img
 						src='/static/img/icons/like.svg'
@@ -92,6 +97,7 @@ class Header extends Component<IProps, IState> {
 						className='header__icon'
 					/>
 					<span>Favourites</span>
+					{count && <span className="notification account__notification">{count}</span>}
 				</a>
 			</Link>
 		);
@@ -160,12 +166,15 @@ class Header extends Component<IProps, IState> {
 								<div className='header-top__container'>
 									<ul className='navbar-nav'>
 										<li className='nav-item'>
-											<a href='#' className='header__location'>
+											<a
+												href='#'
+												className='header__location'
+											>
 												<i className='header__icon fas fa-map-marker-alt'/>
 												<span onClick={this.showMainLocationModal}>{this.localeName}</span>
 											</a>
 										</li>
-										<LanguageDropdown/>
+										<LanguageDropdown />
 									</ul>
 									<ul className='navbar-nav'>
 										<li className='nav-item'>
