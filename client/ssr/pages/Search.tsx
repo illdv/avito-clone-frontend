@@ -4,7 +4,7 @@ import Header from 'client/ssr/blocks/header/Header';
 import Navbar from 'client/ssr/blocks/navbar/Navbar';
 import Search from 'client/ssr/blocks/search/Search';
 import Footer from 'client/ssr/blocks/footer/Footer';
-import ListOfAds, { IAds } from 'client/ssr/blocks/ads/ListOfAds';
+import Ads, { IAds } from 'client/ssr/blocks/ads/Ads';
 import EmptySearch from 'client/ssr/blocks/empty-search/EmptySearch';
 
 interface ISearchPageProp {
@@ -28,7 +28,7 @@ class SearchPage extends React.Component<ISearchPageProp> {
 				{
 					this.props.search.length > 0
 					?
-						<ListOfAds
+						<Ads
 							title={'Search result'}
 							ads={this.props.search}
 						/>
