@@ -20,10 +20,6 @@ class  AdCard extends React.Component<IProps> {
 		return this.props.favoritesIds.indexOf(this.props.ads.id) != -1;
 	}
 
-	componentDidUpdate(){
-		this.forceUpdate()
-	}
-
 	get activeLike() {
 		return (
 			<svg
@@ -84,7 +80,6 @@ class  AdCard extends React.Component<IProps> {
 	}
 
 	render(){
-		console.log(this.isActive)
 		return (
 			<div className='ad__card'>
 				<div className='ad__img'>
