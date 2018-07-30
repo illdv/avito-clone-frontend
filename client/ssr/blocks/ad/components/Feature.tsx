@@ -1,16 +1,13 @@
-import React, { Component } from 'react';
-import { IVehicleFeature } from 'client/ssr/blocks/ad/interface'
+import React, {Component} from 'react';
+import {IVehicleFeature} from 'client/ssr/blocks/ad/interface';
 
 class Feature extends Component<IVehicleFeature> {
 	render() {
 		return (
-			<div className='col-lg-5'>
+			<div className='col-lg-5 px-lg-3 py-md-4 py-lg-0'>
 				{/*<h3 className='caption'>Vehicle Features</h3>*/}
-				<h3 className='caption'>Features</h3>
-
-				<ul
-					className='list-unstyled f-s-14 ads-features'
-				>
+				<h3>Features</h3>
+				<ul className='ads-features'>
 					{listItems(this.props.options)}
 				</ul>
 			</div>
@@ -29,7 +26,8 @@ function formationOptions(option) {
 
 	return (
 		<li key={option.id}>
-			<span className='grey-text'>{key}</span>: <span>{option.pivot.value}</span>
+			<span className='grey-text'>
+				{key.charAt(0).toUpperCase() + key.substr(1)}:</span> {option.pivot.value}
 		</li>
 	);
 }

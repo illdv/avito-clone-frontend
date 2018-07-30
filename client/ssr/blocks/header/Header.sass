@@ -1,13 +1,23 @@
 .header
   height: 82px
+  display: flex
+  align-items: center
 
-.header_top
+.header-top
   border-bottom: .5px solid #FFB91B
-  line-height: 2.5
+  line-height: 1
+
+.header-top__container
+  display: flex
+  align-items: center
+  justify-content: space-between
 
 .header__icon
-  font-size: 19px
-  margin: 0 2px
+  margin-right: 8px
+  transform: translateY(-2px)
+
+.navbar-nav
+  align-items: center
 
 .language
   -webkit-appearance: none
@@ -18,13 +28,14 @@
   text-decoration: underline
   outline: none
   background-color: rgba(0, 0, 0, 0) !important
+  padding: 0
+  margin-left: 40px
 
 .header__button_login
   border: none
   cursor: pointer
 
-.header__icon_favourites
-  position: relative
-  top: -2px
-  padding-left: 2px
-  font-size: 19px
+.header__favourites
+  margin-right: 40px
+  display: flex
+  align-items: center

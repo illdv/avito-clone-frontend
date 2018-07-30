@@ -1,5 +1,5 @@
 import { AxiosWrapper } from './AxiosWrapper';
-import { IAds, ICreateAdRequest } from 'client/common/ads/interface';
+import { AdsActionType, IAds, ICreateAdRequest, IEditAdRequest } from 'client/common/ads/interface';
 
 function get() {
 	return AxiosWrapper.get('/ads');
@@ -13,32 +13,56 @@ function show(id) {
 	return AxiosWrapper.get(`/ads/${id}`);
 }
 
-function create(request: ICreateAdRequest) {
-	return AxiosWrapper.post(`/ads/`, request);
+function create({ images, ...ads }: ICreateAdRequest) {
+	const files    = images.map(img => img.file);
+	const formData = new FormData();
+	for (let i = 0; i < files.length; i++) {
+		const file = files[i];
+		formData.append(`images[${i}]`, file);
+	}
+
+	Object.entries(ads).forEach(([key, value]) => {
+		formData.append(key, value);
+	});
+
+	return AxiosWrapper.post(`/ads/`, formData, {
+		headers: { 'Content-Type': 'multipart/form-data' },
+	});
 }
 
-function switchFavorite(id) {
-	return AxiosWrapper.post(`/ads/switch-favorite/${id}`);
-}
+function edit({ images, ...ads }: IEditAdRequest) {
 
-function edit(request: IAds) {
-	return AxiosWrapper.put(`/ads/${request.id}`, request);
+	const files    = images.map(img => img.file);
+	const formData = new FormData();
+	for (let i = 0; i < files.length; i++) {
+		const file = files[i];
+		formData.append(`images[${i}]`, file);
+	}
+
+	Object.entries(ads).forEach(([key, value]) => {
+		formData.append(key, value);
+	});
+
+	formData.append('_method', 'put');
+	return AxiosWrapper.post(`/ads/${ String(ads.ad_id) }`, formData, {
+		headers: { 'Content-Type': 'multipart/form-data' },
+	});
 }
 
 function remove(id: string) {
 	return AxiosWrapper.deleteResponse(`/ads/${id}`);
 }
 
-function approve(id: string) {
-	return AxiosWrapper.put(`/ads/approve/${id}`);
+function useAction(id: string, actionType: AdsActionType) {
+	return AxiosWrapper.put(`/ads/${id}/state/${actionType}`);
 }
 
-function activate(id: string) {
-	return AxiosWrapper.put(`/ads/activate/${id}`);
+function similar(sort: string, id: string) {
+	return AxiosWrapper.get(`ad/${id}/similar/${sort}`);
 }
 
-function complete(id: string) {
-	return AxiosWrapper.put(`/ads/complete/${id}`);
+function deleteImage(id: string) {
+	return AxiosWrapper.deleteResponse(`/images/${id}`);
 }
 
 export const AdsAPI = {
@@ -46,10 +70,9 @@ export const AdsAPI = {
 	getMy,
 	show,
 	create,
-	switchFavorite,
 	remove,
-	approve,
-	activate,
-	complete,
 	edit,
+	useAction,
+	deleteImage,
+	similar,
 };

@@ -1,18 +1,36 @@
 @import "node_modules/react-image-gallery/styles/scss/image-gallery.scss"
+.ad-page__title
+    font-size: 36px
+    font-weight: 400
+    margin-bottom: 15px
+    line-height: 1.2
+
 .price
     font-size: 36px
     text-align: right
-    display: block
+    line-height: 1.2
+
+.chart__container
+    background-color: #333
+    height: 100%
 
 .back-next
-    padding: .75rem 1rem
+    padding: .75rem 0
     text-align: right
 
+.back-next__link
+    margin-left: 15px
+
 .ads-features
-    columns: 2
+    column-count: 2
+    font-size: 14px
+    list-style: none
+    padding-left: 0
 
 .ads-features li 
     padding-bottom: 10px
+    display: inline-block
+    width: 100%
 
 .seller span:first-of-type
     font-weight: 500
@@ -22,28 +40,51 @@
 .seller span 
     font-size: 13px
 
-
+.seller-info
+    flex-shrink: 0
 .seller img
     width: 50px
     height: 50px
     object-fit: cover
+    flex-shrink: 0
 
-.similar-ads-item span
-    display:block 
+.similar-ads
+    padding-top: 20px
 
+.similar-ad__title
+    font-weight: bold
+.similar-ad span
+    display: block
+    font-size: 13px
 
-.similar-ads-item
+.example-enter 
+    opacity: 0.01
+
+.example-enter.example-enter-active 
+    opacity: 1
+    transition: opacity 500ms ease-in
+
+.example-leave 
+    opacity: 1
+
+.example-leave.example-leave-active 
+    opacity: 0.01
+    transition: opacity 300ms ease-in
+
+.similar-ad
     width: 100%
-    max-height: 120px
-    padding: 20px
+    //max-height: 120px
+    padding-bottom: 20px
 
-.similar-ads-item img
+.similar-ad img
     width: 100%
     height: 90px
     object-fit: cover
 
-
-
+.offer-location
+    min-height: 500px
+    height: 100%
+    padding-right: 15px
 
 @media (max-width: 991px) 
     .ads-features
@@ -52,13 +93,15 @@
     .price
         text-align: left
     
-    .similar-ads-item img 
+    .similar-ad img
         width: 200px
         height: auto
         object-fit: contain
     
-    .similar-ads-item 
+    .similar-ad
         width: 100%
-        max-height: 120px
         padding: 20px
-    
+    .offer-location
+        padding-right: 0
+        padding-bottom: 25px
+

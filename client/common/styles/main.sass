@@ -1,3 +1,28 @@
+$grid-gutter-width: 10px
+
+
+$font-family-base: Roboto
+
+
+$link-color: #000
+$link-hover-color: #000
+$link-hover-decoration: none
+
+
+$breadcrumb-padding-x: 0
+$breadcrumb-bg: transparent
+$breadcrumb-divider-color: #FFB91B
+
+
+$input-focus-border-color: #FFB91B
+$input-focus-box-shadow: none
+$input-btn-focus-box-shadow: none
+$btn-focus-box-shadow: none
+$btn-active-box-shadow: none
+$btn-focus-width: 0
+
+
+$modal-content-border-radius: 10px
 @import '../../../node_modules/bootstrap/scss/bootstrap'
 @import '../../../node_modules/react-toastify/dist/ReactToastify.css'
 @import './helpers'
@@ -5,28 +30,9 @@
 html, body
     -webkit-overflow-scrolling: touch // Bug fix for iphone
 
-*
-    box-sizing: border-box
-    padding: 0
-    margin: 0
-
-body
-  font-family: Roboto
 
 a:focus,input:focus,select:focus,button:focus
     outline: none !important
-
-.form-control:focus, a:focus, button:focus
-    border-color: #FFB91B
-    box-shadow: none !important
-
-a
-    color: #000
-    text-decoration: none
-
-a:hover
-    color: black
-    text-decoration: none
 
 .navbar
     padding: 0 !important
@@ -39,37 +45,11 @@ select
     background-position-x: 95%
     -webkit-appearance: none
     -moz-appearance: none
-
-
-input[type="checkbox"]
-    -webkit-appearance: none
-    border: 2px solid #FFB91B
-    width: 20px
-    height: 20px
-    border-radius: 50%
-    position: relative
-    display: flex
-    align-items: center
-    justify-content: center
-
-input[type="checkbox"]:checked:after
-    content: ""
-    height: 10px
-    width: 10px
-    background-color: #FFB91B
-    border-radius: 50%
+    cursor: pointer
 
 .main-caption
     color: #FFB91B
     padding: 20px
-
-.breadcrumb
-    background-color: transparent !important
-    padding-left: 0
-    padding-right: 0
-
-.breadcrumb-item+.breadcrumb-item::before,.breadcrumb-item a 
-    color: #FFB91B
 
 .caption
     color: #FFB91B
@@ -79,41 +59,31 @@ input[type="checkbox"]:checked:after
     font-weight: 500
     line-height: 1.2
 
-.footer__top__caption
-    color: #FFB91B
-    font-weight: 700
-
-.footer__top li
-    line-height: 20px
-
-.footer__top span
-    font-size: 13px
-    font-weight: 400
-
-
-.footer__bottom
-    border-top: .5px solid #FFB91B
-    height: 82px
-    line-height: 2.5
-    padding: 22px 0
-
 .nav__link
     padding: 0 17.5px
     font-size: 14px
+.map
+ color: #FFB91B
 
-@media (min-width: 576px) and (max-width: 767px)
-    .header_bottom .justify-content-between
-        justify-content: center !important
-
-    .search .search__options
-        width: 100%
-        margin: 5px
-
-    .search .search__button
-        display: block
-        margin: 5px auto
-        width: 100%
-
-@media (min-width: 767px) and (max-width: 991px)
+@media (min-width: 768px) and (max-width: 991px)
     .header_bottom .justify-content-between
         justify-content: flex-start !important
+
+a, button
+    transition: all .25s ease-in-out !important
+
+.auth-modal-btn__container
+  padding: 40px
+
+
+.auth-modal-btn
+    padding: 25px !important
+    width: 100%
+    font-size: 20px !important
+
+.location-modal
+    max-width: 500px
+    width: 100%
+
+.modal-content
+    max-width: 560px

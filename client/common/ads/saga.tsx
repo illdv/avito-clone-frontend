@@ -5,11 +5,10 @@ import { errorHandler } from 'client/common/store/errorHandler';
 import { AdsActions } from 'client/common/ads/actions';
 import { AdsAPI } from 'api/AdsAPI';
 import { ResponseWhitPagination } from 'client/common/utils/interface';
-import { IAds, ICreateAdRequest } from 'client/common/ads/interface';
+import { IAds, ICreateAdRequest, AdsActionType } from 'client/common/ads/interface';
 import { Toasts } from 'client/common/utils/Toasts';
 import { PageName } from 'client/common/ads/reducer';
 import { delay } from 'redux-saga';
-import { MyAdsStatus } from 'client/spa/pages/utils';
 
 function* getMy(action: Action<IRegisterRequest>) {
 	try {
@@ -49,25 +48,15 @@ function* remove(action: Action<{ id: string }>) {
 	}
 }
 
-function* changeStatus(action: Action<{ status: MyAdsStatus, id: string }>) {
+function* changeStatus(action: Action<{ actionType: AdsActionType, id: string }>) {
 	try {
-		const { id, status } = action.payload;
+		const { id, actionType } = action.payload;
 
-		if (status === MyAdsStatus.Active) {
-			yield call(AdsAPI.activate, id);
-		}
-
-		if (status === MyAdsStatus.Completed) {
-			yield call(AdsAPI.complete, id);
-		}
-
-		if (status === MyAdsStatus.Disapproved) {
-			yield call(AdsAPI.approve, id);
-		}
+		yield call(AdsAPI.useAction, id, actionType);
 
 		yield put(AdsActions.changeStatus.SUCCESS({}));
 		yield put(AdsActions.getMy.REQUEST({}));
-		Toasts.info('Status changed');
+		// Toasts.info('Status changed');
 	} catch (e) {
 		yield call(errorHandler, e);
 		Toasts.info('Failed status changed');
@@ -88,6 +77,18 @@ function* edit(action: Action<IAds>) {
 	}
 }
 
+function* deleteImage(action: Action<{ id: string }>) {
+	try {
+		yield call(AdsAPI.deleteImage, action.payload.id);
+		yield put(AdsActions.deleteImage.SUCCESS({}));
+		Toasts.info('Image deleted');
+	} catch (e) {
+		yield call(errorHandler, e);
+		Toasts.info('Failed delete image');
+		yield put(AdsActions.deleteImage.FAILURE({}));
+	}
+}
+
 function* watcherUser() {
 	yield [
 		takeEvery(AdsActions.getMy.REQUEST, getMy),
@@ -95,6 +96,7 @@ function* watcherUser() {
 		takeEvery(AdsActions.remove.REQUEST, remove),
 		takeEvery(AdsActions.changeStatus.REQUEST, changeStatus),
 		takeEvery(AdsActions.edit.REQUEST, edit),
+		takeEvery(AdsActions.deleteImage.REQUEST, deleteImage),
 	];
 }
 

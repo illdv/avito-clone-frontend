@@ -12,26 +12,32 @@ import 'isomorphic-fetch';
 import { types } from 'redux-act';
 import { IAd } from 'client/ssr/blocks/ad/interface'
 import { SetCategories } from 'client/ssr/blocks/categories/context'
+import { isServer } from '../client/common/utils/utils';
 import Error from 'next/error';
-
-const isServer: boolean = typeof window === 'undefined';
 
 if (isServer) {
 	types.disableChecking();
 }
 
 interface IAdsProps {
-	ad: IAd;
+	response: {
+		ad: IAd;
+		similars: any[]
+	},
 	categories: any[];
 }
 
 class Ads extends React.Component<IAdsProps> {
 	static async getInitialProps({ query }) {
-		return { ad: query.ad, categories: query.categories };
+		return {
+			response: query.ad,
+			location: query.location,
+			categories: query.categories,
+		};
 	}
 
 	render() {
-		if (!this.props.ad) {
+		if (!this.props.response.ad) {
 			return <Error statusCode={404} />;
 		}
 
@@ -46,10 +52,11 @@ class Ads extends React.Component<IAdsProps> {
 						</div>
 					</div>
 					<Ad
-						ad={this.props.ad}
+						ad={this.props.response.ad}
 						categories={this.props.categories}
+						similar={this.props.response.similars}
 					/>
-					<SellerModal seller={this.props.ad.user} />
+					<SellerModal seller={this.props.response.ad.user} />
 					<Footer />
 				</SetCategories>
 			</React.Fragment>

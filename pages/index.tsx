@@ -7,13 +7,13 @@ import { withI18next } from '../common/lib/withI18next';
 import Header from '../client/ssr/blocks/header/Header';
 import Navbar from '../client/ssr/blocks/navbar/Navbar';
 import Search from '../client/ssr/blocks/search/Search';
-import ListOfAds from '../client/ssr/blocks/list-of-ads/ListOfAds';
 import { ToastContainer } from 'react-toastify';
 import { IAds } from 'client/common/ads/interface';
 import { SetCategories } from 'client/ssr/blocks/categories/context';
-import { ICategories } from 'client/ssr/blocks/categories/interface';
 import Categories from 'client/ssr/blocks/categories/Categories';
 import Footer from 'client/ssr/blocks/footer/Footer';
+import { ICategories } from 'client/common/categories/interface'
+import Ads from 'client/ssr/blocks/ads/Ads';
 
 const isServer: boolean = typeof window === 'undefined';
 
@@ -24,19 +24,21 @@ if (isServer) {
 interface IIndexProps {
 	t: any;
 	categories: ICategories[];
-	ads: IAds[];
+    ads: IAds[];
+    location: any;
 }
 
 export class Index extends React.Component<IIndexProps> {
 	static async getInitialProps({ query }) {
 		return ({
-			ads: query.ads,
+            ads: query.ads,
+            location: query.location,
 			categories: query.categories,
 		});
 	}
 
 	render() {
-		const { categories } = this.props;
+		const { categories, location } = this.props;
 		return (
 			<React.Fragment>
 				<SetCategories categories={categories}>
@@ -47,7 +49,7 @@ export class Index extends React.Component<IIndexProps> {
 						/>
 						<title>Index page</title>
 					</Head>
-					<Header />
+					<Header location={location} />
 					<div className='header_bottom p-y-20'>
 						<div className='container'>
 							<Navbar />
@@ -55,12 +57,12 @@ export class Index extends React.Component<IIndexProps> {
 						</div>
 					</div>
 					<Categories />
-					<ListOfAds
+					<Ads
 						title='Vip ads'
 						ads={this.props.ads}
 					/>
 
-					<ListOfAds
+					<Ads
 						title='Houses, villas, cottages'
 						ads={this.props.ads}
 					/>
