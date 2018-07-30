@@ -5,8 +5,6 @@ import {IUserActions, UserActions} from 'client/common/user/actions';
 import {bindModuleAction} from 'client/common/user/utils';
 import {connect, Dispatch} from 'react-redux';
 
-require('./ResetPasswordModal.sass');
-
 export interface IProps {
 	userActions: IUserActions;
 }
@@ -51,13 +49,13 @@ class ResetPasswordModal extends React.Component<IProps & IState> {
 				name={ModalNames.forgotPassword}
 				useOnRequestClose={true}
 			>
-				<div className='forgot-password-modal'>
-					<div className='d-block text-center'>
+				<div className='auth-modal'>
+					<div className='text-center p-40'>
 						<h1 className='m-b-30'>Reset password</h1>
 						<h4 className='grey-text p-x-10'>Enter your email address, secret code and new password</h4>
 					</div>
 					<div className='login-form'>
-						<div className='form-group row big-input'>
+						<div className='form-group row auth-input__wrapper'>
 							<label
 								className='col-sm-5 col-form-label'
 								htmlFor='email'
@@ -72,10 +70,9 @@ class ResetPasswordModal extends React.Component<IProps & IState> {
 								name='email'
 								required
 								placeholder='Enter email'
-								autoComplete='off'
 							/>
 						</div>
-						<div className='form-group row big-input'>
+						<div className='form-group row auth-input__wrapper'>
 							<label
 								className='col-sm-5 col-form-label'
 								htmlFor='tel'
@@ -93,7 +90,7 @@ class ResetPasswordModal extends React.Component<IProps & IState> {
 								autoComplete='off'
 							/>
 						</div>
-						<div className='form-group row big-input'>
+						<div className='form-group row auth-input__wrapper'>
 							<label
 								className='col-sm-5 col-form-label'
 								htmlFor='password'
@@ -112,7 +109,7 @@ class ResetPasswordModal extends React.Component<IProps & IState> {
 							/>
 						</div>
 						<div
-							className='form-group row big-input'
+							className='form-group row auth-input__wrapper'
 						>
 							<label
 								className='col-sm-5 col-form-label'
@@ -131,9 +128,9 @@ class ResetPasswordModal extends React.Component<IProps & IState> {
 								autoComplete='off'
 							/>
 						</div>
-						<div className='form-group col-sm-12 p-x-40 m-t-40'>
+						<div className='auth-modal-btn__container'>
 							<button
-								className='btn orange-btn big-btn'
+								className='btn orange-btn auth-modal-btn'
 								onClick={this.onSubmit}
 							> Confirm
 							</button>
