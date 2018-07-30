@@ -36,13 +36,13 @@ class LoginForm extends React.Component<IProps, IState> {
 		this.setState({
 			fields: { ...this.state.fields, [id]: value },
 		});
-	}
+	};
 
 	onRememberMe = event => {
 		this.setState({
 			isRememberMe: event.target.checked,
 		});
-	}
+	};
 
 	onLogin = () => {
 		const { email, password } = this.state.fields;
@@ -52,11 +52,11 @@ class LoginForm extends React.Component<IProps, IState> {
 			password,
 			isRememberMe,
 		});
-	}
+	};
 
 	onForgot = () => {
 		showSendCodeToEmailModal();
-	}
+	};
 
 	render() {
 		return (

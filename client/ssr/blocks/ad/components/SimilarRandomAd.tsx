@@ -14,7 +14,10 @@ class SimilarRandomAd extends Component<ISimilarRandomProps, ISimilarRandomState
 							<a className='similar-ad__title'>{this.props.title}</a>
 						</Link>
 						<br/>
-						<span>{this.props.description}</span>
+						{
+							this.props.description.length > 65 ? <span>{this.props.description.slice(0, 65) + '...'}</span>
+								: <span>{this.props.description}</span>
+						}
 						<span className='badge badge-secondary d-inline-block bg-orange'>
 							<NumberFormat
 								value={this.props.price}
