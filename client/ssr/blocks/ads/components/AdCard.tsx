@@ -80,22 +80,23 @@ class  AdCard extends React.Component<IProps> {
 	}
 
 	render(){
+		const { ads } = this.props;
 		return (
 			<div className='ad__card'>
 				<div className='ad__img'>
 					{ this.isActive ? this.activeLike : this.noActiveLike }
 					<img
-						src={extractPreviewImage(this.props.ads)}
+						src={extractPreviewImage(ads)}
 						alt='Dogs'
 					/>
 				</div>
 				<div className='ad__info'>
-					<Link href={`/ad/${this.props.ads.id}`}>
-						<a><h6 className='ad__title'>{this.props.ads.title}</h6></a>
+					<Link href={`/ad/${ads.id}`}>
+						<a><h6 className='ad__title'>{ads.title}</h6></a>
 					</Link>
-					<span>{this.props.ads.price}</span>
-					<span>{this.props.ads.description}</span>
-					<span>{this.props.ads.updated_at}</span>
+					<span>{ads.price}</span>
+					<span>{ads.description.slice(0, 110) + '...'}</span>
+					<span>{ads.updated_at}</span>
 				</div>
 			</div>
 		);

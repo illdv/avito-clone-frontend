@@ -15,6 +15,7 @@ export interface IResponseCategories {
 export interface ICategory {
 	id: string;
 	title: string;
+	slug: string;
 	description: string;
 	parent_id: string;
 	total_ads_count: number;

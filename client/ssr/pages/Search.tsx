@@ -29,7 +29,7 @@ class SearchPage extends React.Component<ISearchPageProp> {
 					this.props.search.length > 0
 					?
 						<Ads
-							title={'Search result'}
+							title={`Search result (${this.props.search.length})`}
 							ads={this.props.search}
 						/>
 					: <EmptySearch />
