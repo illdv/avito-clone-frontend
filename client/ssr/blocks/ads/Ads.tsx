@@ -17,11 +17,11 @@ export interface IAdsProps {
 	userActions: IUserActions;
 }
 
-class Ads extends React.PureComponent<IAdsProps> {
+class Ads extends React.Component<IAdsProps> {
 	addToFavorites = (id: string) => {
 		this.props.userActions.selectFavorite.REQUEST({ id });
-
 	};
+
 
 	render() {
 		const {ads, title} = this.props;
@@ -41,7 +41,7 @@ class Ads extends React.PureComponent<IAdsProps> {
 									key={ad.id}
 									className='col-md-4 col-lg-3'
 								>
-									<AdCard user={this.props.user} ads={ad} addToFavorites={this.addToFavorites}/>
+									<AdCard favoritesIds={this.props.user.favorites_ids} ads={ad} addToFavorites={this.addToFavorites}/>
 								</div>
 							))
 						}

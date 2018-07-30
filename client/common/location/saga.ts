@@ -20,6 +20,8 @@ import {
 	CHANGE_REGION_LOCAL,
 	CHANGE_REGION_SESSION,
 } from './module';
+import { UserActions } from 'client/common/user/actions';
+import { getFavoritesFromLocalStorage } from 'client/common/user/CustomStorage';
 
 function* sagaInitializeLocation(action) {
 	const payload: ILocationStoreState = action.payload;
@@ -29,6 +31,9 @@ function* sagaInitializeLocation(action) {
 			showLocationModal(ModalNames.location);
 		}
 	}
+	const favoritesIds = yield call(getFavoritesFromLocalStorage);
+	console.log(favoritesIds);
+	yield put(UserActions.setFavorite.SUCCESS({ favoritesIds }));
 }
 
 function* sagaChangeCountryForSession(action) {

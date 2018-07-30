@@ -36,7 +36,6 @@ function* getProfile(action: Action<{ token: string }>) {
 		const token                          = action.payload.token;
 		const favorites_ids                  = user.favorites_ids;
 
-		yield call(synchronizeFavoritesLocalStorage, favorites_ids);
 		yield put(UserActions.getProfile.SUCCESS(user));
 		yield put(UserActions.login.SUCCESS({
 			user: {
@@ -154,15 +153,16 @@ function* selectFavorite(action) {
 		const favoriteAds = yield call(getFavoritesFromLocalStorage);
 		indexInFavorites  = favoriteAds.indexOf(selectedAdId);
 		if (indexInFavorites === -1) {
-			yield call(saveFavoriteSaga, favoriteAds, selectedAdId, token)
+			yield call(saveFavoriteSaga, favoriteAds, selectedAdId, token);
 		} else {
-			yield call(removeFavoriteSaga, favoriteAds, selectedAdId, token, indexInFavorites)
+			yield call(removeFavoriteSaga, favoriteAds, selectedAdId, token, indexInFavorites);
 		}
 	} catch (e) {
-		yield call(saveFavoriteSaga, undefined, selectedAdId, token)
+		yield call(saveFavoriteSaga, undefined, selectedAdId, token);
 	}
 
 }
+
 function* saveFavoriteSaga(favoriteAds, selectedAdId, token) {
 	let favoritesIds;
 	if (favoriteAds) {
@@ -180,6 +180,7 @@ function* saveFavoriteSaga(favoriteAds, selectedAdId, token) {
 		}
 	}
 }
+
 function* removeFavoriteSaga(favoriteAds, selectedAdId, token, indexInFavorites) {
 	const favoritesIds = [
 		...favoriteAds.slice(0, indexInFavorites),
@@ -193,7 +194,27 @@ function* removeFavoriteSaga(favoriteAds, selectedAdId, token, indexInFavorites)
 		} catch (e) {
 			yield call(errorHandler, e);
 		}
-		yield call(synchronizeLocalStorage, changedFavoriteAds);
+	}
+}
+
+function* removeFavoriteAds(action) {
+	const selectedFavoriteIds     = action.payload.favoritesId;
+	const token                   = yield select(getToken);
+	const localStorageFavoriteIds = yield call(getFavoritesFromLocalStorage);
+	const favoritesIds            = localStorageFavoriteIds.filter(storageId => {
+		return selectedFavoriteIds.indexOf(storageId) === -1;
+	});
+
+	yield put(UserActions.removeFavorite.SUCCESS({ favoritesIds }));
+	yield put(UserActions.removeFavoritesAds.SUCCESS({ favoritesIds: selectedFavoriteIds }));
+	yield call(synchronizeFavoritesLocalStorage, favoritesIds);
+
+	if (token) {
+		try {
+			yield call(UserAPI.deleteFavorites, { favorites_ids: favoritesIds });
+		} catch (e) {
+			yield call(errorHandler, e);
+		}
 	}
 }
 
@@ -205,29 +226,6 @@ function* getFavorites() {
 		yield put(UserActions.getFavoritesAds.SUCCESS({ favoritesAds }));
 	} catch (e) {
 		yield call(errorHandler, e);
-	}
-}
-
-function* removeFavoriteAds(action) {
-	const favoritesIDs = action.payload.favoritesId;
-	const token        = yield select(getToken);
-	for (let i = 0; i <= favoritesIDs.length - 1; ++i) {
-		const id = favoritesIDs[i];
-		yield put(UserActions.removeFavoritesAd.REQUEST({ id }));
-		const favoriteIds              = yield select(getUserFavoriteIds);
-		const indexInFavorites: number = favoriteIds.indexOf(id);
-		if (indexInFavorites !== -1) {
-			yield put(UserActions.removeFavorite.REQUEST({ indexInFavorites }));
-		}
-		const changedFavoriteIds = yield select(getUserFavoriteIds);
-		yield call(synchronizeFavoritesLocalStorage, changedFavoriteIds);
-	}
-	if (token) {
-		try {
-			yield call(UserAPI.deleteFavorites, { favorites_ids: favoritesIDs });
-		} catch (e) {
-			yield call(errorHandler, e);
-		}
 	}
 }
 
