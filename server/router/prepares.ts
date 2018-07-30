@@ -38,8 +38,20 @@ export const ads: prepareMethod = async () => {
 };
 
 export const ad: prepareMethod = async ({ params }) => {
+	const appends = ['total_visits', 'today_visits', 'next_ad'];
+	const loads = ['city', 'city.country'];
+	const list = [];
+	appends.forEach(append => {
+		const template = `appends[]=${append}`;
+		list.push(template);
+	});
+	loads.forEach(load => {
+		const tmp = `loads[]=${load}`;
+		list.push(tmp);
+	});
+	const string = list.join('&');
 	try {
-		const response = await instance.get(`/ads/${ params.id }`);
+		const response = await instance.get(`/ads/${ params.id }?${string}`);
 		return response.data;
 	} catch (error) {
 		console.log(error);
