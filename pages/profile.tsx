@@ -1,8 +1,8 @@
 import React from 'react';
 import Head from 'next/head';
-
 import { types } from 'redux-act';
-import { ToastContainer } from 'react-toastify';
+
+import Profile from 'client/spa/profile/Root';
 
 const isServer: boolean = typeof window === 'undefined';
 
@@ -14,21 +14,15 @@ export default class extends React.Component {
 	static async getInitialProps({ query }) {
 		return { location: query.location };
 	}
-	render(){
+	render() {
 		return (
-			<div>
-				<React.Fragment>
-					<Head>
-						<meta
-							property='og:description'
-							content='Content'
-						/>
-						<title>Index page</title>
-					</Head>
-					<Profile />
-					<ToastContainer />
-				</React.Fragment>
-			</div>
+			<>
+				<Head>
+					<meta property='og:description' content='Content' />
+					<title>Profile page</title>
+				</Head>
+				<Profile />
+			</>
 		);
 	}
 }

@@ -1,7 +1,9 @@
 import Spinner from './Spinner';
 
+require('./OverlaySpinner.sass');
+
 export default () => (
-	<div className='overlay' >
+	<div className='spinner-overlay' >
 		<Spinner />
 	</div>
 );

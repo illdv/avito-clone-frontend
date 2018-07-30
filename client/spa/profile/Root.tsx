@@ -1,7 +1,7 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 
-import 
+import OverlaySpinner from 'client/common/blocks/spinner/OverlaySpinner';
 
 require('client/spa/pages/Helpers.sass');
 require('client/spa/pages/ToolBar.sass');
@@ -11,9 +11,9 @@ require('client/spa/pages/ProfileSettings/ProfileSettings.sass');
 require('client/ssr/blocks/footer/Footer.sass');
 require('client/spa/pages/favorites/FavoritesPage.sass');
 
-const Content = dynamic(import('client/spa/profile/Root') as any, {
+const Content = dynamic(import('client/spa/profile/Router') as any, {
 	ssr: false,
-	loading: () => <h1>Loading SPA</h1>,
+	loading: () => <OverlaySpinner />,
 });
 
 class Profile extends React.Component {

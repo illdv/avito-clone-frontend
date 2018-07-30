@@ -1,5 +1,9 @@
+import { createAction, ComplexActionCreator1 } from 'redux-act';
+
 import { createActionCreator, IAsyncAction } from './utils';
 import { IAds, IFavoritesAds } from 'client/common/ads/interface';
+
+const setToken = createAction<string>('SET_TOKEN');
 
 const createAsyncAction = createActionCreator('USER');
 
@@ -22,10 +26,11 @@ const setFavorite    = createAsyncAction('SET_FAVORITE');
 const removeFavorite = createAsyncAction('REMOVE_FAVORITE');
 
 export interface IUserActions {
-	register: IAsyncAction<IRegisterRequest>;
+	setToken: ComplexActionCreator1<string, string>;
+	register: IAsyncAction<IRegisterRequest, IAuthResponse>;
 	initUser: IAsyncAction<{}, { token: string }>;
-	getProfile: IAsyncAction<{ token: string }, IUser>;
-	login: IAsyncAction<ILoginRequest, { user: IUser, isRememberMe: boolean }>;
+	getProfile: IAsyncAction<{ token: string }, IGetProfileResponse>;
+	login: IAsyncAction<ILoginRequest, IAuthResponse>;
 	logout: IAsyncAction;
 	changeProfile: IAsyncAction<IChangeProfileRequest, IChangeProfileResponse>;
 	changePassword: IAsyncAction<IChangePasswordRequest>;
@@ -34,17 +39,18 @@ export interface IUserActions {
 	deleteAccount: IAsyncAction;
 
 	getFavoritesAds: IAsyncAction<{}, { favoritesAds: IAds[] }>;
-	removeFavoritesAds: IAsyncAction<{}, { favoritesIds: string[] }>;
-	removeFavoritesAd: IAsyncAction<{ id: any }, { favoritesIds: string[] }>;
+	removeFavoritesAds: IAsyncAction<{}, { favoritesIds: number[] }>;
+	removeFavoritesAd: IAsyncAction<{ id: any }, { favoritesIds: number[] }>;
 
-	selectFavorite: IAsyncAction<{ id: string }>;
-	setFavorite: IAsyncAction<{ id: string }, { favoritesIds: string[] }>;
-	removeFavorite: IAsyncAction<{}, { favoritesIds: string[] }>;
+	selectFavorite: IAsyncAction<{ id: number }>;
+	setFavorite: IAsyncAction<{ id: number }, { favoritesIds: number[] }>;
+	removeFavorite: IAsyncAction<{}, { favoritesIds: number[] }>;
 }
 
 export const UserActions: IUserActions = {
 	login,
 	logout,
+	setToken,
 	register,
 	getProfile,
 	initUser,

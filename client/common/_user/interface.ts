@@ -1,4 +1,4 @@
-interface IUser {
+export interface IUser {
 	id: number;
 	name: string;
 	email: string;
@@ -10,7 +10,7 @@ interface IUser {
 	image: IImage;
 }
 
-interface IImage {
+export interface IImage {
 	id: string;
 	imageable_type: string;
 	imageable_id: number;
@@ -21,20 +21,20 @@ interface IImage {
 	file_url: string;
 }
 
-interface ILoginRequest {
+export interface ILoginRequest {
 	email: string;
 	password: string;
 	isRememberMe: boolean;
 }
 
-interface ILoginResponse {
+export interface ILoginResponse {
 	token: string;
 	token_type: string;
 	expires_in: number;
 	user: IUser;
 }
 
-interface IRegisterRequest {
+export interface IRegisterRequest {
 	email: string;
 	name: string;
 	phone: string;
@@ -42,20 +42,20 @@ interface IRegisterRequest {
 	password_confirmation: string;
 }
 
-interface IChangePasswordRequest {
+export interface IChangePasswordRequest {
 	old_password: string;
 	password: string;
 	password_confirmation: string;
 }
 
-interface IChangeProfileRequest {
+export interface IChangeProfileRequest {
 	name: string;
 	email: string;
 	phone: string;
 	image?: any;
 }
 
-interface IChangeProfileResponse {
+export interface IChangeProfileResponse {
 	id: number;
 	name: string;
 	email: string;
@@ -66,20 +66,20 @@ interface IChangeProfileResponse {
 	image: IImage;
 }
 
-interface ISendCodeToEmailRequest {
+export interface ISendCodeToEmailRequest {
 	email: string;
 }
 
-interface IResetPasswordByCodeRequest {
+export interface IResetPasswordByCodeRequest {
 	email: string;
 	token: string;
 	password: string;
 	password_confirmation: string;
 }
-interface IFavoritesRequest {
+export interface IFavoritesRequest {
 	favorites_ids: string[];
 }
-interface IPostFavoritesRequest extends IFavoritesRequest{
+export interface IPostFavoritesRequest extends IFavoritesRequest{
 }
-interface IDeleteFavoritesRequest extends IFavoritesRequest{
+export interface IDeleteFavoritesRequest extends IFavoritesRequest{
 }

@@ -1,9 +1,9 @@
 import React from 'react';
 
+require('./Spinner.sass');
+
 const Spiner = () => (
-	<h1>
-		Spinner
-	</h1>
+	<div className='spinner' />
 );
 
 export default Spiner;
