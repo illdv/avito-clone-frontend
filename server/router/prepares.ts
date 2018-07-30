@@ -37,9 +37,21 @@ export const ads: prepareMethod = async () => {
 	return axiosData.data.data;
 };
 
-export  const ad: prepareMethod = async ({ params }) => {
+export const ad: prepareMethod = async ({ params }) => {
+	const appends = ['total_visits', 'today_visits', 'next_ad'];
+	const loads = ['city', 'city.country'];
+	const list = [];
+	appends.forEach(append => {
+		const template = `appends[]=${append}`;
+		list.push(template);
+	});
+	loads.forEach(load => {
+		const tmp = `loads[]=${load}`;
+		list.push(tmp);
+	});
+	const string = list.join('&');
 	try {
-		const response = await instance.get(`/ads/${ params.id }`)
+		const response = await instance.get(`/ads/${ params.id }?${string}`);
 		return response.data;
 	} catch (error) {
 		console.log(error);
@@ -52,7 +64,7 @@ export const categories: prepareMethod = async () => {
 };
 
 const getAdsByParams = async params => {
-	const response = await instance.get(`/ads/?${ queryString.stringify(params) }`)
+	const response = await instance.get(`/ads/?${ queryString.stringify(params) }`);
 	return response.data;
 };
 
@@ -118,8 +130,8 @@ export const location: prepareMethod = async (sugar, req) => {
 	};
 };
 
-export const category: prepareMethod = async ({params, query, path}, req) => {
-	const { categorySlug } = params;
+export const category: prepareMethod = async ({ params, query, path }, req) => {
+	const { categorySlug }                = params;
 	const { idCountry, idRegion, idCity } = getLocationsIdByRequest(req);
 
 	let paramsForReqCategory = null;
@@ -135,15 +147,15 @@ export const category: prepareMethod = async ({params, query, path}, req) => {
 	/* const { data: categories } = paramsForReqCategory
 		? await instance.get(`/categories/?${ queryString.stringify(paramsForReqCategory) }`)
 		: await instance.get('/categories'); */
-	
+
 	const { data: categories } = await instance.get('/categories');
 
 	try {
-		const categoryQueue    = findCategoriesQueueBySlug(categories, categorySlug);
-		const breadcrumbs      = categoryQueueToBreadcrumbsFormat(categoryQueue);
-		const currentCategory  = getCurrentCategoryByQueue(categoryQueue);
-		const mainCategory     = getMainCategory(categoryQueue);
-		const mainCategoryId   = getIdFromCategory(mainCategory);
+		const categoryQueue   = findCategoriesQueueBySlug(categories, categorySlug);
+		const breadcrumbs     = categoryQueueToBreadcrumbsFormat(categoryQueue);
+		const currentCategory = getCurrentCategoryByQueue(categoryQueue);
+		const mainCategory    = getMainCategory(categoryQueue);
+		const mainCategoryId  = getIdFromCategory(mainCategory);
 
 		let subcategories = [];
 		const adGroupList = [];
@@ -152,7 +164,7 @@ export const category: prepareMethod = async ({params, query, path}, req) => {
 
 		if (currentCategory) {
 			reqForVipAds.category = currentCategory.id;
-			subcategories = subcategories.concat(getSubcategoryByCategoryQueue(categoryQueue));
+			subcategories         = subcategories.concat(getSubcategoryByCategoryQueue(categoryQueue));
 		} else {
 			subcategories = subcategories.concat(categories);
 		}
@@ -227,7 +239,7 @@ export const getCountries: prepareMethod = async (sugar, req) => {
 		const response = await getInstanseWithLanguageByReq(req).get('/countries');
 		return response.data;
 	} catch (err) {
-		console.log(err)
+		console.log(err);
 		return [];
 	}
 };
@@ -237,7 +249,7 @@ export const getRegions: prepareMethod = async ({ query }, req) => {
 		const response = await getInstanseWithLanguageByReq(req).get(`/countries/${query.id}/regions/%20`);
 		return response.data;
 	} catch (err) {
-		console.log(err)
+		console.log(err);
 		return [];
 	}
 };
@@ -247,7 +259,7 @@ export const getCities: prepareMethod = async ({ query }, req) => {
 		const response = await getInstanseWithLanguageByReq(req).get(`/regions/${query.id}/cities/%20`);
 		return response.data;
 	} catch (err) {
-		console.log(err)
+		console.log(err);
 		return [];
 	}
 };
@@ -257,7 +269,7 @@ export const search: prepareMethod = async ({ query }, req) => {
 		const response = await getAdsByParams(query || {});
 		return response.data;
 	} catch (err) {
-		console.log(err)
+		console.log(err);
 		return [];
 	}
 };

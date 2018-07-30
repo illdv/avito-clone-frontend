@@ -51,14 +51,14 @@ reducer.on(UserActions.setFavorite.SUCCESS, (state, payload): IUserState => ({
 	...state,
 	user: {
 		...state.user,
-		favorites_ids: payload.favoritesIds
+		favorites_ids: payload.favoritesIds || []
 	},
 }));
 reducer.on(UserActions.removeFavorite.SUCCESS, (state, payload): IUserState => ({
 		...state,
 		user: {
 			...state.user,
-			favorites_ids: payload.favoritesIds
+			favorites_ids: payload.favoritesIds || []
 		},
 	})
 );
@@ -77,7 +77,7 @@ reducer.on(UserActions.changeProfile.SUCCESS, (state, payload): IUserState => ({
 
 reducer.on(UserActions.getFavoritesAds.SUCCESS, (state, payload): IUserState => ({
 	...state,
-	favoritesAds: { ...payload.favoritesAds },
+	favoritesAds: { ...payload.favoritesAds || [] },
 }));
 
 reducer.on(UserActions.removeFavoritesAds.SUCCESS, (state, payload): IUserState => {
