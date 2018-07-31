@@ -1,4 +1,4 @@
-import { createActionCreator, IAsyncAction } from '../utils';
+import { createActionCreator, IAsyncAction } from '../../utils';
 
 const createAsyncAction = createActionCreator('USER');
 

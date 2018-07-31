@@ -1,4 +1,4 @@
-import { createActionCreator, IAsyncAction } from '../utils';
+import { createActionCreator, IAsyncAction } from '../../utils';
 import { IAds } from 'client/common/ads/interface';
 
 const createAsyncAction = createActionCreator('FAVORITES');

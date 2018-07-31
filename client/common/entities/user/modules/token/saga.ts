@@ -2,13 +2,13 @@ import { takeEvery } from 'redux-saga/effects';
 import { Action } from 'redux-act';
 import axios from 'axios';
 
-import { CustomStorage } from '../CustomStorage';
+import { CustomStorage } from '../../CustomStorage';
 
 import { pushInRouter } from 'client/common/utils/utils';
 
 import { TokenActions } from './actions';
 
-function* saveTokenInStore(action: Action<{ token: string, isRememberMe: boolean }>) {
+function saveTokenInStore(action: Action<{ token: string, isRememberMe: boolean }>) {
 	const { token, isRememberMe } = action.payload;
 
 	if (isRememberMe) {
@@ -19,7 +19,7 @@ function* saveTokenInStore(action: Action<{ token: string, isRememberMe: boolean
 	axios.defaults.headers.common.authorization = `Bearer ${token}`;
 }
 
-function* clearToken() {
+function clearToken() {
 	CustomStorage.clear();
 	axios.defaults.headers.common.authorization = ``;
 	pushInRouter('/');

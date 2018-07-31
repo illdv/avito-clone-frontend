@@ -5,11 +5,11 @@ import { FavoritesActions } from './actions';
 import { UserAPI } from 'client/common/api/userAPI';
 import { errorHandler } from 'client/common/store/errorHandler';
 import { IAds } from 'client/common/ads/interface';
-import { IRootState } from '../../../store/storeInterface';
+import { IRootState } from '../../../../store/storeInterface';
 import {
 	getFavoritesFromLocalStorage,
 	synchronizeFavoritesLocalStorage,
-} from '../CustomStorage';
+} from '../../CustomStorage';
 
 // TODO
 export const getUserFavoriteIds = (state: IRootState): number[] => state.user.favorites.ids;
