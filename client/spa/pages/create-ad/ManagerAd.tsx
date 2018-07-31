@@ -62,7 +62,7 @@ class ManagerAd extends React.Component<IProps, IState> {
 				sellerInfoFields: {
 					name: { disable: true, value: this.props.user.name },
 					email: { disable: true, value: this.props.user.email },
-					phone: { disable: false, value: this.props.user.name },
+					phone: { disable: false, value: this.props.user.phone },
 				},
 				adInfoFields: {
 					title: { disable: false, value: '' },
