@@ -41,6 +41,17 @@ export interface Image {
 	file_url: string;
 }
 
+export interface IOption {
+	category_id: number;
+	created_at: string;
+	deleted_at: string|null;
+	id: number;
+	name: string;
+	pivot: IPivot;
+	type_id: number;
+	updated_at: string;
+}
+
 export interface IAds {
 	id: string;
 	type_id: number;
@@ -60,11 +71,16 @@ export interface IAds {
 	pivot?: IPivot;
 	city_id: number;
 	type?: IType;
-	options?: any[];
+	options?: IOption[];
 	latitude?: number;
 	longitude?: number;
 	phone?: string;
 	images?: Image[];
+}
+
+export interface IOptionValue {
+	id: number;
+	value: string;
 }
 
 export interface ICreateAdRequest {
@@ -79,6 +95,7 @@ export interface ICreateAdRequest {
 	category_id: string;
 	phone: string;
 	images: IAttachedImage[];
+	options: IOptionValue[];
 }
 
 export interface IEditAdRequest {
@@ -94,6 +111,7 @@ export interface IEditAdRequest {
 	latitude: number;
 	phone: string;
 	images: IAttachedImage[];
+	options: IOptionValue[];
 }
 
 export interface IFavoritesAds {
