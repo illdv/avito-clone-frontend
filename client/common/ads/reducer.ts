@@ -52,4 +52,9 @@ reducer.on(AdsActions.selectForEdit.REQUEST, (state, payload): IAdsState => ({
 	currentPage: PageName.Edit,
 }));
 
+reducer.on(AdsActions.selectForEdit.SUCCESS, (state, payload): IAdsState => ({
+	...state,
+	selectedId: null,
+}));
+
 export default reducer;

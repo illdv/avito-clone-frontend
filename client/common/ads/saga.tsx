@@ -69,6 +69,7 @@ function* edit(action: Action<IAds>) {
 		yield call(AdsAPI.edit, action.payload);
 		yield put(AdsActions.edit.SUCCESS({}));
 		yield put(AdsActions.getMy.REQUEST({}));
+		yield delay(500);
 		Toasts.info('Ad saved');
 	} catch (e) {
 		yield call(errorHandler, e);

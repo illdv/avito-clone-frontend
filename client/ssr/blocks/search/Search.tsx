@@ -11,6 +11,8 @@ import { ILocationStoreState } from 'client/common/location/module';
 
 import { showLocationModal } from 'client/ssr/modals/location/locationModalTriggers';
 import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
+import { IOption } from '../../../spa/pages/create-ad/interface';
+import { ICategory } from '../../../common/categories/interface';
 
 require('./Search.sass');
 
@@ -24,6 +26,7 @@ interface ISearchState {
 	searchString: string;
 	activeCategories: any;
 	duplicateCategories: any;
+	options: IOption[]
 }
 
 const mapStateToProps = (state: IRootState) => ({
@@ -31,8 +34,13 @@ const mapStateToProps = (state: IRootState) => ({
 	user: state.user,
 });
 
-const getOption = option => (
-	<input name='name' className='search search__options form-control' placeholder={option.name}/>
+const getOption = (option: IOption, creatorChangeOption) => (
+	<input
+		className='search search__options form-control'
+		value={option.value}
+		placeholder={option.item.name}
+		onChange={ creatorChangeOption(option.item.id) }
+	/>
 );
 
 class Search extends Component<ISearchProps, ISearchState> {
@@ -49,9 +57,9 @@ class Search extends Component<ISearchProps, ISearchState> {
 			duplicateCategories: this.props.categories,
 			activeCategories: [],
 			searchString: search || '',
+			options: [],
 		};
 	}
-
 
 	onSelectCategory = category => {
 		if (category) {
@@ -77,6 +85,7 @@ class Search extends Component<ISearchProps, ISearchState> {
 
 				this.setState({
 					activeCategories: newCategories,
+					options: this.getCorrectOptions(category),
 				});
 			} else {
 				throw new Error('Parent no found');
@@ -88,6 +97,29 @@ class Search extends Component<ISearchProps, ISearchState> {
 			});
 		}
 
+	}
+
+	getCorrectOptions = (category: ICategory): IOption[] => {
+		return category.total_options.map(option => ({
+			value: '',
+			item: option,
+		}));
+	}
+
+	creatorChangeOption = (id: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
+		const newOptions = this.state.options.map(option => {
+			if (option.item.id === id) {
+				return {
+					value: e.target.value,
+					item: option.item,
+				};
+			} else {
+				return option;
+			}
+		}) 
+		this.setState({
+			options: newOptions,
+		});
 	}
 
 	get subcategories() {
@@ -180,7 +212,16 @@ class Search extends Component<ISearchProps, ISearchState> {
 		}); */
 
 		// alert(queryString.stringify(query));
-		window.location.href = `/search?${ queryString.stringify(query) }`;
+
+		let optionsString = '&';
+
+		this.state.options.forEach(option => {
+			if (option.value.length > 0) {
+				optionsString += `options[${option.item.id}]=${option.value}`;
+			}
+		});
+
+		window.location.href = `/search?${queryString.stringify(query)}${optionsString.length > 1 ? optionsString : '' }`;
 	}
 
 	render() {
@@ -242,9 +283,9 @@ class Search extends Component<ISearchProps, ISearchState> {
 						}
 						{
 							this.lastSubcategory &&
-							this.lastSubcategory.total_options.map(option => (
-								<div key={option.id} className='form-group col-6 col-md-3'>
-									{getOption(option)}
+							this.state.options.map(option => (
+								<div key={option.item.id} className='form-group col-6 col-md-3'>
+									{getOption(option, this.creatorChangeOption)}
 								</div>
 							))
 						}
