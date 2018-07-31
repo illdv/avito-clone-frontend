@@ -1,3 +1,5 @@
+import { ITotalOptions } from '../../../common/categories/interface';
+
 export interface IAttachedImage {
 	id?: string;
 	isBackend: boolean;
@@ -39,4 +41,9 @@ export interface ILocation {
 	name: string;
 	lat: number;
 	lng: number;
+}
+
+export interface IOption {
+	value: string;
+	item: ITotalOptions;
 }
