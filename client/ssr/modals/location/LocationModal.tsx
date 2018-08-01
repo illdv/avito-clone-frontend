@@ -1,4 +1,5 @@
 import React from 'react';
+import Select from 'react-select';
 
 import {ModalNames} from 'client/common/modal-juggler/modalJugglerInterface';
 import Modal from 'client/common/modal-juggler/Modal';
@@ -11,8 +12,7 @@ import {
 	changeRegionSession,
 	ILocationStoreState,
 } from 'client/common/location/module';
-import DataList from './components/DataList';
-import {hideLocationModal} from './locationModalTriggers';
+import { hideLocationModal } from './locationModalTriggers';
 
 export interface ILocationModalProps {
 	name: ModalNames;
@@ -27,30 +27,51 @@ export interface ILocationModalProps {
 	changeCountry: (id: number) => void;
 }
 
+interface ISelectedOption {
+	value: number;
+	label: string;
+}
+
 export class LocationModal extends React.Component<ILocationModalProps> {
 
-	get prepareDataForCountry() {
+	initSelectedOption = (id: number, options: ISelectedOption[]): ISelectedOption|null => {
+		return options.filter(option => option.value === id)[0] || null;
+	}
+
+	get prepareDataForCountryToOptions() {
 		const result = this.props.countries.map(item => ({
-			id: item.country_id,
-			title: item.title,
+			value: item.country_id,
+			label: item.title,
 		}));
 		return [...result];
 	}
 
-	get prepareDataForRegion() {
+	onSelectCountry = (selectedCountryOption: ISelectedOption): void => {
+		this.props.changeCountry(selectedCountryOption.value);
+	}
+
+	get prepareDataForRegionToOptions() {
 		const result = this.props.regions.map(item => ({
-			id: item.region_id,
-			title: item.title,
+			value: item.region_id,
+			label: item.title,
 		}));
 		return [...result];
 	}
 
-	get prepareDataForCity() {
+	onSelectRegion = (selectedRegionOption: ISelectedOption): void => {
+		this.props.changeRegion(selectedRegionOption.value);
+	}
+
+	get prepareDataForCityToOptions() {
 		const result = this.props.cities.map(item => ({
-			id: item.city_id,
-			title: item.title,
+			value: item.city_id,
+			label: item.title,
 		}));
 		return [...result];
+	}
+
+	onSelectedCity = (selectedCityOption: ISelectedOption): void => {
+		this.props.changeCity(selectedCityOption.value);
 	}
 
 	close = () => {
@@ -58,6 +79,8 @@ export class LocationModal extends React.Component<ILocationModalProps> {
 	}
 
 	render() {
+		const { idCountry, idRegion, idCity } = this.props;
+
 		return (
 			<Modal name={this.props.name} useOnRequestClose={true} autocomplete='off'>
 				<div className='modal-content location-modal'>
@@ -73,50 +96,37 @@ export class LocationModal extends React.Component<ILocationModalProps> {
 								<label htmlFor='chooseCountry' className='col-3 choose-location__label'>
 									Country
 								</label>
-								<DataList
-									name='country'
-									groupClassName='col-9'
-									inputId='chooseCountry'
-									inputClassName='form-control datalist'
-									data={this.prepareDataForCountry}
-									onSelect={this.props.changeCountry}
-									idActive={this.props.idCountry}
+								<Select
+									className='col-9'
+									onChange={this.onSelectCountry}
+									options={this.prepareDataForCountryToOptions}
+									value={this.initSelectedOption(idCountry, this.prepareDataForCountryToOptions)}
 								/>
 							</div>
 							<div className='form-group row align-items-center'>
 								<label htmlFor='chooseState' className='col-3 choose-location__label'>
 									State(region)
 								</label>
-								<DataList
-									name='state'
-									groupClassName='col-9'
-									inputId='chooseState'
-									inputClassName='form-control datalist'
-									data={this.prepareDataForRegion}
-									onSelect={this.props.changeRegion}
-									idActive={this.props.idRegion}
+								<Select
+									className='col-9'
+									onChange={this.onSelectRegion}
+									options={this.prepareDataForRegionToOptions}
+									value={this.initSelectedOption(idRegion, this.prepareDataForRegionToOptions)}
 								/>
 							</div>
 							<div className='form-group row align-items-center'>
 								<label htmlFor='chooseCity' className='col-3 choose-location__label'>
 									City
 								</label>
-								<DataList
-									name='city'
-									groupClassName='col-9'
-									inputId='chooseCity'
-									inputClassName='form-control datalist'
-									data={this.prepareDataForCity}
-									onSelect={this.props.changeCity}
-									idActive={this.props.idCity}
+								<Select
+									className='col-9'
+									onChange={this.onSelectedCity}
+									options={this.prepareDataForCityToOptions}
+									value={this.initSelectedOption(idCity, this.prepareDataForCityToOptions)}
 								/>
 							</div>
 						</form>
-						<div className='text-center'>
-							{this.props.children}
-						</div>
 					</div>
-
 					<div className='modal-footer p-20'>
 						<button type='button' className='btn button orange-btn w-100' onClick={this.close}>Confirm
 							location

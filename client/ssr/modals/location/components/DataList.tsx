@@ -19,6 +19,7 @@ interface DataListProps {
 
 interface DataListState {
 	value: string;
+	isChanged: boolean;
 	error: string|null;
 }
 
@@ -27,8 +28,15 @@ class DataList extends React.Component<DataListProps, DataListState> {
 		super(props, context);
 		this.state = {
 			value: this.active,
+			isChanged: false,
 			error: null,
 		};
+	}
+
+	ref: HTMLInputElement;
+
+	initRef = input => {
+		this.ref = input;
 	}
 
 	get active() {
@@ -38,6 +46,7 @@ class DataList extends React.Component<DataListProps, DataListState> {
 
 	onChange = e => {
 		this.setState({
+			isChanged: true,
 			value: e.target.value,
 		});
 	}
@@ -46,12 +55,18 @@ class DataList extends React.Component<DataListProps, DataListState> {
 		if (this.filtredValue.length > 0 && this.state.value !== '') {
 			if (this.filtredValue[0].title !== this.state.value) {
 				this.setState({
+					isChanged: false,
 					value: this.filtredValue[0].title,
 				});
-			} 
+			} else {
+				this.setState({
+					isChanged: false,
+				});
+			}
 			this.props.onSelect(this.filtredValue[0].id);
 		} else {
 			this.setState({
+				isChanged: false,
 				error: 'No valid',
 			});
 			this.props.onSelect(null);
@@ -79,20 +94,39 @@ class DataList extends React.Component<DataListProps, DataListState> {
 		});
 	}
 
+	get showFiltredValue(): Data[] {
+		if (!this.state.isChanged) {
+			console.log(this.props.data);
+			return this.props.data;
+		}
+
+		return this.props.data.filter((d: Data) => {
+			if (d.title.toLowerCase().includes(this.state.value.toLowerCase())) {
+
+				if (d.title.toLowerCase() !== this.state.value.toLowerCase()) {
+					return true;
+				}
+			}
+			return false;
+		});
+	}
+
 	render() {
 		return (
 			<div className={ this.props.groupClassName || '' }>
 				<input
+					ref={this.initRef}
 					onBlur={this.onBlur}
 					value={ this.state.value }
 					onChange={ this.onChange }
 					id={ this.props.inputId || '' }
 					list={`list-${ this.props.name }`}
 					className={ this.props.inputClassName || '' }
+					autoComplete='off'
 				/>
 				<datalist id={`list-${ this.props.name }`} className='datalist'>
 					{
-						this.filtredValue.map((item, index) => (
+						this.showFiltredValue.map((item, index) => (
 							index <= 10 && <option key={item.id} value={item.title} /> || null
 						))
 					}
