@@ -24,7 +24,7 @@ export function* getProfile(action: Action<{ token: string }>) {
 	}
 }
 
-function* changePassword(action) {
+export function* changePassword(action: Action<{ password: string }>) {
 	try {
 		yield call(UserAPI.changePassword, action.payload);
 		yield put(profileActions.changePassword.SUCCESS({}));
