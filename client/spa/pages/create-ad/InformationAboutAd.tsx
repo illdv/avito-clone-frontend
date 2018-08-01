@@ -12,7 +12,9 @@ import {
 	SellerFieldsNames,
 	IAttachedImage,
 	ILocation,
+	IOption,
 } from './interface';
+import CategoryOptions from './CategoryOptions';
 
 interface IProps {
 	defaultCategoryId: string;
@@ -21,11 +23,13 @@ interface IProps {
 	selectedCategories: ICategory[];
 	sellerInfoFields: ISellerInfoFields;
 	location: ILocation;
+	options: IOption[];
 
 	deleteImage(indes: number): void;
 	onSelectLocation(location: ILocation): void;
 	onUpdateImages(images: IAttachedImage[]): void;
 	onSelectCategories(categories: ICategory[]): void;
+	creatorChangeOptionById(id: number): (e: ChangeEvent<HTMLInputElement>) => void;
 	createtorChangeAdInfoField(name: AdInfoFieldsNames): (e: ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => void;
 	createtorChangeSellerInfoField(name: SellerFieldsNames): (e:ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => void;
 }
@@ -90,6 +94,8 @@ const InformationAboutAd = ({
 	defaultCategoryId,
 	createtorChangeSellerInfoField,
 	location,
+	options,
+	creatorChangeOptionById,
 	onSelectLocation,
 }: IProps) => (
 	<section className='page'>
@@ -164,6 +170,7 @@ const InformationAboutAd = ({
 				<div className='col-lg-12'>
 					<CategoriesSelector
 						defaultCategoryId={ defaultCategoryId }
+						selectedCategories={ selectedCategories }
 						onSelectCategories={ onSelectCategories }
 					/>
 				</div>
@@ -190,6 +197,9 @@ const InformationAboutAd = ({
 					</div>
 				</div>
 			</div>
+
+			<CategoryOptions options={options} creatorChangeOptionById={creatorChangeOptionById} />
+
 			<div className='offer-form'>
 				<Input
 					id={'title'}

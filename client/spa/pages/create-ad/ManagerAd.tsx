@@ -2,7 +2,7 @@ import React, { ChangeEvent } from 'react';
 import { connect, Dispatch } from 'react-redux';
 
 import InformationAboutAd from './InformationAboutAd';
-import { ICategory } from 'client/common/categories/interface';
+import { ICategory, ITotalOptions } from 'client/common/categories/interface';
 import { bindModuleAction } from 'client/common/user/utils';
 import { AdsActions, IAdsActions } from 'client/common/ads/actions';
 import { IRootState } from 'client/common/store/storeInterface';
@@ -26,6 +26,11 @@ interface IProps {
 	callback(state: IState): void;
 }
 
+export interface IOption {
+	value: string;
+	item: ITotalOptions;
+}
+
 export interface IState {
 	step: number;
 	sellerInfoFields: ISellerInfoFields;
@@ -34,6 +39,7 @@ export interface IState {
 	attachedImages: IAttachedImage[];
 	defaultCategoryId: string;
 	location: ILocation;
+	options: IOption[];
 }
 
 const mapStateToProps = (state: IRootState) => ({
@@ -62,7 +68,7 @@ class ManagerAd extends React.Component<IProps, IState> {
 				sellerInfoFields: {
 					name: { disable: true, value: this.props.user.name },
 					email: { disable: true, value: this.props.user.email },
-					phone: { disable: false, value: this.props.user.name },
+					phone: { disable: false, value: this.props.user.phone },
 				},
 				adInfoFields: {
 					title: { disable: false, value: '' },
@@ -78,6 +84,7 @@ class ManagerAd extends React.Component<IProps, IState> {
 					lng: 55.75222,
 					lat: 37.61140,
 				},
+				options: [],
 			};
 		}
 
@@ -121,8 +128,49 @@ class ManagerAd extends React.Component<IProps, IState> {
 			});
 		}
 
+	creatorChangeOptionById = (id: number) => (e: ChangeEvent<HTMLInputElement>) => {
+		const newOptions = this.state.options.map(option => {
+			if (option.item.id !== id) {
+				return option;
+			} else {
+				return {
+					item: option.item,
+					value: e.target.value,
+				};
+			}
+		});
+
+		this.setState({ options: newOptions });
+	}
+
+	getOptionsBySelectedCategories = (selectedCategories: ICategory[]) => {
+		const lastCategory = selectedCategories.length > 0 && selectedCategories[selectedCategories.length - 1] || null;
+		return (lastCategory && lastCategory.total_options || []).map(option => {
+			return { value: '', item: option };
+		});
+
+	}
+
+	// TODO refactor dublicate logic
 	onSelectCategories = (selectedCategories: ICategory[]) => {
-		this.setState({ selectedCategories });
+		const options = this.getOptionsBySelectedCategories(selectedCategories);
+
+		const updatedOptions = options.map((option): IOption => {
+			const findedOption = this.state.options.filter(ops => {
+				return ops.item.id === option.item.id;
+			});
+
+			if (findedOption.length > 0) {
+				return findedOption[0];
+			} else {
+				return option;
+			}
+		});
+
+		this.setState({
+			selectedCategories,
+			options: updatedOptions,
+		});
 	}
 
 	onUpdateImages = (images: IAttachedImage[]) => {
@@ -172,6 +220,8 @@ class ManagerAd extends React.Component<IProps, IState> {
 						defaultCategoryId={ this.state.defaultCategoryId }
 						onSelectLocation={ this.onSelectLocation }
 						location={ this.state.location }
+						options={ this.state.options }
+						creatorChangeOptionById={ this.creatorChangeOptionById }
 					/>
 					<div className='container'>
 						<button
