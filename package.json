@@ -48,6 +48,7 @@
     "react-modal": "^3.5.1",
     "react-number-format": "^3.4.4",
     "react-redux": "^5.0.7",
+    "react-select": "^2.0.0",
     "react-toastify": "^4.1.0",
     "reactstrap": "^6.3.0",
     "redux": "^4.0.0",
