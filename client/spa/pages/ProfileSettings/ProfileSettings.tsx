@@ -305,7 +305,7 @@ export class ProfileSettings extends React.Component<IProps, IState> {
 					<div className='notification-control'>
 						<div>
 							<h6 className='notification-control__title'>Personal Collections</h6>
-							<p>Collections of interesting ads and categories</p>
+							<p className='notification-control__description'>Collections of interesting ads and categories</p>
 						</div>
 						<div className='switch-button'>
 							<input
@@ -322,7 +322,7 @@ export class ProfileSettings extends React.Component<IProps, IState> {
 					<div className='notification-control'>
 						<div>
 							<h6 className='notification-control__title'>Posts</h6>
-							<p>Notifications for new messages in the messenger</p>
+							<p className='notification-control__description'>Notifications for new messages in the messenger</p>
 						</div>
 						<div className='switch-button'>
 							<input
@@ -339,7 +339,7 @@ export class ProfileSettings extends React.Component<IProps, IState> {
 					<div className='notification-control'>
 						<div>
 							<h6 className='notification-control__title'>Promotions</h6>
-							<p>Individual discounts and special offers</p>
+							<p className='notification-control__description'>Individual discounts and special offers</p>
 						</div>
 						<div className='switch-button'>
 							<input
@@ -356,7 +356,7 @@ export class ProfileSettings extends React.Component<IProps, IState> {
 					<div className='notification-control'>
 						<div>
 							<h6 className='notification-control__title'>Participation in research</h6>
-							<p>Based on your answers, we will make Ads better</p>
+							<p className='notification-control__description'>Based on your answers, we will make Ads better</p>
 						</div>
 						<div className='switch-button'>
 							<input
@@ -373,7 +373,7 @@ export class ProfileSettings extends React.Component<IProps, IState> {
 					<div className='notification-control'>
 						<div>
 							<h6 className='notification-control__title'>News</h6>
-							<p>Information about the company and new functions Ads</p>
+							<p className='notification-control__description'>Information about the company and new functions Ads</p>
 						</div>
 						<div className='switch-button'>
 							<input
@@ -390,7 +390,7 @@ export class ProfileSettings extends React.Component<IProps, IState> {
 					<div className='notification-control'>
 						<div>
 							<h6 className='notification-control__title'>Tips from Ads</h6>
-							<p>Recommendations for effective work with the site</p>
+							<p className='notification-control__description'>Recommendations for effective work with the site</p>
 						</div>
 						<div className='switch-button'>
 							<input
