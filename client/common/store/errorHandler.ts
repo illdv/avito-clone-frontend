@@ -1,7 +1,7 @@
 import { put } from 'redux-saga/effects';
 import { AxiosError } from 'axios';
+import { commonActions } from 'client/common/entities/user/modules/common/actions';
 import { Toasts } from 'client/common/utils/Toasts';
-import { UserActions } from 'client/common/entities/user/actions';
 
 function isArray(value) {
 	return value && typeof value === 'object' && value.constructor === Array;
@@ -23,7 +23,7 @@ export function* extractMessages(error: AxiosError) {
 		return errors[keyFirstElement];
 	}
 	if (status === 401) {
-		yield put(UserActions.logout.REQUEST({}));
+		yield put(commonActions.logout.REQUEST({}));
 		return error.response.data.message;
 	}
 	return error.response.data.message;

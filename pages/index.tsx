@@ -8,11 +8,9 @@ import Header from '../client/ssr/blocks/header/Header';
 import Navbar from '../client/ssr/blocks/navbar/Navbar';
 import Search from '../client/ssr/blocks/search/Search';
 import { ToastContainer } from 'react-toastify';
-import { IAds } from 'client/common/ads/interface';
 import { SetCategories } from 'client/ssr/blocks/categories/context';
 import Categories from 'client/ssr/blocks/categories/Categories';
 import Footer from 'client/ssr/blocks/footer/Footer';
-import { ICategories } from 'client/common/categories/interface'
 import Ads from 'client/ssr/blocks/ads/Ads';
 
 const isServer: boolean = typeof window === 'undefined';
@@ -23,16 +21,16 @@ if (isServer) {
 
 interface IIndexProps {
 	t: any;
-	categories: ICategories[];
-    ads: IAds[];
-    location: any;
+	categories: ICategory[];
+	ads: IAd[];
+	location: any;
 }
 
 export class Index extends React.Component<IIndexProps> {
 	static async getInitialProps({ query }) {
 		return ({
-            ads: query.ads,
-            location: query.location,
+			ads: query.ads,
+			location: query.location,
 			categories: query.categories,
 		});
 	}
@@ -67,8 +65,8 @@ export class Index extends React.Component<IIndexProps> {
 						ads={this.props.ads}
 					/>
 
-					<Footer />
-					<ToastContainer />
+					{/* <Footer />
+					<ToastContainer /> */}
 				</SetCategories>
 			</React.Fragment>
 		);

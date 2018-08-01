@@ -1,17 +1,9 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { IRootState } from '../../../common/store/storeInterface';
-import { userInfo } from 'os';
 
 require('../../../common/styles/main.sass');
 require('./Navbar.sass');
 
-interface IProps {
-	user: IUser;
-}
-
-
-class Navbar extends React.Component<IProps> {
+class Navbar extends React.Component {
 	constructor(props, context) {
 		super(props, context);
 	}
@@ -52,8 +44,5 @@ class Navbar extends React.Component<IProps> {
 	}
 }
 
-const mapStateToProps = (state: IRootState) => ({
-	user: state.user.user,
-});
 
-export default connect(mapStateToProps)(Navbar);
+export default Navbar;

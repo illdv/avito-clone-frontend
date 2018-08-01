@@ -1,10 +1,9 @@
 import { call, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
 import { Action } from 'redux-act';
 
-import { FavoritesActions } from './actions';
+import { favoritesActions } from './actions';
 import { UserAPI } from 'client/common/api/userAPI';
 import { errorHandler } from 'client/common/store/errorHandler';
-import { IAds } from 'client/common/ads/interface';
 import { IRootState } from '../../../../store/storeInterface';
 import {
 	getFavoritesFromLocalStorage,
@@ -15,6 +14,20 @@ import {
 export const getUserFavoriteIds = (state: IRootState): number[] => state.user.favorites.ids;
 export const getToken           = (state: IRootState): string => state.user.token;
 export const getUserFavoriteAds = (state: IRootState): IAd[] => state.user.favorites.items;
+
+function* composeFavoritesIds(action: Action<{ ids: number[] }>) {
+	let correctFavoritesIds;
+
+	if (!action.payload.ids.length) {
+		correctFavoritesIds = yield call(getFavoritesFromLocalStorage);
+	} else {
+		// Todo: add Comparison localstorage and remote server
+		correctFavoritesIds = action.payload.ids;
+		yield call(synchronizeFavoritesLocalStorage, correctFavoritesIds);
+	}
+
+	yield call(favoritesActions.setFavorite.REQUEST, correctFavoritesIds);
+}
 
 function* selectFavorite(action: Action<{ id: number }>) {
 	const selectedAdId  = action.payload.id;
@@ -45,7 +58,7 @@ function* saveFavoriteSaga(favoritesAds: number[], selectedAdId: number, token: 
 		favoritesIds = [selectedAdId];
 	}
 
-	yield put(FavoritesActions.setFavorite.SUCCESS({ favoritesIds }));
+	yield put(favoritesActions.setFavorite.SUCCESS({ favoritesIds }));
 	yield call(synchronizeFavoritesLocalStorage, favoritesIds);
 
 	if (token) {
@@ -62,7 +75,7 @@ function* removeFavoriteSaga(favoritesAds, selectedAdId, token, indexInFavorites
 		...favoritesAds.slice(0, indexInFavorites),
 		...favoritesAds.slice(indexInFavorites + 1),
 	];
-	yield put(FavoritesActions.removeFavorite.SUCCESS({ favoritesIds }));
+	yield put(favoritesActions.removeFavorite.SUCCESS({ favoritesIds }));
 	yield call(synchronizeFavoritesLocalStorage, favoritesIds);
 	if (token) {
 		try {
@@ -83,8 +96,8 @@ function* removeFavoriteAds(action: Action<{ favoritesId: number[] }>) {
 		return selectedFavoriteIds.indexOf(Number(storageId)) === -1;
 	});
 
-	yield put(FavoritesActions.removeFavorite.SUCCESS({ favoritesIds }));
-	yield put(FavoritesActions.removeFavoritesAds.SUCCESS({ favoritesIds: selectedFavoriteIds }));
+	yield put(favoritesActions.removeFavorite.SUCCESS({ favoritesIds }));
+	yield put(favoritesActions.removeFavoritesAds.SUCCESS({ favoritesIds: selectedFavoriteIds }));
 
 	yield call(synchronizeFavoritesLocalStorage, favoritesIds);
 
@@ -103,13 +116,13 @@ function* getFavorites() {
 		const { data }            = yield call(UserAPI.getFavorites, { favorites_ids: favoritesId });
 		const favoritesAds: IAd[] = yield call(fromArrayToObject, data.data);
 
-		yield put(FavoritesActions.getFavoritesAds.SUCCESS({ favoritesAds }));
+		yield put(favoritesActions.getFavoritesAds.SUCCESS({ favoritesAds }));
 	} catch (e) {
 		yield call(errorHandler, e);
 	}
 }
 
-function fromArrayToObject(adsCollection: IAds[]) {
+function fromArrayToObject(adsCollection: IAd[]) {
 	return adsCollection.reduce((result, item) => {
 		const id   = item.id;
 		result[id] = item;
@@ -119,9 +132,10 @@ function fromArrayToObject(adsCollection: IAds[]) {
 
 function* watcherUser() {
 	yield [
-		takeEvery(FavoritesActions.selectFavorite.REQUEST, selectFavorite),
-		takeEvery(FavoritesActions.getFavoritesAds.REQUEST, getFavorites),
-		takeEvery(FavoritesActions.removeFavoritesAds.REQUEST, removeFavoriteAds),
+		takeEvery(favoritesActions.selectFavorite.REQUEST, selectFavorite),
+		takeEvery(favoritesActions.getFavoritesAds.REQUEST, getFavorites),
+		takeEvery(favoritesActions.removeFavoritesAds.REQUEST, removeFavoriteAds),
+		takeEvery(favoritesActions.composeFavoritesIds.REQUEST, composeFavoritesIds),
 	];
 }
 

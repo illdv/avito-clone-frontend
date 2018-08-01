@@ -10,7 +10,7 @@ export interface ITokenActions {
 	clearToken: EmptyActionCreator;
 }
 
-export const TokenActions: ITokenActions = {
+export const tokenActions: ITokenActions = {
 	setTokenToState,
 	setTokenToStorage,
 	clearToken,

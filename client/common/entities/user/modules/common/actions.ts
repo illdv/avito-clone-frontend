@@ -1,4 +1,4 @@
-import { createActionCreator, IAsyncAction } from '../utils';
+import { createActionCreator, IAsyncAction } from '../../utils';
 
 const createAsyncAction = createActionCreator('USER');
 
@@ -18,7 +18,7 @@ export interface ICommonActions {
 	resetPasswordByCode: IAsyncAction<IResetPasswordByCodeRequest>;
 }
 
-export const CommonActions: ICommonActions = {
+export const commonActions: ICommonActions = {
 	login,
 	logout,
 	register,

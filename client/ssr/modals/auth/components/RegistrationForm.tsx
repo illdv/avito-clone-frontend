@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {Component} from 'react';
-import {connect, Dispatch} from 'react-redux';
-import {IUserActions, UserActions} from 'client/common/user/actions';
-import {bindModuleAction} from 'client/common/user/utils';
+import { Component } from 'react';
+import { connect, Dispatch } from 'react-redux';
+import { IUserActions, UserActions } from 'client/common/entities/user/rootActions';
+import { bindModuleAction } from 'client/common/entities/user/utils';
 
 export interface IState {
 	fields: {
@@ -72,7 +72,7 @@ class RegistrationForm extends Component<IProps, IState> {
 	}
 
 	onRegistration = () => {
-		this.props.userActions.register.REQUEST({...this.state.fields});
+		this.props.userActions.common.register.REQUEST({...this.state.fields});
 	}
 
 	render() {

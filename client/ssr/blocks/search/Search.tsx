@@ -28,7 +28,6 @@ interface ISearchState {
 
 const mapStateToProps = (state: IRootState) => ({
 	locationState: getLocationState(state),
-	user: state.user,
 });
 
 const getOption = option => (
@@ -51,7 +50,6 @@ class Search extends Component<ISearchProps, ISearchState> {
 			searchString: search || '',
 		};
 	}
-
 
 	onSelectCategory = category => {
 		if (category) {

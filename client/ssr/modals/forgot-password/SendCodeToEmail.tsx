@@ -1,9 +1,9 @@
 import React from 'react';
 import Modal from '../../../common/modal-juggler/Modal';
-import {ModalNames} from '../../../common/modal-juggler/modalJugglerInterface';
-import {IUserActions, UserActions} from 'client/common/user/actions';
-import {bindModuleAction} from 'client/common/user/utils';
-import {connect, Dispatch} from 'react-redux';
+import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
+import { IUserActions, UserActions } from 'client/common/entities/user/rootActions';
+import { bindModuleAction } from 'client/common/entities/user/utils';
+import { connect, Dispatch } from 'react-redux';
 
 export interface IProps {
 	userActions: IUserActions;
@@ -22,9 +22,9 @@ class SendCodeToEmail extends React.Component<IProps & IState> {
 		const value = event.target.value;
 		this.setState({email: value});
 	}
-	onSubmit = (e) => {
+	onSubmit = e => {
 		if (this.state.email) {
-			this.props.userActions.sendCode.REQUEST({email: this.state.email});
+			this.props.userActions.common.sendCode.REQUEST({email: this.state.email});
 		}
 	}
 

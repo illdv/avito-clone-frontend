@@ -8,48 +8,48 @@ import { ModalNames } from '../../../../../../client/common/modal-juggler/modalJ
 import { show } from '../../../../../../client/common/modal-juggler/module';
 import { Toasts } from '../../../../../../client/common/utils/Toasts';
 
-import { ProfileActions } from './actions';
-import { TokenActions } from '../token/actions';
+import { profileActions } from './actions';
+import { tokenActions } from '../token/actions';
 
 export function* getProfile(action: Action<{ token: string }>) {
 	try {
 		const response: AxiosResponse<IGetProfileResponse> = yield call(UserAPI.getProfile);
 		const profile                                      = response.data;
 
-		yield put(ProfileActions.getProfile.SUCCESS(profile));
-		yield put(TokenActions.setTokenToState(action.payload.token));
+		yield put(profileActions.getProfile.SUCCESS(profile));
+		yield put(tokenActions.setTokenToState(action.payload.token));
 	} catch (e) {
 		yield call(errorHandler, e);
-		yield put(ProfileActions.getProfile.FAILURE({}));
+		yield put(profileActions.getProfile.FAILURE({}));
 	}
 }
 
 function* changePassword(action) {
 	try {
 		yield call(UserAPI.changePassword, action.payload);
-		yield put(ProfileActions.changePassword.SUCCESS({}));
+		yield put(profileActions.changePassword.SUCCESS({}));
 		yield put(show(ModalNames.success));
 	} catch (e) {
 		yield call(errorHandler, e);
-		yield put(ProfileActions.changePassword.FAILURE({}));
+		yield put(profileActions.changePassword.FAILURE({}));
 	}
 }
 
 function* changeProfile(action) {
 	try {
 		const response = yield call(UserAPI.changeProfile, action.payload);
-		yield put(ProfileActions.changeProfile.SUCCESS(response.data));
+		yield put(profileActions.changeProfile.SUCCESS(response.data));
 		Toasts.info('Profile changed');
 	} catch (e) {
 		yield call(errorHandler, e);
-		yield put(ProfileActions.changeProfile.FAILURE({}));
+		yield put(profileActions.changeProfile.FAILURE({}));
 	}
 }
 
 function* deleteAccount() {
 	try {
 		yield call(UserAPI.deleteAccount);
-		yield call(TokenActions.clearToken);
+		yield call(tokenActions.clearToken);
 	} catch (err) {
 		yield call(errorHandler, err);
 	}
@@ -57,10 +57,10 @@ function* deleteAccount() {
 
 function* watcherProfile() {
 	yield [
-		takeEvery(ProfileActions.getProfile.REQUEST, getProfile),
-		takeLatest(ProfileActions.changePassword.REQUEST, changePassword),
-		takeEvery(ProfileActions.changeProfile.REQUEST, changeProfile),
-		takeEvery(ProfileActions.deleteAccount.REQUEST, deleteAccount),
+		takeEvery(profileActions.getProfile.REQUEST, getProfile),
+		takeLatest(profileActions.changePassword.REQUEST, changePassword),
+		takeEvery(profileActions.changeProfile.REQUEST, changeProfile),
+		takeEvery(profileActions.deleteAccount.REQUEST, deleteAccount),
 	];
 }
 

@@ -6,7 +6,7 @@ import { CustomStorage } from '../../CustomStorage';
 
 import { pushInRouter } from 'client/common/utils/utils';
 
-import { TokenActions } from './actions';
+import { tokenActions } from './actions';
 
 function saveTokenInStore(action: Action<{ token: string, isRememberMe: boolean }>) {
 	const { token, isRememberMe } = action.payload;
@@ -27,8 +27,8 @@ function clearToken() {
 
 function* watcherToken() {
 	yield [
-		takeEvery(TokenActions.clearToken, clearToken),
-		takeEvery(TokenActions.setTokenToStorage, saveTokenInStore),
+		takeEvery(tokenActions.clearToken, clearToken),
+		takeEvery(tokenActions.setTokenToStorage, saveTokenInStore),
 	];
 }
 

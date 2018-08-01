@@ -14,7 +14,7 @@ export interface IProfileActions {
 	deleteAccount: IAsyncAction;
 }
 
-export const ProfileActions: IProfileActions = {
+export const profileActions: IProfileActions = {
 	getProfile,
 	changeProfile,
 	changePassword,

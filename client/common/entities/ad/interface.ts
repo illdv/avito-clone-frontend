@@ -25,7 +25,7 @@ interface IImage {
 }
 
 interface IAd {
-	id: string;
+	id: number;
 	type_id: number;
 	category_id: string;
 	title: string;

@@ -1,23 +1,21 @@
 import React from 'react';
 import Link from 'next/link';
-import { IAds } from 'client/common/ads/interface';
 import { extractPreviewImage } from 'client/ssr/blocks/ad/utils';
 
-
 interface  IProps {
-	favoritesIds: string[];
-	ads: IAds;
-	addToFavorites(id: string): void;
+	ad: IAd;
+	favoritesIds: number[];
+	addToFavorites(id: number): void;
 }
 
 class  AdCard extends React.Component<IProps> {
 
 	handleAddToFavorites = () => {
-		this.props.addToFavorites(this.props.ads.id);
-	};
+		this.props.addToFavorites(this.props.ad.id);
+	}
 
 	get isActive() {
-		return this.props.favoritesIds.indexOf(this.props.ads.id) != -1;
+		return this.props.favoritesIds.indexOf(this.props.ad.id) !== -1;
 	}
 
 	get activeLike() {
@@ -45,7 +43,7 @@ class  AdCard extends React.Component<IProps> {
 					strokeWidth='0.5'
 				/>
 			</svg>
-		)
+		);
 	}
 
 	get noActiveLike() {
@@ -76,27 +74,27 @@ class  AdCard extends React.Component<IProps> {
 					/>
 				</svg>
 			</div>
-		)
+		);
 	}
 
-	render(){
-		const { ads } = this.props;
+	render() {
+		const { ad } = this.props;
 		return (
 			<div className='ad__card'>
 				<div className='ad__img'>
 					{ this.isActive ? this.activeLike : this.noActiveLike }
 					<img
-						src={extractPreviewImage(ads)}
+						src={extractPreviewImage(ad)}
 						alt='Dogs'
 					/>
 				</div>
 				<div className='ad__info'>
-					<Link href={`/ad/${ads.id}`}>
-						<a><h6 className='ad__title'>{ads.title}</h6></a>
+					<Link href={`/ad/${ad.id}`}>
+						<a><h6 className='ad__title'>{ad.title}</h6></a>
 					</Link>
-					<span>{ads.price}</span>
-					<span>{ads.description.slice(0, 110) + '...'}</span>
-					<span>{ads.updated_at}</span>
+					<span>{ ad.price }</span>
+					<span>{ ad.description.slice(0, 110) + '...' }</span>
+					<span>{ ad.updated_at }</span>
 				</div>
 			</div>
 		);

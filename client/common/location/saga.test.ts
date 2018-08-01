@@ -51,6 +51,7 @@ const defaultState: ILocationStoreState = {
 			cities: [],
 		},
 	},
+	locationName: null,
 };
 
 const fakeActionChangeCountry = {
