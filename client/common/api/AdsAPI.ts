@@ -57,7 +57,7 @@ function useAction(id: string, actionType: AdsActionType) {
 	return AxiosWrapper.put(`/ads/${id}/state/${actionType}`);
 }
 
-function similar(sort: string, id: string) {
+function similar(sort: string, id: number) {
 	return AxiosWrapper.get(`ad/${id}/similar/${sort}`);
 }
 

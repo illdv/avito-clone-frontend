@@ -1,28 +1,26 @@
 import * as React from 'react';
-import { connect, Dispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import FavoritesMenu from 'client/spa/pages/favorites/FavoritesMenu';
 import FavoritesPage from 'client/spa/pages/favorites/FavoritesPage';
-import { bindModuleAction } from 'client/common/user/utils';
 import { IRootState } from 'client/common/store/storeInterface';
-import { IUserActions, UserActions } from 'client/common/user/actions';
-import { IAds } from 'client/common/ads/interface';
+import { UserActions } from '../../../common/entities/user/rootActions';
 
-interface IFavorites {
-	favoriteAds: IAds[];
-	userActions: IUserActions;
+interface IProps {
+	user: IUser;
 }
 
-class Favorites extends React.Component<IFavorites, null> {
+class Favorites extends React.Component<IProps, null> {
 	componentDidMount() {
-		this.props.userActions.getFavoritesAds.REQUEST({});
+		UserActions.favorites.getFavoritesAds.REQUEST({});
 	}
 
 	removeFavoriteAds = (favoritesId: string[]) => {
-		this.props.userActions.removeFavoritesAds.REQUEST({favoritesId});
+		UserActions.favorites.removeFavoritesAds.REQUEST({ favoritesId });
 	}
 
 	render() {
-		const {favoriteAds} = this.props;
+		const favoriteAds = this.props.user.favorites.items;
+
 		return (
 			<section className='page'>
 				<div className='container'>
@@ -32,7 +30,7 @@ class Favorites extends React.Component<IFavorites, null> {
 						</div> */}
 						{/* <div className='col-lg-9'> */}
 						<div className='col-lg-12'>
-							<FavoritesPage ads={favoriteAds} removeFavoriteAds={this.removeFavoriteAds}/>
+							<FavoritesPage ads={ favoriteAds } removeFavoriteAds={ this.removeFavoriteAds }/>
 						</div>
 					</div>
 				</div>
@@ -43,10 +41,7 @@ class Favorites extends React.Component<IFavorites, null> {
 }
 
 const mapStateToProps = (state: IRootState) => ({
-	favoriteAds: state.user.favoritesAds,
+	user: state.user,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-	userActions: bindModuleAction(UserActions, dispatch),
-});
-export default connect(mapStateToProps, mapDispatchToProps)(Favorites);
+export default connect(mapStateToProps)(Favorites);

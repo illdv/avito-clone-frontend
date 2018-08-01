@@ -1,5 +1,3 @@
-import { IUserActions } from 'client/common/user/actions';
-
 export interface IAdCity {
 	title?: string|null;
 	country: IAdCountry;
@@ -10,7 +8,7 @@ export interface IAdCountry {
 }
 
 export interface IAd {
-	id: string;
+	id: number;
 	title: string;
 	next_ad: string;
 	created_at: string;
@@ -45,8 +43,7 @@ export interface IAdsProps {
 	ad: IAd;
 	categories: any[];
 	similar: any[];
-	userActions: IUserActions;
-	favoriteAdsIds: string[];
+	user: IUser;
 }
 
 export interface IAdsState {
@@ -61,7 +58,7 @@ export interface IAdsState {
 }
 
 export interface ISliderProps {
-	images: ISlide[];
+	images: IImage[];
 }
 
 export interface ISlide {
@@ -117,18 +114,18 @@ export interface ISimilarState {
 export interface ISimilarProps {
 	filter?: string;
 	similar_ads: any[];
-	id_parent: string;
+	id_parent: number;
 }
 
 export interface IChart {
 	similar_ads: any[];
-	id_parent: string;
+	id_parent: number;
 
 }
 
 export interface IFavorites {
-	id: string;
-	selectFavorite: (id: string) => void;
+	id: number;
+	selectFavorite: (id: number) => void;
 	isFavorite: boolean;
 }
 
@@ -137,7 +134,7 @@ export interface IFavoriteState {
 }
 
 export interface ISimilarAd {
-	id: string;
+	id: number;
 	title: string;
 	images: any[];
 	description: string;

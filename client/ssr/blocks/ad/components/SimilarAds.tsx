@@ -2,19 +2,19 @@ import React, { Component } from 'react';
 import SimilarSortedBy from 'client/ssr/blocks/ad/components/SimilarSortedBy';
 import SimilarRandomAd from 'client/ssr/blocks/ad/components/SimilarRandomAd';
 import { ISimilarProps, ISimilarSortState } from 'client/ssr/blocks/ad/interface';
-import { AdsAPI } from 'api/AdsAPI';
+import { AdsAPI } from 'client/common/api/AdsAPI';
 
 class SimilarAds extends Component <ISimilarProps, ISimilarSortState> {
-	handleChange = (sorted) => {
-		let field = 'sort-' + sorted;
+	handleChange = sorted => {
+		const field = 'sort-' + sorted;
 		if (sorted !== this.state.filter) {
 			this.setState({ filter: sorted });
 		}
 		AdsAPI.similar(field, this.props.id_parent)
-			.then((response) => {
+			.then(response => {
 				this.setState({ similar_ad: response.data });
 			});
-	};
+	}
 
 	checkLength = () => {
 		if (this.state.similar_ad.length === 0) {
@@ -26,7 +26,7 @@ class SimilarAds extends Component <ISimilarProps, ISimilarSortState> {
 				</div>
 			);
 		}
-	};
+	}
 
 	constructor(props) {
 		super(props);
@@ -48,7 +48,7 @@ class SimilarAds extends Component <ISimilarProps, ISimilarSortState> {
 					</div>
 					<div className='similar-ads-tiles'>
 						{
-							this.state.similar_ad.map((sim) => {
+							this.state.similar_ad.map(sim => {
 								return (
 									<SimilarRandomAd
 										id={sim.id}

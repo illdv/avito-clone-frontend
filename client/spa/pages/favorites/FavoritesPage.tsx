@@ -1,17 +1,22 @@
 import * as React from 'react';
-import { IAds } from 'client/common/ads/interface';
 import FavoritesItem from 'client/spa/pages/favorites/FavoritesItem';
 
 interface IFavoritesPageProps {
-	ads: IAds[];
+	ads: IAd[];
 	removeFavoriteAds: (id) => void;
 }
 
 interface IFavoritesPageState {
 	selected: Set<string>;
 	checkedAll: boolean;
-	adsCollection: IAds[];
+	adsCollection: IAd[];
 }
+
+const createAdsCollection = (ads: IAdsObject): IAd[] => {
+	return Object.keys(ads).map((key: string) => {
+		return ads[key];
+	});
+};
 
 class FavoritesPage extends React.Component<IFavoritesPageProps, IFavoritesPageState> {
 	state = {
@@ -22,15 +27,6 @@ class FavoritesPage extends React.Component<IFavoritesPageProps, IFavoritesPageS
 
 	static getDerivedStateFromProps(nextProps, prevState) {
 		let adsCollection;
-
-		function createAdsCollection(ads) {
-			const adsCollection = [];
-			Object.keys(ads).map((ad) => {
-				const item = ads[ad];
-				adsCollection.push(item);
-			});
-			return adsCollection;
-		}
 
 		try {
 			adsCollection = createAdsCollection(nextProps.ads);
@@ -72,7 +68,7 @@ class FavoritesPage extends React.Component<IFavoritesPageProps, IFavoritesPageS
 		this.setState({selected});
 	}
 
-	private getAllId(adList: IAds[]) {
+	private getAllId(adList: IAd[]) {
 		const idList = new Set();
 		adList.forEach(ad => idList.add(ad.id));
 		return idList;

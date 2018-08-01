@@ -49,3 +49,7 @@ interface IAd {
 	phone?: string;
 	images?: IImage[];
 }
+
+interface IAdsObject {
+	[key: number]: IAd;
+}
