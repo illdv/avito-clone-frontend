@@ -1,7 +1,7 @@
 import { put } from 'redux-saga/effects';
 import { AxiosError } from 'axios';
-import { UserActions } from 'client/common/user/actions';
 import { Toasts } from 'client/common/utils/Toasts';
+import { UserActions } from 'client/common/entities/user/actions';
 
 function isArray(value) {
 	return value && typeof value === 'object' && value.constructor === Array;
