@@ -28,7 +28,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 
 export enum FilterType {
 	Read   = 'Read',
-	NoRead = 'No read',
+	NoRead = 'Not read',
 	All    = 'All',
 }
 
@@ -39,25 +39,25 @@ class Notification extends Component<IProps, IState> {
 	};
 
 	convertToItem = ({ id, data, read_at }: INotification) => {
-
 		return (
 			<div
-				style={{ background: read_at ? '' : '#ffb91b9c' }}
 				key={id}
-				className='offer-block__item'
-				onClick={this.onClick(id)}
+				className={'alert alert-dismissible ' + (read_at ? 'alert-light' : 'alert-warning')}
+				role='alert'
 			>
-				<div className='offer-block__inner'>
-					<div className='row'>
-						<div className='col-9 d-flex'>
-							<div className='offer-block__info'>
-								<div>
-									<h5 style={{ margin: 10 }}>{data.message}</h5>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+				{data.message}
+				{
+					!read_at &&
+					<button
+						onClick={this.onClick(id)}
+						type='button'
+						className='close'
+						data-dismiss='alert'
+						aria-label='Close'
+					>
+						<span aria-hidden='true'>&times;</span>
+					</button>
+				}
 			</div>
 		);
 	}
@@ -68,7 +68,14 @@ class Notification extends Component<IProps, IState> {
 		const notification = filterNotification(this.state.selectedFilter, data);
 
 		if (notification.length === 0) {
-			return <h2>Not notification</h2>;
+			return (
+				<div
+					className='alert alert-light'
+					role='alert'
+				>
+					You don't have any new notifications!
+				</div>
+			);
 		}
 		return notification.map(this.convertToItem);
 	}

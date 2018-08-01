@@ -152,14 +152,14 @@ class Header extends Component<IProps, IState> {
 
 	render() {
 		return (
-			<header>
+			<>
 				<LoginModal/>
 				<SendCodeToEmailModal/>
 				<ResetPasswordModal/>
 				<SuccessModal/>
 				<MainLocationModal/>
 				<SearchLocationModal/>
-				<div className='header header-top'>
+				<header className='header header-top'>
 					<div className='container'>
 						<div className='row'>
 							<div className='col-12'>
@@ -188,8 +188,8 @@ class Header extends Component<IProps, IState> {
 							</div>
 						</div>
 					</div>
-				</div>
-			</header>
+				</header>
+			</>
 		);
 	}
 }

@@ -50,11 +50,9 @@ export class MainLocationModal extends React.Component<IMainLocationModalProps> 
 				changeRegion={this.props.changeRegionSession}
 				changeCity={this.props.changeCitySession}
 			>
-				<div className='container'>
-					<button onClick={this.doNotAskAgain} className='btn btn-link'>
-						Do not ask again.
-					</button>
-				</div>
+				<a onClick={this.doNotAskAgain}>
+					Do not ask again.
+				</a>
 			</LocationModal>
 		);
 	}

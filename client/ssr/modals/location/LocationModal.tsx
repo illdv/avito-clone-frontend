@@ -1,7 +1,7 @@
 import React from 'react';
 import Select from 'react-select';
 
-import { ModalNames } from 'client/common/modal-juggler/modalJugglerInterface';
+import {ModalNames} from 'client/common/modal-juggler/modalJugglerInterface';
 import Modal from 'client/common/modal-juggler/Modal';
 import {
 	changeCityLocal,
@@ -84,54 +84,53 @@ export class LocationModal extends React.Component<ILocationModalProps> {
 		return (
 			<Modal name={this.props.name} useOnRequestClose={true} autocomplete='off'>
 				<div className='modal-content location-modal'>
-					<div className='modal-header'>
+					<div className='modal-header p-20'>
 						<h4 className='modal-title' id='exampleModalLongTitle'>Choose your location</h4>
-						<button type='button' className='close' onClick={this.close} >
+						<button type='button' className='close' onClick={this.close}>
 							<span>&times;</span>
 						</button>
 					</div>
-					<div className='modal-body '>
-						<div>
-							<form action='' className='choose-location'>
-								<div className='form-group row align-items-center'>
-						   			<label htmlFor='chooseCountry' className='col-3 choose-location__label'>
-									   Country
-									</label>
-									<Select
-										className='col-8'
-										onChange={this.onSelectCountry}
-										options={this.prepareDataForCountryToOptions}
-										value={this.initSelectedOption(idCountry, this.prepareDataForCountryToOptions)}
-									/>
-								</div>
-								<div className='form-group row align-items-center'>
-						   			<label htmlFor='chooseState' className='col-3 choose-location__label'>
-									   State(region)
-									</label>
-									<Select
-										className='col-8'
-										onChange={this.onSelectRegion}
-										options={this.prepareDataForRegionToOptions}
-										value={this.initSelectedOption(idRegion, this.prepareDataForRegionToOptions)}
-									/>
-								</div>
-								<div className='form-group row align-items-center'>
-						   			<label htmlFor='chooseCity' className='col-3 choose-location__label'>
-									   City
-									</label>
-									<Select
-										className='col-8'
-										onChange={this.onSelectedCity}
-										options={this.prepareDataForCityToOptions}
-										value={this.initSelectedOption(idCity, this.prepareDataForCityToOptions)}
-									/>
-								</div>
-							</form>
-						</div>
+					<div className='modal-body p-20'>
+						<form action='' className='choose-location m-b-20'>
+							<div className='form-group row align-items-center'>
+								<label htmlFor='chooseCountry' className='col-3 choose-location__label'>
+									Country
+								</label>
+								<Select
+									className='col-9'
+									onChange={this.onSelectCountry}
+									options={this.prepareDataForCountryToOptions}
+									value={this.initSelectedOption(idCountry, this.prepareDataForCountryToOptions)}
+								/>
+							</div>
+							<div className='form-group row align-items-center'>
+								<label htmlFor='chooseState' className='col-3 choose-location__label'>
+									State(region)
+								</label>
+								<Select
+									className='col-9'
+									onChange={this.onSelectRegion}
+									options={this.prepareDataForRegionToOptions}
+									value={this.initSelectedOption(idRegion, this.prepareDataForRegionToOptions)}
+								/>
+							</div>
+							<div className='form-group row align-items-center'>
+								<label htmlFor='chooseCity' className='col-3 choose-location__label'>
+									City
+								</label>
+								<Select
+									className='col-9'
+									onChange={this.onSelectedCity}
+									options={this.prepareDataForCityToOptions}
+									value={this.initSelectedOption(idCity, this.prepareDataForCityToOptions)}
+								/>
+							</div>
+						</form>
 					</div>
-					{this.props.children}
-					<div className='modal-footer'>
-						<button type='button' className='btn button orange-btn w-100' onClick={this.close}>Confirm location</button>
+					<div className='modal-footer p-20'>
+						<button type='button' className='btn button orange-btn w-100' onClick={this.close}>Confirm
+							location
+						</button>
 					</div>
 				</div>
 			</Modal>
