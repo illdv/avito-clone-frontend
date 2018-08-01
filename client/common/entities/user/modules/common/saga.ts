@@ -4,35 +4,34 @@ import axios, { AxiosResponse } from 'axios';
 
 import { UserAPI } from 'client/common/api/userAPI';
 import { errorHandler } from 'client/common/store/errorHandler';
-import {
-	CustomStorage,
-	getFavoritesFromLocalStorage,
-	synchronizeFavoritesLocalStorage
-} from '../CustomStorage';
 import { ModalNames } from 'client/common/modal-juggler/modalJugglerInterface';
 import { show } from 'client/common/modal-juggler/module';
 import { hideLoginModal } from 'client/ssr/modals/auth/loginModalTriggers';
 import { Toasts } from 'client/common/utils/Toasts';
 import { pushInRouter } from 'client/common/utils/utils';
 
-import { UserActions } from './actions';
-import { TokenActions } from '../token/actions';
-import { ProfileActions } from '../profile/actions';
-import { FavoritesActions } from '../favorites/actions';
+import { getToken } from '../../../../store/selectors';
+
+import { commonActions } from './actions';
+import { tokenActions } from '../token/actions';
+import { profileActions } from '../profile/actions';
+import { favoritesActions } from '../favorites/actions';
 
 function* loadingUserIfHasToken() {
-	const token = CustomStorage.getToken();
+	const token = yield select(getToken);
 	if (token) {
-		yield put(UserActions.getProfile.REQUEST({ token }));
+		yield put(profileActions.getProfile.REQUEST({ token }));
 	}
 }
 
 function* resetPassword(action) {
 	try {
 		yield call(UserAPI.sendCodeToEmail, action.payload);
-		yield put(UserActions.sendCode.SUCCESS({}));
+		yield put(commonActions.sendCode.SUCCESS({}));
 		yield put(show(ModalNames.forgotPassword));
-		const userData = yield take(UserActions.resetPasswordByCode.REQUEST);
+
+		const userData = yield take(commonActions.resetPasswordByCode.REQUEST);
+
 		yield call(UserAPI.resetPasswordByCode, userData.payload);
 		yield put(show(ModalNames.success));
 	} catch (e) {
@@ -49,27 +48,17 @@ function* login(action: Action<ILoginRequest>) {
 		const { token, user }  = response.data;
 		const { favorites_ids: favoritesIds, ...correctUserData } = user;
 
-		let correctFavoritesIds;
+		yield call(favoritesActions.composeFavoritesIds.REQUEST, { ids: favoritesIds });		
+		yield call(profileActions.changeProfile.SUCCESS, correctUserData);
 
-		if (!favoritesIds.length) {
-			correctFavoritesIds = yield call(getFavoritesFromLocalStorage);
-		} else {
-			// Todo: add Comparison localstorage and remote server
-			correctFavoritesIds = response.data.user.favorites_ids;
-			yield call(synchronizeFavoritesLocalStorage, favoritesIds);
-		}
-		
-		yield call(ProfileActions.changeProfile.SUCCESS, correctUserData);
-		yield call(FavoritesActions.setFavorite.REQUEST, correctFavoritesIds);
-
-		yield call(TokenActions.setTokenToStorage, token, isRememberMe);
-		yield call(TokenActions.setTokenToState, token);
+		yield call(tokenActions.setTokenToStorage, token, isRememberMe);
+		yield call(tokenActions.setTokenToState, token);
 
 		hideLoginModal();
 		pushInRouter('/profile');
 	} catch (e) {
 		yield call(errorHandler, e);
-		yield put(UserActions.login.FAILURE({}));
+		yield put(commonActions.login.FAILURE({}));
 	}
 }
 
@@ -78,24 +67,24 @@ function* register(action: Action<IRegisterRequest>) {
 		const response: AxiosResponse<IAuthResponse> = yield call(UserAPI.register, action.payload);
 		const data = response.data;
 
-		yield put(UserActions.register.SUCCESS(data));
+		yield put(commonActions.register.SUCCESS(data));
 
-		yield call(TokenActions.setTokenToState, data.token);
+		yield call(tokenActions.setTokenToState, data.token);
 
 		hideLoginModal();
 		Toasts.info('You have registered successfully!');
 	} catch (e) {
 		yield call(errorHandler, e);
-		yield put(UserActions.register.FAILURE({}));
+		yield put(commonActions.register.FAILURE({}));
 	}
 }
 
 function* watcherUser() {
 	yield [
-		takeEvery(UserActions.login.REQUEST, login),
-		takeEvery(UserActions.register.REQUEST, register),
-		takeEvery(UserActions.initUser.REQUEST, loadingUserIfHasToken),
-		takeLatest(UserActions.sendCode.REQUEST, resetPassword),
+		takeEvery(commonActions.login.REQUEST, login),
+		takeEvery(commonActions.register.REQUEST, register),
+		takeEvery(commonActions.initUser.REQUEST, loadingUserIfHasToken),
+		takeLatest(commonActions.sendCode.REQUEST, resetPassword),
 	];
 }
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import Modal from '../../../common/modal-juggler/Modal';
-import {ModalNames} from '../../../common/modal-juggler/modalJugglerInterface';
-import {IUserActions, UserActions} from 'client/common/user/actions';
-import {bindModuleAction} from 'client/common/user/utils';
-import {connect, Dispatch} from 'react-redux';
+import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
+import { IUserActions, UserActions } from 'client/common/entities/user/rootActions';
+import { bindModuleAction } from 'client/common/entities/user/utils';
+import { connect, Dispatch } from 'react-redux';
 
 require('./ResetPasswordModal.sass');
 
@@ -38,7 +38,7 @@ class ResetPasswordModal extends React.Component<IProps & IState> {
 	}
 	onSubmit = () => {
 		const {email, code, password, password_confirmation} = this.state.fields;
-		this.props.userActions.resetPasswordByCode.REQUEST({email, token: code, password, password_confirmation});
+		this.props.userActions.common.resetPasswordByCode.REQUEST({email, token: code, password, password_confirmation});
 	}
 
 	shouldComponentUpdate() {

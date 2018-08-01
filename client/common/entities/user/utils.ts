@@ -37,8 +37,9 @@ export const createActionCreator = (reducer: string) => (actionType: string) => 
 /**
  * Use for map dispatch actions from Module.
  */
-export function bindModuleAction(moduleActions: any, dispatch: any): ActionCreatorsMapObject {
-	return Object.entries(moduleActions).reduce((result, [key, value]): ActionCreatorsMapObject => {
-		return { ...result, [key]: bindActionCreators(value as any, dispatch) };
-	}, {});
+export function bindModuleAction<T>(moduleActions: T, dispatch: any): T {
+	return Object.entries(moduleActions).reduce((result, [key, value]): T => {
+		result[key] = bindActionCreators(value as any, dispatch);
+		return result;
+	}, {} as T);
 }
