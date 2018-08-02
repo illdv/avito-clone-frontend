@@ -1,6 +1,5 @@
 import { put } from 'redux-saga/effects';
 import { AxiosError } from 'axios';
-
 import { commonActions } from 'client/common/entities/user/modules/common/actions';
 import { Toasts } from 'client/common/utils/Toasts';
 

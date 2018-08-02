@@ -15,6 +15,7 @@
   "dependencies": {
     "@types/react-router": "^4.0.29",
     "axios": "^0.18.0",
+    "babel-core": "^6.26.3",
     "body-parser": "^1.18.3",
     "bootstrap": "^4.1.2",
     "chart.js": "^2.7.2",
@@ -80,14 +81,5 @@
     "ts-jest": "^23.0.1",
     "tslint": "^5.10.0",
     "tslint-react": "^3.6.0"
-  },
-  "jest": {
-    "setupTestFrameworkScriptFile": "<rootDir>/setupTest.js",
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ],
-    "moduleNameMapper": {
-      "^@client(.*)$": "<rootDir>/client$1"
-    }
   }
 }

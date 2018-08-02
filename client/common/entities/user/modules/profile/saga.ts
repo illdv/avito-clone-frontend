@@ -2,16 +2,16 @@ import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import { Action } from 'redux-act';
 import { AxiosResponse } from 'axios';
 
-import { UserAPI } from 'client/common/api/userAPI';
-import { errorHandler } from 'client/common/store/errorHandler';
-import { ModalNames } from 'client/common/modal-juggler/modalJugglerInterface';
-import { show } from 'client/common/modal-juggler/module';
-import { Toasts } from 'client/common/utils/Toasts';
+import { UserAPI } from '../../../../../../client/common/api/userAPI';
+import { errorHandler } from '../../../../../../client/common/store/errorHandler';
+import { ModalNames } from '../../../../../../client/common/modal-juggler/modalJugglerInterface';
+import { show } from '../../../../../../client/common/modal-juggler/module';
+import { Toasts } from '../../../../../../client/common/utils/Toasts';
 
 import { profileActions } from './actions';
 import { tokenActions } from '../token/actions';
 
-function* getProfile(action: Action<{ token: string }>) {
+export function* getProfile(action: Action<{ token: string }>) {
 	try {
 		const response: AxiosResponse<IGetProfileResponse> = yield call(UserAPI.getProfile);
 		const profile                                      = response.data;
@@ -24,7 +24,7 @@ function* getProfile(action: Action<{ token: string }>) {
 	}
 }
 
-function* changePassword(action) {
+export function* changePassword(action: Action<{ password: string }>) {
 	try {
 		yield call(UserAPI.changePassword, action.payload);
 		yield put(profileActions.changePassword.SUCCESS({}));
@@ -35,7 +35,7 @@ function* changePassword(action) {
 	}
 }
 
-function* changeProfile(action) {
+export function* changeProfile(action) {
 	try {
 		const response = yield call(UserAPI.changeProfile, action.payload);
 		yield put(profileActions.changeProfile.SUCCESS(response.data));
@@ -46,7 +46,7 @@ function* changeProfile(action) {
 	}
 }
 
-function* deleteAccount() {
+export function* deleteAccount() {
 	try {
 		yield call(UserAPI.deleteAccount);
 		yield put(tokenActions.clearToken.REQUEST({}));
