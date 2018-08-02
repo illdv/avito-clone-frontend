@@ -1,7 +1,5 @@
 import React from 'react';
-import { connect, Dispatch } from 'react-redux';
-import { bindModuleAction } from 'client/common/user/utils';
-import { IUserActions, UserActions } from 'client/common/user/actions';
+import { UserActions } from 'client/common/entities/user/rootActions';
 import { showSendCodeToEmailModal } from 'client/ssr/modals/forgot-password/forgotPasswordModalTriggers';
 
 export interface IState {
@@ -12,17 +10,7 @@ export interface IState {
 	isRememberMe: boolean;
 }
 
-export interface IProps {
-	userActions?: IUserActions;
-}
-
-const mapStateToProps = state => ({});
-
-const mapDispatchToProps = dispatch => ({
-	userActions: bindModuleAction(UserActions, dispatch),
-});
-
-class LoginForm extends React.Component<IProps, IState> {
+class LoginForm extends React.Component<null, IState> {
 	state: IState = {
 		fields: {
 			email: 'dev@cronix.ms',
@@ -36,27 +24,28 @@ class LoginForm extends React.Component<IProps, IState> {
 		this.setState({
 			fields: { ...this.state.fields, [id]: value },
 		});
-	};
+	}
 
 	onRememberMe = event => {
 		this.setState({
 			isRememberMe: event.target.checked,
 		});
-	};
+	}
 
 	onLogin = () => {
 		const { email, password } = this.state.fields;
 		const { isRememberMe }    = this.state;
-		this.props.userActions.login.REQUEST({
+
+		UserActions.common.login.REQUEST({
 			email,
 			password,
 			isRememberMe,
 		});
-	};
+	}
 
 	onForgot = () => {
 		showSendCodeToEmailModal();
-	};
+	}
 
 	render() {
 		return (
@@ -135,4 +124,4 @@ class LoginForm extends React.Component<IProps, IState> {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
+export default LoginForm;

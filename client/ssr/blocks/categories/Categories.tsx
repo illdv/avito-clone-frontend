@@ -1,7 +1,7 @@
 import React from 'react';
 import {getCategories, Category} from 'client/ssr/blocks/categories/context';
 import CategoriesList from 'client/ssr/blocks/categories/CategoriesList';
-import { ICategories } from 'client/common/categories/interface'
+import { ICategories } from 'client/common/_categories/interface';
 
 require('./Categories.sass');
 

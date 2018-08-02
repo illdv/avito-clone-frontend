@@ -15,7 +15,9 @@ function changePassword(request: IChangePasswordRequest) {
 function changeProfile({ image,  ...data }: IChangeProfileRequest) {
 	const formData = new FormData();
 
-	formData.append('image', image);
+	if (image) {
+		formData.append('image', image);
+	}
 
 	Object.entries(data).forEach(([key, value]) => {
 		formData.append(key, value);

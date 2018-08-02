@@ -2,8 +2,6 @@ import * as React from 'react';
 import {connect, Dispatch} from 'react-redux';
 import Avatar from 'react-avatar-edit';
 
-import {IUserActions, UserActions} from 'client/common/user/actions';
-import {bindModuleAction} from 'client/common/user/utils';
 import { IRootState } from '../../../common/store/storeInterface';
 
 import ConfirmationAccountDeletionModal from '../../modals/confirmation-account-deletion/ConfirmationAccountDeletionModal';
@@ -11,6 +9,7 @@ import ConfirmationAccountDeletionModal from '../../modals/confirmation-account-
 import {
 	showConfirmationAccountDeletionModal,
 } from '../../modals/confirmation-account-deletion/confirmationAccountDeletionModalTriggers';
+import { UserActions } from '../../../common/entities/user/rootActions';
 
 enum FieldsNames {
 	fullName = 'fullName',
@@ -33,8 +32,7 @@ interface IState {
 }
 
 interface IProps {
-	user: IUser,
-	userActions: IUserActions;
+	user: IUserState,
 }
 
 export class ProfileSettings extends React.Component<IProps, IState> {
@@ -48,9 +46,9 @@ export class ProfileSettings extends React.Component<IProps, IState> {
 				password_confirmation: '',
 			},
 			fields: {
-				fullName: this.props.user.name,
-				email: this.props.user.email,
-				phone: this.props.user.phone,
+				fullName: this.props.user.profile.name,
+				email: this.props.user.profile.email,
+				phone: this.props.user.profile.phone,
 			},
 			preview: null,
 			editAvatar: false,
@@ -59,7 +57,9 @@ export class ProfileSettings extends React.Component<IProps, IState> {
 	}
 
 	get defaultImage() {
-		return this.props.user && this.props.user.image && this.props.user.image.file_url || '/static/img/person.png';
+		return this.props.user.profile &&
+				this.props.user.profile.image &&
+				this.props.user.profile.image.file_url || '/static/img/person.png';
 	}
 
 	onChange = event => {
@@ -71,7 +71,7 @@ export class ProfileSettings extends React.Component<IProps, IState> {
 
 	onPasswordChange = () => {
 		const {old_password, password, password_confirmation} = this.state.passwordFields;
-		this.props.userActions.changePassword.REQUEST({old_password, password, password_confirmation});
+		UserActions.profile.changePassword.REQUEST({old_password, password, password_confirmation});
 	}
 	
 	onFileLoad = file => this.setState({ file });
@@ -105,11 +105,11 @@ export class ProfileSettings extends React.Component<IProps, IState> {
 				.then(res => res.blob())
 				.then(blob => {
 					data.image = new File([blob], 'avatar');
-					this.props.userActions.changeProfile.REQUEST(data);
+					UserActions.profile.changeProfile.REQUEST(data);
 				});
 
 		} else {
-			this.props.userActions.changeProfile.REQUEST(data);
+			UserActions.profile.changeProfile.REQUEST(data);
 		}
 
 	}
@@ -153,7 +153,7 @@ export class ProfileSettings extends React.Component<IProps, IState> {
 		);
 	}
 
-	deleteAccount = () => this.props.userActions.deleteAccount.REQUEST({});
+	deleteAccount = () => UserActions.profile.deleteAccount.REQUEST({});
 
 	render() {
 		return (
@@ -424,11 +424,7 @@ export class ProfileSettings extends React.Component<IProps, IState> {
 }
 
 const mpStateToProprs = (state: IRootState) => ({
-	user: state.user.user,
+	user: state.user,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-	userActions: bindModuleAction(UserActions, dispatch),
-});
-
-export default connect(mpStateToProprs, mapDispatchToProps)(ProfileSettings);
+export default connect(mpStateToProprs)(ProfileSettings);

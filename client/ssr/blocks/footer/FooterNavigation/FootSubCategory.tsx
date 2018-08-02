@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ICategory } from 'client/common/categories/interface';
 import FootSubCategories from 'client/ssr/blocks/footer/FooterNavigation/FootSubCategories';
 
 interface IFootCategoryList {

@@ -1,27 +1,11 @@
 import { combineReducers } from 'redux';
 
 import modalJuggler from '../modal-juggler/module';
-import user from '../user/reducer';
-import ads from '../ads/reducer';
-import categories from '../categories/reducer';
-import notification from '../notification/reducer';
-import { UserActions } from 'client/common/user/actions';
+import user from '../entities/user/rootReducer';
 import location from 'client/common/location/module';
 
-const appReducers = combineReducers({
+export default combineReducers({
 	modalJuggler,
 	location,
 	user,
-	ads,
-	categories,
-	notification,
 });
-
-const rootReducer = (state, action) => {
-	if (action.type === UserActions.logout.REQUEST({}).type) {
-		state = undefined;
-	}
-	return appReducers(state, action);
-};
-
-export default rootReducer;

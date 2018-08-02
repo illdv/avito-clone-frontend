@@ -1,8 +1,6 @@
 import * as React from 'react';
-import {Component} from 'react';
-import {connect, Dispatch} from 'react-redux';
-import {IUserActions, UserActions} from 'client/common/user/actions';
-import {bindModuleAction} from 'client/common/user/utils';
+import { Component } from 'react';
+import { UserActions } from 'client/common/entities/user/rootActions';
 
 export interface IState {
 	fields: {
@@ -13,16 +11,6 @@ export interface IState {
 		password_confirmation: string;
 	};
 }
-
-export interface IProps {
-	userActions?: IUserActions;
-}
-
-const mapStateToProps = state => ({});
-
-const mapDispatchToProps = dispatch => ({
-	userActions: bindModuleAction(UserActions, dispatch),
-});
 
 interface IInputProps {
 	id: string;
@@ -52,7 +40,7 @@ const Input = ({id, title, onChange, placeholder, type}: IInputProps) => (
 	</div>
 );
 
-class RegistrationForm extends Component<IProps, IState> {
+class RegistrationForm extends Component<null, IState> {
 
 	state: IState = {
 		fields: {
@@ -72,7 +60,7 @@ class RegistrationForm extends Component<IProps, IState> {
 	}
 
 	onRegistration = () => {
-		this.props.userActions.register.REQUEST({...this.state.fields});
+		UserActions.common.register.REQUEST({...this.state.fields});
 	}
 
 	render() {
@@ -123,4 +111,4 @@ class RegistrationForm extends Component<IProps, IState> {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RegistrationForm);
+export default RegistrationForm;

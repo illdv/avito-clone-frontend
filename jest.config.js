@@ -1,11 +1,8 @@
 module.exports = {
 				'roots': [
 								'<rootDir>/server',
-								'<rootDir>/client',
+								'<rootDir>/client'
 				],
-				"moduleNameMapper": {
-								"^@client(.*)$": '<rootDir>/client$1'
-				},
 				'transform': {
 								'^.+\\.tsx?$': 'ts-jest',
 				},
@@ -18,6 +15,9 @@ module.exports = {
 								'json',
 								'node',
 				],
-				"verbose": true,
-				"testURL": "http://localhost/"
+				'moduleNameMapper': {
+								'^client(.*)$': '<rootDir>/client$1',
+								'^server(.*)$': '<rootDir>/server$1',
+				},
+				'testURL': 'http://localhost',
 };

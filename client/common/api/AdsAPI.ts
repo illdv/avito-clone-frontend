@@ -1,5 +1,5 @@
 import { AxiosWrapper } from './AxiosWrapper';
-import { AdsActionType, IAds, ICreateAdRequest, IEditAdRequest } from 'client/common/ads/interface';
+import { AdsActionType, IAds, ICreateAdRequest, IEditAdRequest } from 'client/common/_ads/interface';
 
 function get() {
 	return AxiosWrapper.get('/ads');
@@ -68,7 +68,7 @@ function useAction(id: string, actionType: AdsActionType) {
 	return AxiosWrapper.put(`/ads/${id}/state/${actionType}`);
 }
 
-function similar(sort: string, id: string) {
+function similar(sort: string, id: number) {
 	return AxiosWrapper.get(`ad/${id}/similar/${sort}`);
 }
 

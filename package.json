@@ -13,7 +13,9 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@types/react-router": "^4.0.29",
     "axios": "^0.18.0",
+    "babel-core": "^6.26.3",
     "body-parser": "^1.18.3",
     "bootstrap": "^4.1.2",
     "chart.js": "^2.7.2",
@@ -48,6 +50,8 @@
     "react-modal": "^3.5.1",
     "react-number-format": "^3.4.4",
     "react-redux": "^5.0.7",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1",
     "react-select": "^2.0.0",
     "react-toastify": "^4.1.0",
     "reactstrap": "^6.3.0",

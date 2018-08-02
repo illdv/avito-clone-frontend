@@ -1,4 +1,4 @@
-import { IAds, MyAdsStatus } from 'client/common/ads/interface';
+import { IAds, MyAdsStatus } from 'client/common/entities/user/modules/owned-ads/interfaces';
 
 const isDisapproved = (ad: IAds) => ad.is_approved === false;
 const isActive      = (ad: IAds) => ad.is_active === true;

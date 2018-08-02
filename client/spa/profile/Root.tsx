@@ -1,0 +1,34 @@
+import React from 'react';
+import dynamic from 'next/dynamic';
+import { ToastContainer } from 'react-toastify';
+
+import OverlaySpinner from 'client/common/blocks/spinner/OverlaySpinner';
+
+require('client/spa/pages/Helpers.sass');
+require('client/spa/pages/ToolBar.sass');
+require('client/spa/pages/MyAds.sass');
+require('client/spa/pages/create-ad/CreateAd.sass');
+require('client/spa/pages/ProfileSettings/ProfileSettings.sass');
+require('client/ssr/blocks/footer/Footer.sass');
+require('client/spa/pages/favorites/FavoritesPage.sass');
+
+const Content = dynamic(import('client/spa/profile/Router') as any, {
+	ssr: false,
+	loading: () => <OverlaySpinner />,
+});
+
+class Profile extends React.Component {
+	constructor(props, context) {
+		super(props, context);
+	}
+	render() {
+		return (
+			<>
+				<Content />
+				<ToastContainer />
+			</>
+		);
+	}
+}
+
+export default Profile;

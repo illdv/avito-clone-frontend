@@ -1,27 +1,22 @@
 import React from 'react';
-import { connect, Dispatch } from 'react-redux';
-import {IAds} from 'client/common/ads/interface';
+import { connect } from 'react-redux';
+
 import AdCard from 'client/ssr/blocks/ads/components/AdCard';
-import { bindModuleAction } from 'client/common/user/utils';
-import { IUserActions, UserActions } from 'client/common/user/actions';
-import { IRootState } from '../../../common/store/storeInterface';
+import { IRootState } from 'client/common/store/storeInterface';
+import { UserActions } from 'client/common/entities/user/rootActions';
 
 require('./Ads.sass');
 
-export {IAds};
-
 export interface IAdsProps {
-	user: IUser;
+	user: IUserState;
 	title: string;
-	ads: IAds[];
-	userActions: IUserActions;
+	ads: IAd[];
 }
 
 class Ads extends React.Component<IAdsProps> {
-	addToFavorites = (id: string) => {
-		this.props.userActions.selectFavorite.REQUEST({ id });
-	};
-
+	addToFavorites = (id: number) => {
+		UserActions.favorites.selectFavorite.REQUEST({ id });
+	}
 
 	render() {
 		const {ads, title} = this.props;
@@ -36,12 +31,16 @@ class Ads extends React.Component<IAdsProps> {
 					</div>
 					<div className='row'>
 						{
-							ads && ads.map((ad: IAds) => (
+							ads && ads.map((ad: IAd) => (
 								<div
 									key={ad.id}
 									className='col-md-4 col-lg-3'
 								>
-									<AdCard favoritesIds={this.props.user.favorites_ids} ads={ad} addToFavorites={this.addToFavorites}/>
+									<AdCard
+										ad={ad}
+										favoritesIds={this.props.user.favorites.ids}
+										addToFavorites={this.addToFavorites}
+									/>
 								</div>
 							))
 						}
@@ -53,11 +52,7 @@ class Ads extends React.Component<IAdsProps> {
 }
 
 const mapStateToProps = (state: IRootState) => ({
-	user: state.user.user,
+	user: state.user,
 });
 
-const mapDispatchToProps = dispatch => ({
-	userActions: bindModuleAction(UserActions, dispatch),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Ads);
+export default connect(mapStateToProps)(Ads);
