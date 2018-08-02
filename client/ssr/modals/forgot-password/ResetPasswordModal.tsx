@@ -3,8 +3,6 @@ import Modal from '../../../common/modal-juggler/Modal';
 import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
 import { UserActions } from '../../../common/entities/user/rootActions';
 
-require('./ResetPasswordModal.sass');
-
 export interface IState {
 	fields: {
 		email: string;
