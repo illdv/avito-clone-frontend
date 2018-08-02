@@ -61,11 +61,23 @@ class Header extends Component<IProps, IState> {
 
 	renderLogin = () => {
 		const { user } = this.props;
+		const profile  = user.profile;
+		const avatar   = profile && profile.image && profile.image.file_url || '/static/img/person.png';
 
 		if (useOrDefault(() => user.profile.email, null)) {
 			return (
 				<Link href={`/profile`}>
-					<a>{user.profile.email}</a>
+					<div className='header__account'>
+						<div className='header__account__profile'>
+							<span className='header__account__name'>{profile.name}</span>
+							<span className='header__account__email'>{profile.email}</span>
+						</div>
+						<img
+							src={avatar}
+							alt=''
+							className='header__account__img'
+						/>
+					</div>
 				</Link>
 			);
 		}
@@ -91,7 +103,7 @@ class Header extends Component<IProps, IState> {
 			<Link href={`/favorites`}>
 				<a
 					href='#'
-					className='header__favourites '
+					className='header__favourites'
 				><img
 					src='/static/img/icons/like.svg'
 					alt=''
