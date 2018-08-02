@@ -8,7 +8,7 @@ import { UserActions } from 'client/common/entities/user/rootActions';
 require('./Ads.sass');
 
 export interface IAdsProps {
-	user: IUser;
+	user: IUserState;
 	title: string;
 	ads: IAd[];
 }

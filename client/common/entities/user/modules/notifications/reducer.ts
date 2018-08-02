@@ -1,20 +1,16 @@
 import { createReducer } from 'redux-act';
-import { INotification } from './interfaces';
-import { NotificationActions } from './actions';
+import { notificationActions } from './actions';
 
-export interface INotificationState {
-	data: INotification[];
-}
 
 const initialState = (): INotificationState => ({
-	data: [],
+	items: [],
 });
 
 const reducer = createReducer({}, initialState());
 
-reducer.on(NotificationActions.loading.SUCCESS, (state, payload): INotificationState => ({
+reducer.on(notificationActions.loading.SUCCESS, (state, payload): INotificationState => ({
 	...state,
-	data: payload,
+	items: payload,
 }));
 
 export default reducer;

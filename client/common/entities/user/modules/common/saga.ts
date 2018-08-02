@@ -16,10 +16,14 @@ import { commonActions } from './actions';
 import { tokenActions } from '../token/actions';
 import { profileActions } from '../profile/actions';
 import { favoritesActions } from '../favorites/actions';
+import { delay } from 'redux-saga';
+import { CustomStorage } from '../../CustomStorage';
 
 function* loadingUserIfHasToken() {
-	const token = yield select(getToken);
+	const token = CustomStorage.getToken();
+
 	if (token) {
+		axios.defaults.headers.common.authorization = `Bearer ${token}`;
 		yield put(profileActions.getProfile.REQUEST({ token }));
 	}
 }
@@ -46,13 +50,13 @@ function* login(action: Action<ILoginRequest>) {
 
 		const { isRememberMe } = action.payload;
 		const { token, user }  = response.data;
-		const { favorites_ids: favoritesIds, ...correctUserData } = user;
+		const { favorites_ids: favoritesIds, ...correctProfile }  = user;
 
-		yield call(favoritesActions.composeFavoritesIds.REQUEST, { ids: favoritesIds });		
-		yield call(profileActions.changeProfile.SUCCESS, correctUserData);
+		yield put(favoritesActions.composeFavoritesIds.REQUEST({ ids: favoritesIds }));		
+		yield put(profileActions.setProfile.REQUEST(correctProfile));
 
-		yield call(tokenActions.setTokenToStorage, token, isRememberMe);
-		yield call(tokenActions.setTokenToState, token);
+		yield put(tokenActions.setTokenToStorage.REQUEST({ token, isRememberMe }));
+		yield put(tokenActions.setTokenToState.REQUEST({ token }));
 
 		hideLoginModal();
 		pushInRouter('/profile');
@@ -69,7 +73,7 @@ function* register(action: Action<IRegisterRequest>) {
 
 		yield put(commonActions.register.SUCCESS(data));
 
-		yield call(tokenActions.setTokenToState, data.token);
+		yield put(tokenActions.setTokenToState.REQUEST({ token: data.token }));
 
 		hideLoginModal();
 		Toasts.info('You have registered successfully!');
@@ -79,12 +83,20 @@ function* register(action: Action<IRegisterRequest>) {
 	}
 }
 
+function* logout() {
+	yield put(tokenActions.clearToken.REQUEST({}));
+	Toasts.info('Logout');
+	/* delay(1000);
+	location.reload(); */
+}
+
 function* watcherUser() {
 	yield [
 		takeEvery(commonActions.login.REQUEST, login),
 		takeEvery(commonActions.register.REQUEST, register),
 		takeEvery(commonActions.initUser.REQUEST, loadingUserIfHasToken),
 		takeLatest(commonActions.sendCode.REQUEST, resetPassword),
+		takeEvery(commonActions.logout.REQUEST, logout),
 	];
 }
 

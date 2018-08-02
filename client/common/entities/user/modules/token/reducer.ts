@@ -6,6 +6,6 @@ const initialState = (): string => null;
 
 const reducer = createReducer({}, initialState());
 
-reducer.on(tokenActions.setTokenToState, (state, payload): string => payload);
+reducer.on(tokenActions.setTokenToState.REQUEST, (state, { token }): string => token);
 
 export default reducer;

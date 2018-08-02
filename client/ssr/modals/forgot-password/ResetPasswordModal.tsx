@@ -1,15 +1,9 @@
 import React from 'react';
 import Modal from '../../../common/modal-juggler/Modal';
 import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
-import { IUserActions, UserActions } from 'client/common/entities/user/rootActions';
-import { bindModuleAction } from 'client/common/entities/user/utils';
-import { connect, Dispatch } from 'react-redux';
+import { UserActions } from '../../../common/entities/user/rootActions';
 
 require('./ResetPasswordModal.sass');
-
-export interface IProps {
-	userActions: IUserActions;
-}
 
 export interface IState {
 	fields: {
@@ -20,7 +14,7 @@ export interface IState {
 	};
 }
 
-class ResetPasswordModal extends React.Component<IProps & IState> {
+class ResetPasswordModal extends React.Component<null, IState> {
 	state: IState = {
 		fields: {
 			email: '',
@@ -38,7 +32,7 @@ class ResetPasswordModal extends React.Component<IProps & IState> {
 	}
 	onSubmit = () => {
 		const {email, code, password, password_confirmation} = this.state.fields;
-		this.props.userActions.common.resetPasswordByCode.REQUEST({email, token: code, password, password_confirmation});
+		UserActions.common.resetPasswordByCode.REQUEST({email, token: code, password, password_confirmation});
 	}
 
 	shouldComponentUpdate() {
@@ -145,7 +139,4 @@ class ResetPasswordModal extends React.Component<IProps & IState> {
 	}
 }
 
-const mapDispatchToProps = dispatch => ({
-	userActions: bindModuleAction(UserActions, dispatch),
-});
-export default connect(null, mapDispatchToProps)(ResetPasswordModal);
+export default ResetPasswordModal;

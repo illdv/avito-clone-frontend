@@ -6,7 +6,7 @@ import { IRootState } from 'client/common/store/storeInterface';
 import { UserActions } from '../../../common/entities/user/rootActions';
 
 interface IProps {
-	user: IUser;
+	user: IUserState;
 }
 
 class Favorites extends React.Component<IProps, null> {

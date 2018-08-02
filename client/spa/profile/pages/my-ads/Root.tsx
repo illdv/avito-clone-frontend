@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
+import { Route, Switch as SwitchRoute } from 'react-router-dom';
+
 import { IRootState } from 'client/common/store/storeInterface';
 import { AdsActionType, IAds, MyAdsStatus } from 'client/common/entities/user/modules/owned-ads/interfaces';
 import { filterMyAds } from 'client/spa/pages/utils';
 import { extractPreviewImage } from 'client/ssr/blocks/ad/utils';
-import { UserActions } from '../../common/entities/user/rootActions';
+import { UserActions } from 'client/common/entities/user/rootActions';
 
 export interface IState {
 	selectedFilter: MyAdsStatus;
@@ -199,6 +201,9 @@ class MyAds extends Component<IProps, IState> {
 						))
 					}
 				</div>
+                <SwitchRoute>
+                    <path='/profile*' component={ Index }
+                </SwitchRoute>
 			</>
 		);
 	}

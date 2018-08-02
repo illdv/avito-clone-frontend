@@ -17,7 +17,7 @@ function* getProfile(action: Action<{ token: string }>) {
 		const profile                                      = response.data;
 
 		yield put(profileActions.getProfile.SUCCESS(profile));
-		yield put(tokenActions.setTokenToState(action.payload.token));
+		yield put(tokenActions.setTokenToState.REQUEST({token: action.payload.token}));
 	} catch (e) {
 		yield call(errorHandler, e);
 		yield put(profileActions.getProfile.FAILURE({}));
@@ -49,7 +49,7 @@ function* changeProfile(action) {
 function* deleteAccount() {
 	try {
 		yield call(UserAPI.deleteAccount);
-		yield call(tokenActions.clearToken);
+		yield put(tokenActions.clearToken.REQUEST({}));
 	} catch (err) {
 		yield call(errorHandler, err);
 	}

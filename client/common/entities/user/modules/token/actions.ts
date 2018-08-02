@@ -1,13 +1,15 @@
-import { createAction, ComplexActionCreator1, ComplexActionCreator2, EmptyActionCreator } from 'redux-act';
+import { createActionCreator, IAsyncAction } from '../../utils';
 
-const setTokenToState = createAction<string>('SET_TOKEN_TO_STATE');
-const setTokenToStorage = createAction<string>('SET_TOKEN_TO_STORAGE');
-const clearToken = createAction('CLEAR_TOKEN');
+const createAsyncAction = createActionCreator('TOKEN');
+
+const setTokenToState      = createAsyncAction('SET_TO_STATE');
+const setTokenToStorage    = createAsyncAction('SET_TO_STORAGE');
+const clearToken = createAsyncAction('CLEAR_TOKEN');
 
 export interface ITokenActions {
-	setTokenToState: ComplexActionCreator1<string, string>;
-	setTokenToStorage: ComplexActionCreator2<string, boolean, string>;
-	clearToken: EmptyActionCreator;
+	setTokenToState: IAsyncAction<{token: string}>;
+	setTokenToStorage: IAsyncAction<{token: string, isRememberMe: boolean}>;
+	clearToken: IAsyncAction;
 }
 
 export const tokenActions: ITokenActions = {

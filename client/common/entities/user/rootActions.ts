@@ -1,6 +1,7 @@
 import store from '../../../common/store/index';
 import { bindModuleAction } from './utils';
 
+import { notificationActions as notifications, INotificationActions } from './modules/notifications/actions';
 import { favoritesActions as favorites, IFavoritesActions } from './modules/favorites/actions';
 import { ownedAdsActions as ownedAds, IOwnedAdsActions } from './modules/owned-ads/actions';
 import { profileActions as profile, IProfileActions } from './modules/profile/actions';
@@ -8,6 +9,7 @@ import { commonActions as common, ICommonActions } from './modules/common/action
 import { tokenActions as token, ITokenActions } from './modules/token/actions';
 
 export interface IUserActions {
+	notifications: INotificationActions;
 	favorites: IFavoritesActions;
 	ownedAds: IOwnedAdsActions;
 	profile: IProfileActions;
@@ -16,6 +18,7 @@ export interface IUserActions {
 }
 
 export const UserActions: IUserActions = {
+	notifications: bindModuleAction<INotificationActions>(notifications, store.dispatch),
 	favorites: bindModuleAction<IFavoritesActions>(favorites, store.dispatch),
 	ownedAds: bindModuleAction<IOwnedAdsActions>(ownedAds, store.dispatch),
 	profile: bindModuleAction<IProfileActions>(profile, store.dispatch),

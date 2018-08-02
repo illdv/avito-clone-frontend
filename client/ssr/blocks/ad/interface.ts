@@ -43,7 +43,7 @@ export interface IAdsProps {
 	ad: IAd;
 	categories: any[];
 	similar: any[];
-	user: IUser;
+	user: IUserState;
 }
 
 export interface IAdsState {

@@ -3,6 +3,6 @@ import { ILocationStoreState } from '../location/locationInterface';
 
 export interface IRootState {
 	modalJuggler: IModalJugglerState;
-	user: IUser;
+	user: IUserState;
 	location: ILocationStoreState;
 }

@@ -1,6 +1,6 @@
 import { createActionCreator, IAsyncAction } from '../../utils';
-import { AdsActionType, IAds, ICreateAdRequest, IEditAdRequest } from './interfaces';
-import { PageName } from './reducer';
+import { AdsActionType, IAds, ICreateAdRequest, IEditAdRequest, PageNames } from './interfaces';
+
 
 const createAsyncAction = createActionCreator('ADS');
 
@@ -16,7 +16,7 @@ const deleteImage   = createAsyncAction('DELETE_IMAGE');
 export interface IOwnedAdsActions {
 	getMy: IAsyncAction<{}, IAds[]>;
 	create: IAsyncAction<ICreateAdRequest>;
-	changePage: IAsyncAction<PageName>;
+	changePage: IAsyncAction<PageNames>;
 	remove: IAsyncAction<{ id: string }>;
 	changeStatus: IAsyncAction<{ actionType: AdsActionType, id: string }>;
 	selectForEdit: IAsyncAction<{ id: string }>;

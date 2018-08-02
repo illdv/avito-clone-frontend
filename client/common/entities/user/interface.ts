@@ -1,9 +1,9 @@
-interface IUserFavorites {
+interface IFavoritesState {
 	ids: number[];
 	items: IAd[];
 }
 
-interface IUserProfile {
+interface IProfileState {
 	id: number;
 	name: string;
 	email: string;
@@ -13,16 +13,36 @@ interface IUserProfile {
 	image: IImage;
 }
 
-interface IUser {
-	favorites: IUserFavorites;
-	ownedAds: IAd[];
-	profile: IUserProfile;
+interface IUserState {
+	notifications: INotificationState;
+	favorites: IFavoritesState;
+	ownedAds: any; // TODO refactor
+	profile: IProfileState;
 	token: string;
 	isLoading: boolean;
 }
 
-// For saga
+// Notifocation
+interface INotificationState {
+	items: INotification[];
+}
 
+interface INotificationData {
+	message: string;
+}
+
+interface INotification {
+	id: string;
+	type: string;
+	notifiable_type: string;
+	notifiable_id: number;
+	data: INotificationData;
+	read_at?: any;
+	created_at: string;
+	updated_at: string;
+}
+
+// For saga
 interface ILoginRequest {
 	email: string;
 	password: string;

@@ -1,18 +1,11 @@
 import { createReducer } from 'redux-act';
 import { ownedAdsActions } from './actions';
-import { IAds } from './interfaces';
-
-export enum PageName {
-	Profile = 'Profile',
-	Create  = 'Create',
-	Confirm = 'Confirm',
-	Edit    = 'Edit',
-}
+import { IAds, PageNames } from './interfaces';
 
 export interface IAdsState {
 	ads: IAds[];
 	isLoading: boolean;
-	currentPage: PageName;
+	currentPage: PageNames;
 	selectedId: string;
 }
 
@@ -20,7 +13,7 @@ const initialState = (): IAdsState => ({
 	ads: [],
 	isLoading: true,
 	selectedId: null,
-	currentPage: PageName.Profile,
+	currentPage: PageNames.Profile,
 });
 
 const reducer = createReducer({}, initialState());
@@ -49,7 +42,7 @@ reducer.on(ownedAdsActions.changePage.REQUEST, (state, payload): IAdsState => ({
 reducer.on(ownedAdsActions.selectForEdit.REQUEST, (state, payload): IAdsState => ({
 	...state,
 	selectedId: payload.id,
-	currentPage: PageName.Edit,
+	currentPage: PageNames.Edit,
 }));
 
 export default reducer;

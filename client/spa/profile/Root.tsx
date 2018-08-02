@@ -1,5 +1,6 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
+import { ToastContainer } from 'react-toastify';
 
 import OverlaySpinner from 'client/common/blocks/spinner/OverlaySpinner';
 
@@ -24,6 +25,7 @@ class Profile extends React.Component {
 		return (
 			<>
 				<Content />
+				<ToastContainer />
 			</>
 		);
 	}

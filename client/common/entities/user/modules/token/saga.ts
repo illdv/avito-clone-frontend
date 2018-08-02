@@ -12,11 +12,12 @@ function saveTokenInStore(action: Action<{ token: string, isRememberMe: boolean 
 	const { token, isRememberMe } = action.payload;
 
 	if (isRememberMe) {
+		console.log('setAndRememberToken');
 		CustomStorage.setAndRememberToken(token);
 	} else {
+		console.log('setToken');
 		CustomStorage.setToken(token);
 	}
-	axios.defaults.headers.common.authorization = `Bearer ${token}`;
 }
 
 function clearToken() {
@@ -27,8 +28,8 @@ function clearToken() {
 
 function* watcherToken() {
 	yield [
-		takeEvery(tokenActions.clearToken, clearToken),
-		takeEvery(tokenActions.setTokenToStorage, saveTokenInStore),
+		takeEvery(tokenActions.clearToken.REQUEST, clearToken),
+		takeEvery(tokenActions.setTokenToStorage.REQUEST, saveTokenInStore),
 	];
 }
 

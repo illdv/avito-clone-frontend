@@ -5,32 +5,23 @@ import { connect, Dispatch } from 'react-redux';
 import { IRootState } from 'client/common/store/storeInterface';
 import ToolBar from 'client/spa/pages/ToolBar';
 import { MainContent } from 'client/spa/pages/MainContent';
-import { CustomStorage } from 'client/common/user/CustomStorage';
+import { CustomStorage } from 'client/common/entities/user/CustomStorage';
 import CreateAd from 'client/spa/pages/create-ad/CreateAd';
 import { pushInRouter } from 'client/common/utils/utils';
-import { IAdsState, PageName } from 'client/common/ads/reducer';
-import { AdsActions, IAdsActions } from 'client/common/ads/actions';
-import { bindModuleAction } from 'client/common/user/utils';
+import { PageNames } from 'client/common/entities/user/modules/owned-ads/interfaces';
 import EditAd from 'client/spa/pages/create-ad/EditAd';
 import ProfileFooter from 'client/ssr/blocks/footer/ProfileFooter';
-import { INotificationActions, NotificationActions } from 'client/common/notification/actions';
+import { UserActions } from '../../common/entities/user/rootActions';
 
 export interface IState {
 }
 
 export interface IProps {
-	adsActions: IAdsActions;
-	ads: IAdsState;
-	notificationActions: INotificationActions;
+	user: IUserState;
 }
 
 const mapStateToProps = (state: IRootState) => ({
-	ads: state.ads,
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-	adsActions: bindModuleAction(AdsActions, dispatch),
-	notificationActions: bindModuleAction(NotificationActions, dispatch),
+	user: state.user,
 });
 
 export class Profile extends Component<IProps, IState> {
@@ -43,15 +34,16 @@ export class Profile extends Component<IProps, IState> {
 		if (!CustomStorage.getToken()) {
 			pushInRouter('/');
 		}
-		this.props.notificationActions.loading.REQUEST({});
+		UserActions.notifications.loading.REQUEST({});
 	}
 
 	onClickCreateAd = () => {
-		const currentPage = this.props.ads.currentPage;
-		if (currentPage === PageName.Create || currentPage === PageName.Edit) {
-			this.props.adsActions.changePage.REQUEST(PageName.Profile);
+		const currentPage = this.props.user.ownedAds.currentPage;
+
+		if (currentPage === PageNames.Create || currentPage === PageNames.Edit) {
+			UserActions.ownedAds.changePage.REQUEST(PageNames.Profile);
 		} else {
-			this.props.adsActions.changePage.REQUEST(PageName.Create);
+			UserActions.ownedAds.changePage.REQUEST(PageNames.Create);
 		}
 	}
 
@@ -79,9 +71,9 @@ export class Profile extends Component<IProps, IState> {
 
 	render() {
 
-		const { currentPage, selectedId, ads } = this.props.ads;
+		const { currentPage, selectedId, ads } = this.props.user.ownedAds;
 
-		if (currentPage === PageName.Create) {
+		if (currentPage === PageNames.Create) {
 			return (
 				<div>
 					<ToolBar onCreateAd={this.onClickCreateAd} />
@@ -90,7 +82,7 @@ export class Profile extends Component<IProps, IState> {
 			);
 		}
 
-		if (currentPage === PageName.Edit) {
+		if (currentPage === PageNames.Edit) {
 			const selectedAd = ads.filter(ad => ad.id === selectedId)[0];
 			return (
 				<div>
@@ -110,4 +102,4 @@ export class Profile extends Component<IProps, IState> {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default connect(mapStateToProps)(Profile);

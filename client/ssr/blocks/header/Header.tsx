@@ -30,7 +30,7 @@ export interface IState {
 }
 
 export interface IProps {
-	user: IUser;
+	user: IUserState;
 	userActions: IUserActions;
 	locationState: ILocationStoreState;
 }
@@ -49,13 +49,13 @@ class Header extends Component<IProps, IState> {
 		super(props);
 	}
 
+	// TODO refactor
 	componentDidMount(): void {
 		const { user } = this.props;
 		const token    = CustomStorage.getToken();
 
 		if (!isServer() && !user.profile && token) {
-			axios.defaults.headers.common.authorization = `Bearer ${token}`;
-			this.props.userActions.common.initUser.REQUEST({});
+			UserActions.common.initUser.REQUEST({});
 		}
 	}
 
@@ -155,12 +155,12 @@ class Header extends Component<IProps, IState> {
 	render() {
 		return (
 			<header>
-				<LoginModal/>
-				<SendCodeToEmailModal/>
-				<ResetPasswordModal/>
-				<SuccessModal/>
-				<MainLocationModal/>
-				<SearchLocationModal/>
+				<LoginModal />
+				<SendCodeToEmailModal />
+				<ResetPasswordModal />
+				<SuccessModal />
+				<MainLocationModal />
+				<SearchLocationModal />
 				<div className='header header-top'>
 					<div className='container'>
 						<div className='row'>

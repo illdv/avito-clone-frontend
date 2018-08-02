@@ -4,12 +4,6 @@ interface IChangePasswordRequest {
 	password_confirmation: string;
 }
 
-interface IChangeProfileRequest {
-	old_password: string;
-	password: string;
-	password_confirmation: string;
-}
-
 interface ISendCodeToEmailRequest {
 	email: string;
 }
@@ -25,7 +19,7 @@ interface IFavoritesRequest {
 	favorites_ids: number[];
 }
 
-interface IGetProfileResponse extends IUserProfile {
+interface IGetProfileResponse extends IProfileState {
 	favorites_ids: number[];
 }
 

@@ -1,5 +1,12 @@
 import { IAttachedImage } from 'client/spa/pages/create-ad/interface';
 
+export enum PageNames {
+	Profile = 'Profile',
+	Create  = 'Create',
+	Confirm = 'Confirm',
+	Edit    = 'Edit',
+}
+
 export enum MyAdsStatus {
 	Disapproved = 'Disapproved',
 	Active      = 'Active',
