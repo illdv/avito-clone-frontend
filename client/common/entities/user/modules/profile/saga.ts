@@ -35,7 +35,7 @@ export function* changePassword(action: Action<{ password: string }>) {
 	}
 }
 
-function* changeProfile(action) {
+export function* changeProfile(action) {
 	try {
 		const response = yield call(UserAPI.changeProfile, action.payload);
 		yield put(profileActions.changeProfile.SUCCESS(response.data));
@@ -46,7 +46,7 @@ function* changeProfile(action) {
 	}
 }
 
-function* deleteAccount() {
+export function* deleteAccount() {
 	try {
 		yield call(UserAPI.deleteAccount);
 		yield call(tokenActions.clearToken);

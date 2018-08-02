@@ -5,9 +5,9 @@ interface IChangePasswordRequest {
 }
 
 interface IChangeProfileRequest {
-	old_password: string;
-	password: string;
-	password_confirmation: string;
+	name: string;
+	email: string;
+	phone: string;
 }
 
 interface ISendCodeToEmailRequest {
