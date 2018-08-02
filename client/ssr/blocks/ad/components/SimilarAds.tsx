@@ -56,7 +56,7 @@ class SimilarAds extends Component <ISimilarProps, ISimilarSortState> {
 										price={sim.price}
 										userName={sim.user.name}
 										description={sim.description}
-										image={sim.images[0]}
+										image={sim.images[0] ? sim.images[0] : []}
 										key={sim.id}
 									/>
 								);

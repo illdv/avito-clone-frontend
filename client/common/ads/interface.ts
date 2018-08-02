@@ -64,7 +64,7 @@ export interface IAds {
 	is_approved?: boolean;
 	is_active?: boolean;
 	is_completed?: boolean;
-	is_vip?: boolean;
+	is_vip?: number;
 	created_at?: string;
 	updated_at?: string;
 	deleted_at?: any;
@@ -96,6 +96,7 @@ export interface ICreateAdRequest {
 	phone: string;
 	images: IAttachedImage[];
 	options: IOptionValue[];
+	is_vip: boolean;
 }
 
 export interface IEditAdRequest {

@@ -11,6 +11,7 @@ export interface IProps {
 	title: string;
 	price: string;
 	description: string;
+	vip(): void;
 	next(): void;
 	back(): void;
 }
@@ -24,6 +25,7 @@ const ConfirmAd = ({
 	title,
 	price,
 	description,
+	vip,
 	next,
 	back,
 }: IProps) => {
@@ -95,8 +97,10 @@ const ConfirmAd = ({
 										readOnly
 										type='radio'
 										name='service'
-										checked
+										value={'Free'}
+										defaultChecked
 										className='service-block__check'
+										onChange={vip}
 									/>
 								</div>
 								<div className='service-block__info col-md-6'>
@@ -115,7 +119,9 @@ const ConfirmAd = ({
 										readOnly
 										type='radio'
 										name='service'
+										value={'Quick'}
 										className='service-block__check'
+										onChange={vip}
 									/>
 								</div>
 								<div className='service-block__info col-md-6'>
@@ -134,7 +140,9 @@ const ConfirmAd = ({
 										readOnly
 										type='radio'
 										name='service'
+										value={'Turbo'}
 										className='service-block__check'
+										onChange={vip}
 									/>
 								</div>
 								<div className='service-block__info col-md-6'>

@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { ISimilarProps, ISimilarRandomProps, ISimilarRandomState, ISimilarState } from 'client/ssr/blocks/ad/interface';
+import { ISimilarRandomProps, ISimilarRandomState } from 'client/ssr/blocks/ad/interface';
 import NumberFormat from 'react-number-format';
 import Link from 'next/link';
 
 class SimilarRandomAd extends Component<ISimilarRandomProps, ISimilarRandomState> {
-
 	render() {
 		return (
 			<div className='similar-ad'>
@@ -29,16 +28,23 @@ class SimilarRandomAd extends Component<ISimilarRandomProps, ISimilarRandomState
 						<span className='f-s-12 f-w-300'>{this.props.userName}</span>
 					</div>
 					<div className='col-md-6 col-lg-5 text-right'>
-						<img
-							src={this.props.image.file_url}
-							alt=''
-							className='right'
-						/>
+						{
+						  <SimilarImg image={this.props.image.file_url}/>
+						}
 					</div>
 				</div>
 			</div>
 		);
 	}
+}
+const SimilarImg = (image: string) => {
+		return (
+				<img
+					src={image}
+					alt=''
+					className='right'
+				/>
+		);
 }
 
 export default SimilarRandomAd;
