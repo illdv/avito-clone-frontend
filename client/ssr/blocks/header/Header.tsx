@@ -8,11 +8,10 @@ import SendCodeToEmailModal from '../../modals/forgot-password/SendCodeToEmail';
 import LanguageDropdown from './components/LanguageDropdown';
 import { showLoginModal } from 'client/ssr/modals/auth/loginModalTriggers';
 import { IRootState } from 'client/common/store/storeInterface';
-import { IUserState } from 'client/common/user/reducer';
-import { IUserActions, UserActions } from 'client/common/user/actions';
-import { bindModuleAction } from 'client/common/user/utils';
+import { UserActions, IUserActions } from 'client/common/entities/user/rootActions';
+import { bindModuleAction } from 'client/common/entities/user/utils';
 import { isServer } from 'client/common/utils/utils';
-import { CustomStorage, getFavoritesFromLocalStorage } from 'client/common/user/CustomStorage';
+import { CustomStorage, getFavoritesFromLocalStorage } from 'client/common/entities/user/CustomStorage';
 import ResetPasswordModal from 'client/ssr/modals/forgot-password/ResetPasswordModal';
 import SuccessModal from 'client/ssr/modals/success/SuccessModal';
 import MainLocationModal from 'client/ssr/modals/location/MainLocationModal';
@@ -50,21 +49,23 @@ class Header extends Component<IProps, IState> {
 		super(props);
 	}
 
+	// TODO refactor
 	componentDidMount(): void {
-		const {user} = this.props.user;
+		const { user } = this.props;
 		const token    = CustomStorage.getToken();
-		if (!isServer() && !user.id && token) {
-			axios.defaults.headers.common.authorization = `Bearer ${token}`;
-			this.props.userActions.initUser.REQUEST({});
+
+		if (!isServer() && !user.profile && token) {
+			UserActions.common.initUser.REQUEST({});
 		}
 	}
 
 	renderLogin = () => {
-		const {user} = this.props.user;
-		if (useOrDefault(() => user.email, null)) {
+		const { user } = this.props;
+
+		if (useOrDefault(() => user.profile.email, null)) {
 			return (
 				<Link href={`/profile`}>
-					<a>{user.email}</a>
+					<a>{user.profile.email}</a>
 				</Link>
 			);
 		}
@@ -152,14 +153,14 @@ class Header extends Component<IProps, IState> {
 
 	render() {
 		return (
-			<>
-				<LoginModal/>
-				<SendCodeToEmailModal/>
-				<ResetPasswordModal/>
-				<SuccessModal/>
-				<MainLocationModal/>
-				<SearchLocationModal/>
-				<header className='header header-top'>
+			<header>
+				<LoginModal />
+				<SendCodeToEmailModal />
+				<ResetPasswordModal />
+				<SuccessModal />
+				<MainLocationModal />
+				<SearchLocationModal />
+				<div className='header header-top'>
 					<div className='container'>
 						<div className='row'>
 							<div className='col-12'>
@@ -188,8 +189,8 @@ class Header extends Component<IProps, IState> {
 							</div>
 						</div>
 					</div>
-				</header>
-			</>
+				</div>
+			</header>
 		);
 	}
 }

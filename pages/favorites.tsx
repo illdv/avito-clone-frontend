@@ -6,7 +6,6 @@ import { types } from 'redux-act';
 import ToolBar from 'client/spa/pages/ToolBar';
 import Favorites from 'client/spa/pages/favorites/Favorites';
 
-
 require('client/spa/pages/Helpers.sass');
 require('client/spa/pages/ToolBar.sass');
 require('client/spa/pages/MyAds.sass');

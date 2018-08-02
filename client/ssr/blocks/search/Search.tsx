@@ -31,7 +31,6 @@ interface ISearchState {
 
 const mapStateToProps = (state: IRootState) => ({
 	locationState: getLocationState(state),
-	user: state.user,
 });
 
 const getOption = (option: IOption, creatorChangeOption) => (

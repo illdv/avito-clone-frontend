@@ -1,8 +1,7 @@
 import * as React from 'react';
-import {IAds} from 'client/common/ads/interface';
 
 interface IFavoritesItem {
-	item: IAds;
+	item: IAd;
 	onCheck: any;
 	checked: any;
 }

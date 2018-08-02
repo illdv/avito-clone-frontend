@@ -4,11 +4,11 @@ import Header from 'client/ssr/blocks/header/Header';
 import Navbar from 'client/ssr/blocks/navbar/Navbar';
 import Search from 'client/ssr/blocks/search/Search';
 import Footer from 'client/ssr/blocks/footer/Footer';
-import Ads, { IAds } from 'client/ssr/blocks/ads/Ads';
+import Ads from 'client/ssr/blocks/ads/Ads';
 import EmptySearch from 'client/ssr/blocks/empty-search/EmptySearch';
 
 interface ISearchPageProp {
-	search: IAds[];
+	search: IAd[];
 }
 
 class SearchPage extends React.Component<ISearchPageProp> {

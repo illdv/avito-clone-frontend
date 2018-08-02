@@ -3,27 +3,19 @@ import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 
 import { IRootState } from 'client/common/store/storeInterface';
-import { INotification } from 'client/common/notification/interface';
-import { INotificationState } from 'client/common/notification/reducer';
-import { INotificationActions, NotificationActions } from 'client/common/notification/actions';
-import { bindModuleAction } from 'client/common/user/utils';
 import { filterNotification } from 'client/spa/pages/notification/utils';
+import { UserActions } from '../../../common/entities/user/rootActions';
 
 export interface IState {
 	selectedFilter: FilterType;
 }
 
 export interface IProps {
-	notification: INotificationState;
-	notificationActions: INotificationActions;
+	user: IUserState;
 }
 
 const mapStateToProps = (state: IRootState) => ({
-	notification: state.notification,
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-	notificationActions: bindModuleAction(NotificationActions, dispatch),
+	user: state.user,
 });
 
 export enum FilterType {
@@ -63,9 +55,9 @@ class Notification extends Component<IProps, IState> {
 	}
 
 	renderListNotification() {
-		const { data } = this.props.notification;
+		const { items } = this.props.user.notifications;
 
-		const notification = filterNotification(this.state.selectedFilter, data);
+		const notification = filterNotification(this.state.selectedFilter, items);
 
 		if (notification.length === 0) {
 			return (
@@ -85,7 +77,7 @@ class Notification extends Component<IProps, IState> {
 	}
 
 	onClick = (id: string) => () => {
-		this.props.notificationActions.read.REQUEST({ id });
+		UserActions.notifications.read.REQUEST({ id });
 	}
 
 	FilterButton = (props: { buttonFilter: FilterType, notifications: INotification[] }) => {
@@ -107,21 +99,21 @@ class Notification extends Component<IProps, IState> {
 	}
 
 	render() {
-		const { data } = this.props.notification;
+		const { items } = this.props.user.notifications;
 		return (
 			<>
 				<div className='filter-offer d-flex'>
 					<this.FilterButton
 						buttonFilter={FilterType.All}
-						notifications={data}
+						notifications={items}
 					/>
 					<this.FilterButton
 						buttonFilter={FilterType.NoRead}
-						notifications={data}
+						notifications={items}
 					/>
 					<this.FilterButton
 						buttonFilter={FilterType.Read}
-						notifications={data}
+						notifications={items}
 					/>
 				</div>
 				{this.renderListNotification()}
@@ -130,4 +122,4 @@ class Notification extends Component<IProps, IState> {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Notification);
+export default connect(mapStateToProps)(Notification);

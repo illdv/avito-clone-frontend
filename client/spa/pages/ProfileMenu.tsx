@@ -3,39 +3,24 @@ import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 
 import { IRootState } from 'client/common/store/storeInterface';
-import { bindModuleAction } from 'client/common/user/utils';
-import { IUserActions, UserActions } from 'client/common/user/actions';
 import { MenuItem } from 'client/spa/pages/MainContent';
-import { INotificationState } from 'client/common/notification/reducer';
-import { filterNotification } from 'client/spa/pages/notification/utils'
-import { FilterType } from 'client/spa/pages/notification/Notification'
-
-export interface IState {
-
-}
+import { filterNotification } from 'client/spa/pages/notification/utils';
+import { FilterType } from 'client/spa/pages/notification/Notification';
+import { UserActions } from '../../common/entities/user/rootActions';
 
 export interface IProps {
-	user: IUser;
-	userActions: IUserActions;
+	user: IUserState;
 	onSelectMenuItem: (menuItem: MenuItem) => void;
-	notification: INotificationState;
 }
 
 const mapStateToProps = (state: IRootState) => ({
-	user: state.user.user,
-	notification: state.notification,
+	user: state.user,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-	userActions: bindModuleAction(UserActions, dispatch),
-});
-
-class ProfileMenu extends Component<IProps, IState> {
-
-	state: IState = {};
+class ProfileMenu extends Component<IProps> {
 
 	onLogout = () => {
-		this.props.userActions.logout.REQUEST({});
+		UserActions.common.logout.REQUEST({});
 	}
 
 	onSelectMenuItem = (menuItem: MenuItem) => () => {
@@ -43,14 +28,26 @@ class ProfileMenu extends Component<IProps, IState> {
 	}
 
 	get userImage() {
-		return this.props.user && this.props.user.image && this.props.user.image.file_url || '/static/img/person.png';
+		return this.props.user.profile &&
+				this.props.user.profile.image &&
+				this.props.user.profile.image.file_url || '/static/img/person.png';
+	}
+
+	get profileName() {
+		return this.props.user.profile &&
+				this.props.user.profile.name;
+	}
+
+	get profileEmail() {
+		return this.props.user.profile &&
+				this.props.user.profile.email;
 	}
 
 	render() {
 
-		const { data } = this.props.notification;
+		const { items } = this.props.user.notifications;
 
-		const countNotReadNotification = filterNotification(FilterType.NoRead, data).length;
+		const countNotReadNotification = filterNotification(FilterType.NoRead, items).length;
 
 		return (
 			<div className='account'>
@@ -61,8 +58,12 @@ class ProfileMenu extends Component<IProps, IState> {
 						className='account__img'
 					/>
 					<div>
-						<h6 className='account__name'>{ this.props.user.name }</h6>
-						<span className='account__location'>{ this.props.user.email }</span>
+						<h6 className='account__name'>
+							{ this.profileName }
+						</h6>
+						<span className='account__location'>
+							{ this.profileEmail }
+						</span>
 						{/* TODO change email in location */}
 					</div>
 				</div>
@@ -116,4 +117,4 @@ class ProfileMenu extends Component<IProps, IState> {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileMenu);
+export default connect( mapStateToProps )(ProfileMenu);
