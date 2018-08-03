@@ -96,7 +96,9 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 	get firstCrumbs(): ICrumb {
 		return {
 			title: 'All listings in ' + this.props.ad.city.title,
-			href: encodeURI('/' + this.props.ad.city.title),
+			// href: encodeURI('/' + this.props.ad.city.title),
+			href: encodeURI('/category'),
+
 		};
 	}
 
