@@ -8,8 +8,9 @@ import Ads from 'client/ssr/blocks/ads/Ads';
 import BreadcrumbsWrap from 'client/ssr/wraps/BreadcrumbFromContext';
 import EmptySearch from 'client/ssr/blocks/empty-search/EmptySearch';
 import ListOfSubcategories from 'client/ssr/blocks/list-of-subcategories/ListOfSubcategories';
+import GroupList from 'client/ssr/pages/GroupList';
 
-interface adGroup {
+export interface adGroup {
 	title: string;
 	id: number;
 	ads: IAd[];
@@ -22,10 +23,9 @@ interface ICategoryPageProps {
 }
 
 class Category extends React.Component<ICategoryPageProps> {
-
 	render() {
 		return (
-			<React.Fragment>
+			<>
 				<Header />
 				<div className='bottom-header p-y-20'>
 					<div className='container'>
@@ -45,26 +45,12 @@ class Category extends React.Component<ICategoryPageProps> {
 					</div>
 				</div>
 				{
-					this.props.adGroupList &&
-					this.props.adGroupList.length > 0
-					? (
-						this.props.adGroupList.map(category => (
-							category.ads.length > 0
-								?
-									<React.Fragment key={category.id}>
-										<Ads
-											title={category.title}
-											ads={category.ads}
-										/>
-									</React.Fragment>
-								:
-									<React.Fragment key={category.id} />
-						))
-					)
-					: <EmptySearch />
+					this.props.adGroupList && this.props.adGroupList.length > 0
+						? <GroupList groupList={this.props.adGroupList} />
+						: <EmptySearch />
 				}
 				<Footer />
-			</React.Fragment>
+			</>
 		);
 	}
 }

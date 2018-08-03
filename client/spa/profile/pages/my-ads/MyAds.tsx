@@ -99,6 +99,11 @@ class MyAds extends Component<IProps> {
 	// Completed
 	completedAdsButtonsConfig: IAvtiveButtonConfig[] = [
 		{
+			label: 'Active',
+			className: 'btn orange-btn-outline publish-offer__button',
+			callback: (id: number) => this.onChangeActive(id),
+		},
+		{
 			label: 'Remove',
 			className: 'btn grey-btn-outline publish-offer__button',
 			callback: (id: number) => this.onRemove(id),
