@@ -21,6 +21,7 @@ import { showLocationModal } from 'client/ssr/modals/location/locationModalTrigg
 import SearchLocationModal from 'client/ssr/modals/location/SearchLocationModal';
 import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
 import { useOrDefault } from 'client/spa/pages/create-ad/utils';
+import { defaultPagePath } from '../../../spa/profile/constants';
 
 require('../../../common/styles/main.sass');
 require('./Header.sass');
@@ -31,17 +32,12 @@ export interface IState {
 
 export interface IProps {
 	user: IUserState;
-	userActions: IUserActions;
 	locationState: ILocationStoreState;
 }
 
 const mapStateToProps = (state: IRootState) => ({
 	locationState: getLocationState(state),
 	user: state.user,
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-	userActions: bindModuleAction(UserActions, dispatch),
 });
 
 class Header extends Component<IProps, IState> {
@@ -66,7 +62,7 @@ class Header extends Component<IProps, IState> {
 
 		if (useOrDefault(() => user.profile.email, null)) {
 			return (
-				<Link href={`/profile`}>
+				<Link href={defaultPagePath}>
 					<div className='header__account'>
 						<div className='header__account__profile'>
 							<span className='header__account__name'>{profile.name}</span>
@@ -206,4 +202,4 @@ class Header extends Component<IProps, IState> {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(mapStateToProps)(Header);

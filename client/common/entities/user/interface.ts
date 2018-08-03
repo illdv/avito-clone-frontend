@@ -10,6 +10,7 @@ interface IProfileState {
 	phone: string;
 	created_at: string;
 	updated_at: string;
+	count_unread_notifications?: number;
 	image: IImage;
 }
 
@@ -31,6 +32,7 @@ interface IOwnedAdsState {
 // Notifocation
 interface INotificationState {
 	items: INotification[];
+	noReadCount: number;
 }
 
 interface INotificationData {
@@ -46,6 +48,12 @@ interface INotification {
 	read_at?: any;
 	created_at: string;
 	updated_at: string;
+}
+
+enum NotificationTypeStep {
+	Read   = 'Read',
+	NoRead = 'No read',
+	All    = 'All',
 }
 
 // For saga

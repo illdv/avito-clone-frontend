@@ -31,7 +31,9 @@ class ExampleApp extends App {
 	componentWillMount() {
 		const location = this.props.router.query.location;
 
-		this.props.store.dispatch(initialize(location));
+		if (location) {
+			this.props.store.dispatch(initialize(location));
+		}
 	}
 
 	render() {

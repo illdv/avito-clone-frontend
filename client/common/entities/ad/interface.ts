@@ -46,6 +46,7 @@ interface IAd {
 	options?: any[];
 	latitude?: number;
 	longitude?: number;
+	total_visits?: number;
 	phone?: string;
 	images?: IImage[];
 }

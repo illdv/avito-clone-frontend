@@ -86,6 +86,10 @@ class Notification extends Component<IProps, IState> {
 		);
 	}
 
+	componentDidMount() {
+		UserActions.notifications.loading.REQUEST({});
+	}
+
 	render() {
 		const { items } = this.props.user.notifications;
 		return (

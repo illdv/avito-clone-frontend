@@ -178,7 +178,7 @@ const InformationAboutAd = ({
 					/>
 				</div>
 			</div>
-			<div className='row'>
+			{/* <div className='row'>
 				<div className='col-lg-9 selected-category'>
 					<h3 className='selected-category__title'>Select category</h3>
 					<div
@@ -199,7 +199,7 @@ const InformationAboutAd = ({
 						</ol>
 					</div>
 				</div>
-			</div>
+			</div> */}
 
 			<CategoryOptions options={options} creatorChangeOptionById={creatorChangeOptionById} />
 

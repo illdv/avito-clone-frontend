@@ -13,9 +13,9 @@ export const notificationPagePath = `${profilePagePath}/notification`;
 export const profileSettingsPagePath = `${profilePagePath}/settings`;
 
 // create ad
-export const createAdPagePagePath = `${profilePagePath}/create-ad`;
+export const createAdPagePagePath = `${profilePagePath}/ad/create`;
 
 // edit ad
-export const editAdPagePathCreator = (id: number) => `${profilePagePath}/edit-ad/${id}`;
+export const editAdPagePathCreator = (id: number) => `${profilePagePath}/ad/edit/${id}`;
 
 export const defaultPagePath = myActiveAdsPagePath;

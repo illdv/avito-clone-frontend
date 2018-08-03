@@ -1,16 +1,22 @@
 import React from 'react';
 import {connect, Dispatch} from 'react-redux';
-import { Link } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router';
+import { Link, withRouter } from 'react-router-dom';
+import * as history from 'client/common/history';
 
 import {IRootState} from 'client/common/store/storeInterface';
 
-import { createAdPagePagePath } from '../../constants';
+import { createAdPagePagePath, editAdPagePathCreator, defaultPagePath } from '../../constants';
 
-export interface IState {
+const goBack = () => window.history.back();
 
+interface IMatchProps {
+	id: number;
 }
 
-export interface IProps {
+interface IProps extends RouteComponentProps<IMatchProps> {}
+
+interface IState {
 
 }
 
@@ -26,11 +32,38 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 	*/
 });
 
+const CreateAdvertisementButton = () => (
+	<Link to={createAdPagePagePath}>
+		<button
+			className='btn orange-btn'
+		>
+			Submit an advertisement
+		</button>
+	</Link>
+);
+
+const GoBackButton = () => (
+	<Link to={defaultPagePath}>
+		<button
+			className='btn grey-btn-outline publish-offer__button'
+		>
+			Go back
+		</button>
+	</Link>
+);
+
 class ToolBar extends React.Component<IProps, IState> {
 
 	state: IState = {};
 
 	render() {
+		let showGoBackButton = false;
+		const page = this.props.location;
+
+		if (page.pathname === createAdPagePagePath || page.pathname === editAdPagePathCreator(this.props.match.params.id)) {
+			showGoBackButton = true;
+		}
+
 		return (
 			<div className='header__bottom-header'>
 				<div className='container'>
@@ -65,13 +98,13 @@ class ToolBar extends React.Component<IProps, IState> {
 									</li>
 								</ul>
 							</nav> */}
-							<Link to={createAdPagePagePath}>
-								<button
-									className='btn orange-btn'
-								>
-									Submit an advertisement
-								</button>
-							</Link>
+							{
+								showGoBackButton
+								?
+									<GoBackButton />
+								:
+									<CreateAdvertisementButton />
+							}
 						</div>
 					</div>
 				</div>
@@ -80,4 +113,4 @@ class ToolBar extends React.Component<IProps, IState> {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ToolBar);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ToolBar));

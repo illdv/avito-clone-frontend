@@ -10,6 +10,7 @@ import { Toasts } from '../../../../../../client/common/utils/Toasts';
 
 import { profileActions } from './actions';
 import { tokenActions } from '../token/actions';
+import { notificationActions } from '../notifications/actions';
 
 export function* getProfile(action: Action<{ token: string }>) {
 	try {
@@ -18,6 +19,7 @@ export function* getProfile(action: Action<{ token: string }>) {
 
 		yield put(profileActions.getProfile.SUCCESS(profile));
 		yield put(tokenActions.setTokenToState.REQUEST({token: action.payload.token}));
+		yield put(notificationActions.setNoReadCount.REQUEST(profile.count_unread_notifications));
 	} catch (e) {
 		yield call(errorHandler, e);
 		yield put(profileActions.getProfile.FAILURE({}));

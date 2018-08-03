@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router';
 
 import Menu from 'client/spa/profile/blocks/menu/Menu';
 
@@ -17,4 +18,4 @@ const WithMenu: React.SFC = ({ children }) => (
 	</section>
 );
 
-export default WithMenu;
+export default withRouter(WithMenu);

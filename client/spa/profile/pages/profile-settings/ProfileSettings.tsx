@@ -10,6 +10,7 @@ import ConfirmationAccountDeletionModal from 'client/spa/modals/confirmation-acc
 import {
 	showConfirmationAccountDeletionModal,
 } from 'client/spa/modals/confirmation-account-deletion/confirmationAccountDeletionModalTriggers';
+import Spinner from '../../../../common/blocks/spinner/Spinner';
 
 enum FieldsNames {
 	fullName = 'fullName',
@@ -427,4 +428,11 @@ const mpStateToProprs = (state: IRootState) => ({
 	user: state.user,
 });
 
-export default connect(mpStateToProprs)(ProfileSettings);
+// TODO SUKA UDALI!
+export default connect(mpStateToProprs)(({ user }: IProps) => {
+	if (user.profile) {
+		return <ProfileSettings user={ user } />;
+	} else {
+		return <Spinner />;
+	}
+});

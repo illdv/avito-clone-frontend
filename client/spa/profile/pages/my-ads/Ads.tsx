@@ -72,7 +72,7 @@ class Ads extends React.Component<IProps> {
 								Edit
 							</Link>
 							<div className='watcher'>
-								<i className='watcher__icon fa fa-eye' /> <span>---</span>
+								<i className='watcher__icon fa fa-eye' /> <span>{ad.total_visits}</span>
 							</div>
 						</div>
 					</div>

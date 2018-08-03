@@ -1,12 +1,15 @@
 import React from 'react';
-import { Link, BrowserRouter, Route, Switch} from 'react-router-dom';
+import { Router as RouterConnect } from 'react-router';
+import { Link, Route, Switch} from 'react-router-dom';
 
 import Header from 'client/ssr/blocks/header/Header';
 import Toolbar from 'client/spa/profile/blocks/toolbar/Toolbar';
 import PrivareWrap from './PrivareWrap';
+import history from '../../common/history';
 
 // Layouts
 import WithMenu from './layouts/WithMenu';
+import WithFooter from './layouts/WithFooter';
 
 // Pages
 import MyAds from './pages/my-ads/MyAds';
@@ -25,7 +28,10 @@ import {
 	notificationPagePath,
 	profileSettingsPagePath,
 } from './constants';
-import { Redirect } from 'react-router';
+
+const PageNoCreate = () => (
+	<h1>Page not yet created</h1>
+);
 
 class Router extends React.Component {
 	constructor(props, context) {
@@ -35,22 +41,26 @@ class Router extends React.Component {
 	render() {
 		return (
 			<>
-				<BrowserRouter>
+				<RouterConnect history={ history }>
 					<PrivareWrap>
 						<Header />
 						<Toolbar />
 						<Switch>
-							<Route path='/profile/create-ad' component={ CreateAd } />
-							<Route path='/profile/edit-ad/:id' component={ EditAd } />
-							<WithMenu>
-								<Route path={ profileSettingsPagePath } component={ ProfileSettings } />
-								<Route path={ notificationPagePath } component={ Notifications } />
-								<Route path={ myAdsPagePath } component={ MyAds }/>
-								<Redirect to={ defaultPagePath } />
-							</WithMenu>
+							<WithFooter path='/profile/ad'>
+								<Route path='/profile/ad/create' component={ CreateAd } />
+								<Route path='/profile/ad/edit/:id' component={ EditAd } />
+							</WithFooter>
+							<WithFooter>
+								<WithMenu>
+									<Route path={ '/profile/mock' } component={ PageNoCreate } />
+									<Route path={ profileSettingsPagePath } component={ ProfileSettings } />
+									<Route path={ notificationPagePath } component={ Notifications } />
+									<Route path={ myAdsPagePath } component={ MyAds }/>
+								</WithMenu>
+							</WithFooter>
 						</Switch>
 					</PrivareWrap>
-				</BrowserRouter>
+				</RouterConnect>
 			</>
 		);
 	}
