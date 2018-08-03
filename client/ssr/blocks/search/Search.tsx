@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import queryString from 'query-string';
-import Router from 'next/router';
 
 import SelectCategories from './components/SelectCategories';
 import { IRootState } from 'client/common/store/storeInterface';
 import { getLocationState } from 'client/common/store/selectors';
-import { getCategories, Category } from 'client/ssr/blocks/categories/context';
+import { Category, getCategories } from 'client/ssr/blocks/categories/context';
 import { ILocationStoreState } from 'client/common/location/module';
 
 import { showLocationModal } from 'client/ssr/modals/location/locationModalTriggers';
@@ -38,28 +37,11 @@ const getOption = (option: IOption, creatorChangeOption) => (
 		className='search search__options form-control'
 		value={option.value}
 		placeholder={option.item.name}
-		onChange={ creatorChangeOption(option.item.id) }
+		onChange={creatorChangeOption(option.item.id)}
 	/>
 );
 
 class Search extends Component<ISearchProps, ISearchState> {
-	constructor(props, context) {
-		super(props, context);
-
-		let search;
-
-		if (typeof window !== 'undefined') {
-			search = queryString.parse(window.location.search).search;
-		}
-
-		this.state = {
-			duplicateCategories: this.props.categories,
-			activeCategories: [],
-			searchString: search || '',
-			options: [],
-		};
-	}
-
 	onSelectCategory = category => {
 		if (category) {
 			if (this.state.activeCategories[0] !== category) {
@@ -68,10 +50,9 @@ class Search extends Component<ISearchProps, ISearchState> {
 				});
 			}
 		} else {
-			this.setState({activeCategories: []});
+			this.setState({ activeCategories: [] });
 		}
-	}
-
+	};
 	onSelectSubcategory = (category, parent) => {
 		const categories = this.state.activeCategories;
 
@@ -96,15 +77,13 @@ class Search extends Component<ISearchProps, ISearchState> {
 			});
 		}
 
-	}
-
+	};
 	getCorrectOptions = (category: ICategory): IOption[] => {
 		return category.total_options.map(option => ({
 			value: '',
 			item: option,
 		}));
-	}
-
+	};
 	creatorChangeOption = (id: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newOptions = this.state.options.map(option => {
 			if (option.item.id === id) {
@@ -115,81 +94,21 @@ class Search extends Component<ISearchProps, ISearchState> {
 			} else {
 				return option;
 			}
-		}) 
+		});
 		this.setState({
 			options: newOptions,
 		});
-	}
-
-	get subcategories() {
-		return this.state.activeCategories;
-	}
-
-	get isSubcategories() {
-		return this.subcategories.length > 0;
-	}
-
-	get categories() {
-		return this.state.activeCategories;
-	}
-
-	get lastSubcategory() {
-		return this.state.activeCategories[this.state.activeCategories.length - 1];
-	}
-
-	get localeName() {
-		const { idCity, idRegion, idCountry } = this.props.locationState.local;
-
-		if (idCity) {
-			if (this.props.locationState.loaded.local.cities.length > 0) {
-
-				const result = this.props.locationState.loaded.local.cities.filter(city => {
-					return city.city_id === idCity;
-				});
-
-				if (result.length > 0) {
-					return result[0].title; 
-				}
-			}
-		}
-
-		if (idRegion) {
-			if (this.props.locationState.loaded.local.regions.length > 0) {
-				const result = this.props.locationState.loaded.local.regions.filter(region => {
-					return region.region_id === idRegion;
-				});
-				if (result.length > 0) {
-					return result[0].title; 
-				}
-			}
-		}
-
-		if (idCountry) {
-			if (this.props.locationState.loaded.local.countries.length > 0) {
-				const result = this.props.locationState.loaded.local.countries.filter(country => {
-					return country.country_id === idCountry;
-				});
-				if (result.length > 0) {
-					return result[0].title; 
-				}
-			}
-		}
-
-		return 'World';
-	}
-
+	};
 	changeSearchString = e => {
 		this.setState({
 			searchString: e.target.value,
 		});
-	}
-
+	};
 	showSearchLocationModal = () => showLocationModal(ModalNames.searchLocation);
-
 	onSubmit = e => {
 		e.preventDefault();
 		const { idCity, idRegion, idCountry } = this.props.locationState.local;
-		const query: any = {
+		const query: any                      = {
 			search: this.state.searchString,
 		};
 
@@ -221,11 +140,88 @@ class Search extends Component<ISearchProps, ISearchState> {
 		});
 
 		window.location.href = `/search?${queryString.stringify(query)}${optionsString.length > 1 ? optionsString : '' }`;
+	};
+
+	constructor(props, context) {
+		super(props, context);
+
+		let search;
+
+		if (typeof window !== 'undefined') {
+			search = queryString.parse(window.location.search).search;
+		}
+
+		this.state = {
+			duplicateCategories: this.props.categories,
+			activeCategories: [],
+			searchString: search || '',
+			options: [],
+		};
+	}
+
+	get subcategories() {
+		return this.state.activeCategories;
+	}
+
+	get isSubcategories() {
+		return this.subcategories.length > 0;
+	}
+
+	get categories() {
+		return this.state.activeCategories;
+	}
+
+	get lastSubcategory() {
+		return this.state.activeCategories[this.state.activeCategories.length - 1];
+	}
+
+	get localeName() {
+		const { idCity, idRegion, idCountry } = this.props.locationState.local;
+
+		if (idCity) {
+			if (this.props.locationState.loaded.local.cities.length > 0) {
+
+				const result = this.props.locationState.loaded.local.cities.filter(city => {
+					return city.city_id === idCity;
+				});
+
+				if (result.length > 0) {
+					return result[0].title;
+				}
+			}
+		}
+
+		if (idRegion) {
+			if (this.props.locationState.loaded.local.regions.length > 0) {
+				const result = this.props.locationState.loaded.local.regions.filter(region => {
+					return region.region_id === idRegion;
+				});
+				if (result.length > 0) {
+					return result[0].title;
+				}
+			}
+		}
+
+		if (idCountry) {
+			if (this.props.locationState.loaded.local.countries.length > 0) {
+				const result = this.props.locationState.loaded.local.countries.filter(country => {
+					return country.country_id === idCountry;
+				});
+				if (result.length > 0) {
+					return result[0].title;
+				}
+			}
+		}
+
+		return 'World';
 	}
 
 	render() {
 		return (
-			<form action='#' onSubmit={this.onSubmit}>
+			<form
+				action='#'
+				onSubmit={this.onSubmit}
+			>
 				<div className='search form-inline form-row p-t-20'>
 					<div className='form-group col-6 col-md-3'>
 						<SelectCategories
@@ -256,8 +252,11 @@ class Search extends Component<ISearchProps, ISearchState> {
 						/>
 					</div>
 					<div className='form-group col-12 col-md-2'>
-						<button className='btn orange-btn-outline search__button' type='submit'>
-							<i className='fas fa-search p-r-5'/>Search
+						<button
+							className='btn orange-btn-outline search__button'
+							type='submit'
+						>
+							<i className='fas fa-search p-r-5' />Search
 						</button>
 					</div>
 				</div>
@@ -268,7 +267,10 @@ class Search extends Component<ISearchProps, ISearchState> {
 							this.subcategories.map(category => (
 								category.children.length > 0
 									? (
-										<div key={category.id} className='form-group col-6 col-md-3'>
+										<div
+											key={category.id}
+											className='form-group col-6 col-md-3'
+										>
 											<SelectCategories
 												categories={category.children}
 												onSelect={this.onSelectSubcategory}
@@ -283,7 +285,10 @@ class Search extends Component<ISearchProps, ISearchState> {
 						{
 							this.lastSubcategory &&
 							this.state.options.map(option => (
-								<div key={option.item.id} className='form-group col-6 col-md-3'>
+								<div
+									key={option.item.id}
+									className='form-group col-6 col-md-3'
+								>
 									{getOption(option, this.creatorChangeOption)}
 								</div>
 							))

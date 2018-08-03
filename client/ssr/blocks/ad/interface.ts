@@ -16,6 +16,7 @@ export interface IAd {
 	total_visits: string;
 	today_visits: string;
 	is_favorite: boolean;
+	address: string;
 	images: any[];
 	body: string;
 	description: string;
@@ -72,6 +73,7 @@ export interface ISeller {
 	phone: string;
 	name: string;
 	created_at: string;
+	completed_ad: number;
 	image: IImage;
 }
 
@@ -144,6 +146,7 @@ export interface ISimilarAd {
 }
 
 export interface IGMProps {
+	address: string;
 	default_map: IGMMarkerProp;
 	isMarkerShown: IGMMarkerProp;
 	zoom?: number;

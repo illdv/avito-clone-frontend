@@ -1,7 +1,7 @@
 import store from '../../../common/store/index';
 
-import { show, hide } from '../../../common/modal-juggler/module';
-import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
+import { ModalNames } from 'client/common/modal-juggler/modalJugglerInterface';
+import { hide, show } from 'client/common/modal-juggler/module';
 
 export const showSellerModals = () => store.dispatch(show(ModalNames.seller));
 export const hideSellerModal = () => store.dispatch(hide(ModalNames.seller));
