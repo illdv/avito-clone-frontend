@@ -25,16 +25,9 @@ class FavoritesPage extends React.Component<IFavoritesPageProps, IFavoritesPageS
 		adsCollection: [],
 	};
 
-	static getDerivedStateFromProps(nextProps, prevState) {
-		let adsCollection;
-
-		try {
-			adsCollection = createAdsCollection(nextProps.ads);
-		} catch (e) {
-			console.log('Error adsCollection', adsCollection);
-		}
+	static getDerivedStateFromProps(nextProps) {
 		return {
-			adsCollection,
+			adsCollection: createAdsCollection(nextProps.ads),
 		};
 	}
 
@@ -102,8 +95,8 @@ class FavoritesPage extends React.Component<IFavoritesPageProps, IFavoritesPageS
 							item={ad}
 							onCheck={this.handleCheck}
 							checked={checkedAll || selected.has(ad.id)}
-						/>) :
-						<div>You don't have any favorites Ads </div>}
+						/>) : null
+					}
 				</div>
 			</>
 		);
