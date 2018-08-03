@@ -1,10 +1,10 @@
 import { ITotalOptions } from '../../../common/categories/interface';
 
 export interface IAttachedImage {
-	id?: string;
+	id: string;
 	isBackend: boolean;
 	base64: string;
-	file?: any;
+	file: any;
 }
 
 export enum AdInfoFieldsNames {

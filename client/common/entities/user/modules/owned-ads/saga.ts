@@ -9,10 +9,9 @@ import { IAds, ICreateAdRequest, AdsActionType, PageNames } from './interfaces';
 import { Toasts } from 'client/common/utils/Toasts';
 import { delay } from 'redux-saga';
 
-function* getMy(action: Action<IRegisterRequest>) {
+export function* getMy() {
 	try {
-		const response: ResponseWhitPagination<IAds> = yield call(AdsAPI.getMy, action.payload);
-
+		const response: ResponseWhitPagination<IAds> = yield call(AdsAPI.getMy);
 		yield put(ownedAdsActions.getMy.SUCCESS(response.data.data));
 	} catch (e) {
 		yield call(errorHandler, e);
@@ -20,7 +19,7 @@ function* getMy(action: Action<IRegisterRequest>) {
 	}
 }
 
-function* create(action: Action<ICreateAdRequest>) {
+export function* create(action: Action<ICreateAdRequest>) {
 	try {
 		yield call(AdsAPI.create, action.payload);
 		yield put(ownedAdsActions.create.SUCCESS({}));

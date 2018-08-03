@@ -1,4 +1,5 @@
 import { IAttachedImage } from 'client/spa/pages/create-ad/interface';
+import { IOptionValue } from 'client/common/_ads/interface';
 
 export enum PageNames {
 	Profile = 'Profile',
@@ -83,9 +84,11 @@ export interface ICreateAdRequest {
 	price: string;
 	longitude: number;
 	latitude: number;
-	category_id: string;
+	category_id: number;
 	phone: string;
 	images: IAttachedImage[];
+	options: IOptionValue[];
+	is_vip: boolean;
 }
 
 export interface IEditAdRequest {

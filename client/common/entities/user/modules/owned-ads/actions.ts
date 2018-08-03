@@ -1,7 +1,6 @@
 import { createActionCreator, IAsyncAction } from '../../utils';
 import { AdsActionType, IAds, ICreateAdRequest, IEditAdRequest, PageNames } from './interfaces';
 
-
 const createAsyncAction = createActionCreator('ADS');
 
 const getMy         = createAsyncAction('GET_MY');

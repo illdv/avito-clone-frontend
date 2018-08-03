@@ -1,5 +1,6 @@
 import { AxiosWrapper } from './AxiosWrapper';
-import { AdsActionType, IAds, ICreateAdRequest, IEditAdRequest } from 'client/common/_ads/interface';
+import { AdsActionType, IAds, IEditAdRequest } from 'client/common/_ads/interface';
+import { ICreateAdRequest } from 'client/common/entities/user/modules/owned-ads/interfaces';
 
 function get() {
 	return AxiosWrapper.get('/ads');
