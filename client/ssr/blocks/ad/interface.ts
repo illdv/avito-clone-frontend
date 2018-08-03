@@ -43,12 +43,13 @@ export interface IChartState {
 			borderWidth: number;
 		}];
 	};
+	options?: {};
 }
 
 export interface IProductHistories {
 	ad_id: number;
 	date_time: string;
-	value: string;
+	value: number;
 }
 export interface ISimilarSortState {
 	similar_ad?: any[];
