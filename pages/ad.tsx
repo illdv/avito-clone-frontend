@@ -37,7 +37,7 @@ class Ads extends React.Component<IAdsProps> {
 	}
 
 	render() {
-		if (!this.props.response.ad) {
+		if (!this.props.response || !this.props.response.ad) {
 			return <Error statusCode={404} />;
 		}
 

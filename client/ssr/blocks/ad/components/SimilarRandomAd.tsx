@@ -28,23 +28,16 @@ class SimilarRandomAd extends Component<ISimilarRandomProps, ISimilarRandomState
 						<span className='f-s-12 f-w-300'>{this.props.userName}</span>
 					</div>
 					<div className='col-md-6 col-lg-5 text-right'>
-						{
-						  <SimilarImg image={this.props.image.file_url}/>
-						}
+						<img
+							src={this.props.image.file_url}
+							alt=''
+							className='right'
+						/>
 					</div>
 				</div>
 			</div>
 		);
 	}
-}
-const SimilarImg = (image: string) => {
-		return (
-				<img
-					src={image}
-					alt=''
-					className='right'
-				/>
-		);
 }
 
 export default SimilarRandomAd;
