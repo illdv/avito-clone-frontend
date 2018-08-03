@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { extractPreviewImage } from 'client/ssr/blocks/ad/utils';
+import AdsFilter from 'client/ssr/blocks/ads/components/AdsFilter';
 
 export interface IAvtiveButtonConfig {
 	label: string;
@@ -41,6 +42,7 @@ class Ads extends React.Component<IProps> {
 					className='custom-checkbox'
 					type='checkbox'
 				/>*/}
+
 				<div className='offer-block__inner'>
 					<div className='row'>
 						<div className='col-9 d-flex'>

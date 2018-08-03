@@ -32,6 +32,7 @@ interface IAd {
 	description: string;
 	body: string;
 	price: string;
+	city_id: number;
 	is_published?: boolean;
 	is_approved?: boolean;
 	is_active?: boolean;
@@ -41,7 +42,6 @@ interface IAd {
 	updated_at?: string;
 	deleted_at?: any;
 	pivot?: IPivot;
-	city_id: number;
 	type?: IType;
 	options?: any[];
 	latitude?: number;
