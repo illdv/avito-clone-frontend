@@ -10,21 +10,29 @@ interface IProfileState {
 	phone: string;
 	created_at: string;
 	updated_at: string;
+	count_unread_notifications?: number;
 	image: IImage;
 }
 
 interface IUserState {
 	notifications: INotificationState;
 	favorites: IFavoritesState;
-	ownedAds: any; // TODO refactor
+	ownedAds: IOwnedAdsState; // TODO refactor
 	profile: IProfileState;
 	token: string;
+	isLoading: boolean;
+}
+
+// Owned ads
+interface IOwnedAdsState {
+	items: IAd[];
 	isLoading: boolean;
 }
 
 // Notifocation
 interface INotificationState {
 	items: INotification[];
+	noReadCount: number;
 }
 
 interface INotificationData {
@@ -40,6 +48,12 @@ interface INotification {
 	read_at?: any;
 	created_at: string;
 	updated_at: string;
+}
+
+enum NotificationTypeStep {
+	Read   = 'Read',
+	NoRead = 'No read',
+	All    = 'All',
 }
 
 // For saga

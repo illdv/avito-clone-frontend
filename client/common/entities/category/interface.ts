@@ -13,7 +13,7 @@ interface IResponseCategories {
 }
 
 interface ICategory {
-	id: string;
+	id: number;
 	title: string;
 	slug: string;
 	description: string;
@@ -27,7 +27,7 @@ interface ITotalOptions {
 	id: number;
 	category_id: number;
 	type_id: number;
-	name: number;
+	name: string;
 }
 
 interface ICategories {

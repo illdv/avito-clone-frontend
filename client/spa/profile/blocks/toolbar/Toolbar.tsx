@@ -1,15 +1,23 @@
-import {Component} from 'react';
-import * as React from 'react';
+import React from 'react';
 import {connect, Dispatch} from 'react-redux';
+import { RouteComponentProps } from 'react-router';
+import { Link, withRouter } from 'react-router-dom';
+import * as history from 'client/common/history';
 
 import {IRootState} from 'client/common/store/storeInterface';
 
-export interface IState {
+import { createAdPagePagePath, editAdPagePathCreator, defaultPagePath } from '../../constants';
 
+const goBack = () => window.history.back();
+
+interface IMatchProps {
+	id: number;
 }
 
-export interface IProps {
-	onCreateAd: () => void;
+interface IProps extends RouteComponentProps<IMatchProps> {}
+
+interface IState {
+
 }
 
 const mapStateToProps = (state: IRootState) => ({
@@ -24,11 +32,38 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 	*/
 });
 
-class ToolBar extends Component<IProps, IState> {
+const CreateAdvertisementButton = () => (
+	<Link to={createAdPagePagePath}>
+		<button
+			className='btn orange-btn'
+		>
+			Submit an advertisement
+		</button>
+	</Link>
+);
+
+const GoBackButton = () => (
+	<Link to={defaultPagePath}>
+		<button
+			className='btn grey-btn-outline publish-offer__button'
+		>
+			Go back
+		</button>
+	</Link>
+);
+
+class ToolBar extends React.Component<IProps, IState> {
 
 	state: IState = {};
 
 	render() {
+		let showGoBackButton = false;
+		const page = this.props.location;
+
+		if (page.pathname === createAdPagePagePath || page.pathname === editAdPagePathCreator(this.props.match.params.id)) {
+			showGoBackButton = true;
+		}
+
 		return (
 			<div className='header__bottom-header'>
 				<div className='container'>
@@ -63,12 +98,13 @@ class ToolBar extends Component<IProps, IState> {
 									</li>
 								</ul>
 							</nav> */}
-							<button
-								className='btn orange-btn'
-								onClick={this.props.onCreateAd}
-							>
-								Submit an advertisement
-							</button>
+							{
+								showGoBackButton
+								?
+									<GoBackButton />
+								:
+									<CreateAdvertisementButton />
+							}
 						</div>
 					</div>
 				</div>
@@ -77,4 +113,4 @@ class ToolBar extends Component<IProps, IState> {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ToolBar);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ToolBar));

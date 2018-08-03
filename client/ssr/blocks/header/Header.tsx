@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {connect, Dispatch} from 'react-redux';
+import React, { Component } from 'react';
+import { connect, Dispatch } from 'react-redux';
 import Link from 'next/link';
 import axios from 'axios';
 
@@ -15,12 +15,13 @@ import { CustomStorage, getFavoritesFromLocalStorage } from 'client/common/entit
 import ResetPasswordModal from 'client/ssr/modals/forgot-password/ResetPasswordModal';
 import SuccessModal from 'client/ssr/modals/success/SuccessModal';
 import MainLocationModal from 'client/ssr/modals/location/MainLocationModal';
-import {initialize, ILocationSession, ILocationStoreState} from 'client/common/location/module';
-import {getLocationState} from 'client/common/store/selectors';
-import {showLocationModal} from 'client/ssr/modals/location/locationModalTriggers';
+import { initialize, ILocationSession, ILocationStoreState } from 'client/common/location/module';
+import { getLocationState } from 'client/common/store/selectors';
+import { showLocationModal } from 'client/ssr/modals/location/locationModalTriggers';
 import SearchLocationModal from 'client/ssr/modals/location/SearchLocationModal';
-import {ModalNames} from '../../../common/modal-juggler/modalJugglerInterface';
-import {useOrDefault} from 'client/spa/pages/create-ad/utils';
+import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
+import { useOrDefault } from 'client/spa/pages/create-ad/utils';
+import { defaultPagePath } from '../../../spa/profile/constants';
 
 require('../../../common/styles/main.sass');
 require('./Header.sass');
@@ -31,17 +32,12 @@ export interface IState {
 
 export interface IProps {
 	user: IUserState;
-	userActions: IUserActions;
 	locationState: ILocationStoreState;
 }
 
 const mapStateToProps = (state: IRootState) => ({
 	locationState: getLocationState(state),
 	user: state.user,
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-	userActions: bindModuleAction(UserActions, dispatch),
 });
 
 class Header extends Component<IProps, IState> {
@@ -61,11 +57,23 @@ class Header extends Component<IProps, IState> {
 
 	renderLogin = () => {
 		const { user } = this.props;
+		const profile  = user.profile;
+		const avatar   = profile && profile.image && profile.image.file_url || '/static/img/person.png';
 
 		if (useOrDefault(() => user.profile.email, null)) {
 			return (
-				<Link href={`/profile`}>
-					<a>{user.profile.email}</a>
+				<Link href={defaultPagePath}>
+					<div className='header__account'>
+						<div className='header__account__profile'>
+							<span className='header__account__name'>{profile.name}</span>
+							<span className='header__account__email'>{profile.email}</span>
+						</div>
+						<img
+							src={avatar}
+							alt=''
+							className='header__account__img'
+						/>
+					</div>
 				</Link>
 			);
 		}
@@ -78,7 +86,7 @@ class Header extends Component<IProps, IState> {
 				Login
 			</button>
 		);
-	}
+	};
 
 	onFavorites = () => {
 		let count;
@@ -90,22 +98,20 @@ class Header extends Component<IProps, IState> {
 			<Link href={`/favorites`}>
 				<a
 					href='#'
-					className='header__favourites '
-				>
-					<img
-						src='/static/img/icons/like.svg'
-						alt=''
-						className='header__icon'
-					/>
-					<span>Favourites</span>
-					 {count && count !=='0' && <span className="notification account__notification"> {count}</span>}
+					className='header__favourites'
+				><img
+					src='/static/img/icons/like.svg'
+					alt=''
+					className='header__icon'
+				/><span>Favourites</span>
+					{count ? <span className="notification account__notification"> {count}</span> : null}
 				</a>
 			</Link>
 		);
-	}
+	};
 
 	get localeName() {
-		const {idCity, idRegion, idCountry} = this.props.locationState.session;
+		const { idCity, idRegion, idCountry } = this.props.locationState.session;
 
 		if (idCity) {
 			if (this.props.locationState.loaded.session.cities.length > 0) {
@@ -171,7 +177,7 @@ class Header extends Component<IProps, IState> {
 												href='#'
 												className='header__location'
 											>
-												<i className='header__icon fas fa-map-marker-alt'/>
+												<i className='header__icon fas fa-map-marker-alt' />
 												<span onClick={this.showMainLocationModal}>{this.localeName}</span>
 											</a>
 										</li>
@@ -195,4 +201,4 @@ class Header extends Component<IProps, IState> {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(mapStateToProps)(Header);

@@ -92,7 +92,7 @@ export interface ICreateAdRequest {
 	price: string;
 	longitude: number;
 	latitude: number;
-	category_id: string;
+	category_id: number;
 	phone: string;
 	images: IAttachedImage[];
 	options: IOptionValue[];

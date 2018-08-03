@@ -1,5 +1,4 @@
 import { IAttachedImage } from 'client/spa/pages/create-ad/interface';
-import { IOptionValue } from 'client/common/_ads/interface';
 
 export enum PageNames {
 	Profile = 'Profile',
@@ -47,6 +46,22 @@ export interface Image {
 	created_at: string;
 	updated_at: string;
 	file_url: string;
+}
+
+export interface IOption {
+	category_id: number;
+	created_at: string;
+	deleted_at: string|null;
+	id: number;
+	name: string;
+	pivot: IPivot;
+	type_id: number;
+	updated_at: string;
+}
+
+export interface IOptionValue {
+	id: number;
+	value: string;
 }
 
 export interface IAds {
@@ -98,12 +113,13 @@ export interface IEditAdRequest {
 	body: string;
 	type_id: number;
 	city_id: number;
-	category_id: string;
+	category_id: number;
 	price: string;
 	longitude: number;
 	latitude: number;
 	phone: string;
 	images: IAttachedImage[];
+	options: IOptionValue[];
 }
 
 export interface IFavoritesAds {

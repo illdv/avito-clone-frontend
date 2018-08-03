@@ -29,7 +29,7 @@ function* composeFavoritesIds(action: Action<{ ids: number[] }>) {
 	yield call(favoritesActions.setFavorite.REQUEST, correctFavoritesIds);
 }
 
-function* selectFavorite(action: Action<{ id: number }>) {
+export function* selectFavorite(action: Action<{ id: number }>) {
 	const selectedAdId  = action.payload.id;
 	const token: string = yield select(getToken);
 

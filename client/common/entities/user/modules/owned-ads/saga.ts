@@ -8,10 +8,12 @@ import { ResponseWhitPagination } from 'client/common/utils/interface';
 import { IAds, ICreateAdRequest, AdsActionType, PageNames } from './interfaces';
 import { Toasts } from 'client/common/utils/Toasts';
 import { delay } from 'redux-saga';
+import { pushInRouter } from '../../../../utils/utils';
+import history from 'client/common/history';
 
-export function* getMy() {
+export function* getMy(action: Action<IRegisterRequest>) {
 	try {
-		const response: ResponseWhitPagination<IAds> = yield call(AdsAPI.getMy);
+		const response: ResponseWhitPagination<IAd> = yield call(AdsAPI.getMy, action.payload);
 		yield put(ownedAdsActions.getMy.SUCCESS(response.data.data));
 	} catch (e) {
 		yield call(errorHandler, e);
@@ -26,6 +28,7 @@ export function* create(action: Action<ICreateAdRequest>) {
 		yield put(ownedAdsActions.changePage.REQUEST(PageNames.Profile));
 		yield delay(500);
 		Toasts.info('Ad created');
+		history.push('/profile/my-ads/avtive');
 	} catch (e) {
 		yield call(errorHandler, e);
 		Toasts.info('Failed ad created');
@@ -68,6 +71,7 @@ function* edit(action: Action<any>) {
 		yield put(ownedAdsActions.edit.SUCCESS({}));
 		yield put(ownedAdsActions.getMy.REQUEST({}));
 		Toasts.info('Ad saved');
+		history.push('/profile/my-ads/avtive');
 	} catch (e) {
 		yield call(errorHandler, e);
 		Toasts.info('Failed ad save');

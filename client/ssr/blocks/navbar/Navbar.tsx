@@ -1,14 +1,32 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
+import { IRootState } from '../../../common/store/storeInterface';
+import history from 'client/common/history';
+import { createAdPagePagePath } from '../../../spa/profile/constants';
+import { showLoginModal } from '../../modals/auth/loginModalTriggers';
 
 require('../../../common/styles/main.sass');
 require('./Navbar.sass');
 
-class Navbar extends React.Component {
+const mapStateToProps = (state: IRootState) => ({
+	user: state.user,
+});
+
+interface IProps {
+	user: IUserState;
+}
+
+class Navbar extends React.Component<IProps> {
 	constructor(props, context) {
 		super(props, context);
 	}
 
 	render() {
+		const method = this.props.user.profile
+			? () => location.href = createAdPagePagePath
+			: () => showLoginModal();
+
 		return (
 			<div className='row'>
 				<div className='col-12'>
@@ -32,11 +50,12 @@ class Navbar extends React.Component {
 								</li>
 							</ul>
 						</nav>
-						{/* <button
+						<button
 							className='btn orange-btn'
+							onClick={method}
 						>
 							Submit an advertisement
-						</button> */}
+						</button>
 					</div>
 				</div>
 			</div>
@@ -44,5 +63,4 @@ class Navbar extends React.Component {
 	}
 }
 
-
-export default Navbar;
+export default connect(mapStateToProps)(Navbar);

@@ -43,7 +43,7 @@ export const transformationAdToManagerState = (initialAd: IAds, sellerFields: IS
 	};
 };
 
-export const isContainsId = (id: string) => (checkedItem: { id: string }) => {
+export const isContainsId = (id: number) => (checkedItem: { id: number }) => {
 	if (checkedItem) {
 		return checkedItem.id === id;
 	} else {

@@ -1,119 +1,75 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { connect, Dispatch } from 'react-redux';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import { IRootState } from 'client/common/store/storeInterface';
-import { bindModuleAction } from 'client/common/user/utils';
-import { IUserActions, UserActions } from 'client/common/user/actions';
-import { MenuItem } from 'client/spa/pages/MainContent';
-import { INotificationState } from 'client/common/notification/reducer';
-import { filterNotification } from 'client/spa/pages/notification/utils'
-import { FilterType } from 'client/spa/pages/notification/Notification'
+import { UserActions } from 'client/common/entities/user/rootActions';
+import { filterNotification } from 'client/spa/profile/pages/notifications/utils';
 
-export interface IState {
+import { FilterType } from '../../pages/notifications/interface';
 
-}
+import Navigation from './Navigation';
 
 export interface IProps {
-	user: IUser;
-	userActions: IUserActions;
-	onSelectMenuItem: (menuItem: MenuItem) => void;
-	notification: INotificationState;
+	user: IUserState;
+	match: any;
 }
 
 const mapStateToProps = (state: IRootState) => ({
-	user: state.user.user,
-	notification: state.notification,
+	user: state.user,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-	userActions: bindModuleAction(UserActions, dispatch),
-});
-
-class ProfileMenu extends Component<IProps, IState> {
-
-	state: IState = {};
+class ProfileMenu extends Component<IProps> {
 
 	onLogout = () => {
-		this.props.userActions.logout.REQUEST({});
-	}
-
-	onSelectMenuItem = (menuItem: MenuItem) => () => {
-		this.props.onSelectMenuItem(menuItem);
+		UserActions.common.logout.REQUEST({});
 	}
 
 	get userImage() {
-		return this.props.user && this.props.user.image && this.props.user.image.file_url || '/static/img/person.png';
+		return this.props.user.profile &&
+				this.props.user.profile.image &&
+				this.props.user.profile.image.file_url || '/static/img/person.png';
+	}
+
+	get profileName() {
+		return this.props.user.profile &&
+				this.props.user.profile.name;
+	}
+
+	get profileEmail() {
+		return this.props.user.profile &&
+				this.props.user.profile.email;
 	}
 
 	render() {
 
-		const { data } = this.props.notification;
+		const { items, noReadCount } = this.props.user.notifications;
 
-		const countNotReadNotification = filterNotification(FilterType.NoRead, data).length;
+		const countNotReadNotification = items.length > 0 ?
+		filterNotification(FilterType.NoRead, items).length : noReadCount;
 
 		return (
 			<div className='account'>
-				<div className='account__person' onClick={this.onSelectMenuItem(MenuItem.Settings)}>
+				<div className='account__person'>
 					<img
-						src={ this.userImage }
 						alt=''
+						src={ this.userImage }
 						className='account__img'
 					/>
 					<div>
-						<h6 className='account__name'>{ this.props.user.name }</h6>
-						<span className='account__location'>{ this.props.user.email }</span>
-						{/* TODO change email in location */}
+						<h6 className='account__name'>
+							{ this.profileName }
+						</h6>
+						<span className='account__location'>
+							{ this.profileEmail }
+						</span>
 					</div>
 				</div>
-				<div className='account-navigation'>
-					<ul className='list-unstyled m-b-0'>
-						<li
-							onClick={this.onSelectMenuItem(MenuItem.MyAds)}
-							className='account-navigation__item account-navigation__item--active'
-						>
-							My announcements
-							{/*<span className='notification account__notification'/>*/}
-						</li>
-						<li className='account-navigation__item'>
-							Posts
-							{/*<span className='notification account__notification'>3</span>*/}
-						</li>
-						<li
-							onClick={this.onSelectMenuItem(MenuItem.Notifications)}
-							className='account-navigation__item'
-						>
-							Notifications
-							{
-								countNotReadNotification
-								&&
-								<span className='notification account__notification'>{countNotReadNotification}</span>
-								||
-								<></>
-							}
-						</li>
-						<li
-							className='account-navigation__item'
-							onClick={this.onSelectMenuItem(MenuItem.Settings)}
-						>
-							Settings
-							{/*<span className='notification account__notification'/>*/}
-						</li>
-						<li className='account-navigation__item'>
-							History
-							{/*<span className='notification account__notification'/>*/}
-						</li>
-						<li
-							className='account-navigation__item'
-							onClick={this.onLogout}
-						>
-							Logout
-						</li>
-					</ul>
-				</div>
+				<Navigation match={this.props.match} countNotReadNotification={countNotReadNotification} />
 			</div>
 		);
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileMenu);
+export default withRouter(connect( mapStateToProps )(ProfileMenu));

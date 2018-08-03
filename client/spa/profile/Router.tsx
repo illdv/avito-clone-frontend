@@ -1,17 +1,37 @@
 import React from 'react';
-import createHistory from 'history/createBrowserHistory';
 import { Router as RouterConnect } from 'react-router';
-import { Route, Switch as SwitchRoute } from 'react-router-dom';
+import { Link, Route, Switch} from 'react-router-dom';
 
 import Header from 'client/ssr/blocks/header/Header';
 import Toolbar from 'client/spa/profile/blocks/toolbar/Toolbar';
 import PrivareWrap from './PrivareWrap';
+import history from '../../common/history';
 
-import Index from 'client/spa/profile/pages/Index';
+// Layouts
+import WithMenu from './layouts/WithMenu';
+import WithFooter from './layouts/WithFooter';
+
+// Pages
+import MyAds from './pages/my-ads/MyAds';
+import EditAd from 'client/spa/profile/pages/EditAd';
+import CreateAd from 'client/spa/profile/pages/CreateAd';
+import Notifications from 'client/spa/profile/pages/notifications/Notifications';
+import ProfileSettings from 'client/spa/profile/pages/profile-settings/ProfileSettings';
+/* import Index from 'client/spa/profile/pages/Index';
+import Notification from 'client/spa/profile/pages/notification/Notification'; */
 /* import CreateAd from 'client/spa/profile/pages/CreateAd';
 import EditAd from 'client/spa/profile/pages/EditAd'; */
 
-const history = createHistory();
+import {
+	myAdsPagePath,
+	defaultPagePath,
+	notificationPagePath,
+	profileSettingsPagePath,
+} from './constants';
+
+const PageNoCreate = () => (
+	<h1>Page not yet created</h1>
+);
 
 class Router extends React.Component {
 	constructor(props, context) {
@@ -25,11 +45,20 @@ class Router extends React.Component {
 					<PrivareWrap>
 						<Header />
 						<Toolbar />
-						<SwitchRoute>
-							{/* <Route path='/profile/create-ad' component={ CreateAd } />
-							<Route path='/profile/edit-ad/:id' component={ EditAd } /> */}
-							<Route path='/profile*' component={ Index }/>
-						</SwitchRoute>
+						<Switch>
+							<WithFooter path='/profile/ad'>
+								<Route path='/profile/ad/create' component={ CreateAd } />
+								<Route path='/profile/ad/edit/:id' component={ EditAd } />
+							</WithFooter>
+							<WithFooter>
+								<WithMenu>
+									<Route path={ '/profile/mock' } component={ PageNoCreate } />
+									<Route path={ profileSettingsPagePath } component={ ProfileSettings } />
+									<Route path={ notificationPagePath } component={ Notifications } />
+									<Route path={ myAdsPagePath } component={ MyAds }/>
+								</WithMenu>
+							</WithFooter>
+						</Switch>
 					</PrivareWrap>
 				</RouterConnect>
 			</>

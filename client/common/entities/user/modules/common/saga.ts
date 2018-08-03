@@ -10,13 +10,10 @@ import { hideLoginModal } from 'client/ssr/modals/auth/loginModalTriggers';
 import { Toasts } from 'client/common/utils/Toasts';
 import { pushInRouter } from 'client/common/utils/utils';
 
-import { getToken } from '../../../../store/selectors';
-
 import { commonActions } from './actions';
 import { tokenActions } from '../token/actions';
 import { profileActions } from '../profile/actions';
 import { favoritesActions } from '../favorites/actions';
-import { delay } from 'redux-saga';
 import { CustomStorage } from '../../CustomStorage';
 
 function* loadingUserIfHasToken() {

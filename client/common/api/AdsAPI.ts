@@ -1,6 +1,5 @@
 import { AxiosWrapper } from './AxiosWrapper';
-import { AdsActionType, IAds, IEditAdRequest } from 'client/common/_ads/interface';
-import { ICreateAdRequest } from 'client/common/entities/user/modules/owned-ads/interfaces';
+import { AdsActionType, ICreateAdRequest, IEditAdRequest } from '../entities/user/modules/owned-ads/interfaces';
 
 function get() {
 	return AxiosWrapper.get('/ads');
@@ -40,7 +39,6 @@ function edit({ images, options, ...ads }: IEditAdRequest) {
 
 	const files    = images.map(img => img.file);
 	const formData = new FormData();
-
 	for (let i = 0; i < files.length; i++) {
 		const file = files[i];
 		formData.append(`images[${i}]`, file);

@@ -1,16 +1,17 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { connect, Dispatch } from 'react-redux';
+import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 
 import { IRootState } from 'client/common/store/storeInterface';
-import { MenuItem } from 'client/spa/pages/MainContent';
-import { filterNotification } from 'client/spa/pages/notification/utils';
-import { FilterType } from 'client/spa/pages/notification/Notification';
 import { UserActions } from '../../common/entities/user/rootActions';
+import { filterNotification } from 'client/spa/profile/pages/notification/utils';
+import { FilterType } from 'client/spa/profile/pages/notification/Notification';
+
+import { defaultPagePath } from 'client/spa/profile/constants';
 
 export interface IProps {
 	user: IUserState;
-	onSelectMenuItem: (menuItem: MenuItem) => void;
 }
 
 const mapStateToProps = (state: IRootState) => ({
@@ -21,10 +22,6 @@ class ProfileMenu extends Component<IProps> {
 
 	onLogout = () => {
 		UserActions.common.logout.REQUEST({});
-	}
-
-	onSelectMenuItem = (menuItem: MenuItem) => () => {
-		this.props.onSelectMenuItem(menuItem);
 	}
 
 	get userImage() {
@@ -51,7 +48,7 @@ class ProfileMenu extends Component<IProps> {
 
 		return (
 			<div className='account'>
-				<div className='account__person' onClick={this.onSelectMenuItem(MenuItem.Settings)}>
+				<div className='account__person'>
 					<img
 						src={ this.userImage }
 						alt=''
@@ -64,49 +61,45 @@ class ProfileMenu extends Component<IProps> {
 						<span className='account__location'>
 							{ this.profileEmail }
 						</span>
-						{/* TODO change email in location */}
 					</div>
 				</div>
 				<div className='account-navigation'>
 					<ul className='list-unstyled m-b-0'>
-						<li
-							onClick={this.onSelectMenuItem(MenuItem.MyAds)}
-							className='account-navigation__item account-navigation__item--active'
+						<NavLink
+							to={defaultPagePath}
+							className='account-navigation__item'
+							activeClassName='account-navigation__item--active'
 						>
 							My announcements
-							{/*<span className='notification account__notification'/>*/}
-						</li>
+						</NavLink>
+
 						<li className='account-navigation__item'>
 							Posts
-							{/*<span className='notification account__notification'>3</span>*/}
 						</li>
 						<li
-							onClick={this.onSelectMenuItem(MenuItem.Notifications)}
 							className='account-navigation__item'
 						>
-							Notifications
-							{
-								countNotReadNotification
-								&&
-								<span className='notification account__notification'>{countNotReadNotification}</span>
-								||
-								<></>
-							}
+							<NavLink to='/profile' >
+								Notifications
+								{
+									countNotReadNotification
+									&&
+									<span className='notification account__notification'>{countNotReadNotification}</span>
+									||
+									<></>
+								}
+							</NavLink>
 						</li>
 						<li
 							className='account-navigation__item'
-							onClick={this.onSelectMenuItem(MenuItem.Settings)}
 						>
 							Settings
-							{/*<span className='notification account__notification'/>*/}
 						</li>
 						<li className='account-navigation__item'>
 							History
-							{/*<span className='notification account__notification'/>*/}
 						</li>
 						<li
 							className='account-navigation__item'
-							onClick={this.onLogout}
 						>
 							Logout
 						</li>

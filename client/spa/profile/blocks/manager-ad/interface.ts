@@ -1,5 +1,5 @@
 export interface IAttachedImage {
-	id?: number;
+	id?: string;
 	isBackend: boolean;
 	base64: string;
 	file?: any;
@@ -39,4 +39,9 @@ export interface ILocation {
 	name: string;
 	lat: number;
 	lng: number;
+}
+
+export interface IOption {
+	value: string;
+	item: ITotalOptions;
 }

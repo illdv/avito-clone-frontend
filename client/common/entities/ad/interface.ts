@@ -14,7 +14,7 @@ interface IType {
 }
 
 interface IImage {
-	id: string;
+	id: number;
 	imageable_type: string;
 	imageable_id: number;
 	file_name: string;
@@ -27,11 +27,12 @@ interface IImage {
 interface IAd {
 	id: number;
 	type_id: number;
-	category_id: string;
+	category_id: number;
 	title: string;
 	description: string;
 	body: string;
 	price: string;
+	city_id: number;
 	is_published?: boolean;
 	is_approved?: boolean;
 	is_active?: boolean;
@@ -41,11 +42,11 @@ interface IAd {
 	updated_at?: string;
 	deleted_at?: any;
 	pivot?: IPivot;
-	city_id: number;
 	type?: IType;
 	options?: any[];
 	latitude?: number;
 	longitude?: number;
+	total_visits?: number;
 	phone?: string;
 	images?: IImage[];
 }

@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { connect, Dispatch } from 'react-redux';
+import { connect } from 'react-redux';
 
 import { IRootState } from 'client/common/store/storeInterface';
-import { filterNotification } from 'client/spa/pages/notification/utils';
-import { UserActions } from '../../../common/entities/user/rootActions';
+import { UserActions } from 'client/common/entities/user/rootActions';
+import { filterNotification } from './utils';
+import { FilterType } from './interface';
 
 export interface IState {
 	selectedFilter: FilterType;
@@ -18,12 +19,6 @@ const mapStateToProps = (state: IRootState) => ({
 	user: state.user,
 });
 
-export enum FilterType {
-	Read   = 'Read',
-	NoRead = 'Not read',
-	All    = 'All',
-}
-
 class Notification extends Component<IProps, IState> {
 
 	state: IState = {
@@ -31,8 +26,10 @@ class Notification extends Component<IProps, IState> {
 	};
 
 	convertToItem = ({ id, data, read_at }: INotification) => {
+
 		return (
 			<div
+				style={{ background: read_at ? '' : '#ffb91b9c' }}
 				key={id}
 				className={'alert alert-dismissible ' + (read_at ? 'alert-light' : 'alert-warning')}
 				role='alert'
@@ -96,6 +93,10 @@ class Notification extends Component<IProps, IState> {
 			</a>
 
 		);
+	}
+
+	componentDidMount() {
+		UserActions.notifications.loading.REQUEST({});
 	}
 
 	render() {
