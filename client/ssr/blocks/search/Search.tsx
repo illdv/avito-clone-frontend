@@ -11,7 +11,6 @@ import { ILocationStoreState } from 'client/common/location/module';
 import { showLocationModal } from 'client/ssr/modals/location/locationModalTriggers';
 import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
 import { IOption } from '../../../spa/pages/create-ad/interface';
-import { ICategory } from '../../../common/categories/interface';
 
 require('./Search.sass');
 
@@ -25,7 +24,7 @@ interface ISearchState {
 	searchString: string;
 	activeCategories: any;
 	duplicateCategories: any;
-	options: IOption[]
+	options: IOption[];
 }
 
 const mapStateToProps = (state: IRootState) => ({

@@ -19,6 +19,7 @@ import {
 	CHANGE_COUNTRY_SESSION,
 	CHANGE_REGION_LOCAL,
 	CHANGE_REGION_SESSION,
+	changeCityLocal,
 } from './module';
 
 import { favoritesActions } from 'client/common/entities/user/modules/favorites/actions';
@@ -33,6 +34,12 @@ function* sagaInitializeLocation(action) {
 		}
 	}
 
+	const search = location.search.match(/city_id=([^&]+)/);
+
+	if (search) {
+		yield put(changeCityLocal(Number(search[1])));
+	}
+
 	// TODO remove
 	const favoritesIds = yield call(getFavoritesFromLocalStorage);
 	yield put(favoritesActions.setFavorite.SUCCESS({ favoritesIds }));
@@ -42,11 +49,15 @@ function* sagaChangeCountryForSession(action) {
 	const locationState: ILocationStoreState = yield select(getLocationState);
 	const idCountry: number = action.payload;
 
+	if (locationState.session.idCountry === idCountry) {
+		return null;
+	}
+
 	jsCookie.set('idCountry', idCountry);
 	jsCookie.set('idRegion', null);
 	jsCookie.set('idCity', null);
 
-	if (!idCountry || locationState.session.idCountry === idCountry) {
+	if (!idCountry) {
 		yield put(changeState({
 			...locationState,
 			session: {
@@ -112,7 +123,11 @@ function* sagaChangeCountryForLocal(action) {
 	const locationState: ILocationStoreState = yield select(getLocationState);
 	const idCountry: number = action.payload;
 
-	if (!idCountry || locationState.local.idCountry === idCountry) {
+	if (locationState.local.idCountry === idCountry) {
+		return null;
+	}
+
+	if (!idCountry) {
 		yield put(changeState({
 			...locationState,
 			local: {
@@ -160,10 +175,14 @@ function* sagaChangeRegionForSession(action) {
 	const locationState: ILocationStoreState = yield select(getLocationState);
 	const idRegion: number = action.payload;
 
+	if (locationState.session.idRegion === idRegion) {
+		return null;
+	}
+
 	jsCookie.set('idRegion', idRegion);
 	jsCookie.set('idCity', null);
 
-	if (!idRegion || locationState.session.idRegion === idRegion) {
+	if (!idRegion) {
 		yield put(changeState({
 			...locationState,
 			session: {
@@ -217,7 +236,11 @@ function* sagaChangeRegionForLocal(action) {
 	const locationState: ILocationStoreState = yield select(getLocationState);
 	const idRegion: number = action.payload;
 
-	if (!idRegion || locationState.local.idRegion === idRegion) {
+	if (locationState.local.idRegion === idRegion) {
+		return;
+	}
+
+	if (!idRegion) {
 		yield put(changeState({
 			...locationState,
 			local: {
@@ -257,9 +280,13 @@ function* sagaChangeCityForSession(action) {
 	const locationState: ILocationStoreState = yield select(getLocationState);
 	const idCity: number = action.payload;
 
+	if (locationState.local.idCity === idCity) {
+		return null;
+	}
+
 	jsCookie.set('idCity', idCity);
 
-	if (!idCity || locationState.local.idCity === idCity) {
+	if (!idCity) {
 		yield put(changeState({
 			...locationState,
 			session: {
@@ -294,7 +321,14 @@ function* sagaChangeCityForLocal(action) {
 	const locationState: ILocationStoreState = yield select(getLocationState);
 	const idCity: number = action.payload;
 
-	if (!idCity || locationState.local.idCity === idCity) {
+	console.log('idCity', idCity);
+	console.log('locationState', locationState);
+
+	if (locationState.local.idCity === idCity) {
+		return null;
+	}
+
+	if (!idCity) {
 		yield put(changeState({
 			...locationState,
 			local: {
