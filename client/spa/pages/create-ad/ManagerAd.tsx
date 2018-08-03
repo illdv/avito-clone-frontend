@@ -16,7 +16,7 @@ import {
 import { IAds } from 'client/common/ads/interface';
 
 interface IProps {
-	initialAd?: IAds;
+	initialAd?: IAd;
 	adsActions: IAdsActions;
 	user: IUser;
 

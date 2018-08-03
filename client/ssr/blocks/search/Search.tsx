@@ -10,7 +10,7 @@ import { ILocationStoreState } from 'client/common/location/module';
 
 import { showLocationModal } from 'client/ssr/modals/location/locationModalTriggers';
 import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
-import { IOption } from '../../../spa/pages/create-ad/interface';
+import { IOption } from 'client/spa/pages/create-ad/ManagerAd';
 
 require('./Search.sass');
 
