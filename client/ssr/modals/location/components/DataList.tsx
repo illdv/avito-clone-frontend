@@ -96,7 +96,6 @@ class DataList extends React.Component<DataListProps, DataListState> {
 
 	get showFiltredValue(): Data[] {
 		if (!this.state.isChanged) {
-			console.log(this.props.data);
 			return this.props.data;
 		}
 

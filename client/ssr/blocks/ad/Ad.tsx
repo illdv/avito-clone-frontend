@@ -191,6 +191,7 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 						<Chart
 							similar_ads={similar}
 							id_parent={ad.id}
+							price_histories={ad.price_histories}
 						/>
 					</div>
 				</section>

@@ -39,7 +39,6 @@ export const ads: prepareMethod = async () => {
 export const ad: prepareMethod = async ({ params }) => {
 	try {
 		const response = await instance.get(`/ads/` + params.id);
-		console.log(response.data);
 		return response.data;
 	} catch (error) {
 		console.log(error);

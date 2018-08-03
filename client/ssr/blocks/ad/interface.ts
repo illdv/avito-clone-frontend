@@ -18,6 +18,7 @@ export interface IAd {
 	is_favorite: boolean;
 	address: string;
 	images: any[];
+	price_histories: IProductHistories[];
 	body: string;
 	description: string;
 	price: string;
@@ -29,6 +30,25 @@ export interface IAd {
 	city: IAdCity;
 	latitude: number;
 	longitude: number;
+}
+
+export interface IChartState {
+	data: {
+		labels: string[];
+		datasets: [{
+			data: number[];
+			label: string;
+			backgroundColor: string[];
+			borderColor: string[];
+			borderWidth: number;
+		}];
+	};
+}
+
+export interface IProductHistories {
+	ad_id: number;
+	date_time: string;
+	value: string;
 }
 export interface ISimilarSortState {
 	similar_ad?: any[];
@@ -108,11 +128,7 @@ export interface ISimilarRandomState {
 	title: string;
 	similar_ad: ISimilarAd;
 }
-export interface ISimilarState {
-	description: string;
-	title: string;
-	similar_ad: ISimilarAd;
-}
+
 export interface ISimilarProps {
 	filter?: string;
 	similar_ads: any[];
@@ -122,6 +138,7 @@ export interface ISimilarProps {
 export interface IChart {
 	similar_ads: any[];
 	id_parent: number;
+	price_histories: IProductHistories[];
 
 }
 
