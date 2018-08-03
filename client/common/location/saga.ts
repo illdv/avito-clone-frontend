@@ -42,10 +42,6 @@ function* sagaChangeCountryForSession(action) {
 	const locationState: ILocationStoreState = yield select(getLocationState);
 	const idCountry: number = action.payload;
 
-	if (locationState.session.idCountry === idCountry) {
-		 return null;
-	}
-
 	jsCookie.set('idCountry', idCountry);
 	jsCookie.set('idRegion', null);
 	jsCookie.set('idCity', null);

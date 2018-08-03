@@ -60,7 +60,7 @@ class ResetPasswordModal extends React.Component<null, IState> {
 								onChange={this.onChange}
 								type='email'
 								id='email'
-								className='col-sm-6'
+								className='col-sm-6 form-control'
 								name='email'
 								required
 								placeholder='Enter email'
@@ -79,7 +79,7 @@ class ResetPasswordModal extends React.Component<null, IState> {
 								onChange={this.onChange}
 								id='code'
 								name='tel'
-								className='col-sm-6'
+								className='col-sm-6 form-control'
 								required
 								placeholder='Enter your secret code'
 								autoComplete='off'
@@ -97,7 +97,7 @@ class ResetPasswordModal extends React.Component<null, IState> {
 								type='password'
 								id='password'
 								name='password'
-								className='col-sm-6'
+								className='col-sm-6 form-control'
 								required
 								placeholder='Enter your new password'
 								autoComplete='off'
@@ -117,7 +117,7 @@ class ResetPasswordModal extends React.Component<null, IState> {
 								onChange={this.onChange}
 								id='password_confirmation'
 								name='confirm'
-								className='col-sm-6'
+								className='col-sm-6 form-control'
 								required
 								placeholder='Confirm new password'
 								autoComplete='off'
