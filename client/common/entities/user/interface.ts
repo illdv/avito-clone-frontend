@@ -16,9 +16,15 @@ interface IProfileState {
 interface IUserState {
 	notifications: INotificationState;
 	favorites: IFavoritesState;
-	ownedAds: any; // TODO refactor
+	ownedAds: IOwnedAdsState; // TODO refactor
 	profile: IProfileState;
 	token: string;
+	isLoading: boolean;
+}
+
+// Owned ads
+interface IOwnedAdsState {
+	items: IAd[];
 	isLoading: boolean;
 }
 

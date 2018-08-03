@@ -1,15 +1,17 @@
-import {Component} from 'react';
-import * as React from 'react';
+import React from 'react';
 import {connect, Dispatch} from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import {IRootState} from 'client/common/store/storeInterface';
+
+import { createAdPagePagePath } from '../../constants';
 
 export interface IState {
 
 }
 
 export interface IProps {
-	onCreateAd: () => void;
+
 }
 
 const mapStateToProps = (state: IRootState) => ({
@@ -24,7 +26,7 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 	*/
 });
 
-class ToolBar extends Component<IProps, IState> {
+class ToolBar extends React.Component<IProps, IState> {
 
 	state: IState = {};
 
@@ -63,12 +65,13 @@ class ToolBar extends Component<IProps, IState> {
 									</li>
 								</ul>
 							</nav> */}
-							<button
-								className='btn orange-btn'
-								onClick={this.props.onCreateAd}
-							>
-								Submit an advertisement
-							</button>
+							<Link to={createAdPagePagePath}>
+								<button
+									className='btn orange-btn'
+								>
+									Submit an advertisement
+								</button>
+							</Link>
 						</div>
 					</div>
 				</div>

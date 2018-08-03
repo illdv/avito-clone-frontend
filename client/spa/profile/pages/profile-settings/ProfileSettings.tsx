@@ -2,14 +2,14 @@ import * as React from 'react';
 import {connect, Dispatch} from 'react-redux';
 import Avatar from 'react-avatar-edit';
 
-import { IRootState } from '../../../common/store/storeInterface';
+import { IRootState } from 'client/common/store/storeInterface';
+import { UserActions } from 'client/common/entities/user/rootActions';
 
-import ConfirmationAccountDeletionModal from '../../modals/confirmation-account-deletion/ConfirmationAccountDeletionModal';
+import ConfirmationAccountDeletionModal from 'client/spa/modals/confirmation-account-deletion/ConfirmationAccountDeletionModal';
 
 import {
 	showConfirmationAccountDeletionModal,
-} from '../../modals/confirmation-account-deletion/confirmationAccountDeletionModalTriggers';
-import { UserActions } from '../../../common/entities/user/rootActions';
+} from 'client/spa/modals/confirmation-account-deletion/confirmationAccountDeletionModalTriggers';
 
 enum FieldsNames {
 	fullName = 'fullName',

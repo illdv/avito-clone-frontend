@@ -1,7 +1,5 @@
 import * as React from 'react';
 
-import { ICategory } from 'client/common/categories/interface';
-
 export interface IProps {
 	selectedCategories: ICategory[];
 	email: string;

@@ -1,33 +1,19 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { connect, Dispatch } from 'react-redux';
 
-import { IRootState } from 'client/common/store/storeInterface';
-import { ICategory } from 'client/common/categories/interface';
-import { bindModuleAction } from 'client/common/user/utils';
-import { CategoryActions, ICategoryActions } from 'client/common/categories/actions';
-import { ICategoryState } from 'client/common/categories/reducer';
-import { isContainsId, useOrDefault } from 'client/spa/pages/create-ad/utils';
+import { isContainsId, useOrDefault } from '../../utils/createAd';
 
 export interface IState {
 	selectedCategory: ICategory[];
-	defaultCategoryId: string;
+	defaultCategoryId: number;
 }
 
 export interface IProps {
-	categoryActions: ICategoryActions;
-	categories: ICategoryState;
+	categories: ICategory[];
+	selectedCategories: ICategory[];
 	onSelectCategories: (selectedCategories: ICategory[]) => void;
-	defaultCategoryId: string;
+	defaultCategoryId: number;
 }
-
-const mapStateToProps = (state: IRootState) => ({
-	categories: state.categories,
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-	categoryActions: bindModuleAction(CategoryActions, dispatch),
-});
 
 export class CategoriesSelector extends Component<IProps, IState> {
 
@@ -39,14 +25,19 @@ export class CategoriesSelector extends Component<IProps, IState> {
 	static getDerivedStateFromProps(nextProps: IProps, prevState: IState): IState {
 
 		const { defaultCategoryId, categories } = nextProps;
-		const { data }                          = categories;
-		if (data.length !== 0) {
+		if (categories.length !== 0) {
 			if (defaultCategoryId !== null && defaultCategoryId !== prevState.defaultCategoryId) {
 				// noinspection TsLint
-				return {
-					defaultCategoryId,
-					selectedCategory: findCategoriesQueueById(data, parseInt(defaultCategoryId)),
-				};
+				const selectedCategory = findCategoriesQueueById(categories, defaultCategoryId);
+				
+				if (JSON.stringify(selectedCategory.sort()) !== JSON.stringify(nextProps.selectedCategories.sort())) {
+					nextProps.onSelectCategories(selectedCategory);
+				} else {
+					return {
+						defaultCategoryId,
+						selectedCategory,
+					};
+				}
 			}
 		}
 		return null;
@@ -102,12 +93,8 @@ export class CategoriesSelector extends Component<IProps, IState> {
 		}
 	}
 
-	componentDidMount(): void {
-		this.props.categoryActions.loading.REQUEST({});
-	}
-
 	render() {
-		const categories = this.props.categories.data;
+		const categories = this.props.categories;
 
 		return (
 			<div className='select-category'>
@@ -162,7 +149,7 @@ function activeClassName(isActive: boolean) {
 }
 
 interface ICategoryListItem {
-	id: string;
+	id: number;
 	title: string;
 	isActive: boolean;
 	countChildren: number;
@@ -194,4 +181,4 @@ const CategoryList = ({ items, title }: ICategoryListProps) => (
 	</div>
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(CategoriesSelector);
+export default CategoriesSelector;

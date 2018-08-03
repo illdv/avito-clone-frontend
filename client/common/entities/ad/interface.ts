@@ -14,7 +14,7 @@ interface IType {
 }
 
 interface IImage {
-	id: string;
+	id: number;
 	imageable_type: string;
 	imageable_id: number;
 	file_name: string;
@@ -27,7 +27,7 @@ interface IImage {
 interface IAd {
 	id: number;
 	type_id: number;
-	category_id: string;
+	category_id: number;
 	title: string;
 	description: string;
 	body: string;

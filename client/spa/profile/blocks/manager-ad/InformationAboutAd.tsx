@@ -1,9 +1,10 @@
 import React, { ChangeEvent } from 'react';
 
 import CategoriesSelector from './CategoriesSelector';
-import { ICategory } from 'client/common/categories/interface';
 import { ImageSelector } from './ImageSelector'; // TODO Rename Images
 import Lease from './Lease';
+
+import { IOption } from './interface';
 
 import {
 	ISellerInfoFields,
@@ -13,19 +14,23 @@ import {
 	IAttachedImage,
 	ILocation,
 } from '../../interfaces/managerAd';
+import CategoryOptions from './CategoryOptions';
 
 interface IProps {
-	defaultCategoryId: string;
+	defaultCategoryId: number;
 	attachedImages: IAttachedImage[];
 	adInfoFields: IAdInfoFields;
 	selectedCategories: ICategory[];
 	sellerInfoFields: ISellerInfoFields;
 	location: ILocation;
+	categories: ICategory[];
+	options: IOption[];
 
 	deleteImage(indes: number): void;
 	onSelectLocation(location: ILocation): void;
 	onUpdateImages(images: IAttachedImage[]): void;
 	onSelectCategories(categories: ICategory[]): void;
+	creatorChangeOptionById(id: number): (e: ChangeEvent<HTMLInputElement>) => void;
 	createtorChangeAdInfoField(name: AdInfoFieldsNames): (e: ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => void;
 	createtorChangeSellerInfoField(name: SellerFieldsNames): (e:ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => void;
 }
@@ -81,6 +86,7 @@ const TextArea = ({ id, title, onChange, inputClass, value }: IPropsForInput) =>
 const InformationAboutAd = ({
 	sellerInfoFields,
 	adInfoFields,
+	categories,
 	createtorChangeAdInfoField,
 	selectedCategories,
 	onSelectCategories,
@@ -90,6 +96,8 @@ const InformationAboutAd = ({
 	defaultCategoryId,
 	createtorChangeSellerInfoField,
 	location,
+	options,
+	creatorChangeOptionById,
 	onSelectLocation,
 }: IProps) => (
 	<section className='page'>
@@ -163,7 +171,9 @@ const InformationAboutAd = ({
 				</div>
 				<div className='col-lg-12'>
 					<CategoriesSelector
+						categories={ categories }
 						defaultCategoryId={ defaultCategoryId }
+						selectedCategories={ selectedCategories }
 						onSelectCategories={ onSelectCategories }
 					/>
 				</div>
@@ -190,6 +200,9 @@ const InformationAboutAd = ({
 					</div>
 				</div>
 			</div>
+
+			<CategoryOptions options={options} creatorChangeOptionById={creatorChangeOptionById} />
+
 			<div className='offer-form'>
 				<Input
 					id={'title'}

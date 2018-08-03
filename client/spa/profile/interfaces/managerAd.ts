@@ -1,5 +1,5 @@
 export interface IAttachedImage {
-	id?: string;
+	id?: number;
 	isBackend: boolean;
 	base64: string;
 	file?: any;

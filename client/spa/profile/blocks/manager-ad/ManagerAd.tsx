@@ -2,9 +2,6 @@ import React, { ChangeEvent } from 'react';
 import { connect, Dispatch } from 'react-redux';
 
 import InformationAboutAd from './InformationAboutAd';
-import { ICategory } from 'client/common/categories/interface';
-import { bindModuleAction } from 'client/common/user/utils';
-import { AdsActions, IAdsActions } from 'client/common/ads/actions';
 import { IRootState } from 'client/common/store/storeInterface';
 import ConfirmAd from './ConfirmAd';
 import { transformationAdToManagerState } from '../../utils/createAd';
@@ -17,12 +14,14 @@ import {
 	AdInfoFieldsNames,
 	SellerFieldsNames,
 } from '../../interfaces/managerAd';
-import { IAds } from 'client/common/ads/interface';
+import { UserActions } from 'client/common/entities/user/rootActions';
+import { getCategories } from 'client/ssr/blocks/categories/context';
+import { IOption } from './interface';
 
 interface IProps {
-	initialAd?: IAds;
-	adsActions: IAdsActions;
-	user: IUser;
+	initialAd?: IAd;
+	user: IUserState;
+	categories: ICategory[];
 	callback(state: IState): void;
 }
 
@@ -32,38 +31,37 @@ export interface IState {
 	adInfoFields: IAdInfoFields;
 	selectedCategories: ICategory[];
 	attachedImages: IAttachedImage[];
-	defaultCategoryId: string;
+	defaultCategoryId: number;
 	location: ILocation;
+	options: IOption[];
 }
 
 const mapStateToProps = (state: IRootState) => ({
-	user: state.user.user,
+	user: state.user,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-	adsActions: bindModuleAction(AdsActions, dispatch),
-});
+const findFieldAtPossibleNull = (obj, key, defaultValue) => {
+	return obj && obj[key] || defaultValue;
+}
 
 class ManagerAd extends React.Component<IProps, IState> {
 	constructor(props, context) {
 		super(props, context);
 
+		const sellerInfoFields = {
+			name: { disable: true, value: findFieldAtPossibleNull(this.props.user.profile, 'name', '') },
+			email: { disable: true, value: findFieldAtPossibleNull(this.props.user.profile, 'email', '') },
+			phone: { disable: false, value: findFieldAtPossibleNull(this.props.user.profile, 'phone', '') },
+		};
+
 		if (this.props.initialAd) {
 			// Edit Ad
-			this.state = transformationAdToManagerState(this.props.initialAd, {
-				name: { disable: true, value: this.props.user.name },
-				email: { disable: true, value: this.props.user.email },
-				phone: { disable: false, value: this.props.user.name },
-			});
+			this.state = transformationAdToManagerState(this.props.initialAd, this.props.categories, sellerInfoFields);
 		} else {
 			// Create Ad
 			this.state = {
 				step: 1,
-				sellerInfoFields: {
-					name: { disable: true, value: this.props.user.name },
-					email: { disable: true, value: this.props.user.email },
-					phone: { disable: false, value: this.props.user.name },
-				},
+				sellerInfoFields,
 				adInfoFields: {
 					title: { disable: false, value: '' },
 					price: { disable: false, value: '' },
@@ -78,6 +76,7 @@ class ManagerAd extends React.Component<IProps, IState> {
 					lng: 55.75222,
 					lat: 37.61140,
 				},
+				options: [],
 			};
 		}
 
@@ -121,8 +120,48 @@ class ManagerAd extends React.Component<IProps, IState> {
 			});
 		}
 
+	creatorChangeOptionById = (id: number) => (e: ChangeEvent<HTMLInputElement>) => {
+		const newOptions = this.state.options.map(option => {
+			if (option.item.id !== id) {
+				return option;
+			} else {
+				return {
+					item: option.item,
+					value: e.target.value,
+				};
+			}
+		});
+
+		this.setState({ options: newOptions });
+	}
+
 	onSelectCategories = (selectedCategories: ICategory[]) => {
-		this.setState({ selectedCategories });
+		const options = this.getOptionsBySelectedCategories(selectedCategories);
+
+		const updatedOptions = options.map((option): IOption => {
+			const findedOption = this.state.options.filter(ops => {
+				return ops.item.id === option.item.id;
+			});
+
+			if (findedOption.length > 0) {
+				return findedOption[0];
+			} else {
+				return option;
+			}
+		});
+
+		this.setState({
+			selectedCategories,
+			options: updatedOptions,
+		});
+	}
+
+	getOptionsBySelectedCategories = (selectedCategories: ICategory[]) => {
+		const lastCategory = selectedCategories.length > 0 && selectedCategories[selectedCategories.length - 1] || null;
+		return (lastCategory && lastCategory.total_options || []).map(option => {
+			return { value: '', item: option };
+		});
+
 	}
 
 	onUpdateImages = (images: IAttachedImage[]) => {
@@ -142,7 +181,7 @@ class ManagerAd extends React.Component<IProps, IState> {
 	deleteImage = (index: number) => {
 		const image = this.findImageByIndex(index);
 		if (image.isBackend) {
-			this.props.adsActions.deleteImage.REQUEST({ id: image.id });
+			UserActions.ownedAds.deleteImage.REQUEST({ id: image.id });
 			this.deleteImageFromAttachments(image);
 		} else {
 			this.deleteImageFromAttachments(image);
@@ -155,6 +194,9 @@ class ManagerAd extends React.Component<IProps, IState> {
 
 	render() {
 		const { step } = this.state;
+		if (!this.props.categories) {
+			return null;
+		}
 
 		if (step === 1) {
 			return (
@@ -168,10 +210,13 @@ class ManagerAd extends React.Component<IProps, IState> {
 						onSelectCategories={ this.onSelectCategories }
 						onUpdateImages={ this.onUpdateImages }
 						deleteImage={ this.deleteImage }
+						categories={ this.props.categories }
 						attachedImages={ this.state.attachedImages }
 						defaultCategoryId={ this.state.defaultCategoryId }
 						onSelectLocation={ this.onSelectLocation }
 						location={ this.state.location }
+						options={ this.state.options }
+						creatorChangeOptionById={ this.creatorChangeOptionById }
 					/>
 					<div className='container'>
 						<button
@@ -203,4 +248,4 @@ class ManagerAd extends React.Component<IProps, IState> {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ManagerAd);
+export default connect(mapStateToProps)(getCategories(ManagerAd));

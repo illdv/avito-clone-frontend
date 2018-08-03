@@ -1,6 +1,5 @@
 import { createActionCreator, IAsyncAction } from '../../utils';
-import { AdsActionType, IAds, ICreateAdRequest, IEditAdRequest, PageNames } from './interfaces';
-
+import { AdsActionType, ICreateAdRequest, IEditAdRequest, PageNames } from './interfaces';
 
 const createAsyncAction = createActionCreator('ADS');
 
@@ -14,14 +13,14 @@ const edit          = createAsyncAction('EDIT');
 const deleteImage   = createAsyncAction('DELETE_IMAGE');
 
 export interface IOwnedAdsActions {
-	getMy: IAsyncAction<{}, IAds[]>;
+	getMy: IAsyncAction<{}, IAd[]>;
 	create: IAsyncAction<ICreateAdRequest>;
 	changePage: IAsyncAction<PageNames>;
-	remove: IAsyncAction<{ id: string }>;
-	changeStatus: IAsyncAction<{ actionType: AdsActionType, id: string }>;
-	selectForEdit: IAsyncAction<{ id: string }>;
+	remove: IAsyncAction<{ id: number }>;
+	changeStatus: IAsyncAction<{ actionType: AdsActionType, id: number }>;
+	selectForEdit: IAsyncAction<{ id: number }>;
 	edit: IAsyncAction<IEditAdRequest>;
-	deleteImage: IAsyncAction<{ id: string }>;
+	deleteImage: IAsyncAction<{ id: number }>;
 }
 
 export const ownedAdsActions: IOwnedAdsActions = {

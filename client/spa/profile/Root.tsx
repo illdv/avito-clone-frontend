@@ -4,13 +4,15 @@ import { ToastContainer } from 'react-toastify';
 
 import OverlaySpinner from 'client/common/blocks/spinner/OverlaySpinner';
 
-require('client/spa/pages/Helpers.sass');
-require('client/spa/pages/ToolBar.sass');
-require('client/spa/pages/MyAds.sass');
-require('client/spa/pages/create-ad/CreateAd.sass');
-require('client/spa/pages/ProfileSettings/ProfileSettings.sass');
+// spa styles
+require('client/spa/profile/Helpers.sass');
+require('client/spa/profile/blocks/toolbar/Toolbar.sass');
+require('client/spa/profile/pages/my-ads/MyAds.sass');
+require('client/spa/profile/blocks/manager-ad/ManagerAd.sass');
+require('client/spa/profile/pages/profile-settings/ProfileSettings.sass');
+
+// ssr styles
 require('client/ssr/blocks/footer/Footer.sass');
-require('client/spa/pages/favorites/FavoritesPage.sass');
 
 const Content = dynamic(import('client/spa/profile/Router') as any, {
 	ssr: false,

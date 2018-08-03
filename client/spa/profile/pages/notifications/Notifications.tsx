@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { connect, Dispatch } from 'react-redux';
+import { connect } from 'react-redux';
 
 import { IRootState } from 'client/common/store/storeInterface';
-import { filterNotification } from 'client/spa/pages/notification/utils';
-import { UserActions } from '../../../common/entities/user/rootActions';
+import { UserActions } from 'client/common/entities/user/rootActions';
+import { filterNotification } from './utils';
+import { FilterType } from './interface';
 
 export interface IState {
 	selectedFilter: FilterType;
@@ -17,12 +18,6 @@ export interface IProps {
 const mapStateToProps = (state: IRootState) => ({
 	user: state.user,
 });
-
-export enum FilterType {
-	Read   = 'Read',
-	NoRead = 'No read',
-	All    = 'All',
-}
 
 class Notification extends Component<IProps, IState> {
 

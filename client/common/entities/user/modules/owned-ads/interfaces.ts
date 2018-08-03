@@ -48,6 +48,22 @@ export interface Image {
 	file_url: string;
 }
 
+export interface IOption {
+	category_id: number;
+	created_at: string;
+	deleted_at: string|null;
+	id: number;
+	name: string;
+	pivot: IPivot;
+	type_id: number;
+	updated_at: string;
+}
+
+export interface IOptionValue {
+	id: number;
+	value: string;
+}
+
 export interface IAds {
 	id: string;
 	type_id: number;
@@ -83,9 +99,10 @@ export interface ICreateAdRequest {
 	price: string;
 	longitude: number;
 	latitude: number;
-	category_id: string;
+	category_id: number;
 	phone: string;
 	images: IAttachedImage[];
+	options: IOptionValue[];
 }
 
 export interface IEditAdRequest {
@@ -95,12 +112,13 @@ export interface IEditAdRequest {
 	body: string;
 	type_id: number;
 	city_id: number;
-	category_id: string;
+	category_id: number;
 	price: string;
 	longitude: number;
 	latitude: number;
 	phone: string;
 	images: IAttachedImage[];
+	options: IOptionValue[];
 }
 
 export interface IFavoritesAds {

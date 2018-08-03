@@ -1,5 +1,4 @@
-import { FilterType } from 'client/spa/pages/notification/Notification';
-import { INotification } from 'client/common/notification/interface';
+import { FilterType } from './interface';
 
 const isRead   = (item: INotification) => item.read_at !== null;
 const isNoRead = (item: INotification) => !isRead(item);
