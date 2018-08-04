@@ -1,8 +1,6 @@
-import { IAds } from 'client/common/ads/interface';
-
-export const ad1Mock: IAds = {
+export const adMock1 = {
 	id: '1',
-	category_id: '1',
+	category_id: 1,
 	type_id: 1,
 	title: 'House of 230 m²',
 	description: '',
@@ -15,12 +13,12 @@ export const ad1Mock: IAds = {
 	},
 	price: '790000',
 	body: '',
-	is_vip: false,
+	is_vip: 12,
 	city_id: 1,
 };
-export const ad2Mock: IAds = {
+export const adMock2 = {
 	id: '3',
-	category_id: '2',
+	category_id: 2,
 	type_id: 2,
 	title: 'Tesla car',
 	description: 'Amazing car',
@@ -33,8 +31,10 @@ export const ad2Mock: IAds = {
 	},
 	price: '50000',
 	body: '',
-	is_vip: true,
+	is_vip: 12,
 	city_id: 1,
 };
+export const adsMock = [adMock1, adMock2];
 
-export const adsMock: IAds[] = [ ad1Mock, ad2Mock];
+
+

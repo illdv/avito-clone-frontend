@@ -1,14 +1,12 @@
 import * as React from 'react';
 import CategoryCard from 'client/ssr/blocks/categories/CategoryCard';
-import {ICategories} from 'client/common/categories/interface';
 
 interface ICategoriesList {
 	categories: ICategories;
 }
 
-const CategoriesList: React.SFC<ICategoriesList> = ({categories}) => {
-	const error = <div> Category not redy on backend</div>;
-	const bottomButton = <div className='tile tile-categories'>
+const BottomButton = () => (
+	<div className='tile tile-categories'>
 		<div className='tile__inner'>
 			<div className='category text-left'>
 				<h4 className='category__caption p-b-20'>All categories</h4>
@@ -23,7 +21,12 @@ const CategoriesList: React.SFC<ICategoriesList> = ({categories}) => {
 				</a>
 			</div>
 		</div>
-	</div>;
+	</div>
+);
+
+const CategoriesList: React.SFC<ICategoriesList> = ({categories}) => {
+	const error = <div> Category not redy on backend</div>;
+
 	return (
 		<div className='tiles'>
 			{categories[1] ?
@@ -104,7 +107,7 @@ const CategoriesList: React.SFC<ICategoriesList> = ({categories}) => {
 				/>
 				: error
 			}
-			{bottomButton}
+			<BottomButton />
 		</div>
 	);
 };

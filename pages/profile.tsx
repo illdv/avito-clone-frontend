@@ -1,18 +1,11 @@
 import React from 'react';
 import Head from 'next/head';
-import dynamic from 'next/dynamic';
-
-import Header from '../client/ssr/blocks/header/Header';
 import { types } from 'redux-act';
-import { ToastContainer } from 'react-toastify';
 
-require('client/spa/pages/Helpers.sass');
-require('client/spa/pages/ToolBar.sass');
-require('client/spa/pages/MyAds.sass');
-require('client/spa/pages/create-ad/CreateAd.sass');
-require('client/spa/pages/ProfileSettings/ProfileSettings.sass');
-require('client/ssr/blocks/footer/Footer.sass');
-require('client/spa/pages/favorites/FavoritesPage.sass');
+import Profile from 'client/spa/profile/Root';
+import { SetCategories } from 'client/ssr/blocks/categories/context';
+
+import * as loaderPrepare from '../client/common/loader-prepare/loaderPrepare';
 
 const isServer: boolean = typeof window === 'undefined';
 
@@ -20,31 +13,38 @@ if (isServer) {
 	types.disableChecking();
 }
 
-const Profile = dynamic(import('client/spa/pages/Profile') as any, {
-	ssr: false,
-	loading: () => <h1>Loading SPA</h1>,
-});
+interface IProps {
+	categories: ICategory[];
+}
 
-export default class extends React.Component {
+export default class extends React.Component<IProps> {
 	static async getInitialProps({ query }) {
-		return { location: query.location };
+		let categories = query.categories;
+		let location = query.location;
+
+		if (!categories) {
+			const categoriesResponse = await loaderPrepare.get('categories');
+			categories = categoriesResponse.data;
+		}
+
+		if (!categories) {
+			const locationResponse = await await loaderPrepare.get('location');
+			location = locationResponse.data;
+		}
+
+		return { location, categories };
 	}
-	render(){
+	render() {
 		return (
-			<div>
-				<React.Fragment>
+			<>
+				<SetCategories categories={ this.props.categories } >
 					<Head>
-						<meta
-							property='og:description'
-							content='Content'
-						/>
-						<title>Index page</title>
+						<meta property='og:description' content='Content' />
+						<title>Profile page</title>
 					</Head>
-					<Header />
 					<Profile />
-					<ToastContainer />
-				</React.Fragment>
-			</div>
+				</SetCategories>
+			</>
 		);
 	}
 }

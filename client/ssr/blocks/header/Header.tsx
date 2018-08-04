@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {connect, Dispatch} from 'react-redux';
+import React, { Component } from 'react';
+import { connect, Dispatch } from 'react-redux';
 import Link from 'next/link';
 import axios from 'axios';
 
@@ -8,32 +8,32 @@ import SendCodeToEmailModal from '../../modals/forgot-password/SendCodeToEmail';
 import LanguageDropdown from './components/LanguageDropdown';
 import { showLoginModal } from 'client/ssr/modals/auth/loginModalTriggers';
 import { IRootState } from 'client/common/store/storeInterface';
-import { IUserState } from 'client/common/user/reducer';
-import { IUserActions, UserActions } from 'client/common/user/actions';
-import { bindModuleAction } from 'client/common/user/utils';
+import { UserActions, IUserActions } from 'client/common/entities/user/rootActions';
+import { bindModuleAction } from 'client/common/entities/user/utils';
 import { isServer } from 'client/common/utils/utils';
-import { CustomStorage, getFavoritesFromLocalStorage } from 'client/common/user/CustomStorage';
+import { CustomStorage, getFavoritesFromLocalStorage } from 'client/common/entities/user/CustomStorage';
 import ResetPasswordModal from 'client/ssr/modals/forgot-password/ResetPasswordModal';
 import SuccessModal from 'client/ssr/modals/success/SuccessModal';
 import MainLocationModal from 'client/ssr/modals/location/MainLocationModal';
-import {initialize, ILocationSession, ILocationStoreState} from 'client/common/location/module';
-import {getLocationState} from 'client/common/store/selectors';
-import {showLocationModal} from 'client/ssr/modals/location/locationModalTriggers';
+import { initialize, ILocationSession, ILocationStoreState } from 'client/common/location/module';
+import { getLocationState } from 'client/common/store/selectors';
+import { showLocationModal } from 'client/ssr/modals/location/locationModalTriggers';
 import SearchLocationModal from 'client/ssr/modals/location/SearchLocationModal';
-import {ModalNames} from '../../../common/modal-juggler/modalJugglerInterface';
-import {useOrDefault} from 'client/spa/pages/create-ad/utils';
+import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
+import { useOrDefault } from 'client/spa/pages/create-ad/utils';
+import { defaultPagePath } from '../../../spa/profile/constants';
+import Spinner, { SpinerSize } from 'client/common/blocks/spinner/Spinner';
 
 require('../../../common/styles/main.sass');
 require('./Header.sass');
 
-export interface IState {
-
-}
-
 export interface IProps {
 	user: IUserState;
-	userActions: IUserActions;
 	locationState: ILocationStoreState;
+}
+
+export interface IState {
+	navbarShowing: boolean;
 }
 
 const mapStateToProps = (state: IRootState) => ({
@@ -41,30 +41,68 @@ const mapStateToProps = (state: IRootState) => ({
 	user: state.user,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-	userActions: bindModuleAction(UserActions, dispatch),
-});
-
 class Header extends Component<IProps, IState> {
-	constructor(props) {
-		super(props);
-	}
 
-	componentDidMount(): void {
-		const {user} = this.props.user;
-		const token    = CustomStorage.getToken();
-		if (!isServer() && !user.id && token) {
-			axios.defaults.headers.common.authorization = `Bearer ${token}`;
-			this.props.userActions.initUser.REQUEST({});
+	state = {
+		navbarShowing: false,
+	};
+
+	static getDerivedStateFromProps(newProps: IProps, prevState: IState) {
+		const { profile } = newProps.user;
+
+		if (!isServer()) {
+
+			if (!CustomStorage.getToken() || profile) {
+				return { navbarShowing: true };
+			}
 		}
+
+		return prevState;
 	}
 
-	renderLogin = () => {
-		const {user} = this.props.user;
-		if (useOrDefault(() => user.email, null)) {
+	ref: HTMLInputElement;
+
+	setRef = ref => {
+		this.ref = ref;
+	}
+
+	// TODO refactor
+	componentDidMount(): void {
+		const { user } = this.props;
+		const token    = CustomStorage.getToken();
+
+		if (!isServer() && !user.profile && token) {
+			UserActions.common.initUser.REQUEST({});
+		}
+
+		const classNames = ['navbar-nav'];
+
+		if (this.state.navbarShowing) {
+			classNames.push('navbar-nav_show');
+		}
+
+		this.ref.className = classNames.join(' ');
+	}
+
+	get loginComponent(){
+		const { user } = this.props;
+		const profile  = user.profile;
+		const avatar   = profile && profile.image && profile.image.file_url || '/static/img/person.png';
+
+		if (useOrDefault(() => user.profile.email, null)) {
 			return (
-				<Link href={`/profile`}>
-					<a>{user.email}</a>
+				<Link href={defaultPagePath}>
+					<div className='header-account'>
+						<div className='header-account__profile'>
+							<span className='header-account__name'>{profile.name}</span>
+							<span className='header-account__email'>{profile.email}</span>
+						</div>
+						<img
+							src={avatar}
+							alt=''
+							className='header-account__img'
+						/>
+					</div>
 				</Link>
 			);
 		}
@@ -79,17 +117,18 @@ class Header extends Component<IProps, IState> {
 		);
 	}
 
-	onFavorites = () => {
-		let count;
-		try {
-			count = getFavoritesFromLocalStorage().length;
-		} catch (e) {
+	get favorites() {
+		let count: string[]|null = null;
+
+		if (!isServer()) {
+			count = getFavoritesFromLocalStorage();
 		}
+
 		return (
 			<Link href={`/favorites`}>
 				<a
 					href='#'
-					className='header__favourites '
+					className='header__favourites'
 				>
 					<img
 						src='/static/img/icons/like.svg'
@@ -97,14 +136,17 @@ class Header extends Component<IProps, IState> {
 						className='header__icon'
 					/>
 					<span>Favourites</span>
-					 {count && count !=='0' && <span className="notification account__notification"> {count}</span>}
+					{
+						count && count.length &&
+						<span className='notification account__notification'> { count.length }</span>
+					}
 				</a>
 			</Link>
 		);
 	}
 
 	get localeName() {
-		const {idCity, idRegion, idCountry} = this.props.locationState.session;
+		const { idCity, idRegion, idCountry } = this.props.locationState.session;
 
 		if (idCity) {
 			if (this.props.locationState.loaded.session.cities.length > 0) {
@@ -146,52 +188,60 @@ class Header extends Component<IProps, IState> {
 
 	showMainLocationModal = () => showLocationModal(ModalNames.location);
 
-	shouldComponentUpdate(newProps) {
+	/* shouldComponentUpdate(newProps) {
 		return JSON.stringify(this.props) !== JSON.stringify(newProps);
-	}
+	} */
 
 	render() {
+		const classNames = ['navbar-nav'];
+
+		if (this.state.navbarShowing) {
+			classNames.push('navbar-nav_show');
+		}
+
 		return (
-			<>
-				<LoginModal/>
-				<SendCodeToEmailModal/>
-				<ResetPasswordModal/>
-				<SuccessModal/>
-				<MainLocationModal/>
-				<SearchLocationModal/>
-				<header className='header header-top'>
+			<header>
+				<LoginModal />
+				<SendCodeToEmailModal />
+				<ResetPasswordModal />
+				<SuccessModal />
+				<MainLocationModal />
+				<SearchLocationModal />
+				<div className='header header-top'>
 					<div className='container'>
 						<div className='row'>
 							<div className='col-12'>
 								<div className='header-top__container'>
-									<ul className='navbar-nav'>
+									<ul className='navbar-nav navbar-nav_show'>
 										<li className='nav-item'>
 											<a
 												href='#'
 												className='header__location'
 											>
-												<i className='header__icon fas fa-map-marker-alt'/>
-												<span onClick={this.showMainLocationModal}>{this.localeName}</span>
+												<i className='header__icon fas fa-map-marker-alt' />
+												<span onClick={ this.showMainLocationModal }>
+													{ this.localeName }
+												</span>
 											</a>
 										</li>
 										<LanguageDropdown />
 									</ul>
-									<ul className='navbar-nav'>
+									<ul ref={this.setRef} className={ classNames.join(' ') }>
 										<li className='nav-item'>
-											{this.onFavorites()}
+											{this.favorites}
 										</li>
 										<li className='nav-item'>
-											{this.renderLogin()}
+											{this.loginComponent}
 										</li>
 									</ul>
 								</div>
 							</div>
 						</div>
 					</div>
-				</header>
-			</>
+				</div>
+			</header>
 		);
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(mapStateToProps)(Header);

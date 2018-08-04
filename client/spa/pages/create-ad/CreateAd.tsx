@@ -44,11 +44,13 @@ class CreateAd extends React.Component<IProps> {
 				id: option.item.id,
 				value: option.value,
 			})),
+			is_vip: state.is_vip,
+
 		});
-	}
+	};
 
 	render() {
-		return  <ManagerAd callback={ this.onSave } />;
+		return <ManagerAd callback={this.onSave} />;
 	}
 }
 

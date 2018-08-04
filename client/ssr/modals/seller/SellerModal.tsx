@@ -9,6 +9,7 @@ require('./SellerModal.sass');
 
 export interface ISellerProps {
 	seller: ISeller;
+	address: string;
 }
 
 class SellerModal extends Component<ISellerProps> {
@@ -46,7 +47,7 @@ class SellerModal extends Component<ISellerProps> {
 								<div className='seller-info'>
 									<span className='orange-text'>{this.props.seller.name}</span>
 									<span className='d-block'>On ADS from {this.props.seller.created_at}</span>
-									<span>Completed 3 ads</span>
+									<span>Completed {this.props.seller.completed_ad} ads</span>
 								</div>
 								<img
 									src='/static/img/person.png'
@@ -56,12 +57,12 @@ class SellerModal extends Component<ISellerProps> {
 							</div>
 							<div className='p-t-20'>
 								<span className='grey-text f-w-300'>The contact person</span>
-								<span>Alex</span>
+								<span>{this.props.seller.name}</span>
 							</div>
 							<div className='row p-t-20'>
 								<div className='col-9'>
 									<span className='grey-text'>Address</span>
-									<span className='f-w-400'>Octyabrskaya 24</span>
+									<span className='f-w-400'>{this.props.address}</span>
 								</div>
 								<div className='col-3'>
 									<a

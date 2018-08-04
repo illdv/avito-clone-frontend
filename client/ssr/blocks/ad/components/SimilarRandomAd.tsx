@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { ISimilarProps, ISimilarRandomProps, ISimilarRandomState, ISimilarState } from 'client/ssr/blocks/ad/interface';
+import { ISimilarRandomProps, ISimilarRandomState } from 'client/ssr/blocks/ad/interface';
 import NumberFormat from 'react-number-format';
 import Link from 'next/link';
 
 class SimilarRandomAd extends Component<ISimilarRandomProps, ISimilarRandomState> {
-
 	render() {
 		return (
 			<div className='similar-ad'>

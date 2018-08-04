@@ -1,13 +1,7 @@
 import React from 'react';
 import Modal from '../../../common/modal-juggler/Modal';
-import {ModalNames} from '../../../common/modal-juggler/modalJugglerInterface';
-import {IUserActions, UserActions} from 'client/common/user/actions';
-import {bindModuleAction} from 'client/common/user/utils';
-import {connect, Dispatch} from 'react-redux';
-
-export interface IProps {
-	userActions: IUserActions;
-}
+import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
+import { UserActions } from '../../../common/entities/user/rootActions';
 
 export interface IState {
 	fields: {
@@ -18,7 +12,7 @@ export interface IState {
 	};
 }
 
-class ResetPasswordModal extends React.Component<IProps & IState> {
+class ResetPasswordModal extends React.Component<null, IState> {
 	state: IState = {
 		fields: {
 			email: '',
@@ -33,15 +27,16 @@ class ResetPasswordModal extends React.Component<IProps & IState> {
 		this.setState({
 			fields: {...this.state.fields, [id]: value},
 		});
-	}
+	};
+
 	onSubmit = () => {
 		const {email, code, password, password_confirmation} = this.state.fields;
-		this.props.userActions.resetPasswordByCode.REQUEST({email, token: code, password, password_confirmation});
-	}
+		UserActions.common.resetPasswordByCode.REQUEST({email, token: code, password, password_confirmation});
+	};
 
 	shouldComponentUpdate() {
 		return false;
-	}
+	};
 
 	render() {
 		return (
@@ -66,10 +61,11 @@ class ResetPasswordModal extends React.Component<IProps & IState> {
 								onChange={this.onChange}
 								type='email'
 								id='email'
-								className='col-sm-6'
+								className='col-sm-6 form-control'
 								name='email'
 								required
 								placeholder='Enter email'
+								autoComplete='off'
 							/>
 						</div>
 						<div className='form-group row auth-input__wrapper'>
@@ -84,7 +80,7 @@ class ResetPasswordModal extends React.Component<IProps & IState> {
 								onChange={this.onChange}
 								id='code'
 								name='tel'
-								className='col-sm-6'
+								className='col-sm-6 form-control'
 								required
 								placeholder='Enter your secret code'
 								autoComplete='off'
@@ -102,7 +98,7 @@ class ResetPasswordModal extends React.Component<IProps & IState> {
 								type='password'
 								id='password'
 								name='password'
-								className='col-sm-6'
+								className='col-sm-6 form-control'
 								required
 								placeholder='Enter your new password'
 								autoComplete='off'
@@ -122,7 +118,7 @@ class ResetPasswordModal extends React.Component<IProps & IState> {
 								onChange={this.onChange}
 								id='password_confirmation'
 								name='confirm'
-								className='col-sm-6'
+								className='col-sm-6 form-control'
 								required
 								placeholder='Confirm new password'
 								autoComplete='off'
@@ -142,7 +138,4 @@ class ResetPasswordModal extends React.Component<IProps & IState> {
 	}
 }
 
-const mapDispatchToProps = dispatch => ({
-	userActions: bindModuleAction(UserActions, dispatch),
-});
-export default connect(null, mapDispatchToProps)(ResetPasswordModal);
+export default ResetPasswordModal;

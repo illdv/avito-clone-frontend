@@ -19,9 +19,11 @@ import {
 	CHANGE_COUNTRY_SESSION,
 	CHANGE_REGION_LOCAL,
 	CHANGE_REGION_SESSION,
+	changeCityLocal,
 } from './module';
-import { UserActions } from 'client/common/user/actions';
-import { getFavoritesFromLocalStorage } from 'client/common/user/CustomStorage';
+
+import { favoritesActions } from 'client/common/entities/user/modules/favorites/actions';
+import { getFavoritesFromLocalStorage } from 'client/common/entities/user/CustomStorage';
 
 function* sagaInitializeLocation(action) {
 	const payload: ILocationStoreState = action.payload;
@@ -31,8 +33,16 @@ function* sagaInitializeLocation(action) {
 			showLocationModal(ModalNames.location);
 		}
 	}
+
+	const search = location.search.match(/city_id=([^&]+)/);
+
+	if (search) {
+		yield put(changeCityLocal(Number(search[1])));
+	}
+
+	// TODO remove
 	const favoritesIds = yield call(getFavoritesFromLocalStorage);
-	yield put(UserActions.setFavorite.SUCCESS({ favoritesIds }));
+	yield put(favoritesActions.setFavorite.SUCCESS({ favoritesIds }));
 }
 
 function* sagaChangeCountryForSession(action) {
@@ -40,7 +50,7 @@ function* sagaChangeCountryForSession(action) {
 	const idCountry: number = action.payload;
 
 	if (locationState.session.idCountry === idCountry) {
-		 return null;
+		return null;
 	}
 
 	jsCookie.set('idCountry', idCountry);
@@ -115,7 +125,7 @@ function* sagaChangeCountryForLocal(action) {
 
 	if (locationState.local.idCountry === idCountry) {
 		return null;
-   }
+	}
 
 	if (!idCountry) {
 		yield put(changeState({
@@ -310,6 +320,9 @@ function* sagaChangeCityForSession(action) {
 function* sagaChangeCityForLocal(action) {
 	const locationState: ILocationStoreState = yield select(getLocationState);
 	const idCity: number = action.payload;
+
+	console.log('idCity', idCity);
+	console.log('locationState', locationState);
 
 	if (locationState.local.idCity === idCity) {
 		return null;

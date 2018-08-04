@@ -1,15 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
+
 import { IRootState } from '../../../common/store/storeInterface';
-import { userInfo } from 'os';
+import history from 'client/common/history';
+import { createAdPagePagePath } from '../../../spa/profile/constants';
+import { showLoginModal } from '../../modals/auth/loginModalTriggers';
 
 require('../../../common/styles/main.sass');
 require('./Navbar.sass');
 
-interface IProps {
-	user: IUser;
-}
+const mapStateToProps = (state: IRootState) => ({
+	user: state.user,
+});
 
+interface IProps {
+	user: IUserState;
+}
 
 class Navbar extends React.Component<IProps> {
 	constructor(props, context) {
@@ -17,6 +23,10 @@ class Navbar extends React.Component<IProps> {
 	}
 
 	render() {
+		const method = this.props.user.profile
+			? () => location.href = createAdPagePagePath
+			: () => showLoginModal();
+
 		return (
 			<div className='row'>
 				<div className='col-12'>
@@ -40,20 +50,17 @@ class Navbar extends React.Component<IProps> {
 								</li>
 							</ul>
 						</nav>
-						{/* <button
+						<button
 							className='btn orange-btn'
+							onClick={method}
 						>
 							Submit an advertisement
-						</button> */}
+						</button>
 					</div>
 				</div>
 			</div>
 		);
 	}
 }
-
-const mapStateToProps = (state: IRootState) => ({
-	user: state.user.user,
-});
 
 export default connect(mapStateToProps)(Navbar);

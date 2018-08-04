@@ -1,12 +1,12 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import {ModalNames} from 'client/common/modal-juggler/modalJugglerInterface';
-import {getModals} from 'client/common/store/selectors';
-import {hide} from 'client/common/modal-juggler/module';
 import Modal from 'client/common/modal-juggler/Modal';
 import LoginForm from 'client/ssr/modals/auth/components/LoginForm';
 import RegistrationForm from 'client/ssr/modals/auth/components/RegistrationForm';
+import { ModalNames } from 'client/common/modal-juggler/modalJugglerInterface';
+import { getModals } from 'client/common/store/selectors';
+import { hide } from 'client/common/modal-juggler/module';
 
 require('./AuthModal.sass');
 

@@ -1,0 +1,77 @@
+.spinner
+    margin: auto
+    position: absolute
+    left: 0
+    right: 0
+    top: 0
+    bottom: 0
+    
+.spinner_md
+    width: 49px
+    height: 49px
+
+.spinner_sm
+    width: 24.5px
+    height: 24.5px
+
+.spinner:before
+    content: ''
+    background: rgb(0,0,0)
+    opacity: 0.1
+    position: absolute
+    border-radius: 50%
+    animation: shadow 0.58s linear infinite
+    left: 0
+
+.spinner_md:before
+    width: 49px
+    height: 5px
+    top: 58px
+
+.spinner_sm:before
+    width: 24.5px
+    height: 2.5px
+    top: 29px
+
+.spinner:after
+    content: ''
+    background: #FFB91B
+    position: absolute
+    top: 0
+    left: 0
+    animation: cssload-animate 0.58s linear infinite
+
+.spinner_md:after
+    width: 49px
+    height: 49px
+    border-radius: 3px
+
+.spinner_sm:after
+    width: 24.5px
+    height: 24.5px
+    border-radius: 1.5px
+
+@keyframes shadow
+    0%,
+    100%
+        transform: scale(1, 1)
+
+    50%
+        transform: scale(1.2, 1)
+
+@keyframes cssload-animate
+    17%
+        border-bottom-right-radius: 3px
+
+    25%
+        transform: translateY(9px) rotate(22.5deg)
+
+    50%
+        transform: translateY(18px) scale(1, 0.9) rotate(45deg)
+        border-bottom-right-radius: 39px
+
+    75%
+        transform: translateY(9px) rotate(67.5deg)
+
+    100%
+        transform: translateY(0) rotate(90deg)

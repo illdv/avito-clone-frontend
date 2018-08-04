@@ -6,15 +6,15 @@ import SliderImages from './components/SliderImages';
 import Seller from './components/Seller';
 import Chart from './components/Chart';
 import NumberFormat from 'react-number-format';
-import { IAdsProps, IAdsState, ICrumb, IImage } from 'client/ssr/blocks/ad/interface';
+import { IAdsProps, IAdsState, ICrumb } from 'client/ssr/blocks/ad/interface';
 import Feature from 'client/ssr/blocks/ad/components/Feature';
 import Description from 'client/ssr/blocks/ad/components/Description';
 import Link from 'next/link';
-import { bindModuleAction } from 'client/common/user/utils';
-import { UserActions } from 'client/common/user/actions';
 import { ButtonFavorites } from 'client/ssr/blocks/ad/components/ButtonFavorites';
 import Kit from 'client/ssr/blocks/ad/components/Kit';
 import PlaceMap from 'client/ssr/blocks/ad/components/PlaceMap';
+import { IRootState } from '../../../common/store/storeInterface';
+import { UserActions } from '../../../common/entities/user/rootActions';
 
 require('./Ad.sass');
 
@@ -40,10 +40,10 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 		};
 	}
 
-	static getDerivedStateFromProps(props) {
+	static getDerivedStateFromProps(props: IAdsProps) {
 		let isFavorite;
 		try {
-			isFavorite = props.favoriteAdsIds.indexOf(props.ad.id) !== -1;
+			isFavorite = props.user.favorites.ids.indexOf(props.ad.id) !== -1
 		} catch (e) {
 			console.log(e);
 		}
@@ -57,7 +57,8 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 				href: '/category/' + encodeURI(category.title),
 			};
 		});
-	};
+	}
+
 	recurseGetAdCategories   = (categories, idCategoryAd): any[] | null => {
 		return categories.reduce((acc, category) => {
 			if (acc) {
@@ -80,7 +81,7 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 				}
 			}
 		}, false);
-	};
+	}
 
 	formationImages = (images): IImage[] => {
 		return images.map(image => {
@@ -90,12 +91,14 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 
 			};
 		});
-	};
+	}
 
 	get firstCrumbs(): ICrumb {
 		return {
 			title: 'All listings in ' + this.props.ad.city.title,
-			href: encodeURI('/' + this.props.ad.city.title),
+			// href: encodeURI('/' + this.props.ad.city.title),
+			href: encodeURI('/category'),
+
 		};
 	}
 
@@ -106,9 +109,9 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 		};
 	}
 
-	selectFavorite = (id: string) => {
-		this.props.userActions.selectFavorite.REQUEST({ id });
-	};
+	selectFavorite = (id: number) => {
+		UserActions.favorites.selectFavorite.REQUEST({ id });
+	}
 
 	render() {
 		const { similar, ad }                           = this.props;
@@ -166,7 +169,7 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 							</div>
 						</div>
 						<div className='row p-y-20'>
-							<SliderImages images={images} />
+							<SliderImages images={ images } />
 							<Feature options={ad.options} />
 						</div>
 						<div className='row'>
@@ -183,12 +186,14 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 						<Description body={ad.body} />
 						<Kit />
 						<PlaceMap
+							address={ad.address}
 							default_map={this.state.default_map}
 							isMarkerShown={this.state.default_map}
 						/>
 						<Chart
 							similar_ads={similar}
 							id_parent={ad.id}
+							price_histories={ad.price_histories}
 						/>
 					</div>
 				</section>
@@ -197,11 +202,8 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 	}
 }
 
-const mapStateToProps = (state) => ({
-	favoriteAdsIds: state.user.user.favorites_ids
+const mapStateToProps = (state: IRootState) => ({
+	user: state.user,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-	userActions: bindModuleAction(UserActions, dispatch),
-});
-export default connect(mapStateToProps, mapDispatchToProps)(Ad);
+export default connect(mapStateToProps)(Ad);
