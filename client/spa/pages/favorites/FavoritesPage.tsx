@@ -2,7 +2,7 @@ import * as React from 'react';
 import FavoritesItem from 'client/spa/pages/favorites/FavoritesItem';
 
 interface IFavoritesPageProps {
-	ads: IAd[];
+	ads: IFavoritesItems;
 	removeFavoriteAds: (id) => void;
 }
 

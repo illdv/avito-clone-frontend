@@ -10,7 +10,7 @@ interface IProps {
 	user: IUserState;
 }
 
-class Favorites extends React.Component<IProps, null> {
+class Favorites extends React.Component<IProps> {
 	componentDidMount() {
 		UserActions.favorites.getFavoritesAds.REQUEST({});
 	}
@@ -21,7 +21,6 @@ class Favorites extends React.Component<IProps, null> {
 
 	render() {
 		const favoriteAds = this.props.user.favorites.items;
-		console.log('favoriteAds',favoriteAds);
 		return (
 			<section className='page'>
 				<div className='container'>
@@ -32,10 +31,11 @@ class Favorites extends React.Component<IProps, null> {
 						{/* <div className='col-lg-9'> */}
 						<div className='col-lg-12'>
 							{
-								favoriteAds.length ?
-								<FavoritesPage ads={ favoriteAds } removeFavoriteAds={ this.removeFavoriteAds }/>
+								favoriteAds
+								?
+									<FavoritesPage ads={ favoriteAds } removeFavoriteAds={ this.removeFavoriteAds }/>
 								:
-								<EmptyFavorites />
+									<EmptyFavorites />
 							}
 
 						</div>
