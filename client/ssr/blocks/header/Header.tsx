@@ -22,17 +22,18 @@ import SearchLocationModal from 'client/ssr/modals/location/SearchLocationModal'
 import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
 import { useOrDefault } from 'client/spa/pages/create-ad/utils';
 import { defaultPagePath } from '../../../spa/profile/constants';
+import Spinner, { SpinerSize } from 'client/common/blocks/spinner/Spinner';
 
 require('../../../common/styles/main.sass');
 require('./Header.sass');
 
-export interface IState {
-
-}
-
 export interface IProps {
 	user: IUserState;
 	locationState: ILocationStoreState;
+}
+
+export interface IState {
+	navbarShowing: boolean;
 }
 
 const mapStateToProps = (state: IRootState) => ({
@@ -41,8 +42,28 @@ const mapStateToProps = (state: IRootState) => ({
 });
 
 class Header extends Component<IProps, IState> {
-	constructor(props) {
-		super(props);
+
+	state = {
+		navbarShowing: false,
+	};
+
+	static getDerivedStateFromProps(newProps: IProps, prevState: IState) {
+		const { profile } = newProps.user;
+
+		if (!isServer()) {
+
+			if (!CustomStorage.getToken() || profile) {
+				return { navbarShowing: true };
+			}
+		}
+
+		return prevState;
+	}
+
+	ref: HTMLInputElement;
+
+	setRef = ref => {
+		this.ref = ref;
 	}
 
 	// TODO refactor
@@ -53,9 +74,17 @@ class Header extends Component<IProps, IState> {
 		if (!isServer() && !user.profile && token) {
 			UserActions.common.initUser.REQUEST({});
 		}
+
+		const classNames = ['navbar-nav'];
+
+		if (this.state.navbarShowing) {
+			classNames.push('navbar-nav_show');
+		}
+
+		this.ref.className = classNames.join(' ');
 	}
 
-	renderLogin = () => {
+	get loginComponent(){
 		const { user } = this.props;
 		const profile  = user.profile;
 		const avatar   = profile && profile.image && profile.image.file_url || '/static/img/person.png';
@@ -86,7 +115,7 @@ class Header extends Component<IProps, IState> {
 				Login
 			</button>
 		);
-	};
+	}
 
 	get favorites() {
 		let count: string[]|null = null;
@@ -114,7 +143,7 @@ class Header extends Component<IProps, IState> {
 				</a>
 			</Link>
 		);
-	};
+	}
 
 	get localeName() {
 		const { idCity, idRegion, idCountry } = this.props.locationState.session;
@@ -159,11 +188,17 @@ class Header extends Component<IProps, IState> {
 
 	showMainLocationModal = () => showLocationModal(ModalNames.location);
 
-	shouldComponentUpdate(newProps) {
+	/* shouldComponentUpdate(newProps) {
 		return JSON.stringify(this.props) !== JSON.stringify(newProps);
-	}
+	} */
 
 	render() {
+		const classNames = ['navbar-nav'];
+
+		if (this.state.navbarShowing) {
+			classNames.push('navbar-nav_show');
+		}
+
 		return (
 			<header>
 				<LoginModal />
@@ -177,24 +212,26 @@ class Header extends Component<IProps, IState> {
 						<div className='row'>
 							<div className='col-12'>
 								<div className='header-top__container'>
-									<ul className='navbar-nav'>
+									<ul className='navbar-nav navbar-nav_show'>
 										<li className='nav-item'>
 											<a
 												href='#'
 												className='header__location'
 											>
 												<i className='header__icon fas fa-map-marker-alt' />
-												<span onClick={this.showMainLocationModal}>{this.localeName}</span>
+												<span onClick={ this.showMainLocationModal }>
+													{ this.localeName }
+												</span>
 											</a>
 										</li>
 										<LanguageDropdown />
 									</ul>
-									<ul className='navbar-nav'>
+									<ul ref={this.setRef} className={ classNames.join(' ') }>
 										<li className='nav-item'>
 											{this.favorites}
 										</li>
 										<li className='nav-item'>
-											{this.renderLogin()}
+											{this.loginComponent}
 										</li>
 									</ul>
 								</div>

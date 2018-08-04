@@ -3,7 +3,7 @@ import Head from 'next/head';
 
 import Header from '../client/ssr/blocks/header/Header';
 import { types } from 'redux-act';
-import ToolBar from 'client/spa/pages/ToolBar';
+import Navbar from 'client/ssr/blocks/navbar/Navbar'
 import Favorites from 'client/spa/pages/favorites/Favorites';
 
 require('client/spa/profile/Helpers.sass');
@@ -35,7 +35,11 @@ export default class extends React.Component {
 						<title>Index page</title>
 					</Head>
 					<Header />
-					<ToolBar />
+					<div className='header_bottom p-y-20'>
+						<div className='container'>
+							<Navbar />
+						</div>
+					</div>
 					<Favorites />
 				</React.Fragment>
 			</div>
