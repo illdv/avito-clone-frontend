@@ -63,15 +63,15 @@ class Header extends Component<IProps, IState> {
 		if (useOrDefault(() => user.profile.email, null)) {
 			return (
 				<Link href={defaultPagePath}>
-					<div className='header__account'>
-						<div className='header__account__profile'>
-							<span className='header__account__name'>{profile.name}</span>
-							<span className='header__account__email'>{profile.email}</span>
+					<div className='header-account'>
+						<div className='header-account__profile'>
+							<span className='header-account__name'>{profile.name}</span>
+							<span className='header-account__email'>{profile.email}</span>
 						</div>
 						<img
 							src={avatar}
 							alt=''
-							className='header__account__img'
+							className='header-account__img'
 						/>
 					</div>
 				</Link>
@@ -88,23 +88,29 @@ class Header extends Component<IProps, IState> {
 		);
 	};
 
-	onFavorites = () => {
-		let count;
-		try {
-			count = getFavoritesFromLocalStorage().length;
-		} catch (e) {
+	get favorites() {
+		let count: string[]|null = null;
+
+		if (!isServer()) {
+			count = getFavoritesFromLocalStorage();
 		}
+
 		return (
 			<Link href={`/favorites`}>
 				<a
 					href='#'
 					className='header__favourites'
-				><img
-					src='/static/img/icons/like.svg'
-					alt=''
-					className='header__icon'
-				/><span>Favourites</span>
-					{count ? <span className="notification account__notification"> {count}</span> : null}
+				>
+					<img
+						src='/static/img/icons/like.svg'
+						alt=''
+						className='header__icon'
+					/>
+					<span>Favourites</span>
+					{
+						count && count.length &&
+						<span className='notification account__notification'> { count.length }</span>
+					}
 				</a>
 			</Link>
 		);
@@ -185,7 +191,7 @@ class Header extends Component<IProps, IState> {
 									</ul>
 									<ul className='navbar-nav'>
 										<li className='nav-item'>
-											{this.onFavorites()}
+											{this.favorites}
 										</li>
 										<li className='nav-item'>
 											{this.renderLogin()}

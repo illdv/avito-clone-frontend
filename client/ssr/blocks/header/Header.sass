@@ -40,11 +40,13 @@
   display: flex
   align-items: center
 
-.header__account
+.header-account
   display: flex
   align-items: center
+  position: relative
+  cursor: pointer
 
-.header__account__img
+.header-account__img
   width: 75px
   height: 75px
   transform: scale(0.5)
@@ -53,15 +55,11 @@
   border-radius: 50%
   flex-shrink: 0
 
-.header__account__profile
+.header-account__profile
   display: flex
   flex-flow: column nowrap
-  justify-content: center
-  align-items: center
+  align-items: flex-end
 
-.header__account__email
+.header-account__email
   color: #9e9e9e
   font-size: .8rem
-
-.header__account
-  position: relative
