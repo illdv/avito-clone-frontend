@@ -14,6 +14,10 @@ export interface IProps {
 	user: IUserState;
 }
 
+export interface IMyAdsState {
+	ids: number[];
+}
+
 const mapStateToProps = (state: IRootState) => ({
 	user: state.user,
 });
@@ -29,7 +33,14 @@ const FilterButton: React.SFC<{to: string, label: string, count: number}> = ({to
 	</NavLink>
 );
 
-class MyAds extends Component<IProps> {
+class MyAds extends Component<IProps, IMyAdsState> {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			ids: [],
+		};
+	};
 
 	onRemove = (id: number) => {
 		UserActions.ownedAds.remove.REQUEST({ id });
@@ -116,6 +127,7 @@ class MyAds extends Component<IProps> {
 			ads={ads}
 			enabledEdit={true}
 			activeButtons={this.completedAdsButtonsConfig}
+			selected={this.selectAds}
 		/>
 	)
 
@@ -138,8 +150,13 @@ class MyAds extends Component<IProps> {
 			ads={ads}
 			enabledEdit={true}
 			activeButtons={this.activeAdsButtonsConfig}
+			selected={this.selectAds}
 		/>
-	)
+	);
+
+	selectAds = (id: number[]) => {
+		console.log(id);
+	};
 
 	render() {
 		const sortedAds = this.sortingAdsByStatus();
@@ -151,7 +168,7 @@ class MyAds extends Component<IProps> {
 					<FilterButton to='/profile/my-ads/active'      label='Active'      count={sortedAds.active.length} />
 					<FilterButton to='/profile/my-ads/completed'   label='Completed'   count={sortedAds.completed.length} />
 				</div>
-				<ControlButtons ids={this.props.user.ownedAds} options={[]}/>
+				<ControlButtons ads={this.props.user.ownedAds} selected={this.selectAds} options={[]}/>
 				<Switch>
 					<Route path='/profile/my-ads/disapproved' component={this.creatorDisapprovedAdsComponent(sortedAds.disapproved)} />
 					<Route path='/profile/my-ads/completed' component={this.creatorCompletedAdsComponent(sortedAds.completed)} />

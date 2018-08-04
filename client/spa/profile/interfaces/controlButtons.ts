@@ -1,4 +1,9 @@
 export interface IControlButtonsProps {
 	options: any[];
-	ids: any[];
+	ads: IOwnedAdsState;
+	selected: (id: number[]) => void;
+}
+
+export interface IControlButtonsState {
+	ids: number[];
 }

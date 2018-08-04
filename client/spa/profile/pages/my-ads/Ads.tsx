@@ -2,10 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { extractPreviewImage } from 'client/ssr/blocks/ad/utils';
-import AdsFilter from 'client/ssr/blocks/ads/components/AdsFilter';
 import { editAdPagePathCreator } from 'client/spa/profile/constants';
 
-export interface IAvtiveButtonConfig {
+export interface IActiveButtonConfig {
 	label: string;
 	className: string;
 	callback(id: number): void;
@@ -14,10 +13,11 @@ export interface IAvtiveButtonConfig {
 interface IProps {
 	ads: IAd[];
 	enabledEdit: boolean;
-	activeButtons: IAvtiveButtonConfig[];
+	activeButtons: IActiveButtonConfig[];
+	selected?: (id: number[]) => void;
 }
 
-const ActiveButton: React.SFC<{ id: number, config: IAvtiveButtonConfig }> = ({ id, config }) => {
+const ActiveButton: React.SFC<{ id: number, config: IActiveButtonConfig }> = ({ id, config }) => {
 	const initCallback = () => config.callback(id);
 	return (
 		<a
@@ -33,6 +33,10 @@ class Ads extends React.Component<IProps> {
 	constructor(props, context) {
 		super(props, context);
 	}
+
+	selectAd = (e) => {
+		this.props.selected([e.target.value]);
+	};
 	render() {
 		return this.props.ads.map(ad => (
 			<div
@@ -42,6 +46,8 @@ class Ads extends React.Component<IProps> {
 				<input
 					className='custom-checkbox'
 					type='checkbox'
+					value={ad.id}
+					onChange={this.selectAd}
 				/>
 
 				<div className='offer-block__inner'>
