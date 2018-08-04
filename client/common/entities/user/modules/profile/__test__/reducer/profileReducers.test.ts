@@ -7,7 +7,6 @@ const newState = {
 	phone: '88966633',
 	created_at: '2018-08-12',
 	updated_at: '2018-08-17',
-	favorites_ids: [],
 	image: {
 		id: '11',
 		imageable_type: 'wtf',
@@ -27,8 +26,34 @@ describe('getProfile success reducer', () => {
 		expect(reducer(undefined, undefined))
 			.toEqual(initialState);
 	});
-	// it('User success change settings profile', () => {
-	// 	const action = profileActions.getProfile.SUCCESS(newState)
-	// 	expect(reducer(action, newState )).toEqual(newState)
-	// });
+	it('User success get profile', () => {
+		const action = profileActions.getProfile.SUCCESS(newState);
+		expect(reducer(initialState, action))
+			.toEqual(newState);
+
+	});
+});
+
+describe('changeProfile reducer success', () => {
+	it('initial state', () => {
+		expect(reducer(undefined, undefined))
+			.toEqual(initialState);
+	});
+	it('User success change setting profile', () => {
+		const action = profileActions.changeProfile.SUCCESS(newState);
+		expect(reducer(initialState, action))
+			.toEqual(newState);
+	});
+});
+
+describe('setProfile reducer request', () => {
+	it('initial state', () => {
+		expect(reducer(undefined, undefined))
+			.toEqual(initialState);
+	});
+	it('changeProfile request', () => {
+		const action = profileActions.setProfile.REQUEST(newState);
+		expect(reducer(initialState, action))
+			.toEqual(newState);
+	});
 });

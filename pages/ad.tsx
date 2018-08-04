@@ -37,7 +37,7 @@ class Ads extends React.Component<IAdsProps> {
 	}
 
 	render() {
-		if (!this.props.response.ad) {
+		if (!this.props.response || !this.props.response.ad) {
 			return <Error statusCode={404} />;
 		}
 
@@ -56,7 +56,7 @@ class Ads extends React.Component<IAdsProps> {
 						categories={this.props.categories}
 						similar={this.props.response.similars}
 					/>
-					<SellerModal seller={this.props.response.ad.user} />
+					<SellerModal seller={this.props.response.ad.user} address={this.props.response.ad.address} />
 					<Footer />
 				</SetCategories>
 			</React.Fragment>

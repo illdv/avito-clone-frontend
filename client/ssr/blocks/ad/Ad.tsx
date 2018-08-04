@@ -186,12 +186,14 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 						<Description body={ad.body} />
 						<Kit />
 						<PlaceMap
+							address={ad.address}
 							default_map={this.state.default_map}
 							isMarkerShown={this.state.default_map}
 						/>
 						<Chart
 							similar_ads={similar}
 							id_parent={ad.id}
+							price_histories={ad.price_histories}
 						/>
 					</div>
 				</section>

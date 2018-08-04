@@ -94,6 +94,8 @@ class EditAd extends React.Component<IProps, IState> {
 				id: option.item.id,
 				value: option.value,
 			})),
+			is_vip: state.is_vip,
+
 		};
 
 		UserActions.ownedAds.edit.REQUEST(data);

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { extractPreviewImage } from 'client/ssr/blocks/ad/utils';
 import AdsFilter from 'client/ssr/blocks/ads/components/AdsFilter';
+import { editAdPagePathCreator } from 'client/spa/profile/constants';
 
 export interface IAvtiveButtonConfig {
 	label: string;
@@ -38,10 +39,10 @@ class Ads extends React.Component<IProps> {
 				key={ad.id}
 				className='offer-block__item'
 			>
-				{/*<input
+				<input
 					className='custom-checkbox'
 					type='checkbox'
-				/>*/}
+				/>
 
 				<div className='offer-block__inner'>
 					<div className='row'>
@@ -70,7 +71,7 @@ class Ads extends React.Component<IProps> {
 							</div>
 						</div>
 						<div className='col-3 text-right edit-block'>
-							<Link to={`/profile/edit-ad/${ad.id}`} className='edit-block__link'>
+							<Link to={editAdPagePathCreator(ad.id)} className='edit-block__link'>
 								Edit
 							</Link>
 							<div className='watcher'>

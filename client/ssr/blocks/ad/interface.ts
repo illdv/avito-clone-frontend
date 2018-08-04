@@ -16,7 +16,9 @@ export interface IAd {
 	total_visits: string;
 	today_visits: string;
 	is_favorite: boolean;
+	address: string;
 	images: any[];
+	price_histories: IProductHistories[];
 	body: string;
 	description: string;
 	price: string;
@@ -28,6 +30,26 @@ export interface IAd {
 	city: IAdCity;
 	latitude: number;
 	longitude: number;
+}
+
+export interface IChartState {
+	data: {
+		labels: string[];
+		datasets: [{
+			data: number[];
+			label: string;
+			backgroundColor: string[];
+			borderColor: string[];
+			borderWidth: number;
+		}];
+	};
+	options?: {};
+}
+
+export interface IProductHistories {
+	ad_id: number;
+	date_time: string;
+	value: number;
 }
 export interface ISimilarSortState {
 	similar_ad?: any[];
@@ -72,6 +94,7 @@ export interface ISeller {
 	phone: string;
 	name: string;
 	created_at: string;
+	completed_ad: number;
 	image: IImage;
 }
 
@@ -106,11 +129,7 @@ export interface ISimilarRandomState {
 	title: string;
 	similar_ad: ISimilarAd;
 }
-export interface ISimilarState {
-	description: string;
-	title: string;
-	similar_ad: ISimilarAd;
-}
+
 export interface ISimilarProps {
 	filter?: string;
 	similar_ads: any[];
@@ -120,6 +139,7 @@ export interface ISimilarProps {
 export interface IChart {
 	similar_ads: any[];
 	id_parent: number;
+	price_histories: IProductHistories[];
 
 }
 
@@ -144,6 +164,7 @@ export interface ISimilarAd {
 }
 
 export interface IGMProps {
+	address: string;
 	default_map: IGMMarkerProp;
 	isMarkerShown: IGMMarkerProp;
 	zoom?: number;

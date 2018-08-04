@@ -1,4 +1,4 @@
-import { call } from 'redux-saga/effects';
+import { call, put } from 'redux-saga/effects';
 import sagaHelper from 'redux-saga-testing';
 import { UserAPI } from 'client/common/api/userAPI';
 import { tokenActions } from 'client/common/entities/user/modules/token/actions';
@@ -20,7 +20,7 @@ describe('User success delete profile', () => {
 	saga('Clear JWT token', result => {
 		expect(result)
 			.toEqual(
-				call(tokenActions.clearToken),
+				put(tokenActions.clearToken.REQUEST({})),
 			);
 	});
 });

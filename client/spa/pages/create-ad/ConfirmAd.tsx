@@ -11,6 +11,7 @@ export interface IProps {
 	title: string;
 	price: string;
 	description: string;
+	vip(): void;
 	next(): void;
 	back(): void;
 }
@@ -24,6 +25,7 @@ const ConfirmAd = ({
 	title,
 	price,
 	description,
+	vip,
 	next,
 	back,
 }: IProps) => {
@@ -95,8 +97,10 @@ const ConfirmAd = ({
 										readOnly
 										type='radio'
 										name='service'
-										checked
+										value={'Free'}
+										defaultChecked
 										className='service-block__check'
+										onChange={vip}
 									/>
 								</div>
 								<div className='service-block__info col-md-6'>
@@ -105,7 +109,7 @@ const ConfirmAd = ({
 									<span className='d-block service-block__period'>Effective 7 days</span>
 								</div>
 								<div className='service-block__price col-md-5'>
-									<h5>67$</h5>
+									<h5>0$</h5>
 									<span className='price__discount'>A discount</span>
 								</div>
 							</div>
@@ -115,16 +119,18 @@ const ConfirmAd = ({
 										readOnly
 										type='radio'
 										name='service'
+										value={'Quick'}
 										className='service-block__check'
+										onChange={vip}
 									/>
 								</div>
 								<div className='service-block__info col-md-6'>
-									<h5>Free</h5>
-									<span className='d-block'>Free advertisement submission</span>
+									<h5>Quick sale</h5>
+									<span className='d-block'>10 times as many impressions</span>
 									<span className='d-block service-block__period'>Effective 7 days</span>
 								</div>
 								<div className='service-block__price col-md-5'>
-									<h5>67$</h5>
+									<h5>27$</h5>
 									<span className='price__discount'>A discount</span>
 								</div>
 							</div>
@@ -134,16 +140,18 @@ const ConfirmAd = ({
 										readOnly
 										type='radio'
 										name='service'
+										value={'Turbo'}
 										className='service-block__check'
+										onChange={vip}
 									/>
 								</div>
 								<div className='service-block__info col-md-6'>
-									<h5>Free</h5>
-									<span className='d-block'>Free advertisement submission</span>
-									<span className='d-block service-block__period'>Effective 7 days</span>
+									<h5>Turbo</h5>
+									<span className='d-block'>10 times as many impressions</span>
+									<span className='d-block service-block__period'>Effective 14 days</span>
 								</div>
 								<div className='service-block__price col-md-5'>
-									<h5>67$</h5>
+									<h5>47$</h5>
 									<span className='price__discount'>A discount</span>
 								</div>
 							</div>

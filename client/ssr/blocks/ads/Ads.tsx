@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import AdCard from 'client/ssr/blocks/ads/components/AdCard';
 import { IRootState } from 'client/common/store/storeInterface';
 import { UserActions } from 'client/common/entities/user/rootActions';
-import AdsFilter from 'client/ssr/blocks/ads/components/AdsFilter';
 
 require('./Ads.sass');
 
@@ -46,10 +45,10 @@ class Ads extends React.Component<IAdsProps> {
 							<h3 className='page__title'>{title}</h3>
 						</div>
 					</div>
-					{
-						ads.length > 5 ? <AdsFilter selectFilter={this.onSelectFilter} selectOrder={this.onSelectOrder}/>
-						: null
-					}
+					{/*{*/}
+						{/*ads.length > 5 ? <AdsFilter selectFilter={this.onSelectFilter} selectOrder={this.onSelectOrder}/>*/}
+						{/*: null*/}
+					{/*}*/}
 					<div className='row p-t-30'>
 						{
 							ads && ads.map((ad: IAd) => (

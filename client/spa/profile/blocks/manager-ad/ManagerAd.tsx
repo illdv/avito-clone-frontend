@@ -34,6 +34,7 @@ export interface IState {
 	defaultCategoryId: number;
 	location: ILocation;
 	options: IOption[];
+	is_vip: number;
 }
 
 const mapStateToProps = (state: IRootState) => ({
@@ -77,6 +78,7 @@ class ManagerAd extends React.Component<IProps, IState> {
 					lat: 37.61140,
 				},
 				options: [],
+				is_vip: 0,
 			};
 		}
 
@@ -93,6 +95,20 @@ class ManagerAd extends React.Component<IProps, IState> {
 			step: this.state.step - 1,
 		});
 	}
+
+	isVip = (e) => {
+		const plan = e.target.value;
+		if (plan === 'Quick' || plan === 'Turbo') {
+			this.setState({
+				is_vip: 1,
+			});
+		} else {
+			this.setState({
+				is_vip: 0,
+			});
+		}
+
+	};
 
 	createtorChangeAdInfoField = (name: AdInfoFieldsNames) =>
 		(e: ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => {
@@ -240,6 +256,7 @@ class ManagerAd extends React.Component<IProps, IState> {
 					price={ this.state.adInfoFields.price.value }
 					description={ this.state.adInfoFields.description.value }
 					locationName={ this.state.location.name }
+					vip={ this.isVip }
 					back={ this.back }
 					next={ this.callCallback }
 				/>

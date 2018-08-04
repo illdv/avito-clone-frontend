@@ -103,6 +103,7 @@ export interface ICreateAdRequest {
 	phone: string;
 	images: IAttachedImage[];
 	options: IOptionValue[];
+	is_vip: number;
 }
 
 export interface IEditAdRequest {
@@ -119,6 +120,7 @@ export interface IEditAdRequest {
 	phone: string;
 	images: IAttachedImage[];
 	options: IOptionValue[];
+	is_vip: number;
 }
 
 export interface IFavoritesAds {

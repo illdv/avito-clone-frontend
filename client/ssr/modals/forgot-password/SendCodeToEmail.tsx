@@ -5,15 +5,11 @@ import { IUserActions, UserActions } from 'client/common/entities/user/rootActio
 import { bindModuleAction } from 'client/common/entities/user/utils';
 import { connect, Dispatch } from 'react-redux';
 
-export interface IProps {
-	userActions: IUserActions;
-}
-
 export interface IState {
 	email: string;
 }
 
-class SendCodeToEmail extends React.Component<IProps & IState> {
+class SendCodeToEmail extends React.Component<null, IState> {
 	state = {
 		email: '',
 	};
@@ -24,7 +20,7 @@ class SendCodeToEmail extends React.Component<IProps & IState> {
 	}
 	onSubmit = e => {
 		if (this.state.email) {
-			this.props.userActions.common.sendCode.REQUEST({email: this.state.email});
+			UserActions.common.sendCode.REQUEST({email: this.state.email});
 		}
 	}
 

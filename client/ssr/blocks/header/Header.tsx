@@ -94,7 +94,6 @@ class Header extends Component<IProps, IState> {
 			count = getFavoritesFromLocalStorage().length;
 		} catch (e) {
 		}
-		console.log('count', count);
 		return (
 			<Link href={`/favorites`}>
 				<a

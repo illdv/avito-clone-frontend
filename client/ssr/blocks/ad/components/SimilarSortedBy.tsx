@@ -15,7 +15,7 @@ class SimilarSortedBy extends Component<any, ISimilarSortState> {
 	}
 
 	render() {
-		const filters = ['new'];
+		const filters = ['new', 'price'];
 		return (
 			<div className='col-md-12 col-lg-6'>
 				<select

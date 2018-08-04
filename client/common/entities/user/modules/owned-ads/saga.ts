@@ -10,11 +10,11 @@ import { Toasts } from 'client/common/utils/Toasts';
 import { delay } from 'redux-saga';
 import { pushInRouter } from '../../../../utils/utils';
 import history from 'client/common/history';
+import { defaultPagePath } from 'client/spa/profile/constants';
 
-function* getMy(action: Action<IRegisterRequest>) {
+export function* getMy(action: Action<IRegisterRequest>) {
 	try {
 		const response: ResponseWhitPagination<IAd> = yield call(AdsAPI.getMy, action.payload);
-
 		yield put(ownedAdsActions.getMy.SUCCESS(response.data.data));
 	} catch (e) {
 		yield call(errorHandler, e);
@@ -22,14 +22,14 @@ function* getMy(action: Action<IRegisterRequest>) {
 	}
 }
 
-function* create(action: Action<ICreateAdRequest>) {
+export function* create(action: Action<ICreateAdRequest>) {
 	try {
 		yield call(AdsAPI.create, action.payload);
 		yield put(ownedAdsActions.create.SUCCESS({}));
 		yield put(ownedAdsActions.changePage.REQUEST(PageNames.Profile));
 		yield delay(500);
 		Toasts.info('Ad created');
-		history.push('/profile/my-ads/avtive');
+		history.push(defaultPagePath);
 	} catch (e) {
 		yield call(errorHandler, e);
 		Toasts.info('Failed ad created');
@@ -72,7 +72,7 @@ function* edit(action: Action<any>) {
 		yield put(ownedAdsActions.edit.SUCCESS({}));
 		yield put(ownedAdsActions.getMy.REQUEST({}));
 		Toasts.info('Ad saved');
-		history.push('/profile/my-ads/avtive');
+		history.push(defaultPagePath);
 	} catch (e) {
 		yield call(errorHandler, e);
 		Toasts.info('Failed ad save');

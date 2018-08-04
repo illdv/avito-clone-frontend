@@ -16,18 +16,6 @@ class SimilarAds extends Component <ISimilarProps, ISimilarSortState> {
 			});
 	}
 
-	checkLength = () => {
-		if (this.state.similar_ad.length === 0) {
-			return (
-				<div className='row d-flex justify-content-center'>
-					<div className='col-10'>
-						There are no more ads in this category
-					</div>
-				</div>
-			);
-		}
-	}
-
 	constructor(props) {
 		super(props);
 		this.state = {

@@ -40,6 +40,7 @@ export const transformationAdToManagerState =
 				lat: initialAd.latitude,
 			},
 			options,
+			is_vip: initialAd.is_vip,
 		};
 	};
 

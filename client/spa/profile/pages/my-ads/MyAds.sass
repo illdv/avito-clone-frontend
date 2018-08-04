@@ -24,12 +24,13 @@
     font-family: "Font Awesome 5 Free"
     font-weight: 900
     content: "\f00c"
-    height: 10px
-    width: 10px
+    height: 16px
+    width: 16px
+    font-size: 13px
     color: #FFB91B
     position: absolute
     top: -1px
-    right: 4px
+    left: 2px
     opacity: 0
   &:checked::before
     opacity: 1
@@ -46,8 +47,11 @@
   justify-content: space-between
   width: calc(100% - 150px)
 
-.offer-block__inner, .favourites-offer-block__inner, .message-block__inner
+.offer-block__inner, .message-block__inner
   width: 100%
+
+.favourites-offer-block__inner
+  width: calc(100% - 40px)
 
 .favourites-offer-block__img, .offer-block__img, .message-block__img
   width: 150px
@@ -161,7 +165,7 @@
 
 .filter-offer
   padding-bottom: 20px
-  padding-left: 40px
+  //padding-left: 40px
 
 .filter-offer__link
   margin-right: 30px
@@ -180,3 +184,10 @@
 
 .watcher__icon, .edit-block__link
   color: #FFB91B
+
+.remove-offer
+  padding: 15px 0
+  border: solid #BDBDBD
+  border-width: 1px 0 1px 0
+  display: flex
+  align-items: center
