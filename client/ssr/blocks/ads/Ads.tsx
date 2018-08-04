@@ -1,47 +1,66 @@
 import React from 'react';
-import { connect, Dispatch } from 'react-redux';
-import {IAds} from 'client/common/ads/interface';
+import { connect } from 'react-redux';
+
 import AdCard from 'client/ssr/blocks/ads/components/AdCard';
-import { bindModuleAction } from 'client/common/user/utils';
-import { IUserActions, UserActions } from 'client/common/user/actions';
-import { IRootState } from '../../../common/store/storeInterface';
+import { IRootState } from 'client/common/store/storeInterface';
+import { UserActions } from 'client/common/entities/user/rootActions';
 
 require('./Ads.sass');
 
-export {IAds};
-
 export interface IAdsProps {
-	user: IUser;
+	user: IUserState;
 	title: string;
-	ads: IAds[];
-	userActions: IUserActions;
+	ads: IAd[];
+}
+
+export enum  IAdsOrder {
+	ASC = 'ASC', DESC = 'DESC', DEFAULT = 'DEFAULT'
+}
+
+export enum  IAdsFilter {
+	personal = 'personal', company = 'company', all = 'all'
 }
 
 class Ads extends React.Component<IAdsProps> {
-	addToFavorites = (id: string) => {
-		this.props.userActions.selectFavorite.REQUEST({ id });
-	};
+	addToFavorites = (id: number) => {
+		UserActions.favorites.selectFavorite.REQUEST({ id });
+	}
 
+	onSelectFilter = (filter: IAdsFilter) => {
+		console.log('filter', filter)
+	}
+
+	onSelectOrder = (order: IAdsOrder) => {
+		console.log('filter', order)
+	}
 
 	render() {
 		const {ads, title} = this.props;
 
 		return (
-			<section className='section-sm'>
-				<div className='container'>
+			<section>
+				<div className='container page__container-lg'>
 					<div className='row'>
-						<div className='col-12'>
-							<h3 className='m-b-20'>{title}</h3>
+						<div className='col-md-12 '>
+							<h3 className='page__title'>{title}</h3>
 						</div>
 					</div>
-					<div className='row'>
+					{/*{*/}
+						{/*ads.length > 5 ? <AdsFilter selectFilter={this.onSelectFilter} selectOrder={this.onSelectOrder}/>*/}
+						{/*: null*/}
+					{/*}*/}
+					<div className='row p-t-30'>
 						{
-							ads && ads.map((ad: IAds) => (
+							ads && ads.map((ad: IAd) => (
 								<div
 									key={ad.id}
 									className='col-md-4 col-lg-3'
 								>
-									<AdCard favoritesIds={this.props.user.favorites_ids} ads={ad} addToFavorites={this.addToFavorites}/>
+									<AdCard
+										ad={ad}
+										favoritesIds={this.props.user.favorites.ids}
+										addToFavorites={this.addToFavorites}
+									/>
 								</div>
 							))
 						}
@@ -53,11 +72,7 @@ class Ads extends React.Component<IAdsProps> {
 }
 
 const mapStateToProps = (state: IRootState) => ({
-	user: state.user.user,
+	user: state.user,
 });
 
-const mapDispatchToProps = dispatch => ({
-	userActions: bindModuleAction(UserActions, dispatch),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Ads);
+export default connect(mapStateToProps)(Ads);

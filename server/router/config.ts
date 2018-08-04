@@ -16,9 +16,9 @@ const routes = [
 		prepare: ['location', 'ad', 'categories'],
 	},
 	{
-		path: '/profile',
+		path: '/profile*',
 		page: '/profile',
-		prepare: ['location'],
+		prepare: ['location', 'categories'],
 	},
 	{
 		path: '/favorites',

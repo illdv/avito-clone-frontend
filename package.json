@@ -13,7 +13,9 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@types/react-router": "^4.0.29",
     "axios": "^0.18.0",
+    "babel-core": "^6.26.3",
     "body-parser": "^1.18.3",
     "bootstrap": "^4.1.2",
     "chart.js": "^2.7.2",
@@ -49,6 +51,9 @@
     "react-modal": "^3.5.1",
     "react-number-format": "^3.4.4",
     "react-redux": "^5.0.7",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1",
+    "react-select": "^2.0.0",
     "react-toastify": "^4.1.0",
     "reactstrap": "^6.3.0",
     "redux": "^4.0.0",
@@ -72,6 +77,7 @@
     "enzyme": "^3.3.0",
     "eslint": "^5.1.0",
     "jest": "^23.4.1",
+    "jest-environment-jsdom": "^23.4.0",
     "nodemon": "^1.18.3",
     "redux-devtools-extension": "latest",
     "redux-saga-testing": "^1.0.5",
@@ -83,9 +89,6 @@
     "setupTestFrameworkScriptFile": "<rootDir>/setupTest.js",
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
-    ],
-    "moduleNameMapper": {
-      "^@client(.*)$": "<rootDir>/client$1"
-    }
+    ]
   }
 }

@@ -2,28 +2,21 @@ import * as React from 'react';
 import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { IRootState } from 'client/common/store/storeInterface';
-import { bindModuleAction } from 'client/common/user/utils';
-import { AdsActions, IAdsActions } from 'client/common/ads/actions';
-import { IAdsState } from 'client/common/ads/reducer';
-import { AdsActionType, IAds, MyAdsStatus } from 'client/common/ads/interface';
+import { AdsActionType, IAds, MyAdsStatus } from 'client/common/entities/user/modules/owned-ads/interfaces';
 import { filterMyAds } from 'client/spa/pages/utils';
 import { extractPreviewImage } from 'client/ssr/blocks/ad/utils';
+import { UserActions } from '../../common/entities/user/rootActions';
 
 export interface IState {
 	selectedFilter: MyAdsStatus;
 }
 
 export interface IProps {
-	ads: IAdsState;
-	adsActions: IAdsActions;
+	user: IUserState
 }
 
 const mapStateToProps = (state: IRootState) => ({
-	ads: state.ads,
-});
-
-const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-	adsActions: bindModuleAction(AdsActions, dispatch),
+	user: state.user,
 });
 
 class MyAds extends Component<IProps, IState> {
@@ -37,21 +30,21 @@ class MyAds extends Component<IProps, IState> {
 	}
 
 	onRemove = (id: string) => () => {
-		this.props.adsActions.remove.REQUEST({ id });
+		this.props.user.ownedAds.remove.REQUEST({ id });
 	}
 
 	onEdit = (id: string) => () => {
-		this.props.adsActions.selectForEdit.REQUEST({ id });
+		this.props.user.ownedAds.selectForEdit.REQUEST({ id });
 	}
 
 	onChangeActive = (id: string) => () => {
-		this.props.adsActions.changeStatus.REQUEST({ actionType: AdsActionType.Activate, id });
-		this.props.adsActions.changeStatus.REQUEST({ actionType: AdsActionType.Approve, id });
+		this.props.user.ownedAds.changeStatus.REQUEST({ actionType: AdsActionType.Activate, id });
+		this.props.user.ownedAds.changeStatus.REQUEST({ actionType: AdsActionType.Approve, id });
 	}
 
 	onChangeComplete = (id: string) => () => {
-		this.props.adsActions.changeStatus.REQUEST({ actionType: AdsActionType.Complete, id });
-		this.props.adsActions.changeStatus.REQUEST({ actionType: AdsActionType.Deactivate, id });
+		this.props.user.ownedAds.changeStatus.REQUEST({ actionType: AdsActionType.Complete, id });
+		this.props.user.ownedAds.changeStatus.REQUEST({ actionType: AdsActionType.Deactivate, id });
 	}
 
 	ActiveButton = ({ id }: { id: string }) => {
@@ -158,11 +151,11 @@ class MyAds extends Component<IProps, IState> {
 	}
 
 	componentDidMount(): void {
-		this.props.adsActions.getMy.REQUEST({});
+		UserActions.ownedAds.getMy.REQUEST({});
 	}
 
 	render() {
-		const { isLoading, ads } = this.props.ads;
+		const { isLoading, ads } = this.props.user.ownedAds;
 
 		const selectedFilter = this.state.selectedFilter;
 		const filteredAds    = filterMyAds(selectedFilter, ads);
@@ -211,4 +204,4 @@ class MyAds extends Component<IProps, IState> {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MyAds);
+export default connect(mapStateToProps)(MyAds);

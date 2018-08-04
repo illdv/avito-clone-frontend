@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import { showSellerModals } from 'client/ssr/modals/seller/SellerModalTriger';
 import { ISeller } from 'client/ssr/blocks/ad/interface';
+import { IRootState } from '../../../../common/store/storeInterface';
 
 export const avatar = '/static/img/person.png';
 
@@ -10,10 +11,10 @@ export interface IProps {
 	seller: ISeller;
 	country: string;
 	city: string;
-	user: ILoginResponse; // Looking through
+	user: IUserState; // Looking through
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: IRootState) => ({
 	user: state.user,
 });
 
@@ -37,7 +38,7 @@ const Seller = ({ seller, country, city, user }: IProps) => (
 					Show phone number
 				</button>
 				{
-					user.user && user.user.id === seller.id // TODO add preloader
+					user.profile && user.profile.id === seller.id // TODO add preloader
 					?
 						<a
 							href={`/profile`} // TODO add id ad

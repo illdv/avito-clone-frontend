@@ -34,17 +34,23 @@ class CreateAd extends React.Component<IProps> {
 			city_id: this.props.location.session.idCity || 1,
 			price: state.adInfoFields.price.value,
 			body: '123213',
-			category_id: useOrDefault(() => selectedCategories[selectedCategories.length - 1].id, '1'),
+			category_id: useOrDefault(() => selectedCategories[selectedCategories.length - 1].id, null),
 			type_id: 1,
 			longitude: state.location.lng,
 			latitude: state.location.lat,
 			phone: state.sellerInfoFields.phone.value,
 			images: state.attachedImages.filter(attach => attach.file),
+			options: state.options.map(option => ({
+				id: option.item.id,
+				value: option.value,
+			})),
+			is_vip: state.is_vip,
+
 		});
-	}
+	};
 
 	render() {
-		return  <ManagerAd callback={ this.onSave } />;
+		return <ManagerAd callback={this.onSave} />;
 	}
 }
 

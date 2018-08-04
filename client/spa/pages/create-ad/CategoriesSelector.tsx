@@ -15,6 +15,7 @@ export interface IState {
 }
 
 export interface IProps {
+	selectedCategories: ICategory[];
 	categoryActions: ICategoryActions;
 	categories: ICategoryState;
 	onSelectCategories: (selectedCategories: ICategory[]) => void;
@@ -40,13 +41,20 @@ export class CategoriesSelector extends Component<IProps, IState> {
 
 		const { defaultCategoryId, categories } = nextProps;
 		const { data }                          = categories;
+
 		if (data.length !== 0) {
 			if (defaultCategoryId !== null && defaultCategoryId !== prevState.defaultCategoryId) {
 				// noinspection TsLint
-				return {
-					defaultCategoryId,
-					selectedCategory: findCategoriesQueueById(data, parseInt(defaultCategoryId)),
-				};
+				const selectedCategory = findCategoriesQueueById(data, parseInt(defaultCategoryId));
+
+				if (JSON.stringify(selectedCategory.sort()) !== JSON.stringify(nextProps.selectedCategories.sort())) {
+					nextProps.onSelectCategories(selectedCategory);
+				} else {
+					return {
+						defaultCategoryId,
+						selectedCategory,
+					};
+				}
 			}
 		}
 		return null;

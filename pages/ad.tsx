@@ -10,9 +10,9 @@ import SellerModal from 'client/ssr/modals/seller/SellerModal';
 import Footer from 'client/ssr/blocks/footer/Footer';
 import 'isomorphic-fetch';
 import { types } from 'redux-act';
-import { IAd } from 'client/ssr/blocks/ad/interface'
-import { SetCategories } from 'client/ssr/blocks/categories/context'
-import { isServer } from '../client/common/utils/utils';
+import { IAd } from 'client/ssr/blocks/ad/interface';
+import { SetCategories } from 'client/ssr/blocks/categories/context';
+import { isServer } from 'client/common/utils/utils';
 import Error from 'next/error';
 
 if (isServer) {
@@ -37,7 +37,7 @@ class Ads extends React.Component<IAdsProps> {
 	}
 
 	render() {
-		if (!this.props.response.ad) {
+		if (!this.props.response || !this.props.response.ad) {
 			return <Error statusCode={404} />;
 		}
 
@@ -56,7 +56,7 @@ class Ads extends React.Component<IAdsProps> {
 						categories={this.props.categories}
 						similar={this.props.response.similars}
 					/>
-					<SellerModal seller={this.props.response.ad.user} />
+					<SellerModal seller={this.props.response.ad.user} address={this.props.response.ad.address} />
 					<Footer />
 				</SetCategories>
 			</React.Fragment>

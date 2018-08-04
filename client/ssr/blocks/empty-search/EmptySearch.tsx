@@ -1,7 +1,7 @@
 import React from 'react';
 
 const EmptySearch = () => (
-	<section>
+	<section className='not-result'>
 		<div className='container page__container-lg'>
 			<h1 className='page__title'>
 				Nothing found on your request

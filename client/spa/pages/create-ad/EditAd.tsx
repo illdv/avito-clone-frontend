@@ -40,11 +40,16 @@ class EditAd extends React.Component<IProps> {
 			description: state.adInfoFields.description.value,
 			type_id: this.props.initialAd.type_id,
 			city_id: this.props.location.session.idCity,
-			category_id: useOrDefault(() => selectedCategories[selectedCategories.length - 1].id, '1'),
+			category_id: useOrDefault(() => selectedCategories[selectedCategories.length - 1].id, null),
 			body: '1212',
 			longitude: state.location.lng,
 			latitude: state.location.lat,
 			images,
+			options: state.options.map(option => ({
+				id: option.item.id,
+				value: option.value,
+			})),
+			is_vip: state.is_vip,
 		};
 
 		this.props.adsActions.edit.REQUEST(data);

@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import queryString from 'query-string';
-import Router from 'next/router';
 
 import SelectCategories from './components/SelectCategories';
 import { IRootState } from 'client/common/store/storeInterface';
 import { getLocationState } from 'client/common/store/selectors';
-import { getCategories, Category } from 'client/ssr/blocks/categories/context';
+import { Category, getCategories } from 'client/ssr/blocks/categories/context';
 import { ILocationStoreState } from 'client/common/location/module';
 
 import { showLocationModal } from 'client/ssr/modals/location/locationModalTriggers';
 import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
+import { IOption } from 'client/spa/pages/create-ad/ManagerAd';
 
 require('./Search.sass');
 
@@ -24,18 +24,123 @@ interface ISearchState {
 	searchString: string;
 	activeCategories: any;
 	duplicateCategories: any;
+	options: IOption[];
 }
 
 const mapStateToProps = (state: IRootState) => ({
 	locationState: getLocationState(state),
-	user: state.user,
 });
 
-const getOption = option => (
-	<input name='name' className='search search__options form-control' placeholder={option.name}/>
+const getOption = (option: IOption, creatorChangeOption) => (
+	<input
+		className='search search__options form-control'
+		value={option.value}
+		placeholder={option.item.name}
+		onChange={creatorChangeOption(option.item.id)}
+	/>
 );
 
 class Search extends Component<ISearchProps, ISearchState> {
+	onSelectCategory = category => {
+		if (category) {
+			if (this.state.activeCategories[0] !== category) {
+				this.setState({
+					activeCategories: [category],
+				});
+			}
+		} else {
+			this.setState({ activeCategories: [] });
+		}
+	};
+	onSelectSubcategory = (category, parent) => {
+		const categories = this.state.activeCategories;
+
+		const indexParent = categories.indexOf(parent);
+
+		if (category) {
+			if (indexParent !== -1) {
+				const newCategories = categories.slice(0, indexParent + 1);
+				newCategories.push(category);
+
+				this.setState({
+					activeCategories: newCategories,
+					options: this.getCorrectOptions(category),
+				});
+			} else {
+				throw new Error('Parent no found');
+			}
+		} else {
+			const newCategories = categories.slice(0, indexParent + 1);
+			this.setState({
+				activeCategories: newCategories,
+			});
+		}
+
+	};
+	getCorrectOptions = (category: ICategory): IOption[] => {
+		return category.total_options.map(option => ({
+			value: '',
+			item: option,
+		}));
+	};
+	creatorChangeOption = (id: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
+		const newOptions = this.state.options.map(option => {
+			if (option.item.id === id) {
+				return {
+					value: e.target.value,
+					item: option.item,
+				};
+			} else {
+				return option;
+			}
+		});
+		this.setState({
+			options: newOptions,
+		});
+	};
+	changeSearchString = e => {
+		this.setState({
+			searchString: e.target.value,
+		});
+	};
+	showSearchLocationModal = () => showLocationModal(ModalNames.searchLocation);
+	onSubmit = e => {
+		e.preventDefault();
+		const { idCity, idRegion, idCountry } = this.props.locationState.local;
+		const query: any                      = {
+			search: this.state.searchString,
+		};
+
+		if (this.state.activeCategories.length > 0) {
+			query.category = this.state.activeCategories[this.state.activeCategories.length - 1].id;
+		}
+
+		if (idCity) {
+			query.city_id = idCity;
+		} else if (idRegion) {
+			query.region_id = idRegion;
+		} else if (idCountry) {
+			query.country_id = idCountry;
+		}
+
+		/* Router.push({
+			pathname: '/search',
+			query,
+		}); */
+
+		// alert(queryString.stringify(query));
+
+		let optionsString = '&';
+
+		this.state.options.forEach(option => {
+			if (option.value.length > 0) {
+				optionsString += `options[${option.item.id}]=${option.value}`;
+			}
+		});
+
+		window.location.href = `/search?${queryString.stringify(query)}${optionsString.length > 1 ? optionsString : '' }`;
+	};
+
 	constructor(props, context) {
 		super(props, context);
 
@@ -49,45 +154,8 @@ class Search extends Component<ISearchProps, ISearchState> {
 			duplicateCategories: this.props.categories,
 			activeCategories: [],
 			searchString: search || '',
+			options: [],
 		};
-	}
-
-
-	onSelectCategory = category => {
-		if (category) {
-			if (this.state.activeCategories[0] !== category) {
-				this.setState({
-					activeCategories: [category],
-				});
-			}
-		} else {
-			this.setState({activeCategories: []});
-		}
-	}
-
-	onSelectSubcategory = (category, parent) => {
-		const categories = this.state.activeCategories;
-
-		const indexParent = categories.indexOf(parent);
-
-		if (category) {
-			if (indexParent !== -1) {
-				const newCategories = categories.slice(0, indexParent + 1);
-				newCategories.push(category);
-
-				this.setState({
-					activeCategories: newCategories,
-				});
-			} else {
-				throw new Error('Parent no found');
-			}
-		} else {
-			const newCategories = categories.slice(0, indexParent + 1);
-			this.setState({
-				activeCategories: newCategories,
-			});
-		}
-
 	}
 
 	get subcategories() {
@@ -117,7 +185,7 @@ class Search extends Component<ISearchProps, ISearchState> {
 				});
 
 				if (result.length > 0) {
-					return result[0].title; 
+					return result[0].title;
 				}
 			}
 		}
@@ -128,7 +196,7 @@ class Search extends Component<ISearchProps, ISearchState> {
 					return region.region_id === idRegion;
 				});
 				if (result.length > 0) {
-					return result[0].title; 
+					return result[0].title;
 				}
 			}
 		}
@@ -139,7 +207,7 @@ class Search extends Component<ISearchProps, ISearchState> {
 					return country.country_id === idCountry;
 				});
 				if (result.length > 0) {
-					return result[0].title; 
+					return result[0].title;
 				}
 			}
 		}
@@ -147,45 +215,12 @@ class Search extends Component<ISearchProps, ISearchState> {
 		return 'World';
 	}
 
-	changeSearchString = e => {
-		this.setState({
-			searchString: e.target.value,
-		});
-	}
-
-	showSearchLocationModal = () => showLocationModal(ModalNames.searchLocation);
-
-	onSubmit = e => {
-		e.preventDefault();
-		const { idCity, idRegion, idCountry } = this.props.locationState.local;
-		const query: any = {
-			search: this.state.searchString,
-		};
-
-		if (this.state.activeCategories.length > 0) {
-			query.category = this.state.activeCategories[this.state.activeCategories.length - 1].id;
-		}
-
-		if (idCity) {
-			query.city_id = idCity;
-		} else if (idRegion) {
-			query.region_id = idRegion;
-		} else if (idCountry) {
-			query.country_id = idCountry;
-		}
-
-		/* Router.push({
-			pathname: '/search',
-			query,
-		}); */
-
-		// alert(queryString.stringify(query));
-		window.location.href = `/search?${ queryString.stringify(query) }`;
-	}
-
 	render() {
 		return (
-			<form action='#' onSubmit={this.onSubmit}>
+			<form
+				action='#'
+				onSubmit={this.onSubmit}
+			>
 				<div className='search form-inline form-row p-t-20'>
 					<div className='form-group col-6 col-md-3'>
 						<SelectCategories
@@ -216,8 +251,11 @@ class Search extends Component<ISearchProps, ISearchState> {
 						/>
 					</div>
 					<div className='form-group col-12 col-md-2'>
-						<button className='btn orange-btn-outline search__button' type='submit'>
-							<i className='fas fa-search p-r-5'/>Search
+						<button
+							className='btn orange-btn-outline search__button'
+							type='submit'
+						>
+							<i className='fas fa-search p-r-5' />Search
 						</button>
 					</div>
 				</div>
@@ -228,7 +266,10 @@ class Search extends Component<ISearchProps, ISearchState> {
 							this.subcategories.map(category => (
 								category.children.length > 0
 									? (
-										<div key={category.id} className='form-group col-6 col-md-3'>
+										<div
+											key={category.id}
+											className='form-group col-6 col-md-3'
+										>
 											<SelectCategories
 												categories={category.children}
 												onSelect={this.onSelectSubcategory}
@@ -242,9 +283,12 @@ class Search extends Component<ISearchProps, ISearchState> {
 						}
 						{
 							this.lastSubcategory &&
-							this.lastSubcategory.total_options.map(option => (
-								<div key={option.id} className='form-group col-6 col-md-3'>
-									{getOption(option)}
+							this.state.options.map(option => (
+								<div
+									key={option.item.id}
+									className='form-group col-6 col-md-3'
+								>
+									{getOption(option, this.creatorChangeOption)}
 								</div>
 							))
 						}
