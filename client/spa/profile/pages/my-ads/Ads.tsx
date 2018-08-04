@@ -39,10 +39,10 @@ class Ads extends React.Component<IProps> {
 				key={ad.id}
 				className='offer-block__item'
 			>
-				{/*<input
+				<input
 					className='custom-checkbox'
 					type='checkbox'
-				/>*/}
+				/>
 
 				<div className='offer-block__inner'>
 					<div className='row'>

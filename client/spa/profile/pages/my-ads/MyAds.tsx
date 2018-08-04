@@ -8,6 +8,7 @@ import { AdsActionType } from 'client/common/entities/user/modules/owned-ads/int
 import { UserActions } from 'client/common/entities/user/rootActions';
 
 import Ads, { IAvtiveButtonConfig } from './Ads';
+import ControlButtons from 'client/spa/profile/pages/my-ads/Control';
 
 export interface IProps {
 	user: IUserState;
@@ -150,6 +151,7 @@ class MyAds extends Component<IProps> {
 					<FilterButton to='/profile/my-ads/active'      label='Active'      count={sortedAds.active.length} />
 					<FilterButton to='/profile/my-ads/completed'   label='Completed'   count={sortedAds.completed.length} />
 				</div>
+				<ControlButtons ids={this.props.user.ownedAds} options={[]}/>
 				<Switch>
 					<Route path='/profile/my-ads/disapproved' component={this.creatorDisapprovedAdsComponent(sortedAds.disapproved)} />
 					<Route path='/profile/my-ads/completed' component={this.creatorCompletedAdsComponent(sortedAds.completed)} />
