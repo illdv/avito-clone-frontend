@@ -10,9 +10,9 @@ import SellerModal from 'client/ssr/modals/seller/SellerModal';
 import Footer from 'client/ssr/blocks/footer/Footer';
 import 'isomorphic-fetch';
 import { types } from 'redux-act';
-import { IAd } from 'client/ssr/blocks/ad/interface'
-import { SetCategories } from 'client/ssr/blocks/categories/context'
-import { isServer } from '../client/common/utils/utils';
+import { IAd } from 'client/ssr/blocks/ad/interface';
+import { SetCategories } from 'client/ssr/blocks/categories/context';
+import { isServer } from 'client/common/utils/utils';
 import Error from 'next/error';
 
 if (isServer) {

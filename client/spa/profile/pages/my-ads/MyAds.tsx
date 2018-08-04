@@ -7,15 +7,11 @@ import { IRootState } from 'client/common/store/storeInterface';
 import { AdsActionType } from 'client/common/entities/user/modules/owned-ads/interfaces';
 import { UserActions } from 'client/common/entities/user/rootActions';
 
-import Ads, { IAvtiveButtonConfig } from './Ads';
-import ControlButtons from 'client/spa/profile/pages/my-ads/Control';
+import Ads from './Ads';
+import { IActiveButtonConfig } from 'client/spa/profile/interfaces/controlButtons';
 
 export interface IProps {
 	user: IUserState;
-}
-
-export interface IMyAdsState {
-	ids: number[];
 }
 
 const mapStateToProps = (state: IRootState) => ({
@@ -33,31 +29,26 @@ const FilterButton: React.SFC<{to: string, label: string, count: number}> = ({to
 	</NavLink>
 );
 
-class MyAds extends Component<IProps, IMyAdsState> {
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			ids: [],
-		};
-	};
-
-	onRemove = (id: number) => {
-		UserActions.ownedAds.remove.REQUEST({ id });
+class MyAds extends Component<IProps> {
+	onRemove = (id: Set<number>) => {
+		const ids = Array.from(id.values());
+		UserActions.ownedAds.remove.REQUEST({ ids });
 	}
 
 	onEdit = (id: number) => {
 		UserActions.ownedAds.selectForEdit.REQUEST({ id });
 	}
 
-	onChangeActive = (id: number) => {
-		UserActions.ownedAds.changeStatus.REQUEST({ actionType: AdsActionType.Activate, id });
-		UserActions.ownedAds.changeStatus.REQUEST({ actionType: AdsActionType.Approve, id });
+	onChangeActive = (id: Set<number>) => {
+		const ids = Array.from(id.values());
+		UserActions.ownedAds.changeStatus.REQUEST({ actionType: AdsActionType.Activate, ids });
+		UserActions.ownedAds.changeStatus.REQUEST({ actionType: AdsActionType.Approve, ids });
 	}
 
-	onChangeComplete = (id: number) => {
-		UserActions.ownedAds.changeStatus.REQUEST({ actionType: AdsActionType.Complete, id });
-		UserActions.ownedAds.changeStatus.REQUEST({ actionType: AdsActionType.Deactivate, id });
+	onChangeComplete = (id: Set<number>) => {
+		const ids = Array.from(id.values());
+		UserActions.ownedAds.changeStatus.REQUEST({ actionType: AdsActionType.Complete, ids });
+		UserActions.ownedAds.changeStatus.REQUEST({ actionType: AdsActionType.Deactivate, ids });
 	}
 
 	componentDidMount(): void {
@@ -87,16 +78,16 @@ class MyAds extends Component<IProps, IMyAdsState> {
 	}
 
 	// Disapproved
-	disapprovedAdsButtonsConfig: IAvtiveButtonConfig[] = [
+	disapprovedAdsButtonsConfig: IActiveButtonConfig[] = [
 		{
 			label: 'Active',
 			className: 'btn orange-btn-outline publish-offer__button',
-			callback: (id: number) => this.onChangeActive(id),
+			callback: (ids: Set<number>) => this.onChangeActive(ids),
 		},
 		{
 			label: 'Remove',
 			className: 'btn grey-btn-outline publish-offer__button',
-			callback: (id: number) => this.onRemove(id),
+			callback: (ids: Set<number>) => this.onRemove(ids),
 		},
 	];
 
@@ -109,16 +100,16 @@ class MyAds extends Component<IProps, IMyAdsState> {
 	)
 
 	// Completed
-	completedAdsButtonsConfig: IAvtiveButtonConfig[] = [
+	completedAdsButtonsConfig: IActiveButtonConfig[] = [
 		{
 			label: 'Active',
 			className: 'btn orange-btn-outline publish-offer__button',
-			callback: (id: number) => this.onChangeActive(id),
+			callback: (ids: Set<number>) => this.onChangeActive(ids),
 		},
 		{
 			label: 'Remove',
 			className: 'btn grey-btn-outline publish-offer__button',
-			callback: (id: number) => this.onRemove(id),
+			callback: (ids: Set<number>) => this.onRemove(ids),
 		},
 	];
 	
@@ -127,21 +118,20 @@ class MyAds extends Component<IProps, IMyAdsState> {
 			ads={ads}
 			enabledEdit={true}
 			activeButtons={this.completedAdsButtonsConfig}
-			selected={this.selectAds}
 		/>
 	)
 
 	// Active
-	activeAdsButtonsConfig: IAvtiveButtonConfig[] = [
+	activeAdsButtonsConfig: IActiveButtonConfig[] = [
 		{
 			label: 'Complete',
 			className: 'btn orange-btn-outline publish-offer__button',
-			callback: (id: number) => this.onChangeComplete(id),
+			callback: (ids: Set<number>) => this.onChangeComplete(ids),
 		},
 		{
 			label: 'Remove',
 			className: 'btn grey-btn-outline publish-offer__button',
-			callback: (id: number) => this.onRemove(id),
+			callback: (ids: Set<number>) => this.onRemove(ids),
 		},
 	];
 
@@ -150,13 +140,8 @@ class MyAds extends Component<IProps, IMyAdsState> {
 			ads={ads}
 			enabledEdit={true}
 			activeButtons={this.activeAdsButtonsConfig}
-			selected={this.selectAds}
 		/>
 	);
-
-	selectAds = (id: number[]) => {
-		console.log(id);
-	};
 
 	render() {
 		const sortedAds = this.sortingAdsByStatus();
@@ -168,7 +153,6 @@ class MyAds extends Component<IProps, IMyAdsState> {
 					<FilterButton to='/profile/my-ads/active'      label='Active'      count={sortedAds.active.length} />
 					<FilterButton to='/profile/my-ads/completed'   label='Completed'   count={sortedAds.completed.length} />
 				</div>
-				<ControlButtons ads={this.props.user.ownedAds} selected={this.selectAds} options={[]}/>
 				<Switch>
 					<Route path='/profile/my-ads/disapproved' component={this.creatorDisapprovedAdsComponent(sortedAds.disapproved)} />
 					<Route path='/profile/my-ads/completed' component={this.creatorCompletedAdsComponent(sortedAds.completed)} />

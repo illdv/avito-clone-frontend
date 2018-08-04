@@ -37,9 +37,9 @@ export function* create(action: Action<ICreateAdRequest>) {
 	}
 }
 
-function* remove(action: Action<{ id: string }>) {
+function* remove(action: Action<{ ids: number[] }>) {
 	try {
-		yield call(AdsAPI.remove, action.payload.id);
+		yield call(AdsAPI.remove, action.payload.ids);
 		yield put(ownedAdsActions.remove.SUCCESS({}));
 		yield put(ownedAdsActions.getMy.REQUEST({}));
 		Toasts.info('Ad removed');
@@ -50,11 +50,11 @@ function* remove(action: Action<{ id: string }>) {
 	}
 }
 
-function* changeStatus(action: Action<{ actionType: AdsActionType, id: string }>) {
+function* changeStatus(action: Action<{ actionType: AdsActionType, ids: number[] }>) {
 	try {
-		const { id, actionType } = action.payload;
+		const { ids, actionType } = action.payload;
 
-		yield call(AdsAPI.useAction, id, actionType);
+		yield call(AdsAPI.useAction, ids, actionType);
 
 		yield put(ownedAdsActions.changeStatus.SUCCESS({}));
 		yield put(ownedAdsActions.getMy.REQUEST({}));

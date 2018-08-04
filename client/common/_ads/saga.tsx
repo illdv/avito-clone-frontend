@@ -35,9 +35,10 @@ function* create(action: Action<ICreateAdRequest>) {
 	}
 }
 
-function* remove(action: Action<{ id: string }>) {
+function* remove(action: Action<{ ids: number[] }>) {
 	try {
-		yield call(AdsAPI.remove, action.payload.id);
+		console.log(action.payload.ids);
+		yield call(AdsAPI.remove, action.payload.ids);
 		yield put(AdsActions.remove.SUCCESS({}));
 		yield put(AdsActions.getMy.REQUEST({}));
 		Toasts.info('Ad removed');

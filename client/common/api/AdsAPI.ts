@@ -59,12 +59,18 @@ function edit({ images, options, ...ads }: IEditAdRequest) {
 	});
 }
 
-function remove(id: string) {
-	return AxiosWrapper.deleteResponse(`/ads/${id}`);
+function remove(ids: number[]) {
+	return AxiosWrapper.post(`/ads`, {
+		ids,
+		_method: 'delete',
+	});
 }
 
-function useAction(id: string, actionType: AdsActionType) {
-	return AxiosWrapper.put(`/ads/${id}/state/${actionType}`);
+function useAction(ids: number[], actionType: AdsActionType) {
+	return AxiosWrapper.post (`ads/change-state`, {
+		ids,
+		action: actionType,
+	});
 }
 
 function similar(sort: string, id: number) {

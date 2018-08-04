@@ -1,7 +1,5 @@
 import { createReducer } from 'redux-act';
 import { ownedAdsActions } from './actions';
-import { IAds } from './interfaces';
-
 
 const initialState = (): IOwnedAdsState => ({
 	items: [],

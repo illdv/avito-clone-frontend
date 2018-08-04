@@ -16,8 +16,8 @@ export interface IOwnedAdsActions {
 	getMy: IAsyncAction<{}, IAd[]>;
 	create: IAsyncAction<ICreateAdRequest>;
 	changePage: IAsyncAction<PageNames>;
-	remove: IAsyncAction<{ id: number }>;
-	changeStatus: IAsyncAction<{ actionType: AdsActionType, id: number }>;
+	remove: IAsyncAction<{ ids: number[] }>;
+	changeStatus: IAsyncAction<{ actionType: AdsActionType, ids: number[] }>;
 	selectForEdit: IAsyncAction<{ id: number }>;
 	edit: IAsyncAction<IEditAdRequest>;
 	deleteImage: IAsyncAction<{ id: number }>;
