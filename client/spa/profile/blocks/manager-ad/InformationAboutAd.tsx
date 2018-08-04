@@ -241,10 +241,10 @@ const InformationAboutAd = ({
 						/>
 					</div>
 				</div>
-				<Lease
+				{/* <Lease
 					onSelectLocation={ onSelectLocation }
 					location={ location }
-				/>
+				/> */}
 			</div>
 		</div>
 	</section>

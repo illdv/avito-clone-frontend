@@ -17,7 +17,17 @@
   transform: translateY(-2px)
 
 .navbar-nav
+  -webkit-transition: 0.5s
+  -moz-transition: 0.5s
+  -o-transition: 0.5s
+  transition: 0.5s
+  opacity: 0
+  visibility: hidden
   align-items: center
+
+.navbar-nav_show
+  opacity: 1
+  visibility: visible
 
 .language
   -webkit-appearance: none

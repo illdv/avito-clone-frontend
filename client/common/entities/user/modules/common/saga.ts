@@ -15,6 +15,7 @@ import { tokenActions } from '../token/actions';
 import { profileActions } from '../profile/actions';
 import { favoritesActions } from '../favorites/actions';
 import { CustomStorage } from '../../CustomStorage';
+import { defaultPagePath } from '../../../../../spa/profile/constants';
 
 function* loadingUserIfHasToken() {
 	const token = CustomStorage.getToken();
@@ -56,7 +57,7 @@ function* login(action: Action<ILoginRequest>) {
 		yield put(tokenActions.setTokenToState.REQUEST({ token }));
 
 		hideLoginModal();
-		pushInRouter('/profile');
+		pushInRouter(defaultPagePath);
 	} catch (e) {
 		yield call(errorHandler, e);
 		yield put(commonActions.login.FAILURE({}));
@@ -67,13 +68,18 @@ function* register(action: Action<IRegisterRequest>) {
 	try {
 		const response: AxiosResponse<IAuthResponse> = yield call(UserAPI.register, action.payload);
 		const data = response.data;
+		const { token, user }  = response.data;
+		const { favorites_ids: favoritesIds, ...correctProfile }  = user;
 
-		yield put(commonActions.register.SUCCESS(data));
+		yield put(favoritesActions.composeFavoritesIds.REQUEST({ ids: favoritesIds }));		
+		yield put(profileActions.setProfile.REQUEST(correctProfile));
 
-		yield put(tokenActions.setTokenToState.REQUEST({ token: data.token }));
+		yield put(tokenActions.setTokenToStorage.REQUEST({ token, isRememberMe: false }));
+		yield put(tokenActions.setTokenToState.REQUEST({ token }));
 
 		hideLoginModal();
 		Toasts.info('You have registered successfully!');
+		pushInRouter(defaultPagePath);
 	} catch (e) {
 		yield call(errorHandler, e);
 		yield put(commonActions.register.FAILURE({}));

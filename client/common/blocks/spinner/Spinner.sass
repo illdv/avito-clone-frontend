@@ -1,36 +1,55 @@
 .spinner
-    width: 49px
-    height: 49px
     margin: auto
     position: absolute
     left: 0
     right: 0
     top: 0
     bottom: 0
+    
+.spinner_md
+    width: 49px
+    height: 49px
+
+.spinner_sm
+    width: 24.5px
+    height: 24.5px
 
 .spinner:before
     content: ''
-    width: 49px
-    height: 5px
     background: rgb(0,0,0)
     opacity: 0.1
     position: absolute
-    top: 58px
-    left: 0
     border-radius: 50%
     animation: shadow 0.58s linear infinite
+    left: 0
+
+.spinner_md:before
+    width: 49px
+    height: 5px
+    top: 58px
+
+.spinner_sm:before
+    width: 24.5px
+    height: 2.5px
+    top: 29px
 
 .spinner:after
     content: ''
-    width: 49px
-    height: 49px
     background: #FFB91B
     position: absolute
     top: 0
     left: 0
-    border-radius: 3px
     animation: cssload-animate 0.58s linear infinite
 
+.spinner_md:after
+    width: 49px
+    height: 49px
+    border-radius: 3px
+
+.spinner_sm:after
+    width: 24.5px
+    height: 24.5px
+    border-radius: 1.5px
 
 @keyframes shadow
     0%,
