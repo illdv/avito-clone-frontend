@@ -12,6 +12,7 @@ import { SetCategories } from 'client/ssr/blocks/categories/context';
 import Categories from 'client/ssr/blocks/categories/Categories';
 import Footer from 'client/ssr/blocks/footer/Footer';
 import Ads from 'client/ssr/blocks/ads/Ads';
+import { query } from 'server/router/prepares';
 
 const isServer: boolean = typeof window === 'undefined';
 

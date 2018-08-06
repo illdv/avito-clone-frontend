@@ -33,7 +33,7 @@ const routes = [
 	{
 		path: '/search',
 		page: '/search',
-		prepare: ['location', 'categories', 'search'],
+		prepare: ['location', 'categories', 'search', 'query'],
 	},
 ] as IRoute[];
 

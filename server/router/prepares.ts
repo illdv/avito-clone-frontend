@@ -2,14 +2,14 @@ import { default as axios } from 'axios';
 import * as queryString from 'query-string';
 
 import {
-	findCategoriesQueueBySlug,
 	categoryQueueToBreadcrumbsFormat,
-	getSubcategoryByCategoryQueue,
-	getMainCategory,
-	getIdFromCategory,
+	findCategoriesQueueBySlug,
 	getCurrentCategoryByQueue,
+	getIdFromCategory,
 	getLocationNameByLocations,
 	getLocationsIdByRequest,
+	getMainCategory,
+	getSubcategoryByCategoryQueue,
 } from '../utils/categoryPrepare';
 
 interface ISugar {
@@ -115,6 +115,10 @@ export const location: prepareMethod = async (sugar, req) => {
 	};
 };
 
+export const query: prepareMethod = async (sugar, req) => {
+	return sugar.query;
+};
+
 export const vipAds: prepareMethod = async ({ params, query, path }, req) => {
 	const vipAdsResponse = await getAdsByParams({ vip: 1, count: 32 });
 	return vipAdsResponse.data;
@@ -124,6 +128,7 @@ export const category: prepareMethod = async ({ params, query, path }, req) => {
 	const { categorySlug }                = params;
 	const { idCountry, idRegion, idCity } = getLocationsIdByRequest(req);
 
+	/*
 	let paramsForReqCategory = null;
 
 	if (idCity) {
@@ -134,11 +139,16 @@ export const category: prepareMethod = async ({ params, query, path }, req) => {
 		paramsForReqCategory = { country_id: idCountry };
 	}
 
-	/* const { data: categories } = paramsForReqCategory
+	 const { data: categories } = paramsForReqCategory
 		? await instance.get(`/categories/?${ queryString.stringify(paramsForReqCategory) }`)
-		: await instance.get('/categories'); */
+		: await instance.get('/categories');
+		*/
 
-	const { data: categories } = await instance.get('/categories');
+	const { data: categories } = await instance.get('/categories', {
+		params: {
+			country_id: query.country,
+		},
+	});
 
 	try {
 		const categoryQueue   = findCategoriesQueueBySlug(categories, categorySlug);

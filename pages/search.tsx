@@ -18,12 +18,14 @@ if (isServer) {
 interface ICategoryProps {
 	categories: any[];
 	search: IAds[];
+	query: object;
 }
 
 class Category extends React.Component<ICategoryProps> {
 	static async getInitialProps({ query }) {
 
 		return {
+			query: query.query,
 			search: query.search || [],
 			categories: query.categories,
 			location: query.location,
@@ -31,13 +33,14 @@ class Category extends React.Component<ICategoryProps> {
 	}
 
 	render() {
-		const { search, categories } = this.props;
+		const { search, categories, query } = this.props;
 		return (
-			<SetCategories categories={ categories }>
-				 <SearchPage
+			<SetCategories categories={categories} >
+				<SearchPage
 					search={search}
+					query={query}
 				/>
-			</SetCategories>
+			</SetCategories >
 		);
 	}
 }
