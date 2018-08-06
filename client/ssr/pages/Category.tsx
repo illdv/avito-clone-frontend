@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import Header from 'client/ssr/blocks/header/Header';
 import Navbar from 'client/ssr/blocks/navbar/Navbar';
@@ -9,6 +10,8 @@ import EmptySearch from 'client/ssr/blocks/empty-search/EmptySearch';
 import ListOfSubcategories, { ItemOfTitlesList } from 'client/ssr/blocks/list-of-subcategories/ListOfSubcategories';
 import GroupList from '../blocks/GroupList/GroupList';
 import { ICategory } from 'client/common/_categories/interface';
+import { pushInRouter } from 'client/common/utils/utils';
+import { changeCountryLocal } from 'client/common/location/module';
 
 export interface IAdGroup {
 	title: string;
@@ -16,17 +19,11 @@ export interface IAdGroup {
 	ads: IAd[];
 }
 
-const testDataCountry = [
-	{ id: '1', title: 'Test 1', count: 10, href: '/123' },
-	{ id: '2', title: 'Test 2', count: 5, href: '/123' },
-	{ id: '3', title: 'Test 3', count: 3, href: '/123' },
-	{ id: '4', title: 'Test 4', count: 9, href: '/123' },
-];
-
 interface ICategoryPageProps {
 	mainCategoryId: number;
 	subcategories: ICategory[];
 	adGroupList: IAdGroup[];
+	changeCountryLocal: (id: string) => void;
 }
 
 class Category extends React.Component<ICategoryPageProps> {
@@ -35,7 +32,12 @@ class Category extends React.Component<ICategoryPageProps> {
 		return { id, title, count: total_ads_count, href: `/category/${ slug }` };
 	}
 
+	onRedirect = (href: string) => () => {
+		pushInRouter(href);
+	}
+
 	render() {
+
 		return (
 			<>
 				<Header />
@@ -53,16 +55,10 @@ class Category extends React.Component<ICategoryPageProps> {
 						{
 							this.props.subcategories.length > 0
 							&&
-							<>
-								<ListOfSubcategories
-									title={'All'}
-									items={this.props.subcategories.map(this.categoryToItemOfTitlesList)}
-								/>
-								<ListOfSubcategories
-									title={'Country'}
-									items={testDataCountry}
-								/>
-							</>
+							<ListOfSubcategories
+								title={'All'}
+								items={this.props.subcategories.map(this.categoryToItemOfTitlesList)}
+							/>
 						}
 					</div >
 				</div >
@@ -77,4 +73,10 @@ class Category extends React.Component<ICategoryPageProps> {
 	}
 }
 
-export default Category;
+const mapStateToProps = state => ({});
+
+const mapDispatchToProps = dispatch => ({
+	changeCountryLocal: id => dispatch(changeCountryLocal(id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Category);
