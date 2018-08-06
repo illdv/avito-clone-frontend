@@ -14,7 +14,7 @@ function show(id) {
 }
 
 function create({ images, options, ...ads }: ICreateAdRequest) {
-	console.log('ads', ads);
+
 	const files    = images.map(img => img.file);
 	const formData = new FormData();
 	for (let i = 0; i < files.length; i++) {

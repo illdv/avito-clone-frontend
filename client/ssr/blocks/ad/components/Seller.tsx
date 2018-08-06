@@ -4,10 +4,12 @@ import { connect } from 'react-redux';
 import { showSellerModals } from 'client/ssr/modals/seller/SellerModalTriger';
 import { ISeller } from 'client/ssr/blocks/ad/interface';
 import { IRootState } from '../../../../common/store/storeInterface';
+import { editAdPagePathCreator } from '../../../../spa/profile/constants';
 
 export const avatar = '/static/img/person.png';
 
 export interface IProps {
+	adId: number;
 	seller: ISeller;
 	country: string;
 	city: string;
@@ -18,7 +20,7 @@ const mapStateToProps = (state: IRootState) => ({
 	user: state.user,
 });
 
-const Seller = ({ seller, country, city, user }: IProps) => (
+const Seller = ({ adId, seller, country, city, user }: IProps) => (
 	<div className='col-lg-7'>
 		<div className='seller d-flex'>
 			<div className='d-flex align-items-center'>
@@ -41,7 +43,7 @@ const Seller = ({ seller, country, city, user }: IProps) => (
 					user.profile && user.profile.id === seller.id // TODO add preloader
 					?
 						<a
-							href={`/profile`} // TODO add id ad
+							href={editAdPagePathCreator(adId)} // TODO add id ad
 							className='btn orange-btn-outline'
 						>
 							Edit

@@ -40,7 +40,7 @@ class CreateAd extends React.Component<IProps> {
 				value: option.value,
 			})),
 			is_vip: state.isVip,
-			type_id: state.selectedType,
+			type_id: state.selectedType || 2, // For buy
 		});
 	}
 
