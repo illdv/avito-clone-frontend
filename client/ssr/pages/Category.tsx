@@ -9,7 +9,7 @@ import EmptySearch from 'client/ssr/blocks/empty-search/EmptySearch';
 import ListOfSubcategories from 'client/ssr/blocks/list-of-subcategories/ListOfSubcategories';
 import GroupList from '../blocks/GroupList/GroupList';
 
-export interface adGroup {
+export interface IAdGroup {
 	title: string;
 	id: number;
 	ads: IAd[];
@@ -18,7 +18,7 @@ export interface adGroup {
 interface ICategoryPageProps {
 	mainCategoryId: number;
 	subcategories: any[];
-	adGroupList: adGroup[];
+	adGroupList: IAdGroup[];
 }
 
 class Category extends React.Component<ICategoryPageProps> {

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import queryString from 'query-string';
 
@@ -11,6 +11,7 @@ import { ILocationStoreState } from 'client/common/location/module';
 import { showLocationModal } from 'client/ssr/modals/location/locationModalTriggers';
 import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
 import { IOption } from 'client/spa/pages/create-ad/ManagerAd';
+import PriceRange from 'client/ssr/blocks/search/components/PriceRange';
 
 require('./Search.sass');
 
@@ -18,6 +19,7 @@ interface ISearchProps {
 	categories: Category;
 	idActiveCategory: number;
 	locationState: ILocationStoreState;
+	priceRange?: boolean;
 }
 
 interface ISearchState {
@@ -40,8 +42,24 @@ const getOption = (option: IOption, creatorChangeOption) => (
 	/>
 );
 
-class Search extends Component<ISearchProps, ISearchState> {
-	onSelectCategory = category => {
+class Search extends React.Component<ISearchProps, ISearchState> {
+	constructor(props, context) {
+		super(props, context);
+
+		let search;
+
+		if (typeof window !== 'undefined') {
+			search = queryString.parse(window.location.search).search;
+		}
+
+		this.state = {
+			duplicateCategories: this.props.categories,
+			activeCategories: [],
+			searchString: search || '',
+			options: [],
+		};
+	}
+	onSelectCategory        = category => {
 		if (category) {
 			if (this.state.activeCategories[0] !== category) {
 				this.setState({
@@ -51,8 +69,8 @@ class Search extends Component<ISearchProps, ISearchState> {
 		} else {
 			this.setState({ activeCategories: [] });
 		}
-	};
-	onSelectSubcategory = (category, parent) => {
+	}
+	onSelectSubcategory     = (category, parent) => {
 		const categories = this.state.activeCategories;
 
 		const indexParent = categories.indexOf(parent);
@@ -76,14 +94,14 @@ class Search extends Component<ISearchProps, ISearchState> {
 			});
 		}
 
-	};
-	getCorrectOptions = (category: ICategory): IOption[] => {
+	}
+	getCorrectOptions       = (category: ICategory): IOption[] => {
 		return category.total_options.map(option => ({
 			value: '',
 			item: option,
 		}));
-	};
-	creatorChangeOption = (id: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
+	}
+	creatorChangeOption     = (id: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newOptions = this.state.options.map(option => {
 			if (option.item.id === id) {
 				return {
@@ -97,14 +115,15 @@ class Search extends Component<ISearchProps, ISearchState> {
 		this.setState({
 			options: newOptions,
 		});
-	};
-	changeSearchString = e => {
+	}
+	changeSearchString      = e => {
 		this.setState({
 			searchString: e.target.value,
 		});
-	};
+	}
 	showSearchLocationModal = () => showLocationModal(ModalNames.searchLocation);
-	onSubmit = e => {
+
+	onSubmit                = e => {
 		e.preventDefault();
 		const { idCity, idRegion, idCountry } = this.props.locationState.local;
 		const query: any                      = {
@@ -139,23 +158,6 @@ class Search extends Component<ISearchProps, ISearchState> {
 		});
 
 		window.location.href = `/search?${queryString.stringify(query)}${optionsString.length > 1 ? optionsString : '' }`;
-	};
-
-	constructor(props, context) {
-		super(props, context);
-
-		let search;
-
-		if (typeof window !== 'undefined') {
-			search = queryString.parse(window.location.search).search;
-		}
-
-		this.state = {
-			duplicateCategories: this.props.categories,
-			activeCategories: [],
-			searchString: search || '',
-			options: [],
-		};
 	}
 
 	get subcategories() {
@@ -216,85 +218,87 @@ class Search extends Component<ISearchProps, ISearchState> {
 	}
 
 	render() {
+		const { priceRange } = this.props;
 		return (
-			<form
-				action='#'
-				onSubmit={this.onSubmit}
-			>
-				<div className='search form-inline form-row p-t-20'>
-					<div className='form-group col-6 col-md-3'>
-						<SelectCategories
-							categories={this.props.categories}
-							onSelect={this.onSelectCategory}
-							label={'Category'}
-							idDefaultCategory={this.props.idActiveCategory}
-							parent={null}
-						/>
+				<form
+					action='#'
+					onSubmit={this.onSubmit}
+				>
+					<div className='search form-inline form-row p-t-20'>
+						<div className='form-group col-6 col-md-3'>
+							<SelectCategories
+								categories={this.props.categories}
+								onSelect={this.onSelectCategory}
+								label={'Category'}
+								idDefaultCategory={this.props.idActiveCategory}
+								parent={null}
+							/>
+						</div>
+						<div className='form-group col-6 col-md-4'>
+							<input
+								className='search__options form-control'
+								placeholder='Search'
+								name='search'
+								value={this.state.searchString}
+								onChange={this.changeSearchString}
+							/>
+						</div>
+						<div className='form-group col-6 col-md-3'>
+							<input
+								readOnly
+								type='text'
+								placeholder='Search'
+								defaultValue={this.localeName}
+								onClick={this.showSearchLocationModal}
+								className='search__options form-control search_input--no-disable'
+							/>
+						</div>
+						<div className='form-group col-12 col-md-2'>
+							<button
+								className='btn orange-btn-outline search__button'
+								type='submit'
+							>
+								<i className='fas fa-search p-r-5' />Search
+							</button>
+						</div>
 					</div>
-					<div className='form-group col-6 col-md-4'>
-						<input
-							className='search__options form-control'
-							placeholder='Search'
-							name='search'
-							value={this.state.searchString}
-							onChange={this.changeSearchString}
-						/>
-					</div>
-					<div className='form-group col-6 col-md-3'>
-						<input
-							readOnly
-							type='text'
-							placeholder='Search'
-							defaultValue={this.localeName}
-							onClick={this.showSearchLocationModal}
-							className='search__options form-control search_input--no-disable'
-						/>
-					</div>
-					<div className='form-group col-12 col-md-2'>
-						<button
-							className='btn orange-btn-outline search__button'
-							type='submit'
-						>
-							<i className='fas fa-search p-r-5' />Search
-						</button>
-					</div>
-				</div>
-				{
-					this.isSubcategories &&
-					<div className='search form-inline form-row'>
-						{
-							this.subcategories.map(category => (
-								category.children.length > 0
-									? (
-										<div
-											key={category.id}
-											className='form-group col-6 col-md-3'
-										>
-											<SelectCategories
-												categories={category.children}
-												onSelect={this.onSelectSubcategory}
-												label={'Subcategory'}
-												parent={category}
-											/>
-										</div>
-									)
-									: null
-							))
-						}
-						{
-							this.lastSubcategory &&
-							this.state.options.map(option => (
-								<div
-									key={option.item.id}
-									className='form-group col-6 col-md-3'
-								>
-									{getOption(option, this.creatorChangeOption)}
-								</div>
-							))
-						}
-					</div>
-				}
-			</form>
+					{
+						this.isSubcategories &&
+						<div className='search form-inline form-row'>
+							{
+								this.subcategories.map(category => (
+									category.children.length > 0
+										? (
+											<div
+												key={category.id}
+												className='form-group col-6 col-md-3'
+											>
+												<SelectCategories
+													categories={category.children}
+													onSelect={this.onSelectSubcategory}
+													label={'Subcategory'}
+													parent={category}
+												/>
+											</div>
+										)
+										: null
+								))
+							}
+							{
+								this.lastSubcategory &&
+								this.state.options.map(option => (
+									<div
+										key={option.item.id}
+										className='form-group col-6 col-md-3'
+									>
+										{getOption(option, this.creatorChangeOption)}
+									</div>
+								))
+							}
+						</div>
+					}
+					{ priceRange ? <PriceRange /> : null }
+				</form>
 		);
 	}
 }
