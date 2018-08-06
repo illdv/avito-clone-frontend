@@ -31,7 +31,6 @@ class CreateAd extends React.Component<IProps> {
 			price: state.adInfoFields.price.value,
 			body: '123213',
 			category_id: useOrDefault(() => selectedCategories[selectedCategories.length - 1].id, null),
-			type_id: 1,
 			longitude: state.location.lng,
 			latitude: state.location.lat,
 			phone: state.sellerInfoFields.phone.value,
@@ -40,7 +39,8 @@ class CreateAd extends React.Component<IProps> {
 				id: option.item.id,
 				value: option.value,
 			})),
-			is_vip: state.is_vip,
+			is_vip: state.isVip,
+			type_id: state.selectedType,
 		});
 	}
 

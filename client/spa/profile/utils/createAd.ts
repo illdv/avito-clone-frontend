@@ -22,6 +22,9 @@ export const transformationAdToManagerState =
 			};
 		});
 
+		const selectedCategories: ICategory[] = findCategoriesQueueById(caregories, initialAd.category_id);
+		const typeIds = getSelectAdTypeIdsBySelectedCategories(selectedCategories);
+
 		return {
 			step: 1,
 			sellerInfoFields: sellerFields,
@@ -30,7 +33,7 @@ export const transformationAdToManagerState =
 				price: { disable: false, value: initialAd.price },
 				description: { disable: false, value: initialAd.description },
 			},
-			selectedCategories: findCategoriesQueueById(caregories, initialAd.category_id),
+			selectedCategories,
 			attachedImages,
 			defaultCategoryId: initialAd.category_id,
 			location: {
@@ -40,7 +43,9 @@ export const transformationAdToManagerState =
 				lat: initialAd.latitude,
 			},
 			options,
-			is_vip: initialAd.is_vip,
+			typeIds,
+			selectedType: initialAd.type_id,
+			isVip: initialAd.is_vip as number,
 		};
 	};
 
@@ -89,3 +94,14 @@ export const findCategoriesQueueById = (categories: ICategory[], findId): any[] 
 		}
 	}, false as any);
 };
+
+export const getSelectAdTypeIdsBySelectedCategories = (selectedCategories: ICategory[]) => { // TODO hardcode
+	const activeCategory: ICategory = selectedCategories && selectedCategories.length > 0 &&
+			selectedCategories[selectedCategories.length - 1];
+
+	if (activeCategory && [1, 10, 11, 12, 13].indexOf(activeCategory.id) !== -1) {
+		return [1, 2, 3];
+	}
+
+	return [];
+}
