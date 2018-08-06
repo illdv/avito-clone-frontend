@@ -134,7 +134,9 @@ class Header extends Component<IProps, IState> {
 					/>
 					<span>Favourites</span>
 					{
-						(count && count.length) ? <span className="notification account__notification"> {count.length}</span> : null
+						(count && count.length)
+						? <span className='notification account__notification'> {count.length}</span>
+						: null
 					}
 				</a>
 			</Link>
