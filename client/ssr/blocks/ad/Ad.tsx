@@ -174,6 +174,7 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 						</div>
 						<div className='row'>
 							<Seller
+								adId={ad.id}
 								seller={ad.user}
 								city={ad.city.title}
 								country={ad.city.country.title}
