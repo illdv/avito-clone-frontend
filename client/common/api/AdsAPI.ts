@@ -26,7 +26,7 @@ function create({ images, options, ...ads }: ICreateAdRequest) {
 	});
 
 	options.forEach((option, index) => {
-		if (option.value) {
+		if (option.value && option.value.length > 0) {
 			formData.append(`options[${index}][id]`, String(option.id));
 			formData.append(`options[${index}][value]`, option.value);
 		}
@@ -51,7 +51,7 @@ function edit({ images, options, ...ads }: IEditAdRequest) {
 	});
 
 	options.forEach((option, index) => {
-		if (option.value) {
+		if (option.value && option.value.length > 0) {
 			formData.append(`options[${index}][id]`, String(option.id));
 			formData.append(`options[${index}][value]`, option.value);
 		}
