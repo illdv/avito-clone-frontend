@@ -15,6 +15,7 @@ import {
 	ILocation,
 } from '../../interfaces/managerAd';
 import CategoryOptions from './CategoryOptions';
+import SelectorAdType from './CategoryTypeSelector';
 
 interface IProps {
 	defaultCategoryId: number;
@@ -25,8 +26,11 @@ interface IProps {
 	location: ILocation;
 	categories: ICategory[];
 	options: IOption[];
+	selectedType: number;
+	typeIds: number[];
 
-	deleteImage(indes: number): void;
+	deleteImage(index: number): void;
+	onSelectTypeAd(id: number): void;
 	onSelectLocation(location: ILocation): void;
 	onUpdateImages(images: IAttachedImage[]): void;
 	onSelectCategories(categories: ICategory[]): void;
@@ -97,6 +101,9 @@ const InformationAboutAd = ({
 	createtorChangeSellerInfoField,
 	location,
 	options,
+	selectedType,
+	typeIds,
+	onSelectTypeAd,
 	creatorChangeOptionById,
 	onSelectLocation,
 }: IProps) => (
@@ -202,6 +209,15 @@ const InformationAboutAd = ({
 			</div> */}
 
 			<CategoryOptions options={options} creatorChangeOptionById={creatorChangeOptionById} />
+
+			{
+				typeIds.length > 0 &&
+				<SelectorAdType
+					typeIds={typeIds}
+					selectedType={selectedType}
+					onSelectTypeAd={onSelectTypeAd}
+				/>
+			}
 
 			<div className='offer-form'>
 				<Input
