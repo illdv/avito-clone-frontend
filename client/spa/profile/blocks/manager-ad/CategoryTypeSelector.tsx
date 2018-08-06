@@ -31,7 +31,7 @@ class SelectorAdType extends React.Component<IProps> {
 							this.props.typeIds.map(id => (
 								<option
 									key={id}
-									defaultValue={String(id)}
+									value={String(id)}
 									selected={ id === this.props.selectedType }
 								>
 									{ mockTypesLabelsById[id] }

@@ -64,7 +64,7 @@ class SelectCategory extends Component<ISelectCategoryProps, ISelectCategoriesSt
 					{this.props.label}
 				</option >
 				{
-					this.props.categories.map(category => {
+					this.props.categories && this.props.categories.map(category => {
 						const selected = comparison(category.id, this.props.idDefaultCategory);
 
 						return (
