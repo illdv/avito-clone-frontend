@@ -13,6 +13,8 @@ import {
 	getLocationsIdByRequest,
 } from '../utils/categoryPrepare';
 
+import {getDataForAdsIndexPage} from '../api/ad';
+
 interface ISugar {
 	params?: any;
 	query?: any;
@@ -31,9 +33,13 @@ const instance = axios.create({
 });
 
 export const ads: prepareMethod = async () => {
-
-	const axiosData = await instance.get('/ads');
-	return axiosData.data.data;
+	try {
+		const axiosData = await instance.get(`/ads?${queryString.stringify(getDataForAdsIndexPage)}`);
+		console.log(axiosData);
+		return axiosData.data.data;
+	} catch (e) {
+		console.log(e);
+	}
 };
 
 export const ad: prepareMethod = async ({ params }) => {
