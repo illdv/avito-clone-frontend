@@ -12,6 +12,7 @@ import { SetCategories } from 'client/ssr/blocks/categories/context';
 import Categories from 'client/ssr/blocks/categories/Categories';
 import Footer from 'client/ssr/blocks/footer/Footer';
 import Ads from 'client/ssr/blocks/ads/Ads';
+import { query } from 'server/router/prepares';
 
 const isServer: boolean = typeof window === 'undefined';
 
@@ -24,11 +25,13 @@ interface IIndexProps {
 	categories: ICategory[];
 	ads: IAd[];
 	location: any;
+	vipAds: IAd[];
 }
 
 export class Index extends React.Component<IIndexProps> {
 	static async getInitialProps({ query }) {
 		return ({
+			vipAds: query.vipAds,
 			ads: query.ads,
 			location: query.location,
 			categories: query.categories,
@@ -36,7 +39,7 @@ export class Index extends React.Component<IIndexProps> {
 	}
 
 	render() {
-		const { categories, location } = this.props;
+		const { categories, location, vipAds, ads } = this.props;
 		return (
 			<React.Fragment>
 				<SetCategories categories={categories}>
@@ -57,12 +60,12 @@ export class Index extends React.Component<IIndexProps> {
 					<Categories />
 					<Ads
 						title='Vip ads'
-						ads={this.props.ads}
+						ads={vipAds}
 					/>
 
 					<Ads
 						title='Houses, villas, cottages'
-						ads={this.props.ads}
+						ads={ads}
 					/>
 
 					<Footer />

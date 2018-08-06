@@ -36,7 +36,7 @@ i18nInstance
 }, () => {
 	// loaded translations we can bootstrap our routes
 	appNext.prepare()
-	.then(() => {
+		.then(() => {
         const server = express();
         
                 server.enable('trust proxy', 1);

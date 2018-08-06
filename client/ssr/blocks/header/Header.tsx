@@ -81,7 +81,7 @@ class Header extends Component<IProps, IState> {
 		this.ref.className = classNames.join(' ');
 	}
 
-	get loginComponent(){
+	get loginComponent() {
 		const { user } = this.props;
 		const profile  = user.profile;
 		const avatar   = profile && profile.image && profile.image.file_url || '/static/img/person.png';
