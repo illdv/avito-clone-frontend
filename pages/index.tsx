@@ -71,7 +71,7 @@ export class Index extends React.Component<IIndexProps, IIndexProps> {
 					<div className='header_bottom p-y-20'>
 						<div className='container'>
 							<Navbar />
-							<Search />
+							<Search priceRange={true}/>
 						</div>
 					</div>
 					<Categories />

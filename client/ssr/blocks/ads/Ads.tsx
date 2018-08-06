@@ -29,11 +29,11 @@ class Ads extends React.Component<IAdsProps> {
 
 	onSelectFilter = (filter: IAdsFilter) => {
 		console.log('filter', filter);
-	};
+	}
 
 	onSelectOrder = (order: IAdsOrder) => {
 		console.log('filter', order);
-	};
+	}
 
 	render() {
 		const { ads, title } = this.props;
@@ -41,7 +41,7 @@ class Ads extends React.Component<IAdsProps> {
 		return (
 			<section>
 				{
-					ads.length ? <div className='container page__container-lg'>
+					(ads && ads.length) ? <div className='container page__container-lg'>
 							<div className='row'>
 								<div className='col-md-12 '>
 									<h3 className='page__title'>{title}</h3>

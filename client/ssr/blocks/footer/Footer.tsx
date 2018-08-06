@@ -10,7 +10,7 @@ class Footer extends React.Component {
 
 	render() {
 		return (
-			<footer className='footer'>
+			<div className='footer'>
 				<div className='top-footer'>
 					<div className='container top-footer__container'>
 						<FooterNavigation/>
@@ -34,7 +34,7 @@ class Footer extends React.Component {
 						<div className='row'>
 							<div className='col-12'>
 								<div className='bottom-footer__container'>
-									<ul className='navbar-nav'>
+									<ul className='footer-nav'>
 										<li className='nav-item footer-nav__item'>
 											<a href='#'>
 												Submit an advertisement
@@ -74,7 +74,7 @@ class Footer extends React.Component {
 						</div>
 					</div>
 				</div>
-			</footer>
+			</div>
 		);
 	}
 }

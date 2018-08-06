@@ -86,7 +86,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 		} else {
 			this.setState({ activeCategories: [] });
 		}
-	};
+	}
 	onSelectSubcategory     = (category, parent) => {
 		const categories = this.state.activeCategories;
 
@@ -111,13 +111,13 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 			});
 		}
 
-	};
+	}
 	getCorrectOptions       = (category: ICategory): IOption[] => {
 		return category.total_options.map(option => ({
 			value: '',
 			item: option,
 		}));
-	};
+	}
 	creatorChangeOption     = (id: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newOptions = this.state.options.map(option => {
 			if (option.item.id === id) {
@@ -132,12 +132,12 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 		this.setState({
 			options: newOptions,
 		});
-	};
+	}
 	changeSearchString      = e => {
 		this.setState({
 			searchString: e.target.value,
 		});
-	};
+	}
 	showSearchLocationModal = () => showLocationModal(ModalNames.searchLocation);
 
 	onSubmit = e => {
@@ -183,7 +183,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 		});
 
 		window.location.href = `/search?${queryString.stringify(query)}${optionsString.length > 1 ? optionsString : '' }`;
-	};
+	}
 
 	get subcategories() {
 		return this.state.activeCategories;
@@ -244,15 +244,15 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 
 	onSetPriceType = (priceType: string) => {
 		this.setState(({ rangePrice }) => ({ rangePrice: { ...rangePrice, priceType } }));
-	};
+	}
 
 	onSetPriceFrom = (priceFrom: string) => {
 		this.setState(({ rangePrice }) => ({ rangePrice: { ...rangePrice, priceFrom } }));
-	};
+	}
 
 	onSetPriceTo = (priceTo: string) => {
 		this.setState(({ rangePrice }) => ({ rangePrice: { ...rangePrice, priceTo } }));
-	};
+	}
 
 	render() {
 		const { priceRange } = this.props;

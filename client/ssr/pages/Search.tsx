@@ -6,9 +6,10 @@ import Search from 'client/ssr/blocks/search/Search';
 import Footer from 'client/ssr/blocks/footer/Footer';
 import Ads from 'client/ssr/blocks/ads/Ads';
 import EmptySearch from 'client/ssr/blocks/empty-search/EmptySearch';
+import { IAds } from 'client/common/entities/user/modules/owned-ads/interfaces';
 
 interface ISearchPageProp {
-	search: IAd[];
+	search: IAds[];
 	query: any;
 }
 
@@ -23,7 +24,7 @@ class SearchPage extends React.Component<ISearchPageProp> {
 				<div className='bottom-header p-y-20'>
 					<div className='container'>
 						<Navbar />
-						<Search idActiveCategory={this.props.query.category}/>
+						<Search idActiveCategory={this.props.query.category} priceRange={true}/>
 					</div>
 				</div>
 				{
