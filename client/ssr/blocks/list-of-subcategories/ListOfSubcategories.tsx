@@ -2,17 +2,30 @@ import React from 'react';
 
 require('./ListOfSubcategories.sass');
 
-const ListOfSubcategories = ({ subcategories }: { subcategories: any[] }) => (
+export interface ItemOfTitlesList {
+	id: string;
+	href: string;
+	title: string;
+	count: number;
+}
+
+export interface ITitlesList {
+	items: ItemOfTitlesList[];
+	title: string;
+}
+
+const TitlesList = ({ items, title }: ITitlesList) => (
 	<div className='row'>
+		<div>{title}</div>
 		<div className='col-md-12 '>
 			<ul className='list-of-types list-unstyled'>
 				{
-					subcategories.map(subcategory => (
-						<li key={subcategory.id} >
-							<a href={`/category/${ subcategory.slug }`}>
-								<span>{ subcategory.title }</span>
+					items.map(subcategory => (
+						<li key={subcategory.id}>
+							<a href={subcategory.href}>
+								<span>{subcategory.title}</span>
 							</a>
-							<span>{ subcategory.total_ads_count }</span>
+							<span>{subcategory.count}</span>
 						</li>
 					))
 				}
@@ -21,4 +34,4 @@ const ListOfSubcategories = ({ subcategories }: { subcategories: any[] }) => (
 	</div>
 );
 
-export default ListOfSubcategories;
+export default TitlesList;
