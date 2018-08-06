@@ -81,7 +81,7 @@ class Header extends Component<IProps, IState> {
 		this.ref.className = classNames.join(' ');
 	}
 
-	get loginComponent(){
+	get loginComponent() {
 		const { user } = this.props;
 		const profile  = user.profile;
 		const avatar   = profile && profile.image && profile.image.file_url || '/static/img/person.png';
@@ -134,7 +134,7 @@ class Header extends Component<IProps, IState> {
 					/>
 					<span>Favourites</span>
 					{
-						(count && count.length) ? <span className="notification account__notification"> {count.length}</span> : null
+						(count && count.length) ? <span className='notification account__notification'> {count.length}</span> : null
 					}
 				</a>
 			</Link>

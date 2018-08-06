@@ -1,6 +1,5 @@
 import { default as axios } from 'axios';
 import * as queryString from 'query-string';
-import * as iplocation from 'iplocation';
 
 import {
 	findCategoriesQueueBySlug,
@@ -54,7 +53,6 @@ const getAdsByParams = async params => {
 	const response = await instance.get(`/ads/?${ queryString.stringify(params) }`);
 	return response.data;
 };
-
 
 export const location: prepareMethod = async (sugar, req) => {
 	/* const ip = req.clientIp;
@@ -115,6 +113,11 @@ export const location: prepareMethod = async (sugar, req) => {
 		},
 		locationName: getLocationNameByLocations(idCountry, idRegion, idCity, countries, regions, cities),
 	};
+};
+
+export const vipAds: prepareMethod = async ({ params, query, path }, req) => {
+	const vipAdsResponse = await getAdsByParams({ vip: 1, count: 32 });
+	return vipAdsResponse.data;
 };
 
 export const category: prepareMethod = async ({ params, query, path }, req) => {

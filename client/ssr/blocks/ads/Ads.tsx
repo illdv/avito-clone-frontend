@@ -15,11 +15,11 @@ export interface IAdsProps {
 }
 
 export enum  IAdsOrder {
-	ASC = 'ASC', DESC = 'DESC', DEFAULT = 'DEFAULT'
+	ASC = 'ASC', DESC = 'DESC', DEFAULT = 'DEFAULT',
 }
 
 export enum  IAdsFilter {
-	personal = 'personal', company = 'company', all = 'all'
+	personal = 'personal', company = 'company', all = 'all',
 }
 
 class Ads extends React.Component<IAdsProps> {
@@ -28,11 +28,11 @@ class Ads extends React.Component<IAdsProps> {
 	}
 
 	onSelectFilter = (filter: IAdsFilter) => {
-		console.log('filter', filter)
+		console.log('filter', filter);
 	}
 
 	onSelectOrder = (order: IAdsOrder) => {
-		console.log('filter', order)
+		console.log('filter', order);
 	}
 
 	render() {
