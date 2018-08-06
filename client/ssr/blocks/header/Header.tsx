@@ -1,28 +1,25 @@
 import React, { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import Link from 'next/link';
-import axios from 'axios';
 
 import LoginModal from '../../modals/auth/AuthModal';
 import SendCodeToEmailModal from '../../modals/forgot-password/SendCodeToEmail';
 import LanguageDropdown from './components/LanguageDropdown';
 import { showLoginModal } from 'client/ssr/modals/auth/loginModalTriggers';
 import { IRootState } from 'client/common/store/storeInterface';
-import { UserActions, IUserActions } from 'client/common/entities/user/rootActions';
-import { bindModuleAction } from 'client/common/entities/user/utils';
+import { UserActions } from 'client/common/entities/user/rootActions';
 import { isServer } from 'client/common/utils/utils';
 import { CustomStorage, getFavoritesFromLocalStorage } from 'client/common/entities/user/CustomStorage';
 import ResetPasswordModal from 'client/ssr/modals/forgot-password/ResetPasswordModal';
 import SuccessModal from 'client/ssr/modals/success/SuccessModal';
 import MainLocationModal from 'client/ssr/modals/location/MainLocationModal';
-import { initialize, ILocationSession, ILocationStoreState } from 'client/common/location/module';
+import {ILocationStoreState } from 'client/common/location/module';
 import { getLocationState } from 'client/common/store/selectors';
 import { showLocationModal } from 'client/ssr/modals/location/locationModalTriggers';
 import SearchLocationModal from 'client/ssr/modals/location/SearchLocationModal';
 import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
 import { useOrDefault } from 'client/spa/pages/create-ad/utils';
 import { defaultPagePath } from '../../../spa/profile/constants';
-import Spinner, { SpinerSize } from 'client/common/blocks/spinner/Spinner';
 
 require('../../../common/styles/main.sass');
 require('./Header.sass');
@@ -137,8 +134,9 @@ class Header extends Component<IProps, IState> {
 					/>
 					<span>Favourites</span>
 					{
-						count && count.length > 0 &&
-						<span className='notification account__notification'> { count.length }</span>
+						(count && count.length)
+						? <span className='notification account__notification'> {count.length}</span>
+						: null
 					}
 				</a>
 			</Link>
