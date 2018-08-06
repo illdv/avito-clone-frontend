@@ -26,8 +26,10 @@ function create({ images, options, ...ads }: ICreateAdRequest) {
 	});
 
 	options.forEach((option, index) => {
-		formData.append(`options[${index}][id]`, String(option.id));
-		formData.append(`options[${index}][value]`, option.value);
+		if (option.value) {
+			formData.append(`options[${index}][id]`, String(option.id));
+			formData.append(`options[${index}][value]`, option.value);
+		}
 	});
 
 	return AxiosWrapper.post(`/ads/`, formData, {
@@ -49,8 +51,10 @@ function edit({ images, options, ...ads }: IEditAdRequest) {
 	});
 
 	options.forEach((option, index) => {
-		formData.append(`options[${index}][id]`, String(option.id));
-		formData.append(`options[${index}][value]`, option.value);
+		if (option.value) {
+			formData.append(`options[${index}][id]`, String(option.id));
+			formData.append(`options[${index}][value]`, option.value);
+		}
 	});
 
 	formData.append('_method', 'put');
