@@ -12,7 +12,8 @@ import { SetCategories } from 'client/ssr/blocks/categories/context';
 import Categories from 'client/ssr/blocks/categories/Categories';
 import Footer from 'client/ssr/blocks/footer/Footer';
 import Ads from 'client/ssr/blocks/ads/Ads';
-import { query } from 'server/router/prepares';
+
+import * as loaderPrepare from '../client/common/loader-prepare/loaderPrepare';
 
 const isServer: boolean = typeof window === 'undefined';
 
@@ -21,24 +22,40 @@ if (isServer) {
 }
 
 interface IIndexProps {
-	t: any;
 	categories: ICategory[];
 	ads: IAd[];
 	location: any;
 	vipAds: IAd[];
 }
 
-export class Index extends React.Component<IIndexProps> {
+let loopState: IIndexProps;
+
+export class Index extends React.Component<IIndexProps, IIndexProps> {
 	static async getInitialProps({ query }) {
-		return ({
+		const {ads, categories, location, vipAds} = query;
+
+		if (!ads || !categories || !location || !vipAds) {
+			console.log('loopState', loopState);
+			return ({
+				vipAds: loopState.vipAds,
+				ads: loopState.ads,
+				location: loopState.location,
+				categories: loopState.categories,
+			});
+		}
+
+		const result = {
 			vipAds: query.vipAds,
 			ads: query.ads,
 			location: query.location,
 			categories: query.categories,
-		});
+		};
+		
+		return result;
 	}
 
 	render() {
+		loopState = this.props;
 		const { categories, location, vipAds, ads } = this.props;
 		return (
 			<React.Fragment>
