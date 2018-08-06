@@ -137,7 +137,7 @@ export interface ISimilarProps {
 }
 
 export interface IChart {
-	similar_ads: any[];
+	similar_ads: IAd[];
 	id_parent: number;
 	price_histories: IProductHistories[];
 
