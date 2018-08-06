@@ -9,6 +9,7 @@ import EmptySearch from 'client/ssr/blocks/empty-search/EmptySearch';
 
 interface ISearchPageProp {
 	search: IAd[];
+	query: any;
 }
 
 class SearchPage extends React.Component<ISearchPageProp> {
@@ -22,7 +23,7 @@ class SearchPage extends React.Component<ISearchPageProp> {
 				<div className='bottom-header p-y-20'>
 					<div className='container'>
 						<Navbar />
-						<Search />
+						<Search idActiveCategory={this.props.query.category}/>
 					</div>
 				</div>
 				{

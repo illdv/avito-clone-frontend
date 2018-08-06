@@ -32,6 +32,8 @@ class Category extends React.Component<ICategoryProps> {
 			href: '/category',
 		}].concat(query.category.breadcrumbs);
 
+		console.log(query);
+
 		return {
 			breadcrumbs,
 			subcategories: query.category.subcategories || [],
