@@ -146,6 +146,7 @@ class Search extends Component<ISearchProps, ISearchState> {
 
 		let search;
 
+		// TODO refactor use search from prepares.
 		if (typeof window !== 'undefined') {
 			search = queryString.parse(window.location.search).search;
 		}
