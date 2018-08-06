@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import AdCard from 'client/ssr/blocks/ads/components/AdCard';
 import { IRootState } from 'client/common/store/storeInterface';
 import { UserActions } from 'client/common/entities/user/rootActions';
+import AdsFilter from 'client/ssr/blocks/ads/components/AdsFilter';
 
 require('./Ads.sass');
 
@@ -14,11 +15,11 @@ export interface IAdsProps {
 }
 
 export enum  IAdsOrder {
-	ASC = 'ASC', DESC = 'DESC', DEFAULT = 'DEFAULT'
+	ASC = 'ASC', DESC = 'DESC', DEFAULT = 'DEFAULT',
 }
 
 export enum  IAdsFilter {
-	personal = 'personal', company = 'company', all = 'all'
+	personal = 'personal', company = 'company', all = 'all',
 }
 
 class Ads extends React.Component<IAdsProps> {
@@ -27,11 +28,11 @@ class Ads extends React.Component<IAdsProps> {
 	}
 
 	onSelectFilter = (filter: IAdsFilter) => {
-		console.log('filter', filter)
+		console.log('filter', filter);
 	}
 
 	onSelectOrder = (order: IAdsOrder) => {
-		console.log('filter', order)
+		console.log('filter', order);
 	}
 
 	render() {
@@ -45,10 +46,10 @@ class Ads extends React.Component<IAdsProps> {
 							<h3 className='page__title'>{title}</h3>
 						</div>
 					</div>
-					{/*{*/}
-						{/*ads.length > 5 ? <AdsFilter selectFilter={this.onSelectFilter} selectOrder={this.onSelectOrder}/>*/}
-						{/*: null*/}
-					{/*}*/}
+					{
+						(ads && ads.length > 8) ? <AdsFilter selectFilter={this.onSelectFilter} selectOrder={this.onSelectOrder}/>
+						: null
+					}
 					<div className='row p-t-30'>
 						{
 							ads && ads.map((ad: IAd) => (

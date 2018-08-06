@@ -83,7 +83,6 @@ class EditAd extends React.Component<IProps, IState> {
 			price: state.adInfoFields.price.value,
 			title: state.adInfoFields.title.value,
 			description: state.adInfoFields.description.value,
-			type_id: this.state.editingAd.type_id,
 			city_id: this.props.locationState.session.idCity,
 			category_id: useOrDefault(() => selectedCategories[selectedCategories.length - 1].id, null),
 			body: '1212',
@@ -94,7 +93,8 @@ class EditAd extends React.Component<IProps, IState> {
 				id: option.item.id,
 				value: option.value,
 			})),
-			is_vip: state.is_vip,
+			is_vip: state.isVip,
+			type_id: state.selectedType,
 
 		};
 

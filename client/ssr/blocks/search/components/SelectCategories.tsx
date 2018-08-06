@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 require('./SelectCategories.sass');
 
-interface SelectCategoryProps {
+interface ISelectCategoryProps {
 	label: string;
 	parent: any;
 	categories: any;
@@ -10,11 +10,11 @@ interface SelectCategoryProps {
 	onSelect: (category: any, parent: any | null) => void;
 }
 
-interface SelectCategoriesState {
+interface ISelectCategoriesState {
 	value: number;
 }
 
-class SelectCategory extends Component<SelectCategoryProps, SelectCategoriesState> {
+class SelectCategory extends Component<ISelectCategoryProps, ISelectCategoriesState> {
 
 	constructor(props) {
 		super(props);
@@ -50,7 +50,7 @@ class SelectCategory extends Component<SelectCategoryProps, SelectCategoriesStat
 		});
 
 		this.props.onSelect(selectedCategory[0], this.props.parent);
-	};
+	}
 
 	render() {
 		console.log('idDefaultCategory = ', this.props.idDefaultCategory);

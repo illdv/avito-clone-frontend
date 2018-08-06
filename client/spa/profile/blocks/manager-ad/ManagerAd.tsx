@@ -4,7 +4,7 @@ import { connect, Dispatch } from 'react-redux';
 import InformationAboutAd from './InformationAboutAd';
 import { IRootState } from 'client/common/store/storeInterface';
 import ConfirmAd from './ConfirmAd';
-import { transformationAdToManagerState } from '../../utils/createAd';
+import { transformationAdToManagerState, getSelectAdTypeIdsBySelectedCategories } from '../../utils/createAd';
 
 import {
 	ISellerInfoFields,
@@ -34,7 +34,9 @@ export interface IState {
 	defaultCategoryId: number;
 	location: ILocation;
 	options: IOption[];
-	is_vip: number;
+	isVip: number;
+	typeIds: number[];
+	selectedType: number;
 }
 
 const mapStateToProps = (state: IRootState) => ({
@@ -78,7 +80,9 @@ class ManagerAd extends React.Component<IProps, IState> {
 					lat: 37.61140,
 				},
 				options: [],
-				is_vip: 0,
+				isVip: 0,
+				typeIds: [],
+				selectedType: null,
 			};
 		}
 
@@ -100,11 +104,11 @@ class ManagerAd extends React.Component<IProps, IState> {
 		const plan = e.target.value;
 		if (plan === 'Quick' || plan === 'Turbo') {
 			this.setState({
-				is_vip: 1,
+				isVip: 1,
 			});
 		} else {
 			this.setState({
-				is_vip: 0,
+				isVip: 0,
 			});
 		}
 
@@ -152,7 +156,9 @@ class ManagerAd extends React.Component<IProps, IState> {
 	}
 
 	onSelectCategories = (selectedCategories: ICategory[]) => {
+		let selectedType = null;
 		const options = this.getOptionsBySelectedCategories(selectedCategories);
+		const typeIds = getSelectAdTypeIdsBySelectedCategories(selectedCategories);
 
 		const updatedOptions = options.map((option): IOption => {
 			const findedOption = this.state.options.filter(ops => {
@@ -166,9 +172,25 @@ class ManagerAd extends React.Component<IProps, IState> {
 			}
 		});
 
+		if (typeIds.length > 0) {
+			if (typeIds.indexOf(this.state.selectedType) !== -1) {
+				selectedType = this.state.selectedType;
+			} else {
+				selectedType = typeIds[0];
+			}
+		}
+
 		this.setState({
 			selectedCategories,
 			options: updatedOptions,
+			selectedType,
+			typeIds,
+		});
+	}
+
+	onSelectTypeAd = (id: number) => {
+		this.setState({
+			selectedType: id,
 		});
 	}
 
@@ -233,6 +255,10 @@ class ManagerAd extends React.Component<IProps, IState> {
 						location={ this.state.location }
 						options={ this.state.options }
 						creatorChangeOptionById={ this.creatorChangeOptionById }
+						onSelectTypeAd={ this.onSelectTypeAd }
+						selectedType={ this.state.selectedType }
+						typeIds={ this.state.typeIds }
+
 					/>
 					<div className='container'>
 						<button

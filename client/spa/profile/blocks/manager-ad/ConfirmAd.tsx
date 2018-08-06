@@ -9,9 +9,9 @@ export interface IProps {
 	title: string;
 	price: string;
 	description: string;
-	vip(): void;
 	next(): void;
 	back(): void;
+	vip(e): void;
 }
 
 const ConfirmAd = ({

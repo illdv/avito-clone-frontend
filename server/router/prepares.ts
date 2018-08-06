@@ -51,7 +51,6 @@ export const categories: prepareMethod = async () => {
 
 const getAdsByParams = async params => {
 	const response = await instance.get(`/ads/?${ queryString.stringify(params) }`);
-	console.log(response.data);
 	return response.data;
 };
 
@@ -118,6 +117,11 @@ export const location: prepareMethod = async (sugar, req) => {
 
 export const query: prepareMethod = async (sugar, req) => {
 	return sugar.query;
+};
+
+export const vipAds: prepareMethod = async ({ params, query, path }, req) => {
+	const vipAdsResponse = await getAdsByParams({ vip: 1, count: 8 });
+	return vipAdsResponse.data;
 };
 
 export const category: prepareMethod = async ({ params, query, path }, req) => {

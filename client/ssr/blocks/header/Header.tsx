@@ -7,13 +7,13 @@ import SendCodeToEmailModal from '../../modals/forgot-password/SendCodeToEmail';
 import LanguageDropdown from './components/LanguageDropdown';
 import { showLoginModal } from 'client/ssr/modals/auth/loginModalTriggers';
 import { IRootState } from 'client/common/store/storeInterface';
-import { UserActions} from 'client/common/entities/user/rootActions';
+import { UserActions } from 'client/common/entities/user/rootActions';
 import { isServer } from 'client/common/utils/utils';
 import { CustomStorage, getFavoritesFromLocalStorage } from 'client/common/entities/user/CustomStorage';
 import ResetPasswordModal from 'client/ssr/modals/forgot-password/ResetPasswordModal';
 import SuccessModal from 'client/ssr/modals/success/SuccessModal';
 import MainLocationModal from 'client/ssr/modals/location/MainLocationModal';
-import { ILocationStoreState } from 'client/common/location/module';
+import {ILocationStoreState } from 'client/common/location/module';
 import { getLocationState } from 'client/common/store/selectors';
 import { showLocationModal } from 'client/ssr/modals/location/locationModalTriggers';
 import SearchLocationModal from 'client/ssr/modals/location/SearchLocationModal';
@@ -81,7 +81,7 @@ class Header extends Component<IProps, IState> {
 		this.ref.className = classNames.join(' ');
 	}
 
-	get loginComponent(){
+	get loginComponent() {
 		const { user } = this.props;
 		const profile  = user.profile;
 		const avatar   = profile && profile.image && profile.image.file_url || '/static/img/person.png';
@@ -134,8 +134,9 @@ class Header extends Component<IProps, IState> {
 					/>
 					<span>Favourites</span>
 					{
-						count && count.length &&
-						<span className='notification account__notification'> { count.length }</span>
+						(count && count.length)
+						? <span className='notification account__notification'> {count.length}</span>
+						: null
 					}
 				</a>
 			</Link>

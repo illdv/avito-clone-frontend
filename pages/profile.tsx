@@ -15,29 +15,31 @@ if (isServer) {
 
 interface IProps {
 	categories: ICategory[];
+	location: any;
 }
 
 export default class extends React.Component<IProps> {
-	static async getInitialProps({ query }) {
+	static async getInitialProps({ query }) { // TODO need refactor
 		let categories = query.categories;
 		let location = query.location;
 
-		if (!categories) {
+		if (!categories || typeof categories[0] === 'string') {
 			const categoriesResponse = await loaderPrepare.get('categories');
 			categories = categoriesResponse.data;
 		}
 
-		if (!categories) {
+		if (!location) {
 			const locationResponse = await await loaderPrepare.get('location');
 			location = locationResponse.data;
 		}
 
 		return { location, categories };
 	}
+
 	render() {
 		return (
 			<>
-				<SetCategories categories={ this.props.categories } >
+				<SetCategories categories={this.props.categories} >
 					<Head>
 						<meta property='og:description' content='Content' />
 						<title>Profile page</title>
