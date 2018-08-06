@@ -120,7 +120,7 @@ export const query: prepareMethod = async (sugar, req) => {
 };
 
 export const vipAds: prepareMethod = async ({ params, query, path }, req) => {
-	const vipAdsResponse = await getAdsByParams({ vip: 1, count: 32 });
+	const vipAdsResponse = await getAdsByParams({ vip: 1, count: 8 });
 	return vipAdsResponse.data;
 };
 

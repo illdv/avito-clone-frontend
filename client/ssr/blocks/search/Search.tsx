@@ -27,6 +27,11 @@ interface ISearchState {
 	activeCategories: any;
 	duplicateCategories: any;
 	options: IOption[];
+	rangePrice: {
+		priceType: string;
+		priceFrom: string;
+		priceTo: string;
+	};
 }
 
 const mapStateToProps = (state: IRootState) => ({
@@ -41,6 +46,12 @@ const getOption = (option: IOption, creatorChangeOption) => (
 		onChange={creatorChangeOption(option.item.id)}
 	/>
 );
+
+enum PriceRangeQueryParamType {
+	forSale = 'for-sale',
+	forBy   = 'for-buy',
+	forRent = 'for-rent',
+}
 
 class Search extends React.Component<ISearchProps, ISearchState> {
 	constructor(props, context) {
@@ -57,8 +68,14 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 			activeCategories: [],
 			searchString: search || '',
 			options: [],
+			rangePrice: {
+				priceType: null,
+				priceFrom: null,
+				priceTo: null,
+			},
 		};
 	}
+
 	onSelectCategory        = category => {
 		if (category) {
 			if (this.state.activeCategories[0] !== category) {
@@ -69,7 +86,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 		} else {
 			this.setState({ activeCategories: [] });
 		}
-	}
+	};
 	onSelectSubcategory     = (category, parent) => {
 		const categories = this.state.activeCategories;
 
@@ -94,13 +111,13 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 			});
 		}
 
-	}
+	};
 	getCorrectOptions       = (category: ICategory): IOption[] => {
 		return category.total_options.map(option => ({
 			value: '',
 			item: option,
 		}));
-	}
+	};
 	creatorChangeOption     = (id: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newOptions = this.state.options.map(option => {
 			if (option.item.id === id) {
@@ -115,18 +132,19 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 		this.setState({
 			options: newOptions,
 		});
-	}
+	};
 	changeSearchString      = e => {
 		this.setState({
 			searchString: e.target.value,
 		});
-	}
+	};
 	showSearchLocationModal = () => showLocationModal(ModalNames.searchLocation);
 
-	onSubmit                = e => {
+	onSubmit = e => {
 		e.preventDefault();
-		const { idCity, idRegion, idCountry } = this.props.locationState.local;
-		const query: any                      = {
+		const { idCity, idRegion, idCountry }                   = this.props.locationState.local;
+		const { rangePrice: { priceType, priceFrom, priceTo } } = this.state;
+		const query: any                                        = {
 			search: this.state.searchString,
 		};
 
@@ -141,6 +159,13 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 		} else if (idCountry) {
 			query.country_id = idCountry;
 		}
+
+		priceType ? query.type = priceType :
+			query.type = null;
+		priceFrom ? query.price_from = priceFrom :
+			query.price_from = null;
+		priceTo ? query.price_to = priceTo :
+			query.price_to = null;
 
 		/* Router.push({
 			pathname: '/search',
@@ -158,7 +183,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 		});
 
 		window.location.href = `/search?${queryString.stringify(query)}${optionsString.length > 1 ? optionsString : '' }`;
-	}
+	};
 
 	get subcategories() {
 		return this.state.activeCategories;
@@ -217,88 +242,104 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 		return 'World';
 	}
 
+	onSetPriceType = (priceType: string) => {
+		this.setState(({ rangePrice }) => ({ rangePrice: { ...rangePrice, priceType } }));
+	};
+
+	onSetPriceFrom = (priceFrom: string) => {
+		this.setState(({ rangePrice }) => ({ rangePrice: { ...rangePrice, priceFrom } }));
+	};
+
+	onSetPriceTo = (priceTo: string) => {
+		this.setState(({ rangePrice }) => ({ rangePrice: { ...rangePrice, priceTo } }));
+	};
+
 	render() {
 		const { priceRange } = this.props;
 		return (
-				<form
-					action='#'
-					onSubmit={this.onSubmit}
-				>
-					<div className='search form-inline form-row p-t-20'>
-						<div className='form-group col-6 col-md-3'>
-							<SelectCategories
-								categories={this.props.categories}
-								onSelect={this.onSelectCategory}
-								label={'Category'}
-								idDefaultCategory={this.props.idActiveCategory}
-								parent={null}
-							/>
-						</div>
-						<div className='form-group col-6 col-md-4'>
-							<input
-								className='search__options form-control'
-								placeholder='Search'
-								name='search'
-								value={this.state.searchString}
-								onChange={this.changeSearchString}
-							/>
-						</div>
-						<div className='form-group col-6 col-md-3'>
-							<input
-								readOnly
-								type='text'
-								placeholder='Search'
-								defaultValue={this.localeName}
-								onClick={this.showSearchLocationModal}
-								className='search__options form-control search_input--no-disable'
-							/>
-						</div>
-						<div className='form-group col-12 col-md-2'>
-							<button
-								className='btn orange-btn-outline search__button'
-								type='submit'
-							>
-								<i className='fas fa-search p-r-5' />Search
-							</button>
-						</div>
+			<form
+				action='#'
+				onSubmit={this.onSubmit}
+			>
+				<div className='search form-inline form-row p-t-20'>
+					<div className='form-group col-6 col-md-3'>
+						<SelectCategories
+							categories={this.props.categories}
+							onSelect={this.onSelectCategory}
+							label={'Category'}
+							idDefaultCategory={this.props.idActiveCategory}
+							parent={null}
+						/>
 					</div>
-					{
-						this.isSubcategories &&
-						<div className='search form-inline form-row'>
-							{
-								this.subcategories.map(category => (
-									category.children.length > 0
-										? (
-											<div
-												key={category.id}
-												className='form-group col-6 col-md-3'
-											>
-												<SelectCategories
-													categories={category.children}
-													onSelect={this.onSelectSubcategory}
-													label={'Subcategory'}
-													parent={category}
-												/>
-											</div>
-										)
-										: null
-								))
-							}
-							{
-								this.lastSubcategory &&
-								this.state.options.map(option => (
-									<div
-										key={option.item.id}
-										className='form-group col-6 col-md-3'
-									>
-										{getOption(option, this.creatorChangeOption)}
-									</div>
-								))
-							}
-						</div>
-					}
-					{ priceRange ? <PriceRange /> : null }
-				</form>
+					<div className='form-group col-6 col-md-4'>
+						<input
+							className='search__options form-control'
+							placeholder='Search'
+							name='search'
+							value={this.state.searchString}
+							onChange={this.changeSearchString}
+						/>
+					</div>
+					<div className='form-group col-6 col-md-3'>
+						<input
+							readOnly
+							type='text'
+							placeholder='Search'
+							defaultValue={this.localeName}
+							onClick={this.showSearchLocationModal}
+							className='search__options form-control search_input--no-disable'
+						/>
+					</div>
+					<div className='form-group col-12 col-md-2'>
+						<button
+							className='btn orange-btn-outline search__button'
+							type='submit'
+						>
+							<i className='fas fa-search p-r-5' />Search
+						</button>
+					</div>
+				</div>
+				{
+					this.isSubcategories &&
+					<div className='search form-inline form-row'>
+						{
+							this.subcategories.map(category => (
+								category.children.length > 0
+									? (
+										<div
+											key={category.id}
+											className='form-group col-6 col-md-3'
+										>
+											<SelectCategories
+												categories={category.children}
+												onSelect={this.onSelectSubcategory}
+												label={'Subcategory'}
+												parent={category}
+											/>
+										</div>
+									)
+									: null
+							))
+						}
+						{
+							this.lastSubcategory &&
+							this.state.options.map(option => (
+								<div
+									key={option.item.id}
+									className='form-group col-6 col-md-3'
+								>
+									{getOption(option, this.creatorChangeOption)}
+								</div>
+							))
+						}
+					</div>
+				}
+				{priceRange ? <PriceRange
+					setPriceType={this.onSetPriceType}
+					setPriceFrom={this.onSetPriceFrom}
+					setPriceTo={this.onSetPriceTo}
+				/> : null}
+			</form>
 		);
 	}
 }

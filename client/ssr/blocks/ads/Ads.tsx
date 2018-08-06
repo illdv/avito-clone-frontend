@@ -47,7 +47,7 @@ class Ads extends React.Component<IAdsProps> {
 						</div>
 					</div>
 					{
-						ads.length > 5 ? <AdsFilter selectFilter={this.onSelectFilter} selectOrder={this.onSelectOrder}/>
+						ads.length > 8 ? <AdsFilter selectFilter={this.onSelectFilter} selectOrder={this.onSelectOrder}/>
 						: null
 					}
 					<div className='row p-t-30'>
