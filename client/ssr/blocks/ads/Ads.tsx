@@ -14,59 +14,66 @@ export interface IAdsProps {
 	ads: IAd[];
 }
 
-export enum  IAdsOrder {
+export enum IAdsOrder {
 	ASC = 'ASC', DESC = 'DESC', DEFAULT = 'DEFAULT',
 }
 
-export enum  IAdsFilter {
+export enum IAdsFilter {
 	personal = 'personal', company = 'company', all = 'all',
 }
 
 class Ads extends React.Component<IAdsProps> {
 	addToFavorites = (id: number) => {
 		UserActions.favorites.selectFavorite.REQUEST({ id });
-	}
+	};
 
 	onSelectFilter = (filter: IAdsFilter) => {
 		console.log('filter', filter);
-	}
+	};
 
 	onSelectOrder = (order: IAdsOrder) => {
 		console.log('filter', order);
-	}
+	};
 
 	render() {
-		const {ads, title} = this.props;
+		const { ads, title } = this.props;
 
 		return (
 			<section>
-				<div className='container page__container-lg'>
-					<div className='row'>
-						<div className='col-md-12 '>
-							<h3 className='page__title'>{title}</h3>
-						</div>
-					</div>
-					{
-						(ads && ads.length > 8) ? <AdsFilter selectFilter={this.onSelectFilter} selectOrder={this.onSelectOrder}/>
-						: null
-					}
-					<div className='row p-t-30'>
-						{
-							ads && ads.map((ad: IAd) => (
-								<div
-									key={ad.id}
-									className='col-md-4 col-lg-3'
-								>
-									<AdCard
-										ad={ad}
-										favoritesIds={this.props.user.favorites.ids}
-										addToFavorites={this.addToFavorites}
-									/>
+				{
+					ads.length ? <div className='container page__container-lg'>
+							<div className='row'>
+								<div className='col-md-12 '>
+									<h3 className='page__title'>{title}</h3>
 								</div>
-							))
-						}
-					</div>
-				</div>
+							</div>
+							{
+								ads.length > 8 ?
+									<AdsFilter
+										selectFilter={this.onSelectFilter}
+										selectOrder={this.onSelectOrder}
+									/>
+									: null
+							}
+							<div className='row p-t-30'>
+								{
+									ads.map((ad: IAd) => (
+										<div
+											key={ad.id}
+											className='col-md-4 col-lg-3'
+										>
+											<AdCard
+												ad={ad}
+												favoritesIds={this.props.user.favorites.ids}
+												addToFavorites={this.addToFavorites}
+											/>
+										</div>
+									))
+								}
+							</div>
+						</div>
+						: null
+				}
 			</section>
 		);
 	}
