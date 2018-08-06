@@ -6,8 +6,19 @@ interface IFavoritesItem {
 	checked: any;
 }
 
+
+
 const FavoritesItem: React.SFC<IFavoritesItem> = ({item, onCheck, checked}) => {
 	const handleCheck = e => onCheck(item.id, e.target.checked);
+
+	const checkImage = () => {
+		let src: string = '/static/img/no-image.svg';
+		if (item.images.length > 0) {
+			src = item.images[0].file_url;
+		}
+
+		return src;
+	};
 	return (
 		<div className='favourites-offer-block__item'>
 			<input
@@ -20,7 +31,7 @@ const FavoritesItem: React.SFC<IFavoritesItem> = ({item, onCheck, checked}) => {
 				<div className='row'>
 					<div className='col-9 d-flex'>
 						<img
-							src={item.images[0].file_url}
+							src={checkImage()}
 							alt=''
 							className='offer-block__img'
 						/>
