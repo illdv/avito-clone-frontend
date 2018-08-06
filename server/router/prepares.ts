@@ -51,7 +51,6 @@ export const categories: prepareMethod = async () => {
 
 const getAdsByParams = async params => {
 	const response = await instance.get(`/ads/?${ queryString.stringify(params) }`);
-	console.log(response.data);
 	return response.data;
 };
 
@@ -140,11 +139,7 @@ export const category: prepareMethod = async ({ params, query, path }, req) => {
 		: await instance.get('/categories');
 		*/
 
-	const { data: categories } = await instance.get('/categories', {
-		params: {
-			country_id: query.country,
-		},
-	});
+	const { data: categories } = await instance.get('/categories');
 
 	try {
 		const categoryQueue   = findCategoriesQueueBySlug(categories, categorySlug);
