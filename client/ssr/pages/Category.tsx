@@ -42,7 +42,7 @@ class Category extends React.Component<ICategoryPageProps> {
 				<div className='bottom-header p-y-20' >
 					<div className='container' >
 						<Navbar />
-						<Search idActiveCategory={this.props.mainCategoryId} />
+						<Search idActiveCategory={this.props.mainCategoryId} priceRange={true}/>
 					</div >
 
 					<div className='container' >
