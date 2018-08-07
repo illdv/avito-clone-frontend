@@ -15,10 +15,6 @@ interface IResetPasswordByCodeRequest {
 	password_confirmation: string;
 }
 
-interface IFavoritesRequest {
-	favorites_ids: number[];
-}
-
 interface IGetProfileResponse extends IProfileState {
 	favorites_ids: number[];
 }
@@ -29,6 +25,3 @@ interface IAuthResponse { // Login and Register
 	expires_in: number;
 	user: IGetProfileResponse;
 }
-
-interface IPostFavoritesRequest extends IFavoritesRequest {}
-interface IDeleteFavoritesRequest extends IFavoritesRequest {}
