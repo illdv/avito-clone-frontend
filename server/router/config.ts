@@ -4,21 +4,21 @@ export interface IRoute {
 	prepare: string[];
 }
 
-const routes = [
+export const getRoutes = () => ([
 	{
 		path: '/',
 		page: '/index',
-		prepare: ['location', 'ads', 'categories', 'vipAds'],
+		prepare: ['ads', 'categories', 'vipAds'],
 	},
 	{
 		path: '/ad/:id',
 		page: '/ad',
-		prepare: ['location', 'ad', 'categories'],
+		prepare: ['ad', 'categories'],
 	},
 	{
 		path: '/profile*',
 		page: '/profile',
-		prepare: ['location', 'categories'],
+		prepare: ['categories'],
 	},
 	{
 		path: '/favorites',
@@ -28,13 +28,13 @@ const routes = [
 	{
 		path: '/category/:categorySlug?',
 		page: '/category',
-		prepare: ['location', 'category'],
+		prepare: ['category'],
 	},
 	{
 		path: '/search',
 		page: '/search',
-		prepare: ['location', 'categories', 'search', 'query'],
+		prepare: ['categories', 'search', 'query', 'breadcrumbs'],
 	},
-] as IRoute[];
+] as IRoute[]);
 
-export const getRoutes = () => routes;
+export const getCommonPrepares = () => (['location']);

@@ -4,6 +4,7 @@ import * as queryString from 'query-string';
 import {
 	categoryQueueToBreadcrumbsFormat,
 	findCategoriesQueueBySlug,
+	findCategoriesQueueById,
 	getCurrentCategoryByQueue,
 	getIdFromCategory,
 	getLocationNameByLocations,
@@ -18,6 +19,7 @@ interface ISugar {
 	params?: any;
 	query?: any;
 	path?: string;
+	accumulation?: any;
 }
 
 type prepareMethod = (sugar: ISugar, req: any) => any;
@@ -277,4 +279,16 @@ export const search: prepareMethod = async ({ query }, req) => {
 		console.log(err);
 		return [];
 	}
+};
+
+export const breadcrumbs: prepareMethod = async ({ query, accumulation }, req) => {
+	const categoryQueue   = findCategoriesQueueById(accumulation.categories, query.category);
+	console.log(categoryQueue);
+	return [
+		{
+			title: `All listings in ${accumulation.location.locationName}`,
+			href: '/category',
+		},
+		...categoryQueueToBreadcrumbsFormat(categoryQueue, categoryQueue.length),
+	];
 };

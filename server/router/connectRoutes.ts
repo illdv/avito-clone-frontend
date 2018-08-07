@@ -1,12 +1,14 @@
 import * as prepares from './prepares';
-import { IRoute, getRoutes } from './config';
+import { IRoute, getRoutes, getCommonPrepares } from './config';
 
 export const initialRoutes = (server, appNext) => {
+	const commonPrepares = getCommonPrepares();
+
 	getRoutes().forEach((route: IRoute) => {
 
 		server.get(route.path, async (req, res) => {
 			const { params, query, path } = req; // Express sugar
-			const formatPepares = [].concat(route.prepare || []);
+			const formatPepares = [].concat(commonPrepares || [], route.prepare || []);
 
 			const prepareResult = await formatPepares.reduce(async (accPromise: object, prepareName: string) => {
 				const acc = await accPromise;
@@ -15,7 +17,7 @@ export const initialRoutes = (server, appNext) => {
 						throw new Error(`Prepare [${ prepareName }] is not function`);
 					}
 
-					acc[prepareName] = await prepares[prepareName]({ params, query, path }, req);
+					acc[prepareName] = await prepares[prepareName]({ params, query, path, accumulation: { ...acc } }, req);
 					return acc;
 				} catch (error) {
 					throw error;
@@ -27,9 +29,9 @@ export const initialRoutes = (server, appNext) => {
 	});
 
 	server.post('/prepare', async (req, res) => {
-        if (!req.body) {
-            return res.status(400).json({ error: 'Query without body' });
-        }
+		if (!req.body) {
+			return res.status(400).json({ error: 'Query without body' });
+		}
 
 		const { prepareName, query, params, path } = req.body;
 

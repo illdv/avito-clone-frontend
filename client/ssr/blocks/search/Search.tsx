@@ -11,7 +11,6 @@ import { ILocationStoreState } from 'client/common/location/module';
 import { showLocationModal } from 'client/ssr/modals/location/locationModalTriggers';
 import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
 import PriceRange from 'client/ssr/blocks/search/components/PriceRange';
-import { IOption } from 'client/common/entities/user/modules/owned-ads/interfaces';
 
 require('./Search.sass');
 
@@ -20,6 +19,7 @@ interface ISearchProps {
 	idActiveCategory: number;
 	locationState: ILocationStoreState;
 	priceRange?: boolean;
+	query: IQuery;
 }
 
 interface IOptionWrap {
@@ -62,16 +62,10 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 	constructor(props, context) {
 		super(props, context);
 
-		let search;
-		// TODO refactor use search from prepares.
-		if (typeof window !== 'undefined') {
-			search = queryString.parse(window.location.search).search;
-		}
-
 		this.state = {
 			duplicateCategories: this.props.categories,
 			activeCategories: [],
-			searchString: search || '',
+			searchString: useOrDefault(() => this.props.query.search, ''),
 			options: [],
 			rangePrice: {
 				priceType: null,
@@ -81,7 +75,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 		};
 	}
 
-	onSelectCategory        = category => {
+	onSelectCategory = category => {
 		if (category) {
 			if (this.state.activeCategories[0] !== category) {
 				this.setState({
@@ -92,7 +86,8 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 			this.setState({ activeCategories: [] });
 		}
 	}
-	onSelectSubcategory     = (category, parent) => {
+
+	onSelectSubcategory = (category, parent) => {
 		const categories = this.state.activeCategories;
 
 		const indexParent = categories.indexOf(parent);
@@ -117,13 +112,15 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 		}
 
 	}
-	getCorrectOptions       = (category: ICategory): IOptionWrap[] => {
+
+	getCorrectOptions = (category: ICategory): IOptionWrap[] => {
 		return category.total_options.map(option => ({
 			value: '',
 			item: option,
 		}));
 	}
-	creatorChangeOption     = (id: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
+
+	creatorChangeOption = (id: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newOptions = this.state.options.map(option => {
 			if (option.item.id === id) {
 				return {
@@ -138,18 +135,21 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 			options: newOptions,
 		});
 	}
-	changeSearchString      = e => {
+
+	changeSearchString = e => {
 		this.setState({
 			searchString: e.target.value,
 		});
 	}
+
 	showSearchLocationModal = () => showLocationModal(ModalNames.searchLocation);
 
 	onSubmit = e => {
 		e.preventDefault();
 		const { idCity, idRegion, idCountry }                   = this.props.locationState.local;
 		const { rangePrice: { priceType, priceFrom, priceTo } } = this.state;
-		const query: any                                        = {
+
+		const query: any = {
 			search: this.state.searchString,
 		};
 
@@ -266,17 +266,17 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 				action='#'
 				onSubmit={this.onSubmit}
 			>
-				<div className='search form-inline form-row p-t-20'>
-					<div className='form-group col-6 col-md-3'>
+				<div className='search form-inline form-row p-t-20' >
+					<div className='form-group col-6 col-md-3' >
 						<SelectCategories
 							categories={this.props.categories}
 							onSelect={this.onSelectCategory}
 							label={'Category'}
-							idDefaultCategory={this.props.idActiveCategory}
+							idDefaultCategory={useOrDefault(() => this.props.query.category, -1)}
 							parent={null}
 						/>
-					</div>
-					<div className='form-group col-6 col-md-4'>
+					</div >
+					<div className='form-group col-6 col-md-4' >
 						<input
 							className='search__options form-control'
 							placeholder='Search'
@@ -284,8 +284,8 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 							value={this.state.searchString}
 							onChange={this.changeSearchString}
 						/>
-					</div>
-					<div className='form-group col-6 col-md-3'>
+					</div >
+					<div className='form-group col-6 col-md-3' >
 						<input
 							readOnly
 							type='text'
@@ -294,19 +294,19 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 							onClick={this.showSearchLocationModal}
 							className='search__options form-control search_input--no-disable'
 						/>
-					</div>
-					<div className='form-group col-12 col-md-2'>
+					</div >
+					<div className='form-group col-12 col-md-2' >
 						<button
 							className='btn orange-btn-outline search__button'
 							type='submit'
 						>
 							<i className='fas fa-search p-r-5' />Search
-						</button>
-					</div>
-				</div>
+						</button >
+					</div >
+				</div >
 				{
 					this.isSubcategories &&
-					<div className='search form-inline form-row'>
+					<div className='search form-inline form-row' >
 						{
 							this.subcategories.map(category => (
 								category.children.length > 0
@@ -321,7 +321,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 												label={'Subcategory'}
 												parent={category}
 											/>
-										</div>
+										</div >
 									)
 									: null
 							))
@@ -334,19 +334,24 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 									className='form-group col-6 col-md-3'
 								>
 									{getOption(option, this.creatorChangeOption)}
-								</div>
+								</div >
 							))
 						}
-					</div>
+					</div >
 				}
-				{priceRange ? <PriceRange
-					setPriceType={this.onSetPriceType}
-					setPriceFrom={this.onSetPriceFrom}
-					setPriceTo={this.onSetPriceTo}
-				/> : null}
-			</form>
+				{
+					priceRange
+						?
+						<PriceRange
+							setPriceType={this.onSetPriceType}
+							setPriceFrom={this.onSetPriceFrom}
+							setPriceTo={this.onSetPriceTo}
+						/>
+						: null
+				}
+			</form >
 		);
 	}
 }
 
-export default connect(mapStateToProps)(getCategories(Search));
+export default connect(mapStateToProps)(getQuery(getCategories(Search)));

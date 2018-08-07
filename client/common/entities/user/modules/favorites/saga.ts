@@ -2,7 +2,7 @@ import { call, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
 import { Action } from 'redux-act';
 
 import { favoritesActions } from './actions';
-import { UserAPI } from 'client/common/api/userAPI';
+import { favoritesAPI } from 'client/common/api/favoritesAPI';
 import { errorHandler } from 'client/common/store/errorHandler';
 import { IRootState } from '../../../../store/storeInterface';
 import {
@@ -63,7 +63,7 @@ function* saveFavoriteSaga(favoritesAds: number[], selectedAdId: number, token: 
 
 	if (token) {
 		try {
-			yield call(UserAPI.postFavorites, { favorites_ids: [selectedAdId] });
+			yield call(favoritesAPI.postFavorites, { favorites_ids: [selectedAdId] });
 		} catch (e) {
 			yield call(errorHandler, e);
 		}
@@ -79,7 +79,7 @@ function* removeFavoriteSaga(favoritesAds, selectedAdId, token, indexInFavorites
 	yield call(synchronizeFavoritesLocalStorage, favoritesIds);
 	if (token) {
 		try {
-			yield call(UserAPI.deleteFavorites, { favorites_ids: [selectedAdId] });
+			yield call(favoritesAPI.deleteFavorites, { favorites_ids: [selectedAdId] });
 		} catch (e) {
 			yield call(errorHandler, e);
 		}
@@ -103,7 +103,7 @@ function* removeFavoriteAds(action: Action<{ favoritesId: number[] }>) {
 
 	if (token) {
 		try {
-			yield call(UserAPI.deleteFavorites, { favorites_ids: favoritesIds });
+			yield call(favoritesAPI.deleteFavorites, { favorites_ids: favoritesIds });
 		} catch (e) {
 			yield call(errorHandler, e);
 		}
@@ -113,7 +113,7 @@ function* removeFavoriteAds(action: Action<{ favoritesId: number[] }>) {
 function* getFavorites() {
 	const favoritesId = yield call(getFavoritesFromLocalStorage);
 	try {
-		const { data }            = yield call(UserAPI.getFavorites, { favorites_ids: favoritesId });
+		const { data }            = yield call(favoritesAPI.getFavorites, { favorites_ids: favoritesId });
 		const favoritesAds: IAd[] = yield call(fromArrayToObject, data.data);
 
 		yield put(favoritesActions.getFavoritesAds.SUCCESS({ favoritesAds }));
