@@ -8,6 +8,7 @@ import { SetCategories } from 'client/ssr/blocks/categories/context';
 
 import SearchPage from 'client/ssr/pages/Search';
 import { IAds } from 'client/common/entities/user/modules/owned-ads/interfaces';
+import SetQuery from 'client/ssr/pages/QueryContext';
 
 const isServer: boolean = typeof window === 'undefined';
 
@@ -35,12 +36,11 @@ class Category extends React.Component<ICategoryProps> {
 	render() {
 		const { search, categories, query } = this.props;
 		return (
-			<SetCategories categories={categories} >
-				<SearchPage
-					search={search}
-					query={query}
-				/>
-			</SetCategories >
+			<SetQuery query={query}>
+				<SetCategories categories={categories} >
+					<SearchPage search={search} />
+				</SetCategories >
+			</SetQuery >
 		);
 	}
 }

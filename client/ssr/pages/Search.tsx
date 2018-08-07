@@ -10,34 +10,36 @@ import { IAds } from 'client/common/entities/user/modules/owned-ads/interfaces';
 
 interface ISearchPageProp {
 	search: IAds[];
-	query: any;
 }
 
+// TODO: is not page.
 class SearchPage extends React.Component<ISearchPageProp> {
 	constructor(props, context) {
 		super(props, context);
 	}
+
 	render() {
 		return (
-			<React.Fragment>
+			<React.Fragment >
 				<Header />
-				<div className='bottom-header p-y-20'>
-					<div className='container'>
+				<div className='bottom-header p-y-20' >
+					<div className='container' >
 						<Navbar />
-						<Search idActiveCategory={this.props.query.category} priceRange={true}/>
-					</div>
-				</div>
+						<Search priceRange={true} />
+					</div >
+				</div >
 				{
 					this.props.search.length > 0
-					?
+						?
 						<Ads
 							title={`Search result (${this.props.search.length})`}
 							ads={this.props.search}
 						/>
-					: <EmptySearch />
+						:
+						<EmptySearch />
 				}
 				<Footer />
-			</React.Fragment>
+			</React.Fragment >
 		);
 	}
 }
