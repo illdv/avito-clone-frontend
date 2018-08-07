@@ -38,7 +38,6 @@ class SelectCategory extends Component<ISelectCategoryProps, ISelectCategoriesSt
 
 	onSelect = e => {
 		const value = Number(e.target.value);
-
 		this.setState({ value });
 
 		if (this.labelId === value) {
@@ -57,8 +56,9 @@ class SelectCategory extends Component<ISelectCategoryProps, ISelectCategoriesSt
 		return (
 			<select
 				name='categories'
-				onClick={this.onSelect}
+				onChange={this.onSelect}
 				className={`search__options form-control ${ this.modifyClass }`}
+
 			>
 				<option selected={this.isSelectedLabel} className='option-label' value={this.labelId} >
 					{this.props.label}

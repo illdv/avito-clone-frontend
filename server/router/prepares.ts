@@ -38,7 +38,6 @@ const formatData = (data) => {
 export const ads: prepareMethod = async () => {
 	try {
 		const response = await instance.get(`/ads?${formatData(getDataForAdsIndexPage)}`);
-		console.log(response);
 		return response.data.data;
 	} catch (e) {
 		console.log(e);
@@ -48,7 +47,6 @@ export const ads: prepareMethod = async () => {
 export const ad: prepareMethod = async ({ params }) => {
 	try {
 		const response = await instance.get(`/ads/${params.id}?${formatData(getDataForAdShowPage)}`);
-		console.log(response.data);
 		return response.data;
 	} catch (error) {
 		console.log(error);

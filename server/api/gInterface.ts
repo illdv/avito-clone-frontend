@@ -1,5 +1,3 @@
-import { IAdCity, IPriceHistories, ISeller } from 'client/ssr/blocks/ad/interface';
-
 export enum AdAppendsFields {
 	total_visits = 'total_visits',
 	today_visits = 'today_visits',
@@ -67,13 +65,31 @@ export interface IGetFullAdsRequest {
 }
 
 export interface IGetFullAdsResponse {
-	[AdWithFields.seller]: ISeller;
+	[AdWithFields.seller]: any[];
 	[AdWithFields.options]: any[];
-	[AdWithFields.country]: IAdCity;
-	[AdWithFields.images]: IImage[];
-	[AdWithFields.priceHistories]: IPriceHistories[];
+	[AdWithFields.country]: any[];
+	[AdWithFields.images]: any[];
+	[AdWithFields.priceHistories]: any[];
 	[AdAppendsFields.today_visits]: string;
 	[AdAppendsFields.total_visits]: string;
 	[AdAppendsFields.next_ad]: number;
-
+	[AdSelectedFields.id]: number;
+	[AdSelectedFields.category_id]: number;
+	[AdSelectedFields.user_id]: number;
+	[AdSelectedFields.created_at]: string;
+	[AdSelectedFields.price]: string;
+	[AdSelectedFields.description]: string;
+	[AdSelectedFields.title]: string;
+	[AdSelectedFields.address]: string;
+	[AdSelectedFields.body]: string;
+	[AdSelectedFields.city_id]: number;
+	[AdSelectedFields.deleted_at]: string;
+	[AdSelectedFields.is_active]: boolean;
+	[AdSelectedFields.is_approved]: boolean;
+	[AdSelectedFields.is_published]: boolean;
+	[AdSelectedFields.is_vip]: boolean;
+	[AdSelectedFields.latitude]: number;
+	[AdSelectedFields.longitude]: number;
+	[AdSelectedFields.phone]: string;
+	[AdSelectedFields.updated_at]: string;
 }

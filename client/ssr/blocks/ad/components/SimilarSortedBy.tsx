@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { ISimilarSortState } from 'client/ssr/blocks/ad/interface';
+import { ISimilarAdsState } from 'client/ssr/blocks/ad/interface';
 
-class SimilarSortedBy extends Component<any, ISimilarSortState> {
+class SimilarSortedBy extends Component<any, ISimilarAdsState> {
 	constructor(props) {
 		super(props);
 		this.handleChange = this.handleChange.bind(this);
