@@ -1,9 +1,8 @@
 import {
-	AdSelectedFields, AdWithFields, AdAppendsFields, IGetAdForShowPageRequest,
-	IGetAdsForIndexPageRequest
+	AdSelectedFields, AdWithFields, AdAppendsFields, IGetLiteAdsRequest, IGetFullAdsRequest
 } from '../api/gInterface';
 
-export const getDataForAdsIndexPage: IGetAdsForIndexPageRequest = {
+export const getDataForAdsIndexPage: IGetLiteAdsRequest = {
 		fields: [
 			AdSelectedFields.id,
 			AdSelectedFields.title,
@@ -16,24 +15,13 @@ export const getDataForAdsIndexPage: IGetAdsForIndexPageRequest = {
 		],
 };
 
-export const getDataForAdShowPage: IGetAdForShowPageRequest = {
-	fields: [
-		AdSelectedFields.id,
-		AdSelectedFields.title,
-		AdSelectedFields.description,
-		AdSelectedFields.body,
-		AdSelectedFields.price,
-		AdSelectedFields.updated_at,
-		AdSelectedFields.created_at,
-		AdSelectedFields.phone,
-		AdSelectedFields.address,
-	],
+export const getDataForAdShowPage: IGetFullAdsRequest = {
 	with: [
 		AdWithFields.seller,
 		AdWithFields.options,
 		AdWithFields.country,
 		AdWithFields.images,
-		AdWithFields.priceHistory
+		AdWithFields.priceHistories,
 	],
 	appends: [
 		AdAppendsFields.today_visits,

@@ -1,3 +1,5 @@
+import { IAdCity, IProductHistories, ISeller } from 'client/ssr/blocks/ad/interface';
+
 export enum AdAppendsFields {
 	total_visits = 'total_visits',
 	today_visits = 'today_visits',
@@ -6,6 +8,9 @@ export enum AdAppendsFields {
 
 export enum AdSelectedFields {
 	id = 'id',
+	user_id = 'user_id',
+	category_id = 'category_id',
+	city_id = 'city_id',
 	title = 'title',
 	price = 'price',
 	description = 'description',
@@ -28,11 +33,11 @@ export enum  AdWithFields {
 	seller = 'user',
 	images = 'images',
 	options = 'options',
-	priceHistory = 'priceHistory',
+	priceHistories = 'priceHistories',
 	city = 'city',
 }
 
-export interface IGetAdsForIndexPageRequest {
+export interface IGetLiteAdsRequest {
 	fields: [
 		AdSelectedFields.id,
 		AdSelectedFields.title,
@@ -45,29 +50,31 @@ export interface IGetAdsForIndexPageRequest {
 	];
 }
 
-export interface IGetAdForShowPageRequest {
+export interface IGetFullAdsRequest {
 	with: [
 		AdWithFields.seller,
 		AdWithFields.options,
 		AdWithFields.country,
 		AdWithFields.images,
-		AdWithFields.priceHistory
-		];
-	fields: [
-		AdSelectedFields.id,
-		AdSelectedFields.title,
-		AdSelectedFields.description,
-		AdSelectedFields.body,
-		AdSelectedFields.price,
-		AdSelectedFields.updated_at,
-		AdSelectedFields.created_at,
-		AdSelectedFields.phone,
-		AdSelectedFields.address
-		];
+		AdWithFields.priceHistories
+	];
 	appends: [
 		AdAppendsFields.today_visits,
 		AdAppendsFields.total_visits,
 		AdAppendsFields.next_ad
 	];
+
+}
+
+
+export interface IGetFullAdsResponse {
+	[AdWithFields.seller]: ISeller;
+	[AdWithFields.options]: any[];
+	[AdWithFields.country]: IAdCity;
+	[AdWithFields.images]: IImage[];
+	[AdWithFields.priceHistories]: IProductHistories[];
+	[AdAppendsFields.today_visits]: string;
+	[AdAppendsFields.total_visits]: string;
+	[AdAppendsFields.next_ad]: number;
 
 }

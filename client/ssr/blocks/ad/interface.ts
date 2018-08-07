@@ -1,32 +1,38 @@
+import { IOption, IType } from 'client/common/entities/user/modules/owned-ads/interfaces';
+
 export interface IAdCity {
+	city_id: number;
+	country_id: number;
+	region_id: number;
 	title?: string|null;
 	country: IAdCountry;
 }
 
 export interface IAdCountry {
+	country_id: number;
 	title: string;
+	total_ads: number;
 }
 
 export interface IAd {
 	id: number;
 	title: string;
-	next_ad: string;
+	next_ad: number;
 	created_at: string;
 	updated_at: string;
-	total_visits: string;
-	today_visits: string;
+	total_visits: number;
+	today_visits: number;
 	is_favorite: boolean;
 	address: string;
-	images: any[];
-	price_histories: IProductHistories[];
+	images: IImage[];
+	price_histories: IPriceHistories[];
 	body: string;
 	description: string;
-	price: string;
-	options: IVehicleFeature;
-	type: object;
-	similar_ad: ISimilarAd;
+	price: number;
+	options: IOption[];
+	type: IType;
 	user: ISeller;
-	category_id: string;
+	category_id: number;
 	city: IAdCity;
 	latitude: number;
 	longitude: number;
@@ -46,13 +52,13 @@ export interface IChartState {
 	options?: {};
 }
 
-export interface IProductHistories {
+export interface IPriceHistories {
 	ad_id: number;
 	date_time: string;
 	value: number;
 }
-export interface ISimilarSortState {
-	similar_ad?: any[];
+export interface ISimilarAdsState {
+	similar_ads?: ISimilarFieldsProps[];
 	filter?: string;
 }
 
@@ -98,48 +104,32 @@ export interface ISeller {
 	image: IImage;
 }
 
-export interface ISellerProps {
-	seller: ISeller;
-	city: string;
-	country: string;
-
-}
-
-export interface IVehicleFeature {
-	options: object;
-}
-
 export interface IDescription {
 	body: string;
 }
 
-export interface ISimilarRandomProps {
-	id?: string|null;
+export interface ISimilarFieldsProps {
+	id: number;
 	title: string;
 	price: string;
 	userName: string;
 	description: string;
-	image: {
-		file_url: string;
-	};
+	image: IImage[];
+}
+export interface ISimilarAdProps {
+	similar_ad: ISimilarFieldsProps;
 }
 
-export interface ISimilarRandomState {
-	description: string;
-	title: string;
-	similar_ad: ISimilarAd;
-}
-
-export interface ISimilarProps {
+export interface ISimilarAdsProps {
 	filter?: string;
-	similar_ads: any[];
+	similar_ads: ISimilarFieldsProps[];
 	id_parent: number;
 }
 
 export interface IChart {
-	similar_ads: IAd[];
+	similar_ads: ISimilarFieldsProps[];
 	id_parent: number;
-	price_histories: IProductHistories[];
+	price_histories: IPriceHistories[];
 
 }
 
@@ -151,16 +141,6 @@ export interface IFavorites {
 
 export interface IFavoriteState {
 	is_favorite: boolean;
-}
-
-export interface ISimilarAd {
-	id: number;
-	title: string;
-	images: any[];
-	description: string;
-	price: string;
-	user: ISeller;
-
 }
 
 export interface IGMProps {
