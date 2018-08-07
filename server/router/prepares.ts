@@ -4,6 +4,7 @@ import * as queryString from 'query-string';
 import {
 	categoryQueueToBreadcrumbsFormat,
 	findCategoriesQueueBySlug,
+	findCategoriesQueueById,
 	getCurrentCategoryByQueue,
 	getIdFromCategory,
 	getLocationNameByLocations,
@@ -269,4 +270,16 @@ export const search: prepareMethod = async ({ query }, req) => {
 		console.log(err);
 		return [];
 	}
+};
+
+export const breadcrumbs: prepareMethod = async ({ query, accumulation }, req) => {
+	const categoryQueue   = findCategoriesQueueById(accumulation.categories, query.category);
+	console.log(categoryQueue);
+	return [
+		{
+			title: `All listings in ${accumulation.location.locationName}`,
+			href: '/category',
+		},
+		...categoryQueueToBreadcrumbsFormat(categoryQueue),
+	];
 };

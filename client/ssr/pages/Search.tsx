@@ -7,6 +7,7 @@ import Footer from 'client/ssr/blocks/footer/Footer';
 import Ads from 'client/ssr/blocks/ads/Ads';
 import EmptySearch from 'client/ssr/blocks/empty-search/EmptySearch';
 import { IAds } from 'client/common/entities/user/modules/owned-ads/interfaces';
+import BreadcrumbsWrap from 'client/ssr/wraps/BreadcrumbFromContext';
 
 interface ISearchPageProp {
 	search: IAds[];
@@ -26,6 +27,10 @@ class SearchPage extends React.Component<ISearchPageProp> {
 					<div className='container' >
 						<Navbar />
 						<Search priceRange={true} />
+						<BreadcrumbsWrap
+							classNameForContainer='breadcrumb'
+							classNameForItem='breadcrumb-item'
+						/>
 					</div >
 				</div >
 				{

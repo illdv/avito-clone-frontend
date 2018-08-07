@@ -30,6 +30,34 @@ export const findCategoriesQueueBySlug = (categories, categorySlug): any[] | nul
 	}, false);
 };
 
+export const findCategoriesQueueById = (categories, categoryId): any[] | null => {
+	if (!categoryId) {
+		return [];
+	}
+
+	return categories.reduce((acc, category) => {
+		if (acc) {
+			return acc;
+		}
+
+		if (category.id == categoryId) {
+			return [category];
+		} else {
+			if (category.children.length > 0) {
+				const result = findCategoriesQueueBySlug(category.children, categoryId);
+
+				if (result !== null) {
+					return [category].concat(result);
+				} else {
+					return null;
+				}
+			} else {
+				return null;
+			}
+		}
+	}, false);
+};
+
 export const categoryQueueToBreadcrumbsFormat = categoryQueue => {
 	if (!categoryQueue || categoryQueue.length < 1) {
 		return [];
@@ -80,7 +108,7 @@ export const getLocationsIdByRequest = req => {
 
 	if (req && req.headers) {
 		const cookies = req.headers.cookie;
-  
+
 		if (typeof cookies === 'string') {
 			const cookiesJSON = jsHttpCookie.parse(cookies);
 
@@ -96,7 +124,8 @@ export const getLocationsIdByRequest = req => {
 				result.idCity = Number(cookiesJSON.idCity) || null
 			}
 		}
-	};
+	}
+	;
 
 	return result;
 }
@@ -110,7 +139,7 @@ export const getLocationNameByLocations = (idCountry, idRegion, idCity, countrie
 			});
 
 			if (result.length > 0) {
-				return result[0].title; 
+				return result[0].title;
 			}
 		}
 	}
@@ -121,7 +150,7 @@ export const getLocationNameByLocations = (idCountry, idRegion, idCity, countrie
 				return region.region_id === idRegion;
 			});
 			if (result.length > 0) {
-				return result[0].title; 
+				return result[0].title;
 			}
 		}
 	}
@@ -132,7 +161,7 @@ export const getLocationNameByLocations = (idCountry, idRegion, idCity, countrie
 				return country.country_id === idCountry;
 			});
 			if (result.length > 0) {
-				return result[0].title; 
+				return result[0].title;
 			}
 		}
 	}

@@ -11,7 +11,7 @@ export interface IProps {
 }
 
 export interface IQuery {
-	category?: string;
+	category?: number;
 	city_id?: string;
 	price_from?: string;
 	search?: string;

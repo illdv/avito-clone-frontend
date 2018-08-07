@@ -13,7 +13,7 @@ import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface'
 import { IOption } from 'client/spa/pages/create-ad/ManagerAd';
 import PriceRange from 'client/ssr/blocks/search/components/PriceRange';
 import { getQuery, IQuery } from 'client/ssr/pages/QueryContext';
-import { useOrDefault } from 'client/spa/pages/create-ad/utils'
+import { useOrDefault } from 'client/spa/pages/create-ad/utils';
 
 require('./Search.sass');
 
@@ -270,7 +270,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 							categories={this.props.categories}
 							onSelect={this.onSelectCategory}
 							label={'Category'}
-							idDefaultCategory={this.props.idActiveCategory}
+							idDefaultCategory={useOrDefault(() => this.props.query.category, -1)}
 							parent={null}
 						/>
 					</div >
