@@ -2,7 +2,6 @@ import {
 	AdAppendsFields, AdSelectedFields, AdWithFields, IGetFullAdsRequest,
 	IGetLiteAdsRequest
 } from '../api/gInterface';
-import { IGetFullAdsResponse } from 'server/api/gInterface';
 
 export const getDataForAdsIndexPage: IGetLiteAdsRequest = {
 	fields: [
@@ -32,32 +31,32 @@ export const getDataForAdShowPage: IGetFullAdsRequest = {
 	],
 };
 
-export const resDataForAdShowPage: IGetFullAdsResponse = {
-	[AdWithFields.seller],
-	[AdWithFields.options],
-	[AdWithFields.country],
-	[AdWithFields.images],
-	[AdWithFields.priceHistories],
-	[AdAppendsFields.today_visits],
-	[AdAppendsFields.total_visits],
-	[AdAppendsFields.next_ad],
-	[AdSelectedFields.id],
-	[AdSelectedFields.category_id],
-	[AdSelectedFields.user_id],
-	[AdSelectedFields.created_at],
-	[AdSelectedFields.price],
-	[AdSelectedFields.description],
-	[AdSelectedFields.title],
-	[AdSelectedFields.address],
-	[AdSelectedFields.body],
-	[AdSelectedFields.city_id],
-	[AdSelectedFields.deleted_at],
-	[AdSelectedFields.is_active],
-	[AdSelectedFields.is_approved],
-	[AdSelectedFields.is_published],
-	[AdSelectedFields.is_vip],
-	[AdSelectedFields.latitude],
-	[AdSelectedFields.longitude],
-	[AdSelectedFields.phone],
-	[AdSelectedFields.updated_at],
-};
+// export const resDataForAdShowPage: IGetFullAdsResponse = {
+// 	[AdWithFields.seller],
+// 	[AdWithFields.options],
+// 	[AdWithFields.country],
+// 	[AdWithFields.images],
+// 	[AdWithFields.priceHistories],
+// 	[AdAppendsFields.today_visits],
+// 	[AdAppendsFields.total_visits],
+// 	[AdAppendsFields.next_ad],
+// 	[AdSelectedFields.id],
+// 	[AdSelectedFields.category_id],
+// 	[AdSelectedFields.user_id],
+// 	[AdSelectedFields.created_at],
+// 	[AdSelectedFields.price],
+// 	[AdSelectedFields.description],
+// 	[AdSelectedFields.title],
+// 	[AdSelectedFields.address],
+// 	[AdSelectedFields.body],
+// 	[AdSelectedFields.city_id],
+// 	[AdSelectedFields.deleted_at],
+// 	[AdSelectedFields.is_active],
+// 	[AdSelectedFields.is_approved],
+// 	[AdSelectedFields.is_published],
+// 	[AdSelectedFields.is_vip],
+// 	[AdSelectedFields.latitude],
+// 	[AdSelectedFields.longitude],
+// 	[AdSelectedFields.phone],
+// 	[AdSelectedFields.updated_at],
+// };
