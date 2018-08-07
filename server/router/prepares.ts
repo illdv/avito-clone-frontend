@@ -13,7 +13,7 @@ import {
 	getSubcategoryByCategoryQueue,
 } from '../utils/categoryPrepare';
 
-import {getDataForAdsIndexPage, getDataForAdShowPage} from '../api/ad';
+import { IGetFullAdsRequest, IGetLiteAdsRequest } from '../api/gInterface';
 
 interface ISugar {
 	params?: any;
@@ -39,7 +39,8 @@ const formatData = (data) => {
 
 export const ads: prepareMethod = async () => {
 	try {
-		const response = await instance.get(`/ads?${formatData(getDataForAdsIndexPage)}`);
+		const response = await instance.get(`/ads?${formatData(IGetLiteAdsRequest)}`);
+		console.log(response);
 		return response.data.data;
 	} catch (e) {
 		console.log(e);
@@ -48,7 +49,7 @@ export const ads: prepareMethod = async () => {
 
 export const ad: prepareMethod = async ({ params }) => {
 	try {
-		const response = await instance.get(`/ads/${params.id}?${formatData(getDataForAdShowPage)}`);
+		const response = await instance.get(`/ads/${params.id}?${formatData(IGetFullAdsRequest)}`);
 		return response.data;
 	} catch (error) {
 		console.log(error);
