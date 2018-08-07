@@ -21,23 +21,23 @@ require('./Ad.sass');
 class Ad extends React.Component <IAdsProps, IAdsState> {
 	constructor(props) {
 		super(props);
-		const queue       = this.recurseGetAdCategories(this.props.categories, this.props.ad.category_id);
-		const queueCrumbs = this.formatCategoriesToCrumbs(queue);
-		const slider      = this.formationImages(this.props.ad.images);
+		// const queue       = this.recurseGetAdCategories(this.props.categories, this.props.ad.category_id);
+		// const queueCrumbs = this.formatCategoriesToCrumbs(queue);
+		// const slider      = this.formationImages(this.props.ad.images);
+		//
+		// const crumbs: ICrumb[] = [].concat(this.firstCrumbs, queueCrumbs, this.lastCrumbItem);
+		// const images: IImage[] = [].concat(slider);
 
-		const crumbs: ICrumb[] = [].concat(this.firstCrumbs, queueCrumbs, this.lastCrumbItem);
-		const images: IImage[] = [].concat(slider);
-
-		this.state = {
-			crumbs,
-			lastCrumb: queueCrumbs[queueCrumbs.length - 1],
-			images,
-			default_map: {
-				lat: this.props.ad.latitude,
-				lng: this.props.ad.longitude,
-			},
-			isFavorite: false,
-		};
+		// this.state = {
+		// 	crumbs,
+		// 	lastCrumb: queueCrumbs[queueCrumbs.length - 1],
+		// 	images,
+		// 	default_map: {
+		// 		lat: this.props.ad.latitude,
+		// 		lng: this.props.ad.longitude,
+		// 	},
+		// 	isFavorite: false,
+		// };
 	}
 
 	static getDerivedStateFromProps(props: IAdsProps) {
@@ -93,21 +93,21 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 		});
 	}
 
-	get firstCrumbs(): ICrumb {
-		return {
-			title: 'All listings in ' + this.props.ad.city.title,
-			// href: encodeURI('/' + this.props.ad.city.title),
-			href: encodeURI('/category'),
+	// get firstCrumbs(): ICrumb {
+	// 	return {
+	// 		title: 'All listings in ' + this.props.ad.city.title,
+	// 		// href: encodeURI('/' + this.props.ad.city.title),
+	// 		href: encodeURI('/category'),
+	//
+	// 	};
+	// }
 
-		};
-	}
-
-	get lastCrumbItem(): ICrumb {
-		return {
-			title: this.props.ad.title,
-			href: encodeURI('/' + this.props.ad.title.toLowerCase()),
-		};
-	}
+	// get lastCrumbItem(): ICrumb {
+	// 	return {
+	// 		title: this.props.ad.title,
+	// 		href: encodeURI('/' + this.props.ad.title.toLowerCase()),
+	// 	};
+	// }
 
 	selectFavorite = (id: number) => {
 		UserActions.favorites.selectFavorite.REQUEST({ id });
@@ -122,7 +122,7 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 					<div className='container'>
 						<div className='row'>
 							<div className='col-md-9'>
-								<Breadcrumbs breadcrumbs={crumbs} />
+								{/*<Breadcrumbs breadcrumbs={crumbs} />*/}
 							</div>
 							<div className='col-md-3'>
 								<div className='back-next'>

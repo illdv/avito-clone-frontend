@@ -13,7 +13,7 @@ import {
 	getLocationsIdByRequest,
 } from '../utils/categoryPrepare';
 
-import {getDataForAdsIndexPage} from '../api/ad';
+import {getDataForAdsIndexPage, getDataForAdShowPage} from '../api/ad';
 
 interface ISugar {
 	params?: any;
@@ -32,11 +32,15 @@ const instance = axios.create({
 	},
 });
 
+const formatData = (data) => {
+	return queryString.stringify(data, {arrayFormat: 'bracket'});
+};
+
 export const ads: prepareMethod = async () => {
 	try {
-		const axiosData = await instance.get(`/ads?${queryString.stringify(getDataForAdsIndexPage)}`);
-		console.log(axiosData);
-		return axiosData.data.data;
+		const response = await instance.get(`/ads?${formatData(getDataForAdsIndexPage)}`);
+		console.log(response);
+		return response.data.data;
 	} catch (e) {
 		console.log(e);
 	}
@@ -44,7 +48,8 @@ export const ads: prepareMethod = async () => {
 
 export const ad: prepareMethod = async ({ params }) => {
 	try {
-		const response = await instance.get(`/ads/` + params.id);
+		const response = await instance.get(`/ads/${params.id}?${formatData(getDataForAdShowPage)}`);
+		console.log(response.data);
 		return response.data;
 	} catch (error) {
 		console.log(error);
