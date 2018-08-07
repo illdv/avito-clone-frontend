@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect, Dispatch } from 'react-redux';
 import queryString from 'query-string';
 
@@ -10,7 +10,8 @@ import { ILocationStoreState } from 'client/common/location/module';
 
 import { showLocationModal } from 'client/ssr/modals/location/locationModalTriggers';
 import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
-import { IOption } from 'client/spa/pages/create-ad/ManagerAd';
+import PriceRange from 'client/ssr/blocks/search/components/PriceRange';
+import { IOption } from 'client/common/entities/user/modules/owned-ads/interfaces';
 
 require('./Search.sass');
 
@@ -18,20 +19,31 @@ interface ISearchProps {
 	categories: Category;
 	idActiveCategory: number;
 	locationState: ILocationStoreState;
+	priceRange?: boolean;
+}
+
+interface IOptionWrap {
+	value: string;
+	item: IOption;
 }
 
 interface ISearchState {
 	searchString: string;
 	activeCategories: any;
 	duplicateCategories: any;
-	options: IOption[];
+	options: IOptionWrap[];
+	rangePrice: {
+		priceType: string;
+		priceFrom: string;
+		priceTo: string;
+	};
 }
 
 const mapStateToProps = (state: IRootState) => ({
 	locationState: getLocationState(state),
 });
 
-const getOption = (option: IOption, creatorChangeOption) => (
+const getOption = (option: IOptionWrap, creatorChangeOption) => (
 	<input
 		className='search search__options form-control'
 		value={option.value}
@@ -40,8 +52,36 @@ const getOption = (option: IOption, creatorChangeOption) => (
 	/>
 );
 
-class Search extends Component<ISearchProps, ISearchState> {
-	onSelectCategory = category => {
+enum PriceRangeQueryParamType {
+	forSale = 'for-sale',
+	forBy   = 'for-buy',
+	forRent = 'for-rent',
+}
+
+class Search extends React.Component<ISearchProps, ISearchState> {
+	constructor(props, context) {
+		super(props, context);
+
+		let search;
+		// TODO refactor use search from prepares.
+		if (typeof window !== 'undefined') {
+			search = queryString.parse(window.location.search).search;
+		}
+
+		this.state = {
+			duplicateCategories: this.props.categories,
+			activeCategories: [],
+			searchString: search || '',
+			options: [],
+			rangePrice: {
+				priceType: null,
+				priceFrom: null,
+				priceTo: null,
+			},
+		};
+	}
+
+	onSelectCategory        = category => {
 		if (category) {
 			if (this.state.activeCategories[0] !== category) {
 				this.setState({
@@ -51,8 +91,8 @@ class Search extends Component<ISearchProps, ISearchState> {
 		} else {
 			this.setState({ activeCategories: [] });
 		}
-	};
-	onSelectSubcategory = (category, parent) => {
+	}
+	onSelectSubcategory     = (category, parent) => {
 		const categories = this.state.activeCategories;
 
 		const indexParent = categories.indexOf(parent);
@@ -76,14 +116,14 @@ class Search extends Component<ISearchProps, ISearchState> {
 			});
 		}
 
-	};
-	getCorrectOptions = (category: ICategory): IOption[] => {
+	}
+	getCorrectOptions       = (category: ICategory): IOptionWrap[] => {
 		return category.total_options.map(option => ({
 			value: '',
 			item: option,
 		}));
-	};
-	creatorChangeOption = (id: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
+	}
+	creatorChangeOption     = (id: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newOptions = this.state.options.map(option => {
 			if (option.item.id === id) {
 				return {
@@ -97,17 +137,19 @@ class Search extends Component<ISearchProps, ISearchState> {
 		this.setState({
 			options: newOptions,
 		});
-	};
-	changeSearchString = e => {
+	}
+	changeSearchString      = e => {
 		this.setState({
 			searchString: e.target.value,
 		});
-	};
+	}
 	showSearchLocationModal = () => showLocationModal(ModalNames.searchLocation);
+
 	onSubmit = e => {
 		e.preventDefault();
-		const { idCity, idRegion, idCountry } = this.props.locationState.local;
-		const query: any                      = {
+		const { idCity, idRegion, idCountry }                   = this.props.locationState.local;
+		const { rangePrice: { priceType, priceFrom, priceTo } } = this.state;
+		const query: any                                        = {
 			search: this.state.searchString,
 		};
 
@@ -122,6 +164,13 @@ class Search extends Component<ISearchProps, ISearchState> {
 		} else if (idCountry) {
 			query.country_id = idCountry;
 		}
+
+		priceType ? query.type = priceType :
+			query.type = null;
+		priceFrom ? query.price_from = priceFrom :
+			query.price_from = null;
+		priceTo ? query.price_to = priceTo :
+			query.price_to = null;
 
 		/* Router.push({
 			pathname: '/search',
@@ -139,23 +188,6 @@ class Search extends Component<ISearchProps, ISearchState> {
 		});
 
 		window.location.href = `/search?${queryString.stringify(query)}${optionsString.length > 1 ? optionsString : '' }`;
-	};
-
-	constructor(props, context) {
-		super(props, context);
-
-		let search;
-
-		if (typeof window !== 'undefined') {
-			search = queryString.parse(window.location.search).search;
-		}
-
-		this.state = {
-			duplicateCategories: this.props.categories,
-			activeCategories: [],
-			searchString: search || '',
-			options: [],
-		};
 	}
 
 	get subcategories() {
@@ -215,7 +247,20 @@ class Search extends Component<ISearchProps, ISearchState> {
 		return 'World';
 	}
 
+	onSetPriceType = (priceType: string) => {
+		this.setState(({ rangePrice }) => ({ rangePrice: { ...rangePrice, priceType } }));
+	}
+
+	onSetPriceFrom = (priceFrom: string) => {
+		this.setState(({ rangePrice }) => ({ rangePrice: { ...rangePrice, priceFrom } }));
+	}
+
+	onSetPriceTo = (priceTo: string) => {
+		this.setState(({ rangePrice }) => ({ rangePrice: { ...rangePrice, priceTo } }));
+	}
+
 	render() {
+		const { priceRange } = this.props;
 		return (
 			<form
 				action='#'
@@ -294,6 +339,11 @@ class Search extends Component<ISearchProps, ISearchState> {
 						}
 					</div>
 				}
+				{priceRange ? <PriceRange
+					setPriceType={this.onSetPriceType}
+					setPriceFrom={this.onSetPriceFrom}
+					setPriceTo={this.onSetPriceTo}
+				/> : null}
 			</form>
 		);
 	}

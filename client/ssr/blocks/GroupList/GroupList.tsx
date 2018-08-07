@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { adGroup } from 'client/ssr/pages/Category';
+import { IAdGroup } from 'client/ssr/pages/Category';
 import Ads from 'client/ssr/blocks/ads/Ads';
 
 interface IGroupList {
-	groupList: adGroup[];
+	groupList: IAdGroup[];
 }
 
 const GroupList: React.SFC<IGroupList> = ({ groupList }) => {

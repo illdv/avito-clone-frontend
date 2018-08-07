@@ -5,9 +5,9 @@ import { types } from 'redux-act';
 import { withI18next } from '../common/lib/withI18next';
 
 import { SetCategories } from 'client/ssr/blocks/categories/context';
-import { IAds } from 'client/ssr/blocks/ads/Ads';
 
 import SearchPage from 'client/ssr/pages/Search';
+import { IAds } from 'client/common/entities/user/modules/owned-ads/interfaces';
 
 const isServer: boolean = typeof window === 'undefined';
 
@@ -18,12 +18,14 @@ if (isServer) {
 interface ICategoryProps {
 	categories: any[];
 	search: IAds[];
+	query: object;
 }
 
 class Category extends React.Component<ICategoryProps> {
 	static async getInitialProps({ query }) {
 
 		return {
+			query: query.query,
 			search: query.search || [],
 			categories: query.categories,
 			location: query.location,
@@ -31,13 +33,14 @@ class Category extends React.Component<ICategoryProps> {
 	}
 
 	render() {
-		const { search, categories } = this.props;
+		const { search, categories, query } = this.props;
 		return (
-			<SetCategories categories={ categories }>
-				 <SearchPage
+			<SetCategories categories={categories} >
+				<SearchPage
 					search={search}
+					query={query}
 				/>
-			</SetCategories>
+			</SetCategories >
 		);
 	}
 }

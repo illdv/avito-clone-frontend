@@ -1,5 +1,7 @@
 import * as React from 'react';
-import FavoritesItem from 'client/spa/pages/favorites/FavoritesItem';
+import FavoriteItem from './components/FavoriteItem';
+
+require('./Favorites.sass');
 
 interface IFavoritesPageProps {
 	ads: IFavoritesItems;
@@ -33,14 +35,15 @@ class FavoritesPage extends React.Component<IFavoritesPageProps, IFavoritesPageS
 
 	handleRemove = () => {
 		const selected = this.state.selected;
-		let array: number[] = Array.from(selected);
+		const array: number[] = Array.from(selected);
 		this.props.removeFavoriteAds(array);
 		selected.clear();
 		this.setState({checkedAll: false, selected});
 	}
 
 	handleCheckAll = () => {
-		let {selected, adsCollection} = this.state;
+		const {adsCollection} = this.state;
+		let {selected} = this.state;
 		if (this.state.checkedAll) {
 			selected.clear();
 		} else {
@@ -52,7 +55,7 @@ class FavoritesPage extends React.Component<IFavoritesPageProps, IFavoritesPageS
 	}
 
 	handleCheck = (id: string, checked: boolean) => {
-		let {selected, checkedAll} = this.state;
+		const {selected, checkedAll} = this.state;
 		let currentCheckedAll;
 		if (checked) {
 			selected.add(id);
@@ -60,7 +63,7 @@ class FavoritesPage extends React.Component<IFavoritesPageProps, IFavoritesPageS
 			selected.delete(id);
 		}
 		if (checkedAll) {
-			currentCheckedAll = !checkedAll
+			currentCheckedAll = !checkedAll;
 		}
 		this.setState({checkedAll: currentCheckedAll, selected});
 	}
@@ -85,17 +88,21 @@ class FavoritesPage extends React.Component<IFavoritesPageProps, IFavoritesPageS
 					<button
 						className='btn grey-btn-outline w-25 remove-offer__button'
 						onClick={this.handleRemove}
-					>Remove
+					>
+						Remove
 					</button>
 				</div>
 				<div className='favourites-offer-block'>
-					{adsCollection ?
-						adsCollection.map(ad => <FavoritesItem
-							key={ad.id}
-							item={ad}
-							onCheck={this.handleCheck}
-							checked={checkedAll || selected.has(ad.id)}
-						/>) : null
+					{
+						adsCollection &&
+						adsCollection.map(ad => (
+							<FavoriteItem
+								key={ad.id}
+								item={ad}
+								onCheck={this.handleCheck}
+								checked={checkedAll || selected.has(ad.id)}
+							/>
+						))
 					}
 				</div>
 			</>
