@@ -11,6 +11,9 @@ import { ILocationStoreState } from 'client/common/location/module';
 import { showLocationModal } from 'client/ssr/modals/location/locationModalTriggers';
 import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
 import PriceRange from 'client/ssr/blocks/search/components/PriceRange';
+import { getQuery, IQuery } from 'client/ssr/pages/QueryContext';
+import { useOrDefault } from 'client/spa/profile/utils/createAd';
+import { IOption } from 'client/spa/profile/blocks/manager-ad/interface';
 
 require('./Search.sass');
 
@@ -261,6 +264,9 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 
 	render() {
 		const { priceRange } = this.props;
+
+		console.log('render Search');
+
 		return (
 			<form
 				action='#'

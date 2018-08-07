@@ -8,6 +8,9 @@ import Ads from 'client/ssr/blocks/ads/Ads';
 import EmptySearch from 'client/ssr/blocks/empty-search/EmptySearch';
 import { IAds } from 'client/common/entities/user/modules/owned-ads/interfaces';
 import BreadcrumbsWrap from 'client/ssr/wraps/BreadcrumbFromContext';
+import ListOfSubcategories from 'client/ssr/blocks/list-of-subcategories/ListOfSubcategories';
+import { ConsumerCategories } from 'client/ssr/blocks/categories/context';
+import { categoryToItemOfTitlesList } from 'client/ssr/pages/utils';
 
 interface ISearchPageProp {
 	search: IAds[];
@@ -31,6 +34,14 @@ class SearchPage extends React.Component<ISearchPageProp> {
 							classNameForContainer='breadcrumb'
 							classNameForItem='breadcrumb-item'
 						/>
+						<ConsumerCategories >
+							{(categories: ICategory[]) => (
+								<ListOfSubcategories
+									title={'All'}
+									items={categories.map(categoryToItemOfTitlesList)}
+								/>
+							)}
+						</ConsumerCategories >
 					</div >
 				</div >
 				{

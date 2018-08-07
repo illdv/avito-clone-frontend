@@ -11,6 +11,7 @@ import ListOfSubcategories, { ItemOfTitlesList } from 'client/ssr/blocks/list-of
 import GroupList from '../blocks/GroupList/GroupList';
 import { pushInRouter } from 'client/common/utils/utils';
 import { changeCountryLocal } from 'client/common/location/module';
+import { categoryToItemOfTitlesList } from 'client/ssr/pages/utils'
 
 export interface IAdGroup {
 	title: string;
@@ -27,9 +28,7 @@ interface ICategoryPageProps {
 
 class Category extends React.Component<ICategoryPageProps> {
 
-	categoryToItemOfTitlesList = ({ id, title, total_ads_count, slug }: ICategory): ItemOfTitlesList => {
-		return { id, title, count: total_ads_count, href: `/category/${ slug }` };
-	}
+
 
 	onRedirect = (href: string) => () => {
 		pushInRouter(href);
@@ -56,7 +55,7 @@ class Category extends React.Component<ICategoryPageProps> {
 							&&
 							<ListOfSubcategories
 								title={'All'}
-								items={this.props.subcategories.map(this.categoryToItemOfTitlesList)}
+								items={this.props.subcategories.map(categoryToItemOfTitlesList)}
 							/>
 						}
 					</div >

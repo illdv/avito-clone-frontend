@@ -56,7 +56,7 @@ export const ad: prepareMethod = async ({ params }) => {
 };
 
 export const categories: prepareMethod = async () => {
-	const response = await instance.get('/categories');
+	const response = await instance.get('/categories?appends[]=children');
 	return response.data;
 };
 

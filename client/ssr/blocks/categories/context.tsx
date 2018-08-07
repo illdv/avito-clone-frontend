@@ -19,6 +19,8 @@ export class SetCategories extends React.Component<IProviderProps> {
 	}
 }
 
+export const ConsumerCategories = Consumer;
+
 export const getCategories = Component => props => (
 	<Consumer>
 		{(categories: Category) => <Component {...props} categories={categories} />}
