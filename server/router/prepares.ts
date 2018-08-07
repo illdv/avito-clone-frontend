@@ -280,6 +280,6 @@ export const breadcrumbs: prepareMethod = async ({ query, accumulation }, req) =
 			title: `All listings in ${accumulation.location.locationName}`,
 			href: '/category',
 		},
-		...categoryQueueToBreadcrumbsFormat(categoryQueue),
+		...categoryQueueToBreadcrumbsFormat(categoryQueue, categoryQueue.length),
 	];
 };
