@@ -16,6 +16,7 @@ interface ISugar {
 	params?: any;
 	query?: any;
 	path?: string;
+	accumulation?: any;
 }
 
 type prepareMethod = (sugar: ISugar, req: any) => any;
