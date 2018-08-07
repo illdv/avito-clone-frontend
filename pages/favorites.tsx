@@ -3,7 +3,7 @@ import Head from 'next/head';
 
 import Header from '../client/ssr/blocks/header/Header';
 import { types } from 'redux-act';
-import Navbar from 'client/ssr/blocks/navbar/Navbar'
+import Navbar from 'client/ssr/blocks/navbar/Navbar';
 import Favorites from 'client/spa/pages/favorites/Favorites';
 
 require('client/spa/profile/Helpers.sass');
