@@ -63,15 +63,7 @@ class Header extends Component<IProps, IState> {
 		this.ref = ref;
 	}
 
-	// TODO refactor
 	componentDidMount(): void {
-		const { user } = this.props;
-		const token    = CustomStorage.getToken();
-
-		if (!isServer() && !user.profile && token) {
-			UserActions.common.initUser.REQUEST({});
-		}
-
 		const classNames = ['navbar-nav'];
 
 		if (this.state.navbarShowing) {

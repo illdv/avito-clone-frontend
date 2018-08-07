@@ -1,5 +1,5 @@
 import { AxiosWrapper } from './AxiosWrapper';
-import { IRequestCreateCategory } from 'client/common/_categories/interface'
+import { IRequestCreateCategory } from 'client/common/_categories/interface';
 
 function getCategories() {
 	return AxiosWrapper.get('/categories');

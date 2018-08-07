@@ -51,6 +51,9 @@ export const isContainsId = (id: number) => (checkedItem: { id: number }) => {
 	}
 };
 
+/**
+ * Execute function. If happened error return defaultValue.
+ */
 export function useOrDefault<T>(func: () => T, defaultValue: T): T {
 	try {
 		return func();
