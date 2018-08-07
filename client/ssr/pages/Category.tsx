@@ -9,7 +9,6 @@ import BreadcrumbsWrap from 'client/ssr/wraps/BreadcrumbFromContext';
 import EmptySearch from 'client/ssr/blocks/empty-search/EmptySearch';
 import ListOfSubcategories, { ItemOfTitlesList } from 'client/ssr/blocks/list-of-subcategories/ListOfSubcategories';
 import GroupList from '../blocks/GroupList/GroupList';
-import { ICategory } from 'client/common/_categories/interface';
 import { pushInRouter } from 'client/common/utils/utils';
 import { changeCountryLocal } from 'client/common/location/module';
 

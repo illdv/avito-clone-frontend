@@ -10,8 +10,8 @@ import { ILocationStoreState } from 'client/common/location/module';
 
 import { showLocationModal } from 'client/ssr/modals/location/locationModalTriggers';
 import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
-import { IOption } from 'client/spa/pages/create-ad/ManagerAd';
 import PriceRange from 'client/ssr/blocks/search/components/PriceRange';
+import { IOption } from 'client/common/entities/user/modules/owned-ads/interfaces';
 
 require('./Search.sass');
 
@@ -22,11 +22,16 @@ interface ISearchProps {
 	priceRange?: boolean;
 }
 
+interface IOptionWrap {
+	value: string;
+	item: IOption;
+}
+
 interface ISearchState {
 	searchString: string;
 	activeCategories: any;
 	duplicateCategories: any;
-	options: IOption[];
+	options: IOptionWrap[];
 	rangePrice: {
 		priceType: string;
 		priceFrom: string;
@@ -38,7 +43,7 @@ const mapStateToProps = (state: IRootState) => ({
 	locationState: getLocationState(state),
 });
 
-const getOption = (option: IOption, creatorChangeOption) => (
+const getOption = (option: IOptionWrap, creatorChangeOption) => (
 	<input
 		className='search search__options form-control'
 		value={option.value}
@@ -112,7 +117,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 		}
 
 	}
-	getCorrectOptions       = (category: ICategory): IOption[] => {
+	getCorrectOptions       = (category: ICategory): IOptionWrap[] => {
 		return category.total_options.map(option => ({
 			value: '',
 			item: option,

@@ -1,4 +1,4 @@
-import { IAttachedImage } from 'client/spa/pages/create-ad/interface';
+import { IAttachedImage } from '../../../../../spa/profile/interfaces/managerAd';
 
 export enum PageNames {
 	Profile = 'Profile',

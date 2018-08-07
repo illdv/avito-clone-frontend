@@ -3,7 +3,7 @@ import React from 'react';
 require('./ListOfSubcategories.sass');
 
 export interface ItemOfTitlesList {
-	id: string;
+	id: number;
 	href: string;
 	title: string;
 	count: number;
