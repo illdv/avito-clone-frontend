@@ -58,20 +58,23 @@ export const findCategoriesQueueById = (categories, categoryId): any[] | null =>
 	}, false);
 };
 
-export const categoryQueueToBreadcrumbsFormat = categoryQueue => {
+function appendTotalToLast(index, length, total, defaultTotal) {
+	if (index === length - 1) {
+		return defaultTotal || total;
+	}
+	return '';
+}
+
+export const categoryQueueToBreadcrumbsFormat = (categoryQueue, defaultTotal = null) => {
 	if (!categoryQueue || categoryQueue.length < 1) {
 		return [];
 	}
 
 	return categoryQueue.map((category, index, arr) => {
-		let totla;
-
-		if (index === arr.length - 1) {
-			totla = ` ${category.total_ads_count}`;
-		}
+		const totalToLast = appendTotalToLast(index, arr.index, category.total_ads_count, defaultTotal);
 
 		return {
-			title: category.title + (totla || ''),
+			title: `${category.title} ${totalToLast}`,
 			href: `/category/${ encodeURI(category.slug) }`,
 		};
 	});
