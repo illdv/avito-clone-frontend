@@ -30,7 +30,7 @@ class SimilarRandomAd extends Component<ISimilarAdProps> {
 					</div>
 					<div className='col-md-6 col-lg-5 text-right'>
 						<img
-							// src={this.props.similar_ad.image[0].file_url}
+							src={this.props.similar_ad.images[0].file_url}
 							alt=''
 							className='right'
 						/>

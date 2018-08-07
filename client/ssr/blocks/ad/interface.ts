@@ -114,7 +114,7 @@ export interface ISimilarFieldsProps {
 	price: string;
 	userName: string;
 	description: string;
-	image: IImage[];
+	images: IImage[];
 }
 export interface ISimilarAdProps {
 	similar_ad: ISimilarFieldsProps;
