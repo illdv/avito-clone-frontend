@@ -42,28 +42,6 @@ function resetPasswordByCode(request: IResetPasswordByCodeRequest) {
 	return AxiosWrapper.post('/password/reset', request);
 }
 
-function getFavorites(request: IFavoritesRequest) {
-	const ids = request.favorites_ids;
-	if (ids) {
-		const list = [];
-		ids.forEach(id => {
-			const template = `favorites_ids[]=${ id }`;
-			list.push(template);
-		});
-		const string = list.join('&');
-		return AxiosWrapper.get(`/favorites?${string}`);
-	}
-
-}
-
-function postFavorites(request: IPostFavoritesRequest) {
-	return AxiosWrapper.post('/favorites', request);
-}
-
-function deleteFavorites(request: IDeleteFavoritesRequest) {
-	return AxiosWrapper.deleteResponse('/favorites', request);
-}
-
 function deleteAccount() {
 	return AxiosWrapper.deleteResponse('/profile');
 }
@@ -76,8 +54,5 @@ export const UserAPI = {
 	getProfile,
 	sendCodeToEmail,
 	resetPasswordByCode,
-	postFavorites,
-	deleteFavorites,
-	getFavorites,
 	deleteAccount,
 };

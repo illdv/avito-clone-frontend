@@ -47,7 +47,6 @@ export class Index extends React.Component<IIndexProps, IIndexProps> {
 		const result = {
 			vipAds: query.vipAds,
 			ads: query.ads,
-			location: query.location,
 			categories: query.categories,
 		};
 		
