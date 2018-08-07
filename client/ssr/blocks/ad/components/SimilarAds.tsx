@@ -3,7 +3,6 @@ import SimilarSortedBy from 'client/ssr/blocks/ad/components/SimilarSortedBy';
 import SimilarRandomAd from 'client/ssr/blocks/ad/components/SimilarRandomAd';
 import { ISimilarAdsProps, ISimilarAdsState } from 'client/ssr/blocks/ad/interface';
 import { AdsAPI } from 'client/common/api/AdsAPI';
-import index from 'pages';
 
 class SimilarAds extends Component <ISimilarAdsProps, ISimilarAdsState> {
 	constructor(props) {
@@ -24,7 +23,6 @@ class SimilarAds extends Component <ISimilarAdsProps, ISimilarAdsState> {
 				this.setState({ similar_ads: response.data });
 			});
 	}
-
 	render() {
 		return (
 			<div className='col-lg-4'>

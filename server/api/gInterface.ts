@@ -1,4 +1,4 @@
-import { IAdCity, IProductHistories, ISeller } from 'client/ssr/blocks/ad/interface';
+import { IAdCity, IPriceHistories, ISeller } from 'client/ssr/blocks/ad/interface';
 
 export enum AdAppendsFields {
 	total_visits = 'total_visits',
@@ -66,13 +66,12 @@ export interface IGetFullAdsRequest {
 
 }
 
-
 export interface IGetFullAdsResponse {
 	[AdWithFields.seller]: ISeller;
 	[AdWithFields.options]: any[];
 	[AdWithFields.country]: IAdCity;
 	[AdWithFields.images]: IImage[];
-	[AdWithFields.priceHistories]: IProductHistories[];
+	[AdWithFields.priceHistories]: IPriceHistories[];
 	[AdAppendsFields.today_visits]: string;
 	[AdAppendsFields.total_visits]: string;
 	[AdAppendsFields.next_ad]: number;
