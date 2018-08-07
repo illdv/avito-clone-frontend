@@ -17,9 +17,9 @@ import {ILocationStoreState } from 'client/common/location/module';
 import { getLocationState } from 'client/common/store/selectors';
 import { showLocationModal } from 'client/ssr/modals/location/locationModalTriggers';
 import SearchLocationModal from 'client/ssr/modals/location/SearchLocationModal';
-import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
-import { useOrDefault } from 'client/spa/pages/create-ad/utils';
-import { defaultPagePath } from '../../../spa/profile/constants';
+import { ModalNames } from 'client/common/modal-juggler/modalJugglerInterface';
+import { defaultPagePath } from 'client/spa/profile/constants';
+import { useOrDefault } from 'client/spa/profile/utils/createAd';
 
 require('../../../common/styles/main.sass');
 require('./Header.sass');
@@ -81,7 +81,7 @@ class Header extends Component<IProps, IState> {
 		this.ref.className = classNames.join(' ');
 	}
 
-	get loginComponent(){
+	get loginComponent() {
 		const { user } = this.props;
 		const profile  = user.profile;
 		const avatar   = profile && profile.image && profile.image.file_url || '/static/img/person.png';

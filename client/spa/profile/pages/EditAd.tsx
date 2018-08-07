@@ -94,7 +94,7 @@ class EditAd extends React.Component<IProps, IState> {
 				value: option.value,
 			})),
 			is_vip: state.isVip,
-			type_id: state.selectedType,
+			type_id: state.selectedType || 2, // For buy
 
 		};
 

@@ -35,7 +35,7 @@ class Navbar extends React.Component<IProps> {
 							<a href='/' className='navbar-brand logo'>
 								<img src='/static/img/logo.svg' alt=''/>
 							</a>
-							<ul className='navbar-nav mr-auto mt-2 mt-lg-0'>
+							<ul className='main-navigation'>
 								<li className='nav-item'>
 									<a href='/category/cars'>Cars</a>
 								</li>

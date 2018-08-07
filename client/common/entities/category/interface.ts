@@ -28,6 +28,7 @@ interface ITotalOptions {
 	category_id: number;
 	type_id: number;
 	name: string;
+	ctrated_at: string;
 }
 
 interface ICategories {

@@ -6,8 +6,6 @@ interface IFavoritesItem {
 	checked: any;
 }
 
-
-
 const FavoritesItem: React.SFC<IFavoritesItem> = ({item, onCheck, checked}) => {
 	const handleCheck = e => onCheck(item.id, e.target.checked);
 
