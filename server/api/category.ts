@@ -1,4 +1,7 @@
-import { IGetLiteCategoriesRequest, CategoryAppendsFields, CategorySelectedFields  } from '../api/gInterface';
+import {
+	IGetLiteCategoriesRequest, CategoryAppendsFields, CategorySelectedFields,
+	CategoryWithFields
+} from '../api/gInterface';
 
 export const getLitleCategories: IGetLiteCategoriesRequest = {
 	fields: [
@@ -11,4 +14,7 @@ export const getLitleCategories: IGetLiteCategoriesRequest = {
 		CategoryAppendsFields.total_ads_count,
 		CategoryAppendsFields.children,
 	],
-}
+	with: [
+		CategoryWithFields.options,
+	],
+};
