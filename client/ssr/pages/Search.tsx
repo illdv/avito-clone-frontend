@@ -32,8 +32,6 @@ class SearchPage extends React.Component<ISearchPageProp> {
 	}
 
 	render() {
-		console.log(this.props.countriesTotal);
-
 		const { countriesTotal, search, categoriesTotal } = this.props;
 
 		const countriesTotals = countriesTotal.filter(item => item.total_ads !== 0)

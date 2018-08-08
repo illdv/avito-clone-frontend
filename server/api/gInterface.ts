@@ -67,6 +67,9 @@ export interface IGetFullAdsRequest {
 
 }
 export interface IGetSellerAdRequest {
+	appends: [
+		AdAppendsFields.total_visits
+	];
 	with: [
 		AdWithFields.images,
 		AdWithFields.options
