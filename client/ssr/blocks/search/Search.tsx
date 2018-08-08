@@ -78,9 +78,9 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 			searchString: useOrDefault(() => this.props.query.search, ''),
 			options,
 			rangePrice: {
-				priceType: null,
-				priceFrom: null,
-				priceTo: null,
+				priceType: props.query.type || null,
+				priceFrom: props.query.price_from || null,
+				priceTo: props.query.price_to || null,
 			},
 		};
 	}
@@ -174,12 +174,17 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 			query.country_id = idCountry;
 		}
 
-		priceType ? query.type = priceType :
-			query.type = null;
-		priceFrom ? query.price_from = priceFrom :
-			query.price_from = null;
-		priceTo ? query.price_to = priceTo :
-			query.price_to = null;
+		if (priceType && priceType.length > 0 ) {
+			query.type = priceType;
+		}
+
+		if (priceFrom && priceFrom.length > 0) {
+			query.price_from = priceFrom;
+		}
+
+		if (priceTo && priceTo.length > 0) {
+			query.price_to = priceTo;
+		}
 
 		let optionsString = '';
 		this.state.options.forEach(option => {
@@ -352,6 +357,9 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 					priceRange
 						?
 						<PriceRange
+							type={this.state.rangePrice.priceType}
+							from={this.state.rangePrice.priceFrom}
+							to={this.state.rangePrice.priceTo}
 							setPriceType={this.onSetPriceType}
 							setPriceFrom={this.onSetPriceFrom}
 							setPriceTo={this.onSetPriceTo}
