@@ -304,29 +304,36 @@ export const breadcrumbs: prepareMethod = async ({ query, accumulation }, req) =
 };
 
 export const countriesTotal: prepareMethod = async ({ query: queryParams, accumulation }, req) => {
+	try {
+		const hasRegion  = queryParams.region_id;
+		const hasCountry = queryParams.country_id;
+		const hasCity    = queryParams.city_id;
 
-	const hasRegion  = queryParams.region_id;
-	const hasCountry = queryParams.country_id;
-	const hasCity    = queryParams.city_id;
+		if (hasRegion && !hasCity) {
+			const responseRegions = await getInstanseWithLanguageByReq(req)
+				.get(`/regions/${queryParams.region_id}/cities?appends[]=total_ads&category_id=${queryParams.category_id}`);
+			return responseRegions.data;
+		}
 
-	if (hasRegion && !hasCity) {
-		const responseRegions = await getInstanseWithLanguageByReq(req)
-			.get(`/regions/${queryParams.region_id}/cities?appends[]=total_ads&category_id=${queryParams.category_id}`);
-		return responseRegions.data;
+		if (hasCountry && !hasCity) {
+			const responseRegions = await getInstanseWithLanguageByReq(req)
+				.get(`/countries/${queryParams.country_id}/regions?appends[]=total_ads&category_id=${queryParams.category_id}`);
+			return responseRegions.data;
+		}
+
+		const responseCountries = await getInstanseWithLanguageByReq(req)
+			.get(`/countries?appends[]=total_ads&category_id=${queryParams.category_id}`);
+		return responseCountries.data;
+	} catch (e) {
+		return [];
 	}
-
-	if (hasCountry && !hasCity) {
-		const responseRegions = await getInstanseWithLanguageByReq(req)
-			.get(`/countries/${queryParams.country_id}/regions?appends[]=total_ads&category_id=${queryParams.category_id}`);
-		return responseRegions.data;
-	}
-
-	const responseCountries = await getInstanseWithLanguageByReq(req)
-		.get(`/countries?appends[]=total_ads&category_id=${queryParams.category_id}`);
-	return responseCountries.data;
 };
 
 export const categoriesTotal: prepareMethod = async ({ query, accumulation }, req) => {
-	const response = await instance.get(`/categories/${query.category_id}?appends[]=total_ads_count`);
-	return response.data.category.children;
+	try {
+		const response = await instance.get(`/categories/${query.category_id}?appends[]=total_ads_count`);
+		return response.data.category.children;
+	} catch (e) {
+		return [];
+	}
 };

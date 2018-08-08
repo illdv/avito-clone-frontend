@@ -34,7 +34,9 @@ class SearchPage extends React.Component<ISearchPageProp> {
 	render() {
 		console.log(this.props.countriesTotal);
 
-		const countriesTotals = this.props.countriesTotal.filter(item => item.total_ads !== 0)
+		const { countriesTotal, search, categoriesTotal } = this.props;
+
+		const countriesTotals = countriesTotal.filter(item => item.total_ads !== 0)
 
 		return (
 			<React.Fragment >
@@ -47,10 +49,16 @@ class SearchPage extends React.Component<ISearchPageProp> {
 							classNameForContainer='breadcrumb'
 							classNameForItem='breadcrumb-item'
 						/>
-						<ListOfSubcategories
-							title={'All'}
-							items={this.props.categoriesTotal.map(categoryToItemOfTitlesList)}
-						/>
+						{
+							categoriesTotal.length > 0
+							&&
+							<ListOfSubcategories
+								title={'All'}
+								items={categoriesTotal.map(categoryToItemOfTitlesList)}
+							/>
+							||
+							null
+						}
 						{
 							countriesTotals.length > 0
 							&&
@@ -64,11 +72,11 @@ class SearchPage extends React.Component<ISearchPageProp> {
 					</div >
 				</div >
 				{
-					this.props.search.length > 0
+					search.length || countriesTotal.length > 0 || categoriesTotal.length > 0
 						?
 						<Ads
-							title={`Search result (${this.props.search.length})`}
-							ads={this.props.search}
+							title={`Search result (${search.length})`}
+							ads={search}
 						/>
 						:
 						<EmptySearch />
