@@ -9,9 +9,36 @@ export const categoryToItemOfTitlesList = ({ id, title, total_ads_count, slug }:
 	return { id, title, count: total_ads_count, href: `?${parsed}` };
 };
 
-export const countriesToItemOfTitlesList = ({ country_id, title, total_ads }: ICountriesTotal): ItemOfTitlesList => {
-	const query = getQueryLoop();
-	delete query.city_id;
-	const parsed = queryString.stringify({ ...query, country_id });
-	return { id: country_id, title, count: total_ads, href: `?${parsed}` };
+// TODO: Rename method to locationToItemOfTitlesList
+export const countriesToItemOfTitlesList = (countriesTotal: ICountriesTotal): ItemOfTitlesList => {
+	const { country_id, region_id, city_id, title, total_ads } = countriesTotal;
+
+	return {
+		id: country_id, title,
+		count: total_ads,
+		href: `?${calcUrlSearchForLocation(country_id, region_id, city_id)}`,
+	};
 };
+
+function calcUrlSearchForLocation(countryId, regionId, cityId) {
+	const newQueryParams = { ...getQueryLoop() };
+
+	const hasRegion = newQueryParams.region_id;
+	const hasCountry = newQueryParams.country_id;
+	const hasCity = newQueryParams.city_id;
+
+	if (hasRegion && !hasCity) {
+		return queryString.stringify({ ...newQueryParams, city_id: cityId });
+
+	}
+
+	if (hasCountry && !hasCity) {
+		delete newQueryParams.city_id;
+		return queryString.stringify({ ...newQueryParams, region_id: regionId });
+	}
+
+	delete newQueryParams.city_id;
+	delete newQueryParams.region_id;
+	console.log('newQueryParams', newQueryParams);
+	return queryString.stringify({ ...newQueryParams, country_id: countryId });
+}

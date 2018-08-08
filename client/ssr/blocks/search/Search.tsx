@@ -12,7 +12,7 @@ import { showLocationModal } from 'client/ssr/modals/location/locationModalTrigg
 import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
 import PriceRange from 'client/ssr/blocks/search/components/PriceRange';
 import { getQuery, IQuery } from 'client/ssr/contexts/QueryContext';
-import { useOrDefault } from 'client/spa/profile/utils/createAd';
+import { findCategoriesQueueById, useOrDefault } from 'client/spa/profile/utils/createAd';
 import { IOption } from 'client/spa/profile/blocks/manager-ad/interface';
 
 require('./Search.sass');
@@ -54,9 +54,13 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 	constructor(props, context) {
 		super(props, context);
 
+		const categoryId = useOrDefault(() => this.props.query.category_id, null);
+
+		const activeCategories = findCategoriesQueueById(this.props.categories, Number(categoryId));
+
 		this.state = {
 			duplicateCategories: this.props.categories,
-			activeCategories: [],
+			activeCategories: activeCategories || [],
 			searchString: useOrDefault(() => this.props.query.search, ''),
 			options: [],
 			rangePrice: {
@@ -68,6 +72,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 	}
 
 	onSelectCategory = category => {
+		console.log(category);
 		if (category) {
 			if (this.state.activeCategories[0] !== category) {
 				this.setState({
