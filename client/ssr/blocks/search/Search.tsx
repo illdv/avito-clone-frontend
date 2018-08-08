@@ -164,14 +164,12 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 		priceTo ? query.price_to = priceTo :
 			query.price_to = null;
 
-		let optionsString = '&';
-
+		let optionsString = '';
 		this.state.options.forEach(option => {
 			if (option.value.length > 0) {
-				optionsString += `options[${option.item.id}]=${option.value}`;
+				optionsString += `&options[${option.item.id}]=${option.value}`;
 			}
 		});
-
 		window.location.href = `/search?${queryString.stringify(query)}${optionsString.length > 1 ? optionsString : '' }`;
 	}
 
