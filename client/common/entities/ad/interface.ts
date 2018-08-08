@@ -32,6 +32,7 @@ interface IAd {
 	description: string;
 	body: string;
 	price: string;
+	address: string;
 	city_id: number;
 	is_published?: boolean;
 	is_approved?: boolean;

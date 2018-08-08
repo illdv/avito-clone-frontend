@@ -2,12 +2,19 @@ import * as React from 'react';
 require('./PriceRange.sass');
 
 interface IPriceRange {
+	to: string;
+	type: string;
+	from: string;
 	setPriceType: (priceType: string) => void;
 	setPriceFrom: (priceFrom: string) => void;
 	setPriceTo: (priceBefore: string) => void;
 }
 
-const PriceRange: React.SFC<IPriceRange> = ({ setPriceType, setPriceFrom, setPriceTo }) => {
+const checkSelecte = (value, selected) => {
+	return value === selected;
+};
+
+const PriceRange: React.SFC<IPriceRange> = ({ to, type, from, setPriceType, setPriceFrom, setPriceTo }) => {
 	const handlePriceType = (event: React.FormEvent<HTMLSelectElement>) => {
 		const priceType: string = event.currentTarget.value;
 		setPriceType(priceType);
@@ -32,17 +39,19 @@ const PriceRange: React.SFC<IPriceRange> = ({ setPriceType, setPriceFrom, setPri
 						<option
 							value=''
 							selected
-						>Add Type
+						>
+							Add Type
 						</option>
-						<option value='for-sale'>Sell</option>
-						<option value='for-rent'>Rent</option>
-						<option value='for-buy'>Buy now</option>
+						<option value='for-sale' selected={checkSelecte('for-sale', type)}>Sell</option>
+						<option value='for-rent' selected={checkSelecte('for-rent', type)}>Rent</option>
+						<option value='for-buy' selected={checkSelecte('for-buy', type)}>Buy now</option>
 					</select>
 				</div>
 
 				<div className='form-group filters-panel__item'>
 					<input
-						type='text'
+						type='number'
+						value={from}
 						placeholder='Price from $'
 						className='search__options form-control'
 						onChange={handlePriceFrom}
@@ -50,7 +59,8 @@ const PriceRange: React.SFC<IPriceRange> = ({ setPriceType, setPriceFrom, setPri
 				</div>
 				<div className='form-group filters-panel__item'>
 					<input
-						type='text'
+						type='number'
+						value={to}
 						placeholder='To $'
 						className='search__options form-control'
 						onChange={handlePriceTo}

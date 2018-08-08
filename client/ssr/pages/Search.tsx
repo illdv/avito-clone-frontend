@@ -7,37 +7,86 @@ import Footer from 'client/ssr/blocks/footer/Footer';
 import Ads from 'client/ssr/blocks/ads/Ads';
 import EmptySearch from 'client/ssr/blocks/empty-search/EmptySearch';
 import { IAds } from 'client/common/entities/user/modules/owned-ads/interfaces';
+import BreadcrumbsWrap from 'client/ssr/wraps/BreadcrumbFromContext';
+import ListOfSubcategories from 'client/ssr/blocks/list-of-subcategories/ListOfSubcategories';
+import { categoryToItemOfTitlesList, countriesToItemOfTitlesList } from 'client/ssr/pages/utils';
+import Pagination from 'client/ssr/pages/Pagination';
+import { IPagination } from 'client/ssr/pages/interfacePagination'
 
-interface ISearchPageProp {
-	search: IAds[];
-	query: any;
+export interface ICountriesTotal {
+	country_id: number;
+	region_id?: number;
+	city_id?: number;
+	title: string;
+	total_ads: number;
 }
 
+interface ISearchPageProp {
+	search: { ads: IAds[], pagination: IPagination };
+	countriesTotal: ICountriesTotal[];
+	categoriesTotal: ICategory[];
+}
+
+// TODO: is not page.
 class SearchPage extends React.Component<ISearchPageProp> {
 	constructor(props, context) {
 		super(props, context);
 	}
+
 	render() {
+		const { countriesTotal, search, categoriesTotal } = this.props;
+
+		const countriesTotals = countriesTotal.filter(item => item.total_ads !== 0);
+
 		return (
-			<React.Fragment>
+			<React.Fragment >
 				<Header />
-				<div className='bottom-header p-y-20'>
-					<div className='container'>
+				<div className='bottom-header p-y-20' >
+					<div className='container' >
 						<Navbar />
-						<Search idActiveCategory={this.props.query.category} priceRange={true}/>
-					</div>
-				</div>
-				{
-					this.props.search.length > 0
-					?
-						<Ads
-							title={`Search result (${this.props.search.length})`}
-							ads={this.props.search}
+						<Search priceRange={true} />
+						<BreadcrumbsWrap
+							classNameForContainer='breadcrumb'
+							classNameForItem='breadcrumb-item'
 						/>
-					: <EmptySearch />
+						{
+							categoriesTotal.length > 0
+							&&
+							<ListOfSubcategories
+								title={'All'}
+								items={categoriesTotal.map(categoryToItemOfTitlesList)}
+							/>
+							||
+							null
+						}
+						{
+							countriesTotals.length > 0
+							&&
+							<ListOfSubcategories
+								title={'Countries'}
+								items={countriesTotals.map(countriesToItemOfTitlesList)}
+							/>
+							||
+							null
+						}
+					</div >
+				</div >
+				{
+					search.ads.length ?
+						<div >
+							<Ads
+								title={`Search result (${search.ads.length})`}
+								ads={search.ads}
+							/>
+							<div className={'d-flex justify-content-center'} >
+								<Pagination pagination={search.pagination}/>
+							</div >
+						</div >
+						:
+						<EmptySearch />
 				}
 				<Footer />
-			</React.Fragment>
+			</React.Fragment >
 		);
 	}
 }

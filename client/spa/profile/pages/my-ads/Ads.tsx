@@ -64,7 +64,8 @@ class Ads extends React.Component<IProps, ISelectedAd> {
 
 	render() {
 		return (
-			<>
+			<>{
+				this.props.ads.length !== 0 &&
 				<ControlGroupButtons
 					ads={this.props.ads}
 					options={this.props.activeButtons}
@@ -72,6 +73,7 @@ class Ads extends React.Component<IProps, ISelectedAd> {
 					selectedAll={this.state.selectedAll}
 					selectedIds={this.state.selected}
 				/>
+			  }
 				{
 					this.props.ads.map(ad => (
 						<div

@@ -3,6 +3,7 @@ import * as queryString from 'query-string';
 
 import {
 	categoryQueueToBreadcrumbsFormat,
+	findCategoriesQueueById,
 	findCategoriesQueueBySlug,
 	getCurrentCategoryByQueue,
 	getIdFromCategory,
@@ -12,10 +13,14 @@ import {
 	getSubcategoryByCategoryQueue,
 } from '../utils/categoryPrepare';
 
+import { getDataForAdShowPage, getDataForAdsIndexPage } from '../api/ad';
+import { getLitleCategories } from '../api/category';
+
 interface ISugar {
 	params?: any;
 	query?: any;
 	path?: string;
+	accumulation?: any;
 }
 
 type prepareMethod = (sugar: ISugar, req: any) => any;
@@ -29,28 +34,39 @@ const instance = axios.create({
 	},
 });
 
-export const ads: prepareMethod = async () => {
-
-	const axiosData = await instance.get('/ads');
-	return axiosData.data.data;
+export const formatData = (data): string => {
+	return queryString.stringify(data, { arrayFormat: 'bracket' });
 };
 
-export const ad: prepareMethod = async ({ params }) => {
+export const adsPaginationPage: prepareMethod = async () => {
 	try {
-		const response = await instance.get(`/ads/` + params.id);
-		return response.data;
+		const response = await instance.get(`/ads?${formatData(getDataForAdsIndexPage)}`);
+		const ads      = response.data.data;
+		const vip      = response.data.vip;
+		return { ads, vip };
+	} catch (e) {
+		console.log(e);
+	}
+};
+
+export const adForShow: prepareMethod = async ({ params }) => {
+	try {
+		const response = await instance.get(`/ads/${params.id}?${formatData(getDataForAdShowPage)}`);
+		const ad       = response.data.ad;
+		const similars = response.data.similars;
+		return { ad, similars };
 	} catch (error) {
 		console.log(error);
 	}
 };
 
 export const categories: prepareMethod = async () => {
-	const response = await instance.get('/categories');
+	const response = await instance.get(`/categories?${formatData(getLitleCategories)}`);
 	return response.data;
 };
 
-const getAdsByParams = async params => {
-	const response = await instance.get(`/ads/?${ queryString.stringify(params) }`);
+const getLiteAdsByQueryString = async (queryString: string) => {
+	const response = await instance.get(`/ads/?${ queryString }`);
 	return response.data;
 };
 
@@ -116,13 +132,31 @@ export const location: prepareMethod = async (sugar, req) => {
 };
 
 export const query: prepareMethod = async (sugar, req) => {
-	return sugar.query;
+	const queryStr = req.url.match(/\?([^]+)/);
+
+	const optionsStrings = queryStr && queryStr[1].match(/(options[^&]+)/g);
+
+	const options = {};
+
+	if (optionsStrings) {
+		optionsStrings.forEach(optionString => {
+			const optionsParams = optionString.match(/options\[([^&]+)\]=([^]+)/);
+
+			if (optionsParams) {
+				options[optionsParams[1]] = optionsParams[2];
+			}
+		});
+	}
+
+	return { ...sugar.query, options };
 };
 
-export const vipAds: prepareMethod = async ({ params, query, path }, req) => {
-	const vipAdsResponse = await getAdsByParams({ vip: 1, count: 8 });
-	return vipAdsResponse.data;
-};
+// export const vipAds: prepareMethod = async ({ params, query, path }, req) => {
+// 	const data = formatData(getDataForAdsIndexPage);
+// 	const vipAdsResponse = await getLiteAdsByQueryString({data, vip: 1, count: 8 });
+// 	console.log(vipAdsResponse);
+// 	return vipAdsResponse.data;
+// };
 
 export const category: prepareMethod = async ({ params, query, path }, req) => {
 	const { categorySlug }                = params;
@@ -165,7 +199,7 @@ export const category: prepareMethod = async ({ params, query, path }, req) => {
 			subcategories = subcategories.concat(categories);
 		}
 
-		const vipAds = await getAdsByParams(reqForVipAds);
+		const vipAds = await getLiteAdsByQueryString(reqForVipAds);
 
 		if (vipAds.data.length > 0) {
 			adGroupList.push({
@@ -195,7 +229,7 @@ export const category: prepareMethod = async ({ params, query, path }, req) => {
 				}
 			}
 		} else {
-			const ads = await getAdsByParams({});
+			const ads = await getLiteAdsByQueryString('');
 
 			if (ads.data.length > 0) {
 				adGroupList.push({
@@ -260,12 +294,79 @@ export const getCities: prepareMethod = async ({ query }, req) => {
 	}
 };
 
-export const search: prepareMethod = async ({ query }, req) => {
+export const search: prepareMethod = async ({ query = {}, accumulation }, req) => {
 	try {
-		const response = await getAdsByParams(query || {});
-		return response.data;
+		const url = formatData({
+			...getDataForAdsIndexPage,
+			...(accumulation.query || query),
+		}) + '&page=' + query.currentPage;
+
+		const response     = await getLiteAdsByQueryString(url);
+		console.log('Search url = ', url);
+		console.log('Search response', response);
+
+		const { current_page, last_page, per_page, total } = response;
+
+		const pagination = {
+			current_page,
+			last_page,
+			per_page,
+			total,
+		};
+
+		return {
+			ads: response.data,
+			pagination,
+		};
+
 	} catch (err) {
-		console.log(err);
+		console.log('err', err);
+		return [];
+	}
+};
+
+export const breadcrumbs: prepareMethod = async ({ query, accumulation }, req) => {
+	const categoryQueue = findCategoriesQueueById(accumulation.categories, query.category);
+	return [
+		{
+			title: `All listings in ${accumulation.location.locationName}`,
+			href: '/category',
+		},
+		...categoryQueueToBreadcrumbsFormat(categoryQueue, categoryQueue.length),
+	];
+};
+
+export const countriesTotal: prepareMethod = async ({ query: queryParams, accumulation }, req) => {
+	try {
+		const hasRegion  = queryParams.region_id;
+		const hasCountry = queryParams.country_id;
+		const hasCity    = queryParams.city_id;
+
+		if (hasRegion && !hasCity) {
+			const responseRegions = await getInstanseWithLanguageByReq(req)
+				.get(`/regions/${queryParams.region_id}/cities?appends[]=total_ads&category_id=${queryParams.category_id}`);
+			return responseRegions.data;
+		}
+
+		if (hasCountry && !hasCity) {
+			const responseRegions = await getInstanseWithLanguageByReq(req)
+				.get(`/countries/${queryParams.country_id}/regions?appends[]=total_ads&category_id=${queryParams.category_id}`);
+			return responseRegions.data;
+		}
+
+		const responseCountries = await getInstanseWithLanguageByReq(req)
+			.get(`/countries?appends[]=total_ads&category_id=${queryParams.category_id}`);
+		return responseCountries.data;
+	} catch (e) {
+		return [];
+	}
+};
+
+export const categoriesTotal: prepareMethod = async ({ query, accumulation }, req) => {
+	try {
+		const response = await instance.get(`/categories/${query.category_id}?appends[]=total_ads_count`);
+		return response.data.category.children;
+	} catch (e) {
 		return [];
 	}
 };

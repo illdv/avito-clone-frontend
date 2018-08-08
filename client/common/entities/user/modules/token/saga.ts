@@ -8,6 +8,11 @@ import { pushInRouter } from 'client/common/utils/utils';
 
 import { tokenActions } from './actions';
 
+function setTokenToAxios(action: Action<{ token: string }>) {
+	const { token } = action.payload;
+	axios.defaults.headers.common.authorization = `Bearer ${token}`;
+}
+
 function saveTokenInStore(action: Action<{ token: string, isRememberMe: boolean }>) {
 	const { token, isRememberMe } = action.payload;
 
@@ -28,6 +33,7 @@ function clearToken() {
 
 function* watcherToken() {
 	yield [
+		takeEvery(tokenActions.setTokenToAxios.REQUEST, setTokenToAxios),
 		takeEvery(tokenActions.clearToken.REQUEST, clearToken),
 		takeEvery(tokenActions.setTokenToStorage.REQUEST, saveTokenInStore),
 	];

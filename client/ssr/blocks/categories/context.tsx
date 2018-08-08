@@ -1,4 +1,4 @@
-import React, { Component, createContext } from 'react';
+import React, { createContext } from 'react';
 
 export type Category = any[];
 
@@ -18,6 +18,8 @@ export class SetCategories extends React.Component<IProviderProps> {
 		);
 	}
 }
+
+export const ConsumerCategories = Consumer;
 
 export const getCategories = Component => props => (
 	<Consumer>

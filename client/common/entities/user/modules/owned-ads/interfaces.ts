@@ -1,4 +1,4 @@
-import { IAttachedImage } from 'client/spa/pages/create-ad/interface';
+import { IAttachedImage } from '../../../../../spa/profile/interfaces/managerAd';
 
 export enum PageNames {
 	Profile = 'Profile',
@@ -70,6 +70,7 @@ export interface IAds {
 	category_id: string;
 	title: string;
 	description: string;
+	address: string;
 	body: string;
 	price: string;
 	is_published?: boolean;
@@ -101,6 +102,7 @@ export interface ICreateAdRequest {
 	latitude: number;
 	category_id: number;
 	phone: string;
+	address: string;
 	images: IAttachedImage[];
 	options: IOptionValue[];
 	is_vip: number;
@@ -121,6 +123,7 @@ export interface IEditAdRequest {
 	images: IAttachedImage[];
 	options: IOptionValue[];
 	is_vip: number;
+	address: string;
 }
 
 export interface IFavoritesAds {

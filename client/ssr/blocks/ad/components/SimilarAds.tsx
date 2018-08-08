@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
 import SimilarSortedBy from 'client/ssr/blocks/ad/components/SimilarSortedBy';
 import SimilarRandomAd from 'client/ssr/blocks/ad/components/SimilarRandomAd';
-import { ISimilarProps, ISimilarSortState } from 'client/ssr/blocks/ad/interface';
+import { ISimilarAdsProps, ISimilarAdsState } from 'client/ssr/blocks/ad/interface';
 import { AdsAPI } from 'client/common/api/AdsAPI';
 
-class SimilarAds extends Component <ISimilarProps, ISimilarSortState> {
+class SimilarAds extends Component <ISimilarAdsProps, ISimilarAdsState> {
+	constructor(props) {
+		super(props);
+		this.state = {
+			similar_ads: this.props.similar_ads,
+			filter: '',
+		};
+	}
+
 	handleChange = sorted => {
 		const field = 'sort-' + sorted;
 		if (sorted !== this.state.filter) {
@@ -12,19 +20,11 @@ class SimilarAds extends Component <ISimilarProps, ISimilarSortState> {
 		}
 		AdsAPI.similar(field, this.props.id_parent)
 			.then(response => {
-				this.setState({ similar_ad: response.data });
+				this.setState({ similar_ads: response.data });
 			});
 	}
-
-	constructor(props) {
-		super(props);
-		this.state = {
-			similar_ad: this.props.similar_ads,
-			filter: '',
-		};
-	}
-
 	render() {
+		const {similar_ads} = this.state;
 		return (
 			<div className='col-lg-4'>
 				<div className='similar-ads-head'>
@@ -36,17 +36,9 @@ class SimilarAds extends Component <ISimilarProps, ISimilarSortState> {
 					</div>
 					<div className='similar-ads-tiles'>
 						{
-							this.state.similar_ad.map(sim => {
+							similar_ads.map(similar => {
 								return (
-									<SimilarRandomAd
-										id={sim.id}
-										title={sim.title}
-										price={sim.price}
-										userName={sim.user.name}
-										description={sim.description}
-										image={sim.images[0]}
-										key={sim.id}
-									/>
+									<SimilarRandomAd similar_ad={similar} key={similar.id}/>
 								);
 							})
 						}

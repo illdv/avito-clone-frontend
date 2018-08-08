@@ -14,6 +14,7 @@ import Footer from 'client/ssr/blocks/footer/Footer';
 import Ads from 'client/ssr/blocks/ads/Ads';
 
 import * as loaderPrepare from '../client/common/loader-prepare/loaderPrepare';
+import Page404 from 'client/common/layouts/Page404';
 
 const isServer: boolean = typeof window === 'undefined';
 
@@ -23,31 +24,30 @@ if (isServer) {
 
 interface IIndexProps {
 	categories: ICategory[];
-	ads: IAd[];
+	adsPaginationPage: {
+		ads: IAd[];
+		vip: IAd[];
+	};
 	location: any;
-	vipAds: IAd[];
 }
 
 let loopState: IIndexProps;
 
 export class Index extends React.Component<IIndexProps, IIndexProps> {
 	static async getInitialProps({ query }) {
-		const {ads, categories, location, vipAds} = query;
+		const {adsPaginationPage, categories, location} = query;
 
-		if (!ads || !categories || !location || !vipAds) {
+		if (!adsPaginationPage || !categories || !location) {
 			console.log('loopState', loopState);
 			return ({
-				vipAds: loopState.vipAds,
-				ads: loopState.ads,
+				adsPaginationPage: loopState.adsPaginationPage,
 				location: loopState.location,
 				categories: loopState.categories,
 			});
 		}
 
 		const result = {
-			vipAds: query.vipAds,
-			ads: query.ads,
-			location: query.location,
+			adsPaginationPage: query.adsPaginationPage,
 			categories: query.categories,
 		};
 		
@@ -56,7 +56,8 @@ export class Index extends React.Component<IIndexProps, IIndexProps> {
 
 	render() {
 		loopState = this.props;
-		const { categories, location, vipAds, ads } = this.props;
+		const { categories, location } = this.props;
+		const {ads, vip} = this.props.adsPaginationPage;
 		return (
 			<React.Fragment>
 				<SetCategories categories={categories}>
@@ -77,14 +78,13 @@ export class Index extends React.Component<IIndexProps, IIndexProps> {
 					<Categories />
 					<Ads
 						title='Vip ads'
-						ads={vipAds}
+						ads={vip}
 					/>
 
 					<Ads
 						title='Houses, villas, cottages'
 						ads={ads}
 					/>
-
 					<Footer />
 					<ToastContainer />
 				</SetCategories>

@@ -1,10 +1,6 @@
-interface IFavoritesItems {
-	[key: number]: IAd;
-}
-
 interface IFavoritesState {
 	ids: number[];
-	items: IFavoritesItems;
+	items: IAd[];
 }
 
 interface IProfileState {
