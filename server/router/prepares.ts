@@ -3,8 +3,8 @@ import * as queryString from 'query-string';
 
 import {
 	categoryQueueToBreadcrumbsFormat,
-	findCategoriesQueueBySlug,
 	findCategoriesQueueById,
+	findCategoriesQueueBySlug,
 	getCurrentCategoryByQueue,
 	getIdFromCategory,
 	getLocationNameByLocations,
@@ -13,8 +13,9 @@ import {
 	getSubcategoryByCategoryQueue,
 } from '../utils/categoryPrepare';
 
-import { getDataForAdsIndexPage, getDataForAdShowPage } from '../api/ad';
+import { getDataForAdShowPage, getDataForAdsIndexPage } from '../api/ad';
 import { getLitleCategories } from '../api/category';
+import { IQuery } from 'client/ssr/contexts/QueryContext'
 
 interface ISugar {
 	params?: any;
@@ -41,9 +42,9 @@ const formatData = data => {
 export const adsPaginationPage: prepareMethod = async () => {
 	try {
 		const response = await instance.get(`/ads?${formatData(getDataForAdsIndexPage)}`);
-		const ads = response.data.data;
-		const vip = response.data.vip;
-		return {ads, vip};
+		const ads      = response.data.data;
+		const vip      = response.data.vip;
+		return { ads, vip };
 	} catch (e) {
 		console.log(e);
 	}
@@ -52,9 +53,9 @@ export const adsPaginationPage: prepareMethod = async () => {
 export const adForShow: prepareMethod = async ({ params }) => {
 	try {
 		const response = await instance.get(`/ads/${params.id}?${formatData(getDataForAdShowPage)}`);
-		const ad = response.data.ad;
+		const ad       = response.data.ad;
 		const similars = response.data.similars;
-		return {ad, similars};
+		return { ad, similars };
 	} catch (error) {
 		console.log(error);
 	}
@@ -299,8 +300,19 @@ export const breadcrumbs: prepareMethod = async ({ query, accumulation }, req) =
 	];
 };
 
-export const countriesTotal: prepareMethod = async ({ query, accumulation }, req) => {
-	const response = await getInstanseWithLanguageByReq(req)
-		.get(`/countries?appends[]=total_ads&category_id=${query.category_id}`);
-	return response.data;
+export const countriesTotal: prepareMethod = async ({ query: queryParams, accumulation }: { query: IQuery, accumulation: any }, req) => {
+	if (queryParams.city_id) {
+		const responseRegions = await getInstanseWithLanguageByReq(req)
+			.get(`/countries/${queryParams.city_id}/regions?appends[]=total_ads&category_id=${queryParams.category_id}`);
+		return responseRegions.data;
+	}
+
+	const responseCountries = await getInstanseWithLanguageByReq(req)
+		.get(`/countries?appends[]=total_ads&category_id=${queryParams.category_id}`);
+	return responseCountries.data;
+};
+
+export const categoriesTotal: prepareMethod = async ({ query, accumulation }, req) => {
+	const response = await instance.get(`/categories/${query.category_id}?appends[]=total_ads_count`);
+	return response.data.category.children;
 };

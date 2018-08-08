@@ -42,6 +42,8 @@ export interface ILocation {
 }
 
 export interface IOption {
+	id: number;
+	name: string;
 	value: string;
 	item: ITotalOptions;
 }
