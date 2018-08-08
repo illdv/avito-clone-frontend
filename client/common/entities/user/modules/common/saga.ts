@@ -57,7 +57,7 @@ function* login(action: Action<ILoginRequest>) {
 		yield put(tokenActions.setTokenToState.REQUEST({ token }));
 
 		hideLoginModal();
-		pushInRouter(defaultPagePath);
+		// pushInRouter(defaultPagePath);
 	} catch (e) {
 		yield call(errorHandler, e);
 		yield put(commonActions.login.FAILURE({}));

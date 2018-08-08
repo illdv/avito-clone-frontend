@@ -3,7 +3,6 @@ import { AxiosRequestConfig, default as axios } from 'axios';
 const instance = axios.create({
 	baseURL: process.env.API_URL,
 	headers: {
-		'Access-Control-Allow-Origin': '*',
 		'Accept-Language': 'en-US,en;q=0.9',
 		'Content-Type': 'application/json',
 		'Accept': 'application/json',

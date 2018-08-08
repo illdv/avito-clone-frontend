@@ -1,6 +1,8 @@
 import React from 'react';
 import Head from 'next/head';
 import { types } from 'redux-act';
+import Header from 'client/ssr/blocks/header/Header';
+import Favorites from 'client/ssr/pages/Favorites';
 
 const isServer: boolean = typeof window === 'undefined';
 
