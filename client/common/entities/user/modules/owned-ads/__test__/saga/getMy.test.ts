@@ -19,16 +19,23 @@ const response = {
 		total: 21,
 	},
 };
+const user = {
+	email: 'dev@cronix.ms',
+	name: 'Glagin',
+	phone: '8888888',
+	password: '111111',
+	password_confirmation: '111111',
+};
 
 const error = new Error('failed');
 
 describe('User get their ads', () => {
-	const saga = sagaHelper(getMy());
+	const saga = sagaHelper(getMy({payload: user}));
 
 	saga('It can get response with my ads', result => {
 		expect(result)
 			.toEqual(
-				call(AdsAPI.getMy),
+				call(AdsAPI.getMy, user),
 			);
 
 		return response;
@@ -43,12 +50,12 @@ describe('User get their ads', () => {
 });
 
 describe('Failed get ads current user', () => {
-	const saga = sagaHelper(getMy());
+	const saga = sagaHelper(getMy({payload: user}));
 
 	saga('It can get response with my ads', result => {
 		expect(result)
 			.toEqual(
-				call(AdsAPI.getMy),
+				call(AdsAPI.getMy, user),
 			);
 
 		return error;

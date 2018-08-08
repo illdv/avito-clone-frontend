@@ -32,6 +32,9 @@ export const getDataForAdShowPage: IGetFullAdsRequest = {
 };
 
 export const getMyAd: IGetSellerAdRequest = {
+	appends: [
+		AdAppendsFields.total_visits,
+	],
 	with: [
 		AdWithFields.images,
 		AdWithFields.options,

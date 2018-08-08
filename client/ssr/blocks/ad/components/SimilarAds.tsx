@@ -24,6 +24,7 @@ class SimilarAds extends Component <ISimilarAdsProps, ISimilarAdsState> {
 			});
 	}
 	render() {
+		const {similar_ads} = this.state;
 		return (
 			<div className='col-lg-4'>
 				<div className='similar-ads-head'>
@@ -35,7 +36,7 @@ class SimilarAds extends Component <ISimilarAdsProps, ISimilarAdsState> {
 					</div>
 					<div className='similar-ads-tiles'>
 						{
-							this.state.similar_ads.map(similar => {
+							similar_ads.map(similar => {
 								return (
 									<SimilarRandomAd similar_ad={similar} key={similar.id}/>
 								);

@@ -12,8 +12,7 @@ import { showLocationModal } from 'client/ssr/modals/location/locationModalTrigg
 import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
 import PriceRange from 'client/ssr/blocks/search/components/PriceRange';
 import { getQuery, IQuery } from 'client/ssr/contexts/QueryContext';
-import { useOrDefault } from 'client/spa/profile/utils/createAd';
-import { findCategoriesQueueById } from 'client/spa/profile/utils/createAd';
+import { findCategoriesQueueById, useOrDefault } from 'client/spa/profile/utils/createAd';
 
 require('./Search.sass');
 
@@ -59,7 +58,8 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 	constructor(props, context) {
 		super(props, context);
 
-		const categoriesQueue = findCategoriesQueueById(this.props.categories, Number(this.props.query.category_id)) || [];
+		const categoryId = useOrDefault(() => this.props.query.category_id, null)
+		const categoriesQueue = categoryId && findCategoriesQueueById(this.props.categories, Number(categoryId)) || [];
 		let options = [];
 
 		if (categoriesQueue.length > 0) {
@@ -181,14 +181,12 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 		priceTo ? query.price_to = priceTo :
 			query.price_to = null;
 
-		let optionsString = '&';
-
+		let optionsString = '';
 		this.state.options.forEach(option => {
 			if (option.value.length > 0) {
-				optionsString += `options[${option.item.id}]=${option.value}`;
+				optionsString += `&options[${option.item.id}]=${option.value}`;
 			}
 		});
-
 		window.location.href = `/search?${queryString.stringify(query)}${optionsString.length > 1 ? optionsString : '' }`;
 	}
 
