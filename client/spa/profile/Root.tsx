@@ -10,6 +10,7 @@ require('client/spa/profile/blocks/toolbar/Toolbar.sass');
 require('client/spa/profile/pages/my-ads/MyAds.sass');
 require('client/spa/profile/blocks/manager-ad/ManagerAd.sass');
 require('client/spa/profile/pages/profile-settings/ProfileSettings.sass');
+require('client/common/layouts/Page404.sass');
 
 // ssr styles
 require('client/ssr/blocks/footer/Footer.sass');

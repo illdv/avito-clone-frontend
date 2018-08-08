@@ -11,7 +11,7 @@ import { ILocationStoreState } from 'client/common/location/module';
 import { showLocationModal } from 'client/ssr/modals/location/locationModalTriggers';
 import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
 import PriceRange from 'client/ssr/blocks/search/components/PriceRange';
-import { getQuery, IQuery } from 'client/ssr/pages/QueryContext';
+import { getQuery, IQuery } from 'client/ssr/contexts/QueryContext';
 import { useOrDefault } from 'client/spa/profile/utils/createAd';
 import { IOption } from 'client/spa/profile/blocks/manager-ad/interface';
 
@@ -25,16 +25,11 @@ interface ISearchProps {
 	query: IQuery;
 }
 
-interface IOptionWrap {
-	value: string;
-	item: IOption;
-}
-
 interface ISearchState {
 	searchString: string;
 	activeCategories: any;
 	duplicateCategories: any;
-	options: IOptionWrap[];
+	options: IOption[];
 	rangePrice: {
 		priceType: string;
 		priceFrom: string;
@@ -46,7 +41,7 @@ const mapStateToProps = (state: IRootState) => ({
 	locationState: getLocationState(state),
 });
 
-const getOption = (option: IOptionWrap, creatorChangeOption) => (
+const getOption = (option: IOption, creatorChangeOption) => (
 	<input
 		className='search search__options form-control'
 		value={option.value}
@@ -54,12 +49,6 @@ const getOption = (option: IOptionWrap, creatorChangeOption) => (
 		onChange={creatorChangeOption(option.item.id)}
 	/>
 );
-
-enum PriceRangeQueryParamType {
-	forSale = 'for-sale',
-	forBy   = 'for-buy',
-	forRent = 'for-rent',
-}
 
 class Search extends React.Component<ISearchProps, ISearchState> {
 	constructor(props, context) {
@@ -116,7 +105,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 
 	}
 
-	getCorrectOptions = (category: ICategory): IOptionWrap[] => {
+	getCorrectOptions = (category: ICategory): IOption[] => {
 		return category.total_options.map(option => ({
 			value: '',
 			item: option,
@@ -174,13 +163,6 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 			query.price_from = null;
 		priceTo ? query.price_to = priceTo :
 			query.price_to = null;
-
-		/* Router.push({
-			pathname: '/search',
-			query,
-		}); */
-
-		// alert(queryString.stringify(query));
 
 		let optionsString = '&';
 
@@ -264,8 +246,6 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 
 	render() {
 		const { priceRange } = this.props;
-
-		console.log('render Search');
 
 		return (
 			<form
