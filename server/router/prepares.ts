@@ -3,8 +3,8 @@ import * as queryString from 'query-string';
 
 import {
 	categoryQueueToBreadcrumbsFormat,
-	findCategoriesQueueBySlug,
 	findCategoriesQueueById,
+	findCategoriesQueueBySlug,
 	getCurrentCategoryByQueue,
 	getIdFromCategory,
 	getLocationNameByLocations,
@@ -13,7 +13,7 @@ import {
 	getSubcategoryByCategoryQueue,
 } from '../utils/categoryPrepare';
 
-import { getDataForAdsIndexPage, getDataForAdShowPage } from '../api/ad';
+import { getDataForAdShowPage, getDataForAdsIndexPage } from '../api/ad';
 
 interface ISugar {
 	params?: any;
@@ -33,14 +33,13 @@ const instance = axios.create({
 	},
 });
 
-const formatData = (data) => {
-	return queryString.stringify(data, {arrayFormat: 'bracket'});
+const formatData = data => {
+	return queryString.stringify(data, { arrayFormat: 'bracket' });
 };
 
 export const ads: prepareMethod = async () => {
 	try {
 		const response = await instance.get(`/ads?${formatData(getDataForAdsIndexPage)}`);
-		console.log(response);
 		return response.data.data;
 	} catch (e) {
 		console.log(e);
@@ -274,7 +273,9 @@ export const getCities: prepareMethod = async ({ query }, req) => {
 
 export const search: prepareMethod = async ({ query }, req) => {
 	try {
+		console.log('query', query);
 		const response = await getAdsByParams(query || {});
+		console.log('response.data', response.data);
 		return response.data;
 	} catch (err) {
 		console.log(err);
@@ -283,8 +284,7 @@ export const search: prepareMethod = async ({ query }, req) => {
 };
 
 export const breadcrumbs: prepareMethod = async ({ query, accumulation }, req) => {
-	const categoryQueue   = findCategoriesQueueById(accumulation.categories, query.category);
-	console.log(categoryQueue);
+	const categoryQueue = findCategoriesQueueById(accumulation.categories, query.category);
 	return [
 		{
 			title: `All listings in ${accumulation.location.locationName}`,
@@ -292,4 +292,10 @@ export const breadcrumbs: prepareMethod = async ({ query, accumulation }, req) =
 		},
 		...categoryQueueToBreadcrumbsFormat(categoryQueue, categoryQueue.length),
 	];
+};
+
+export const countriesTotal: prepareMethod = async ({ query, accumulation }, req) => {
+	const response = await getInstanseWithLanguageByReq(req)
+		.get(`/countries?appends[]=total_ads&category_id=${query.category_id}`);
+	return response.data;
 };

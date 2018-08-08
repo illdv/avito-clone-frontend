@@ -10,10 +10,17 @@ import { IAds } from 'client/common/entities/user/modules/owned-ads/interfaces';
 import BreadcrumbsWrap from 'client/ssr/wraps/BreadcrumbFromContext';
 import ListOfSubcategories from 'client/ssr/blocks/list-of-subcategories/ListOfSubcategories';
 import { ConsumerCategories } from 'client/ssr/blocks/categories/context';
-import { categoryToItemOfTitlesList } from 'client/ssr/pages/utils';
+import { categoryToItemOfTitlesList, countriesToItemOfTitlesList } from 'client/ssr/pages/utils';
+
+export interface ICountriesTotal {
+	country_id: number;
+	title: string;
+	total_ads: number;
+}
 
 interface ISearchPageProp {
 	search: IAds[];
+	countriesTotal: ICountriesTotal[];
 }
 
 // TODO: is not page.
@@ -23,6 +30,10 @@ class SearchPage extends React.Component<ISearchPageProp> {
 	}
 
 	render() {
+		console.log(this.props.countriesTotal);
+
+		const countriesTotals = this.props.countriesTotal.filter(item => item.total_ads !== 0)
+
 		return (
 			<React.Fragment >
 				<Header />
@@ -42,6 +53,16 @@ class SearchPage extends React.Component<ISearchPageProp> {
 								/>
 							)}
 						</ConsumerCategories >
+						{
+							countriesTotals.length > 0
+							&&
+							<ListOfSubcategories
+								title={'Countries'}
+								items={countriesTotals.map(countriesToItemOfTitlesList)}
+							/>
+							||
+							null
+						}
 					</div >
 				</div >
 				{

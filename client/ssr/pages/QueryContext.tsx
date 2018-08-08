@@ -11,11 +11,13 @@ export interface IProps {
 }
 
 export interface IQuery {
-	category?: number;
+	category_id?: number;
 	city_id?: string;
 	price_from?: string;
 	search?: string;
 }
+
+let loop: IQuery;
 
 const { Provider, Consumer } = createContext<IQuery>(null);
 
@@ -24,6 +26,7 @@ class SetQuery extends React.Component<IProps, IState> {
 	state: IState = {};
 
 	render() {
+		loop = this.props.query;
 		return (
 			<Provider value={this.props.query} >
 				{this.props.children}
@@ -37,5 +40,7 @@ export const getQuery = Component => props => (
 		{(query: IQuery) => <Component {...props} query={query} />}
 	</Consumer >
 );
+
+export const getQueryLoop = (): IQuery => loop;
 
 export default SetQuery;

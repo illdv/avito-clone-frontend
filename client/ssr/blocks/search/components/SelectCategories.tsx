@@ -52,7 +52,6 @@ class SelectCategory extends Component<ISelectCategoryProps, ISelectCategoriesSt
 	}
 
 	render() {
-		console.log('idDefaultCategory = ', this.props.idDefaultCategory);
 		return (
 			<select
 				name='categories'
