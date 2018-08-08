@@ -300,11 +300,20 @@ export const breadcrumbs: prepareMethod = async ({ query, accumulation }, req) =
 };
 
 export const countriesTotal: prepareMethod = async ({ query: queryParams, accumulation }, req) => {
-	/*if (queryParams.country_id) {
+
+	if (queryParams.region_id) {
+		console.log(`/regions/${queryParams.region_id}/cities?appends[]=total_ads&category_id=${queryParams.category_id}`);
 		const responseRegions = await getInstanseWithLanguageByReq(req)
-			.get(`/countries/${queryParams.city_id}/regions?appends[]=total_ads&category_id=${queryParams.category_id}`);
+			.get(`/regions/${queryParams.region_id}/cities?appends[]=total_ads&category_id=${queryParams.category_id}`);
 		return responseRegions.data;
-	}*/
+	}
+
+	if (queryParams.country_id) {
+		console.log(`/countries/${queryParams.country_id}/regions?appends[]=total_ads&category_id=${queryParams.category_id}`);
+		const responseRegions = await getInstanseWithLanguageByReq(req)
+			.get(`/countries/${queryParams.country_id}/regions?appends[]=total_ads&category_id=${queryParams.category_id}`);
+		return responseRegions.data;
+	}
 
 	const responseCountries = await getInstanseWithLanguageByReq(req)
 		.get(`/countries?appends[]=total_ads&category_id=${queryParams.category_id}`);

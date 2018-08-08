@@ -13,6 +13,8 @@ import { categoryToItemOfTitlesList, countriesToItemOfTitlesList } from 'client/
 
 export interface ICountriesTotal {
 	country_id: number;
+	region_id?: number;
+	city_id?: number;
 	title: string;
 	total_ads: number;
 }
