@@ -32,6 +32,7 @@ const FilterButton: React.SFC<{to: string, label: string, count: number}> = ({to
 class MyAds extends Component<IProps> {
 	onRemove = (id: Set<number>) => {
 		const ids = Array.from(id.values());
+		console.log(ids);
 		UserActions.ownedAds.remove.REQUEST({ ids });
 	}
 

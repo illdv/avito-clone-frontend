@@ -9,6 +9,7 @@ export interface IProps {
 	title: string;
 	price: string;
 	description: string;
+	address: string;
 	next(): void;
 	back(): void;
 	vip(e): void;
@@ -23,6 +24,7 @@ const ConfirmAd = ({
 	title,
 	price,
 	description,
+	address,
 	vip,
 	next,
 	back,

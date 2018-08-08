@@ -34,7 +34,7 @@ const instance = axios.create({
 	},
 });
 
-const formatData = data => {
+export const formatData = (data): string => {
 	return queryString.stringify(data, { arrayFormat: 'bracket' });
 };
 
@@ -65,8 +65,8 @@ export const categories: prepareMethod = async () => {
 	return response.data;
 };
 
-const getLiteAdsByParams = async params => {
-	const response = await instance.get(`/ads/?${ queryString.stringify(params) }`);
+const getLiteAdsByQueryString = async (queryString: string) => {
+	const response = await instance.get(`/ads/?${ queryString }`);
 	return response.data;
 };
 
@@ -137,7 +137,7 @@ export const query: prepareMethod = async (sugar, req) => {
 
 // export const vipAds: prepareMethod = async ({ params, query, path }, req) => {
 // 	const data = formatData(getDataForAdsIndexPage);
-// 	const vipAdsResponse = await getLiteAdsByParams({data, vip: 1, count: 8 });
+// 	const vipAdsResponse = await getLiteAdsByQueryString({data, vip: 1, count: 8 });
 // 	console.log(vipAdsResponse);
 // 	return vipAdsResponse.data;
 // };
@@ -183,7 +183,7 @@ export const category: prepareMethod = async ({ params, query, path }, req) => {
 			subcategories = subcategories.concat(categories);
 		}
 
-		const vipAds = await getLiteAdsByParams(reqForVipAds);
+		const vipAds = await getLiteAdsByQueryString(reqForVipAds);
 
 		if (vipAds.data.length > 0) {
 			adGroupList.push({
@@ -213,7 +213,7 @@ export const category: prepareMethod = async ({ params, query, path }, req) => {
 				}
 			}
 		} else {
-			const ads = await getLiteAdsByParams({});
+			const ads = await getLiteAdsByQueryString('');
 
 			if (ads.data.length > 0) {
 				adGroupList.push({
@@ -278,9 +278,13 @@ export const getCities: prepareMethod = async ({ query }, req) => {
 	}
 };
 
-export const search: prepareMethod = async ({ query }, req) => {
+export const search: prepareMethod = async ({ query = {} }, req) => {
 	try {
-		const response = await getLiteAdsByParams(query || {});
+		const response = await getLiteAdsByQueryString(formatData({
+			...getDataForAdsIndexPage,
+			...query,
+		}));
+
 		return response.data;
 	} catch (err) {
 		console.log(err);

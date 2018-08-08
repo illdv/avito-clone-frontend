@@ -29,6 +29,7 @@ class CreateAd extends React.Component<IProps> {
 			description: state.adInfoFields.description.value,
 			city_id: this.props.location.session.idCity || 1,
 			price: state.adInfoFields.price.value,
+			address: state.adInfoFields.address.value,
 			body: '123213',
 			category_id: useOrDefault(() => selectedCategories[selectedCategories.length - 1].id, null),
 			longitude: state.location.lng,

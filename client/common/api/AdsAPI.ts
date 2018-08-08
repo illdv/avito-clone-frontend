@@ -1,12 +1,14 @@
 import { AxiosWrapper } from './AxiosWrapper';
 import { AdsActionType, ICreateAdRequest, IEditAdRequest } from '../entities/user/modules/owned-ads/interfaces';
+import { getMyAd } from 'server/api/ad';
+import { formatData } from 'server/router/prepares';
 
 function get() {
 	return AxiosWrapper.get('/ads');
 }
 
 function getMy() {
-	return AxiosWrapper.get('/ads', { my: 1 });
+	return	AxiosWrapper.get(`/ads?my=1&${formatData(getMyAd)}`);
 }
 
 function show(id) {
