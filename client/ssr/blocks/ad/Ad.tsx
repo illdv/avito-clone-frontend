@@ -184,7 +184,7 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 				</section>
 				<section className='section-mb'>
 					<div className='container'>
-						<Description body={ad.body} />
+						<Description body={ad.description} />
 						<Kit />
 						<PlaceMap
 							address={ad.address}
