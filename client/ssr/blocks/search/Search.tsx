@@ -57,8 +57,8 @@ const getOption = (option: IOption, creatorChangeOption) => (
 class Search extends React.Component<ISearchProps, ISearchState> {
 	constructor(props, context) {
 		super(props, context);
-
-		const categoryId = useOrDefault(() => this.props.query.category_id, null)
+		const query: any = this.props.query || {};
+		const categoryId = useOrDefault(() => query.category_id, null)
 		const categoriesQueue = categoryId && findCategoriesQueueById(this.props.categories, Number(categoryId)) || [];
 		let options = [];
 
@@ -66,23 +66,27 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 			const totalOptions = categoriesQueue[categoriesQueue.length - 1].total_options;
 			totalOptions.forEach(option => {
 				options.push({
-					value: props.query && props.query.options[option.id] || '',
+					value: query && query.options[option.id] || '',
 					item: option,
 				});
 			});
 		}
 
+		console.log(query);
+
 		this.state = {
 			duplicateCategories: this.props.categories,
 			activeCategories: categoriesQueue,
-			searchString: useOrDefault(() => this.props.query.search, ''),
+			searchString: useOrDefault(() => query.whereLike.title, ''),
 			options,
 			rangePrice: {
-				priceType: props.query.type || null,
-				priceFrom: props.query.price_from || null,
-				priceTo: props.query.price_to || null,
+				priceType: query.type || null,
+				priceFrom: query.price_from || null,
+				priceTo: query.price_to || null,
 			},
 		};
+
+		console.log('this.state', this.state)
 	}
 
 	onSelectCategory = category => {
@@ -159,7 +163,9 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 		const { rangePrice: { priceType, priceFrom, priceTo } } = this.state;
 
 		const query: any = {
-			search: this.state.searchString,
+			'whereLike[title]': this.state.searchString,
+			'whereLike[body]': this.state.searchString,
+			'whereLike[description]': this.state.searchString,
 		};
 
 		if (this.state.activeCategories.length > 0) {
