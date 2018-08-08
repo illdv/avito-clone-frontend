@@ -13,6 +13,7 @@ export const getLitleCategories: IGetLiteCategoriesRequest = {
 	appends: [
 		CategoryAppendsFields.total_ads_count,
 		CategoryAppendsFields.children,
+		CategoryAppendsFields.total_options,
 	],
 	with: [
 		CategoryWithFields.options,

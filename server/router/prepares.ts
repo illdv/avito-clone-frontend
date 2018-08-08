@@ -34,7 +34,7 @@ const instance = axios.create({
 	},
 });
 
-const formatData = data => {
+export const formatData = data => {
 	return queryString.stringify(data, { arrayFormat: 'bracket' });
 };
 

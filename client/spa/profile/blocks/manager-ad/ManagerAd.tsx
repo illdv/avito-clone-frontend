@@ -69,6 +69,7 @@ class ManagerAd extends React.Component<IProps, IState> {
 					title: { disable: false, value: '' },
 					price: { disable: false, value: '' },
 					description: { disable: false, value: '' },
+					address: { disable: false, value: ''},
 				},
 				selectedCategories: [],
 				attachedImages: [],
@@ -277,7 +278,7 @@ class ManagerAd extends React.Component<IProps, IState> {
 					fullName={ this.state.sellerInfoFields.name.value }
 					email={ this.state.sellerInfoFields.email.value }
 					phone={ this.state.sellerInfoFields.phone.value }
-
+					address={ this.state.adInfoFields.address.value}
 					title={ this.state.adInfoFields.title.value }
 					price={ this.state.adInfoFields.price.value }
 					description={ this.state.adInfoFields.description.value }

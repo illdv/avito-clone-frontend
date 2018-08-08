@@ -19,6 +19,7 @@ export enum AdSelectedFields {
 	is_approved = 'is_approved',
 	is_active = 'is_active',
 	is_vip = 'is_vip',
+	is_completed = 'is_completed',
 	created_at = 'created_at',
 	updated_at = 'updated_at',
  	deleted_at = 'deleted_at',
@@ -65,35 +66,11 @@ export interface IGetFullAdsRequest {
 	];
 
 }
-
-export interface IGetFullAdsResponse {
-	[AdWithFields.seller]: any[];
-	[AdWithFields.options]: any[];
-	[AdWithFields.country]: any[];
-	[AdWithFields.images]: any[];
-	[AdWithFields.priceHistories]: any[];
-	[AdAppendsFields.today_visits]: string;
-	[AdAppendsFields.total_visits]: string;
-	[AdAppendsFields.next_ad]: number;
-	[AdSelectedFields.id]: number;
-	[AdSelectedFields.category_id]: number;
-	[AdSelectedFields.user_id]: number;
-	[AdSelectedFields.created_at]: string;
-	[AdSelectedFields.price]: string;
-	[AdSelectedFields.description]: string;
-	[AdSelectedFields.title]: string;
-	[AdSelectedFields.address]: string;
-	[AdSelectedFields.body]: string;
-	[AdSelectedFields.city_id]: number;
-	[AdSelectedFields.deleted_at]: string;
-	[AdSelectedFields.is_active]: boolean;
-	[AdSelectedFields.is_approved]: boolean;
-	[AdSelectedFields.is_published]: boolean;
-	[AdSelectedFields.is_vip]: boolean;
-	[AdSelectedFields.latitude]: number;
-	[AdSelectedFields.longitude]: number;
-	[AdSelectedFields.phone]: string;
-	[AdSelectedFields.updated_at]: string;
+export interface IGetSellerAdRequest {
+	with: [
+		AdWithFields.images,
+		AdWithFields.options
+	];
 }
 
 export enum CategoryAppendsFields {
@@ -126,7 +103,8 @@ export interface IGetLiteCategoriesRequest {
 	];
 	appends: [
 		CategoryAppendsFields.total_ads_count,
-		CategoryAppendsFields.children
+		CategoryAppendsFields.children,
+		CategoryAppendsFields.total_options
 	];
 	with: [
 		CategoryWithFields.options

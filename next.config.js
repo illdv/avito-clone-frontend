@@ -5,6 +5,7 @@ const Dotenv = require('dotenv-webpack');
 
 const clientPath = path.join(__dirname, './client');
 const nextPreparesPath = path.join(__dirname, './next-prepares');
+const serverPath = path.join(__dirname, './server');
 
 module.exports = withTs(withSass({
 	webpack(config){
@@ -23,6 +24,7 @@ module.exports = withTs(withSass({
 			alias: {
 				'client': clientPath,
 				'next-prepares': nextPreparesPath,
+				'server': serverPath,
 			},
 		};
 

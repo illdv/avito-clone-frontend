@@ -1,6 +1,6 @@
 import {
 	AdAppendsFields, AdSelectedFields, AdWithFields, IGetFullAdsRequest,
-	IGetLiteAdsRequest
+	IGetLiteAdsRequest, IGetSellerAdRequest
 } from '../api/gInterface';
 
 export const getDataForAdsIndexPage: IGetLiteAdsRequest = {
@@ -28,5 +28,12 @@ export const getDataForAdShowPage: IGetFullAdsRequest = {
 		AdAppendsFields.today_visits,
 		AdAppendsFields.total_visits,
 		AdAppendsFields.next_ad,
+	],
+};
+
+export const getMyAd: IGetSellerAdRequest = {
+	with: [
+		AdWithFields.images,
+		AdWithFields.options,
 	],
 };
