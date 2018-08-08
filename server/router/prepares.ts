@@ -37,20 +37,23 @@ const formatData = (data) => {
 	return queryString.stringify(data, {arrayFormat: 'bracket'});
 };
 
-export const ads: prepareMethod = async () => {
+export const adsPaginationPage: prepareMethod = async () => {
 	try {
 		const response = await instance.get(`/ads?${formatData(getDataForAdsIndexPage)}`);
-		console.log(response);
-		return response.data.data;
+		const ads = response.data.data;
+		const vip = response.data.vip;
+		return {ads, vip};
 	} catch (e) {
 		console.log(e);
 	}
 };
 
-export const ad: prepareMethod = async ({ params }) => {
+export const adForShow: prepareMethod = async ({ params }) => {
 	try {
 		const response = await instance.get(`/ads/${params.id}?${formatData(getDataForAdShowPage)}`);
-		return response.data;
+		const ad = response.data.ad;
+		const similars = response.data.similars;
+		return {ad, similars};
 	} catch (error) {
 		console.log(error);
 	}
@@ -61,7 +64,7 @@ export const categories: prepareMethod = async () => {
 	return response.data;
 };
 
-const getAdsByParams = async params => {
+const getLiteAdsByParams = async params => {
 	const response = await instance.get(`/ads/?${ queryString.stringify(params) }`);
 	return response.data;
 };
@@ -131,10 +134,12 @@ export const query: prepareMethod = async (sugar, req) => {
 	return sugar.query;
 };
 
-export const vipAds: prepareMethod = async ({ params, query, path }, req) => {
-	const vipAdsResponse = await getAdsByParams({ vip: 1, count: 8 });
-	return vipAdsResponse.data;
-};
+// export const vipAds: prepareMethod = async ({ params, query, path }, req) => {
+// 	const data = formatData(getDataForAdsIndexPage);
+// 	const vipAdsResponse = await getLiteAdsByParams({data, vip: 1, count: 8 });
+// 	console.log(vipAdsResponse);
+// 	return vipAdsResponse.data;
+// };
 
 export const category: prepareMethod = async ({ params, query, path }, req) => {
 	const { categorySlug }                = params;
@@ -177,7 +182,7 @@ export const category: prepareMethod = async ({ params, query, path }, req) => {
 			subcategories = subcategories.concat(categories);
 		}
 
-		const vipAds = await getAdsByParams(reqForVipAds);
+		const vipAds = await getLiteAdsByParams(reqForVipAds);
 
 		if (vipAds.data.length > 0) {
 			adGroupList.push({
@@ -207,7 +212,7 @@ export const category: prepareMethod = async ({ params, query, path }, req) => {
 				}
 			}
 		} else {
-			const ads = await getAdsByParams({});
+			const ads = await getLiteAdsByParams({});
 
 			if (ads.data.length > 0) {
 				adGroupList.push({
@@ -274,7 +279,7 @@ export const getCities: prepareMethod = async ({ query }, req) => {
 
 export const search: prepareMethod = async ({ query }, req) => {
 	try {
-		const response = await getAdsByParams(query || {});
+		const response = await getLiteAdsByParams(query || {});
 		return response.data;
 	} catch (err) {
 		console.log(err);
