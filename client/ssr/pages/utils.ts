@@ -10,7 +10,8 @@ export const categoryToItemOfTitlesList = ({ id, title, total_ads_count, slug }:
 export const countriesToItemOfTitlesList = ({ country_id, title, total_ads }: ICountriesTotal): ItemOfTitlesList => {
 	const query = getQueryLoop();
 	console.log('Query = ', query);
-	const parsed = queryString.stringify({...query, category_id: country_id});
+	delete query.city_id;
+	const parsed = queryString.stringify({...query, country_id});
 	console.log('Parsed = ', parsed);
 	return { id: country_id, title, count: total_ads, href: `?${parsed}` };
 };

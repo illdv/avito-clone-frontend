@@ -40,9 +40,8 @@ const formatData = data => {
 export const adsPaginationPage: prepareMethod = async () => {
 	try {
 		const response = await instance.get(`/ads?${formatData(getDataForAdsIndexPage)}`);
-		const ads = response.data.data;
-		const vip = response.data.vip;
-		return {ads, vip};
+		console.log(response);
+		return response.data.data;
 	} catch (e) {
 		console.log(e);
 	}
@@ -279,7 +278,7 @@ export const getCities: prepareMethod = async ({ query }, req) => {
 
 export const search: prepareMethod = async ({ query }, req) => {
 	try {
-		const response = await getAdsByParams(query || {});
+		const response = await getLiteAdsByParams(query || {});
 		return response.data;
 	} catch (err) {
 		console.log(err);
