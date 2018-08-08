@@ -85,7 +85,7 @@ export class Index extends React.Component<IIndexProps, IIndexProps> {
 						ads={ads}
 					/>
 
-					{/*<Footer />*/}
+					<Footer />
 					<ToastContainer />
 				</SetCategories>
 			</React.Fragment>
