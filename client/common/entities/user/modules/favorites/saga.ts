@@ -13,7 +13,7 @@ import {
 // TODO
 export const getUserFavoriteIds = (state: IRootState): number[] => state.user.favorites.ids;
 export const getToken           = (state: IRootState): string => state.user.token;
-export const getUserFavoriteAds = (state: IRootState): IAd[] => state.user.favorites.items;
+export const getUserFavoriteAds = (state: IRootState): IAdsObject => state.user.favorites.items;
 
 function* composeFavoritesIds(action: Action<{ ids: number[] }>) {
 	let correctFavoritesIds;
