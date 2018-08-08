@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect, Dispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import queryString from 'query-string';
 
 import SelectCategories from './components/SelectCategories';
@@ -13,7 +13,6 @@ import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface'
 import PriceRange from 'client/ssr/blocks/search/components/PriceRange';
 import { getQuery, IQuery } from 'client/ssr/contexts/QueryContext';
 import { useOrDefault } from 'client/spa/profile/utils/createAd';
-import { IOption } from 'client/spa/profile/blocks/manager-ad/interface';
 import { findCategoriesQueueById } from 'client/spa/profile/utils/createAd';
 
 require('./Search.sass');
@@ -24,6 +23,11 @@ interface ISearchProps {
 	locationState: ILocationStoreState;
 	priceRange?: boolean;
 	query: IQuery;
+}
+
+interface IOption {
+	value: string;
+	item: ITotalOptions;
 }
 
 interface ISearchState {
@@ -55,11 +59,24 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 	constructor(props, context) {
 		super(props, context);
 
+		const categoriesQueue = findCategoriesQueueById(this.props.categories, Number(this.props.query.category_id)) || [];
+		let options = [];
+
+		if (categoriesQueue.length > 0) {
+			const totalOptions = categoriesQueue[categoriesQueue.length - 1].total_options;
+			totalOptions.forEach(option => {
+				options.push({
+					value: props.query && props.query.options[option.id] || '',
+					item: option,
+				});
+			});
+		}
+
 		this.state = {
 			duplicateCategories: this.props.categories,
-			activeCategories: findCategoriesQueueById(this.props.categories, Number(this.props.query.category_id)) || [],
+			activeCategories: categoriesQueue,
 			searchString: useOrDefault(() => this.props.query.search, ''),
-			options: [],
+			options,
 			rangePrice: {
 				priceType: null,
 				priceFrom: null,
@@ -69,7 +86,6 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 	}
 
 	onSelectCategory = category => {
-		console.log(category);
 		if (category) {
 			if (this.state.activeCategories[0] !== category) {
 				this.setState({
@@ -104,7 +120,6 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 				activeCategories: newCategories,
 			});
 		}
-
 	}
 
 	getCorrectOptions = (category: ICategory): IOption[] => {
@@ -246,6 +261,10 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 		this.setState(({ rangePrice }) => ({ rangePrice: { ...rangePrice, priceTo } }));
 	}
 
+	get selectetCategoriesIds() {
+		return this.state.activeCategories.map(category => category.id);
+	}
+
 	render() {
 		const { priceRange } = this.props;
 
@@ -260,6 +279,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 							categories={this.props.categories}
 							onSelect={this.onSelectCategory}
 							label={'Category'}
+							selectedCategoriesIds={this.selectetCategoriesIds}
 							idDefaultCategory={useOrDefault(() => this.props.query.category_id, -1)}
 							parent={null}
 						/>
@@ -304,7 +324,10 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 											className='form-group col-6 col-md-3'
 										>
 											<SelectCategories
+												currentCategory={category}
 												categories={category.children}
+												selectedCategoriesIds={this.selectetCategoriesIds}
+												idDefaultCategory={useOrDefault(() => this.props.query.category_id, -1)}
 												onSelect={this.onSelectSubcategory}
 												label={'Subcategory'}
 												parent={category}

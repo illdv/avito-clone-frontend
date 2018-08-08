@@ -7,6 +7,8 @@ interface ISelectCategoryProps {
 	parent: any;
 	categories: any;
 	idDefaultCategory?: number;
+	currentCategory?: ICategory;
+	selectedCategoriesIds: number[];
 	onSelect: (category: any, parent: any | null) => void;
 }
 
@@ -19,8 +21,10 @@ class SelectCategory extends Component<ISelectCategoryProps, ISelectCategoriesSt
 	constructor(props) {
 		super(props);
 
+		const currentCategoryId = this.props.currentCategory && this.props.currentCategory.id;
+
 		this.state = {
-			value: this.labelId,
+			value: currentCategoryId || this.labelId,
 		};
 	}
 
@@ -64,7 +68,7 @@ class SelectCategory extends Component<ISelectCategoryProps, ISelectCategoriesSt
 				</option >
 				{
 					this.props.categories && this.props.categories.map(category => {
-						const selected = comparison(category.id, this.props.idDefaultCategory);
+						const selected = this.props.selectedCategoriesIds.some(id => comparison(id, category.id));
 
 						return (
 							<option

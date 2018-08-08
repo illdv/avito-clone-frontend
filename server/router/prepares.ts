@@ -132,7 +132,23 @@ export const location: prepareMethod = async (sugar, req) => {
 };
 
 export const query: prepareMethod = async (sugar, req) => {
-	return sugar.query;
+	const queryStr = req.url.match(/\?([^]+)/);
+
+	const optionsStrings = queryStr && queryStr[1].match(/(options[^&]+)/g);
+
+	const options = {};
+
+	if (optionsStrings) {
+		optionsStrings.forEach(optionString => {
+			const optionsParams = optionString.match(/options\[([^&]+)\]=([^]+)/);
+	
+			if (optionsParams) {
+				options[optionsParams[1]] = optionsParams[2];
+			}
+		});
+	}
+
+	return { ...sugar.query, options };
 };
 
 // export const vipAds: prepareMethod = async ({ params, query, path }, req) => {
