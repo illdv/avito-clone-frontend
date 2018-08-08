@@ -17,6 +17,7 @@ export interface IQuery {
 	city_id?: string;
 	price_from?: string;
 	search?: string;
+	currentPage?: number;
 }
 
 let loop: IQuery;
