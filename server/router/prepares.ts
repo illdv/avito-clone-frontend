@@ -15,7 +15,6 @@ import {
 
 import { getDataForAdShowPage, getDataForAdsIndexPage } from '../api/ad';
 import { getLitleCategories } from '../api/category';
-import { IQuery } from 'client/ssr/contexts/QueryContext'
 
 interface ISugar {
 	params?: any;
@@ -300,12 +299,12 @@ export const breadcrumbs: prepareMethod = async ({ query, accumulation }, req) =
 	];
 };
 
-export const countriesTotal: prepareMethod = async ({ query: queryParams, accumulation }: { query: IQuery, accumulation: any }, req) => {
-	if (queryParams.city_id) {
+export const countriesTotal: prepareMethod = async ({ query: queryParams, accumulation }, req) => {
+	/*if (queryParams.country_id) {
 		const responseRegions = await getInstanseWithLanguageByReq(req)
 			.get(`/countries/${queryParams.city_id}/regions?appends[]=total_ads&category_id=${queryParams.category_id}`);
 		return responseRegions.data;
-	}
+	}*/
 
 	const responseCountries = await getInstanseWithLanguageByReq(req)
 		.get(`/countries?appends[]=total_ads&category_id=${queryParams.category_id}`);
