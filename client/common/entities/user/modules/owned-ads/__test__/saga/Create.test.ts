@@ -39,9 +39,9 @@ const request = {
 const error = new Error('lol');
 
 jest.mock("redux-saga");
-const saga = sagaHelper(create({payload: request}));
 
 describe('Success created ad', () => {
+	const saga = sagaHelper(create({payload: request}));
 	saga('Send request for create ad', result => {
 		expect(result)
 			.toEqual(
@@ -79,6 +79,7 @@ describe('Success created ad', () => {
 });
 
 describe('Faile', () => {
+	const saga = sagaHelper(create({payload: request}));
 	saga('Send request for create ad', result => {
 		expect(result)
 			.toEqual(
