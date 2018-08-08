@@ -9,6 +9,7 @@ export enum AdInfoFieldsNames {
 	title = 'title',
 	price = 'price',
 	description = 'description',
+	address = 'address',
 }
 
 export interface IField {
@@ -20,6 +21,7 @@ export interface IAdInfoFields {
 	[AdInfoFieldsNames.title]: IField;
 	[AdInfoFieldsNames.price]: IField;
 	[AdInfoFieldsNames.description]: IField;
+	[AdInfoFieldsNames.address]: IField;
 }
 
 export enum SellerFieldsNames {

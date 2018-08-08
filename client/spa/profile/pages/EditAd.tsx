@@ -82,6 +82,7 @@ class EditAd extends React.Component<IProps, IState> {
 			phone: state.sellerInfoFields.phone.value,
 			price: state.adInfoFields.price.value,
 			title: state.adInfoFields.title.value,
+			address: state.adInfoFields.address.value,
 			description: state.adInfoFields.description.value,
 			city_id: this.props.locationState.session.idCity,
 			category_id: useOrDefault(() => selectedCategories[selectedCategories.length - 1].id, null),
