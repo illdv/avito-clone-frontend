@@ -33,6 +33,7 @@ function clearToken() {
 
 function* watcherToken() {
 	yield [
+		takeEvery(tokenActions.setTokenToAxios.REQUEST, setTokenToAxios),
 		takeEvery(tokenActions.clearToken.REQUEST, clearToken),
 		takeEvery(tokenActions.setTokenToStorage.REQUEST, saveTokenInStore),
 	];
