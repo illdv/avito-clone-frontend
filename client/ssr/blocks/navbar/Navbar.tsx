@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { IRootState } from '../../../common/store/storeInterface';
-import history from 'client/common/history';
 import { createAdPagePagePath } from '../../../spa/profile/constants';
 import { showLoginModal } from '../../modals/auth/loginModalTriggers';
 

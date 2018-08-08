@@ -1,7 +1,12 @@
 import * as React from 'react';
 require('./Page404');
+import history from 'client/common/history';
 
 const Page404 = () => {
+	const onHome = () => {
+		window.location.href = '/';
+	};
+	const Back   = () => history.goBack();
 	return (
 		<div className='container'>
 			<div className='row'>
@@ -15,10 +20,18 @@ const Page404 = () => {
 			</div>
 			<div className='row'>
 				<div className='col-md-2 offset-md-4'>
-					<button className='btn orange-btn w-100'>Home</button>
+					<button
+						className='btn orange-btn w-100'
+						onClick={onHome}
+					>Home
+					</button>
 				</div>
 				<div className='col-md-2'>
-					<button className='btn orange-btn-outline w-100'>Back</button>
+					<button
+						className='btn orange-btn-outline w-100'
+						onClick={Back}
+					>Back
+					</button>
 				</div>
 			</div>
 		</div>
