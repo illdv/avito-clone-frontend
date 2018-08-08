@@ -14,6 +14,7 @@ import Footer from 'client/ssr/blocks/footer/Footer';
 import Ads from 'client/ssr/blocks/ads/Ads';
 
 import * as loaderPrepare from '../client/common/loader-prepare/loaderPrepare';
+import Page404 from 'client/common/layouts/Page404';
 
 const isServer: boolean = typeof window === 'undefined';
 
@@ -84,8 +85,7 @@ export class Index extends React.Component<IIndexProps, IIndexProps> {
 						title='Houses, villas, cottages'
 						ads={ads}
 					/>
-
-					{/*<Footer />*/}
+					<Footer />
 					<ToastContainer />
 				</SetCategories>
 			</React.Fragment>

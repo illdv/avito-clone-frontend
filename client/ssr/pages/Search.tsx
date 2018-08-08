@@ -9,7 +9,6 @@ import EmptySearch from 'client/ssr/blocks/empty-search/EmptySearch';
 import { IAds } from 'client/common/entities/user/modules/owned-ads/interfaces';
 import BreadcrumbsWrap from 'client/ssr/wraps/BreadcrumbFromContext';
 import ListOfSubcategories from 'client/ssr/blocks/list-of-subcategories/ListOfSubcategories';
-import { ConsumerCategories } from 'client/ssr/blocks/categories/context';
 import { categoryToItemOfTitlesList, countriesToItemOfTitlesList } from 'client/ssr/pages/utils';
 
 export interface ICountriesTotal {
@@ -21,6 +20,7 @@ export interface ICountriesTotal {
 interface ISearchPageProp {
 	search: IAds[];
 	countriesTotal: ICountriesTotal[];
+	categoriesTotal: ICategory[];
 }
 
 // TODO: is not page.
@@ -45,14 +45,10 @@ class SearchPage extends React.Component<ISearchPageProp> {
 							classNameForContainer='breadcrumb'
 							classNameForItem='breadcrumb-item'
 						/>
-						<ConsumerCategories >
-							{(categories: ICategory[]) => (
-								<ListOfSubcategories
-									title={'All'}
-									items={categories.map(categoryToItemOfTitlesList)}
-								/>
-							)}
-						</ConsumerCategories >
+						<ListOfSubcategories
+							title={'All'}
+							items={this.props.categoriesTotal.map(categoryToItemOfTitlesList)}
+						/>
 						{
 							countriesTotals.length > 0
 							&&
