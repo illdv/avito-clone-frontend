@@ -10,6 +10,8 @@ import { IAds } from 'client/common/entities/user/modules/owned-ads/interfaces';
 import BreadcrumbsWrap from 'client/ssr/wraps/BreadcrumbFromContext';
 import ListOfSubcategories from 'client/ssr/blocks/list-of-subcategories/ListOfSubcategories';
 import { categoryToItemOfTitlesList, countriesToItemOfTitlesList } from 'client/ssr/pages/utils';
+import Pagination from 'client/ssr/pages/Pagination';
+import { IPagination } from 'client/ssr/pages/interfacePagination'
 
 export interface ICountriesTotal {
 	country_id: number;
@@ -20,7 +22,7 @@ export interface ICountriesTotal {
 }
 
 interface ISearchPageProp {
-	search: IAds[];
+	search: { ads: IAds[], pagination: IPagination };
 	countriesTotal: ICountriesTotal[];
 	categoriesTotal: ICategory[];
 }
@@ -34,7 +36,7 @@ class SearchPage extends React.Component<ISearchPageProp> {
 	render() {
 		const { countriesTotal, search, categoriesTotal } = this.props;
 
-		const countriesTotals = countriesTotal.filter(item => item.total_ads !== 0)
+		const countriesTotals = countriesTotal.filter(item => item.total_ads !== 0);
 
 		return (
 			<React.Fragment >
@@ -70,12 +72,16 @@ class SearchPage extends React.Component<ISearchPageProp> {
 					</div >
 				</div >
 				{
-					search.length || countriesTotal.length > 0 || categoriesTotal.length > 0
-						?
-						<Ads
-							title={`Search result (${search.length})`}
-							ads={search}
-						/>
+					search.ads.length ?
+						<div >
+							<Ads
+								title={`Search result (${search.ads.length})`}
+								ads={search.ads}
+							/>
+							<div className={'d-flex justify-content-center'} >
+								<Pagination pagination={search.pagination}/>
+							</div >
+						</div >
 						:
 						<EmptySearch />
 				}

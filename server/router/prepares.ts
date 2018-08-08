@@ -141,7 +141,7 @@ export const query: prepareMethod = async (sugar, req) => {
 	if (optionsStrings) {
 		optionsStrings.forEach(optionString => {
 			const optionsParams = optionString.match(/options\[([^&]+)\]=([^]+)/);
-	
+
 			if (optionsParams) {
 				options[optionsParams[1]] = optionsParams[2];
 			}
@@ -296,12 +296,29 @@ export const getCities: prepareMethod = async ({ query }, req) => {
 
 export const search: prepareMethod = async ({ query = {}, accumulation }, req) => {
 	try {
-		const response = await getLiteAdsByQueryString(formatData({
+		const url = formatData({
 			...getDataForAdsIndexPage,
 			...(accumulation.query || query),
-		}));
+		}) + '&page=' + query.currentPage;
 
-		return response.data;
+		const response     = await getLiteAdsByQueryString(url);
+		console.log('Search url = ', url);
+		console.log('Search response', response);
+
+		const { current_page, last_page, per_page, total } = response;
+
+		const pagination = {
+			current_page,
+			last_page,
+			per_page,
+			total,
+		};
+
+		return {
+			ads: response.data,
+			pagination,
+		};
+
 	} catch (err) {
 		console.log('err', err);
 		return [];

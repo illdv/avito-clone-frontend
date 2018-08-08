@@ -10,6 +10,7 @@ import SearchPage, { ICountriesTotal } from 'client/ssr/pages/Search';
 import { IAds } from 'client/common/entities/user/modules/owned-ads/interfaces';
 import SetQuery from 'client/ssr/contexts/QueryContext';
 import { SetBreadcrumbs } from 'client/ssr/contexts/Breadcrumbs';
+import { IPagination } from 'client/ssr/pages/interfacePagination'
 
 const isServer: boolean = typeof window === 'undefined';
 
@@ -19,10 +20,11 @@ if (isServer) {
 
 interface ICategoryProps {
 	categories: any[];
-	search: IAds[];
+	search: { ads: IAds[], pagination: IPagination };
 	query: any;
 	breadcrumbs: any;
 	countriesTotal: ICountriesTotal[];
+	categoriesTotal: any;
 }
 
 class Category extends React.Component<ICategoryProps> {
@@ -33,7 +35,7 @@ class Category extends React.Component<ICategoryProps> {
 			countriesTotal: query.countriesTotal,
 			breadcrumbs: query.breadcrumbs,
 			query: query.query,
-			search: query.search || [],
+			search: query.search || { ads: [] },
 			categories: query.categories,
 			location: query.location,
 		};
