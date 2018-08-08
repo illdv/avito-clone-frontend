@@ -14,6 +14,7 @@ import PriceRange from 'client/ssr/blocks/search/components/PriceRange';
 import { getQuery, IQuery } from 'client/ssr/contexts/QueryContext';
 import { useOrDefault } from 'client/spa/profile/utils/createAd';
 import { IOption } from 'client/spa/profile/blocks/manager-ad/interface';
+import { findCategoriesQueueById } from 'client/spa/profile/utils/createAd';
 
 require('./Search.sass');
 
@@ -56,7 +57,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 
 		this.state = {
 			duplicateCategories: this.props.categories,
-			activeCategories: [],
+			activeCategories: findCategoriesQueueById(this.props.categories, Number(this.props.query.category_id)) || [],
 			searchString: useOrDefault(() => this.props.query.search, ''),
 			options: [],
 			rangePrice: {
@@ -68,6 +69,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 	}
 
 	onSelectCategory = category => {
+		console.log(category);
 		if (category) {
 			if (this.state.activeCategories[0] !== category) {
 				this.setState({
