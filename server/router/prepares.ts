@@ -34,8 +34,8 @@ const instance = axios.create({
 	},
 });
 
-const formatData = (data) => {
-	return queryString.stringify(data, {arrayFormat: 'bracket'});
+const formatData = data => {
+	return queryString.stringify(data, { arrayFormat: 'bracket' });
 };
 
 export const adsPaginationPage: prepareMethod = async () => {
@@ -289,8 +289,7 @@ export const search: prepareMethod = async ({ query }, req) => {
 };
 
 export const breadcrumbs: prepareMethod = async ({ query, accumulation }, req) => {
-	const categoryQueue   = findCategoriesQueueById(accumulation.categories, query.category);
-	console.log(categoryQueue);
+	const categoryQueue = findCategoriesQueueById(accumulation.categories, query.category);
 	return [
 		{
 			title: `All listings in ${accumulation.location.locationName}`,
@@ -298,4 +297,10 @@ export const breadcrumbs: prepareMethod = async ({ query, accumulation }, req) =
 		},
 		...categoryQueueToBreadcrumbsFormat(categoryQueue, categoryQueue.length),
 	];
+};
+
+export const countriesTotal: prepareMethod = async ({ query, accumulation }, req) => {
+	const response = await getInstanseWithLanguageByReq(req)
+		.get(`/countries?appends[]=total_ads&category_id=${query.category_id}`);
+	return response.data;
 };

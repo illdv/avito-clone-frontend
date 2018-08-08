@@ -157,7 +157,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 		};
 
 		if (this.state.activeCategories.length > 0) {
-			query.category = this.state.activeCategories[this.state.activeCategories.length - 1].id;
+			query.category_id = this.state.activeCategories[this.state.activeCategories.length - 1].id;
 		}
 
 		if (idCity) {
@@ -278,7 +278,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 							categories={this.props.categories}
 							onSelect={this.onSelectCategory}
 							label={'Category'}
-							idDefaultCategory={useOrDefault(() => this.props.query.category, -1)}
+							idDefaultCategory={useOrDefault(() => this.props.query.category_id, -1)}
 							parent={null}
 						/>
 					</div >
