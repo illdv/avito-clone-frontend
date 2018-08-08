@@ -14,6 +14,7 @@ import {
 } from '../utils/categoryPrepare';
 
 import { getDataForAdsIndexPage, getDataForAdShowPage } from '../api/ad';
+import { getLitleCategories } from '../api/category';
 
 interface ISugar {
 	params?: any;
@@ -60,7 +61,7 @@ export const adForShow: prepareMethod = async ({ params }) => {
 };
 
 export const categories: prepareMethod = async () => {
-	const response = await instance.get('/categories?appends[]=children');
+	const response = await instance.get(`/categories?${formatData(getLitleCategories)}`);
 	return response.data;
 };
 
