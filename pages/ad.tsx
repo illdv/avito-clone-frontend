@@ -20,9 +20,9 @@ if (isServer) {
 }
 
 interface IAdsProps {
-	response: {
+	adForShow: {
 		ad: IAd;
-		similars: any[]
+		similars: IAd[];
 	};
 	categories: any[];
 }
@@ -30,7 +30,7 @@ interface IAdsProps {
 class Ads extends React.Component<IAdsProps> {
 	static async getInitialProps({ query }) {
 		return {
-			response: query.ad,
+			adForShow: query.adForShow,
 			location: query.location,
 			categories: query.categories,
 		};
@@ -52,13 +52,13 @@ class Ads extends React.Component<IAdsProps> {
 						</div>
 					</div>
 					<Ad
-						ad={this.props.response.ad}
+						ad={this.props.adForShow.ad}
 						categories={this.props.categories}
-						similar={this.props.response.similars}
+						similar={this.props.adForShow.similars}
 					/>
 					<SellerModal
-						seller={this.props.response.ad.user}
-						address={this.props.response.ad.address}
+						seller={this.props.adForShow.ad.user}
+						address={this.props.adForShow.ad.address}
 					/>
 					<Footer />
 				</SetCategories>
