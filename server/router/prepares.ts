@@ -3,8 +3,8 @@ import * as queryString from 'query-string';
 
 import {
 	categoryQueueToBreadcrumbsFormat,
-	findCategoriesQueueById,
 	findCategoriesQueueBySlug,
+	findCategoriesQueueById,
 	getCurrentCategoryByQueue,
 	getIdFromCategory,
 	getLocationNameByLocations,
@@ -13,7 +13,8 @@ import {
 	getSubcategoryByCategoryQueue,
 } from '../utils/categoryPrepare';
 
-import { getDataForAdShowPage, getDataForAdsIndexPage } from '../api/ad';
+import { getDataForAdsIndexPage, getDataForAdShowPage } from '../api/ad';
+import { getLitleCategories } from '../api/category';
 
 interface ISugar {
 	params?: any;
@@ -40,8 +41,9 @@ const formatData = (data): string => {
 export const adsPaginationPage: prepareMethod = async () => {
 	try {
 		const response = await instance.get(`/ads?${formatData(getDataForAdsIndexPage)}`);
-		console.log(response);
-		return response.data.data;
+		const ads = response.data.data;
+		const vip = response.data.vip;
+		return {ads, vip};
 	} catch (e) {
 		console.log(e);
 	}
@@ -59,7 +61,7 @@ export const adForShow: prepareMethod = async ({ params }) => {
 };
 
 export const categories: prepareMethod = async () => {
-	const response = await instance.get('/categories?appends[]=children');
+	const response = await instance.get(`/categories?${formatData(getLitleCategories)}`);
 	return response.data;
 };
 

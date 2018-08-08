@@ -1,3 +1,5 @@
+import { CategoryFilterAppender } from 'log4js';
+
 export enum AdAppendsFields {
 	total_visits = 'total_visits',
 	today_visits = 'today_visits',
@@ -92,4 +94,41 @@ export interface IGetFullAdsResponse {
 	[AdSelectedFields.longitude]: number;
 	[AdSelectedFields.phone]: string;
 	[AdSelectedFields.updated_at]: string;
+}
+
+export enum CategoryAppendsFields {
+	total_ads_count = 'total_ads_count',
+	total_options = 'total_options',
+	children = 'children',
+}
+
+export enum CategorySelectedFields {
+	id = 'id',
+	title = 'title',
+	slug = 'slug',
+	parent_id = 'parent_id',
+	description = 'description',
+}
+
+export enum CategoryWithFields {
+	parent = 'parent',
+	options = 'options',
+	ads = 'ads',
+	images = 'images',
+}
+
+export interface IGetLiteCategoriesRequest {
+	fields: [
+		CategorySelectedFields.id,
+		CategorySelectedFields.title,
+		CategorySelectedFields.parent_id,
+		CategorySelectedFields.slug
+	];
+	appends: [
+		CategoryAppendsFields.total_ads_count,
+		CategoryAppendsFields.children
+	];
+	with: [
+		CategoryWithFields.options
+	];
 }
