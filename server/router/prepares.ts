@@ -132,7 +132,23 @@ export const location: prepareMethod = async (sugar, req) => {
 };
 
 export const query: prepareMethod = async (sugar, req) => {
-	return sugar.query;
+	const queryStr = req.url.match(/\?([^]+)/);
+
+	const optionsStrings = queryStr && queryStr[1].match(/(options[^&]+)/g);
+
+	const options = {};
+
+	if (optionsStrings) {
+		optionsStrings.forEach(optionString => {
+			const optionsParams = optionString.match(/options\[([^&]+)\]=([^]+)/);
+	
+			if (optionsParams) {
+				options[optionsParams[1]] = optionsParams[2];
+			}
+		});
+	}
+
+	return { ...sugar.query, options };
 };
 
 // export const vipAds: prepareMethod = async ({ params, query, path }, req) => {
@@ -278,16 +294,16 @@ export const getCities: prepareMethod = async ({ query }, req) => {
 	}
 };
 
-export const search: prepareMethod = async ({ query = {} }, req) => {
+export const search: prepareMethod = async ({ query = {}, accumulation }, req) => {
 	try {
 		const response = await getLiteAdsByQueryString(formatData({
 			...getDataForAdsIndexPage,
-			...query,
+			...(accumulation.query || query),
 		}));
 
 		return response.data;
 	} catch (err) {
-		console.log(err);
+		console.log('err', err);
 		return [];
 	}
 };
@@ -304,29 +320,36 @@ export const breadcrumbs: prepareMethod = async ({ query, accumulation }, req) =
 };
 
 export const countriesTotal: prepareMethod = async ({ query: queryParams, accumulation }, req) => {
+	try {
+		const hasRegion  = queryParams.region_id;
+		const hasCountry = queryParams.country_id;
+		const hasCity    = queryParams.city_id;
 
-	const hasRegion  = queryParams.region_id;
-	const hasCountry = queryParams.country_id;
-	const hasCity    = queryParams.city_id;
+		if (hasRegion && !hasCity) {
+			const responseRegions = await getInstanseWithLanguageByReq(req)
+				.get(`/regions/${queryParams.region_id}/cities?appends[]=total_ads&category_id=${queryParams.category_id}`);
+			return responseRegions.data;
+		}
 
-	if (hasRegion && !hasCity) {
-		const responseRegions = await getInstanseWithLanguageByReq(req)
-			.get(`/regions/${queryParams.region_id}/cities?appends[]=total_ads&category_id=${queryParams.category_id}`);
-		return responseRegions.data;
+		if (hasCountry && !hasCity) {
+			const responseRegions = await getInstanseWithLanguageByReq(req)
+				.get(`/countries/${queryParams.country_id}/regions?appends[]=total_ads&category_id=${queryParams.category_id}`);
+			return responseRegions.data;
+		}
+
+		const responseCountries = await getInstanseWithLanguageByReq(req)
+			.get(`/countries?appends[]=total_ads&category_id=${queryParams.category_id}`);
+		return responseCountries.data;
+	} catch (e) {
+		return [];
 	}
-
-	if (hasCountry && !hasCity) {
-		const responseRegions = await getInstanseWithLanguageByReq(req)
-			.get(`/countries/${queryParams.country_id}/regions?appends[]=total_ads&category_id=${queryParams.category_id}`);
-		return responseRegions.data;
-	}
-
-	const responseCountries = await getInstanseWithLanguageByReq(req)
-		.get(`/countries?appends[]=total_ads&category_id=${queryParams.category_id}`);
-	return responseCountries.data;
 };
 
 export const categoriesTotal: prepareMethod = async ({ query, accumulation }, req) => {
-	const response = await instance.get(`/categories/${query.category_id}?appends[]=total_ads_count`);
-	return response.data.category.children;
+	try {
+		const response = await instance.get(`/categories/${query.category_id}?appends[]=total_ads_count`);
+		return response.data.category.children;
+	} catch (e) {
+		return [];
+	}
 };
