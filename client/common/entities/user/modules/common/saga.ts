@@ -21,7 +21,7 @@ function* loadingUserIfHasToken() {
 	const token = CustomStorage.getToken();
 
 	if (token) {
-		axios.defaults.headers.common.authorization = `Bearer ${token}`;
+		yield put(tokenActions.setTokenToAxios.REQUEST({ token }));
 		yield put(profileActions.getProfile.REQUEST({ token }));
 	}
 }
@@ -54,10 +54,11 @@ function* login(action: Action<ILoginRequest>) {
 		yield put(profileActions.setProfile.REQUEST(correctProfile));
 
 		yield put(tokenActions.setTokenToStorage.REQUEST({ token, isRememberMe }));
+		yield put(tokenActions.setTokenToAxios.REQUEST({ token }));
 		yield put(tokenActions.setTokenToState.REQUEST({ token }));
 
 		hideLoginModal();
-		// pushInRouter(defaultPagePath);
+		pushInRouter(defaultPagePath);
 	} catch (e) {
 		yield call(errorHandler, e);
 		yield put(commonActions.login.FAILURE({}));
@@ -75,6 +76,7 @@ function* register(action: Action<IRegisterRequest>) {
 		yield put(profileActions.setProfile.REQUEST(correctProfile));
 
 		yield put(tokenActions.setTokenToStorage.REQUEST({ token, isRememberMe: false }));
+		yield put(tokenActions.setTokenToAxios.REQUEST({ token }));
 		yield put(tokenActions.setTokenToState.REQUEST({ token }));
 
 		hideLoginModal();
