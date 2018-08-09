@@ -79,6 +79,7 @@ export interface IGetSellerAdRequest {
 export enum CategoryAppendsFields {
 	total_ads_count = 'total_ads_count',
 	total_options = 'total_options',
+	ads_count = 'ads_count',
 	children = 'children',
 }
 
@@ -107,7 +108,8 @@ export interface IGetLiteCategoriesRequest {
 	appends: [
 		CategoryAppendsFields.total_ads_count,
 		CategoryAppendsFields.children,
-		CategoryAppendsFields.total_options
+		CategoryAppendsFields.total_options,
+		CategoryAppendsFields.ads_count
 	];
 	with: [
 		CategoryWithFields.options

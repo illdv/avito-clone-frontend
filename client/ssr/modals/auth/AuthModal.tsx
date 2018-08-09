@@ -7,6 +7,7 @@ import RegistrationForm from 'client/ssr/modals/auth/components/RegistrationForm
 import { ModalNames } from 'client/common/modal-juggler/modalJugglerInterface';
 import { getModals } from 'client/common/store/selectors';
 import { hide } from 'client/common/modal-juggler/module';
+import { hideLoginModal } from './loginModalTriggers';
 
 require('./AuthModal.sass');
 
@@ -51,6 +52,8 @@ export class AuthModal extends React.Component<{}, ILoginModalState> {
 		this.setActiveTab(LoginModalTabs.registration);
 	}
 
+	close = () => hideLoginModal();
+
 	render() {
 		return (
 			<Modal name={ModalNames.login} useOnRequestClose={true}>
@@ -68,6 +71,13 @@ export class AuthModal extends React.Component<{}, ILoginModalState> {
 						>
 							REGISTER
 						</a>
+						<button
+							type='button'
+							className='auth-modal__close close'
+							onClick={this.close}
+						>
+							<span>&times;</span>
+						</button>
 					</div>
 					{
 						this.state.activeTab === LoginModalTabs.login

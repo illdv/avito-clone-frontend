@@ -24,6 +24,7 @@ if (isServer) {
 
 interface IIndexProps {
 	categories: ICategory[];
+	categoriesByLocation: ICategory[];
 	adsPaginationPage: {
 		ads: IAd[];
 		vip: IAd[];
@@ -35,11 +36,11 @@ let loopState: IIndexProps;
 
 export class Index extends React.Component<IIndexProps, IIndexProps> {
 	static async getInitialProps({ query }) {
-		const {adsPaginationPage, categories, location} = query;
+		const {adsPaginationPage, categories, location, categoriesByLocation} = query;
 
-		if (!adsPaginationPage || !categories || !location) {
-			console.log('loopState', loopState);
+		if (!adsPaginationPage || !categories || !location || !categoriesByLocation) {
 			return ({
+				categoriesByLocation: loopState.categoriesByLocation,
 				adsPaginationPage: loopState.adsPaginationPage,
 				location: loopState.location,
 				categories: loopState.categories,
@@ -47,6 +48,7 @@ export class Index extends React.Component<IIndexProps, IIndexProps> {
 		}
 
 		const result = {
+			categoriesByLocation: query.categoriesByLocation,
 			adsPaginationPage: query.adsPaginationPage,
 			categories: query.categories,
 		};
@@ -56,7 +58,7 @@ export class Index extends React.Component<IIndexProps, IIndexProps> {
 
 	render() {
 		loopState = this.props;
-		const { categories, location } = this.props;
+		const { categories, location, categoriesByLocation } = this.props;
 		const {ads, vip} = this.props.adsPaginationPage;
 		return (
 			<React.Fragment>
@@ -75,14 +77,14 @@ export class Index extends React.Component<IIndexProps, IIndexProps> {
 							<Search priceRange={true}/>
 						</div>
 					</div>
-					<Categories />
+					<Categories categoriesByLocation={categoriesByLocation} />
 					<Ads
 						title='Vip ads'
 						ads={vip}
 					/>
 
 					<Ads
-						title='Houses, villas, cottages'
+						title='Last ads'
 						ads={ads}
 					/>
 					<Footer />

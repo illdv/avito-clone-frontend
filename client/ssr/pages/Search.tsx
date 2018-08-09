@@ -9,10 +9,14 @@ import EmptySearch from 'client/ssr/blocks/empty-search/EmptySearch';
 import { IAds } from 'client/common/entities/user/modules/owned-ads/interfaces';
 import BreadcrumbsWrap from 'client/ssr/wraps/BreadcrumbFromContext';
 import ListOfSubcategories from 'client/ssr/blocks/list-of-subcategories/ListOfSubcategories';
-import { categoryToItemOfTitlesList, countriesToItemOfTitlesList } from 'client/ssr/pages/utils';
+import {
+	categoryToItemOfTitlesList,
+	countriesToItemOfTitlesList,
+	getNextLocationName,
+} from 'client/ssr/pages/utils';
 import Pagination from 'client/ssr/pages/Pagination';
-import { IPagination } from 'client/ssr/pages/interfacePagination'
-import { useOrDefault } from 'client/spa/profile/utils/createAd'
+import { IPagination } from 'client/ssr/pages/interfacePagination';
+import { useOrDefault } from 'client/spa/profile/utils/createAd';
 
 export interface ICountriesTotal {
 	country_id: number;
@@ -39,8 +43,6 @@ class SearchPage extends React.Component<ISearchPageProp> {
 
 		const countriesTotals = countriesTotal.filter(item => item.total_ads !== 0);
 
-		console.log('search = ', search);
-
 		return (
 			<React.Fragment >
 				<Header />
@@ -66,7 +68,7 @@ class SearchPage extends React.Component<ISearchPageProp> {
 							countriesTotals.length > 0
 							&&
 							<ListOfSubcategories
-								title={'Countries'}
+								title={getNextLocationName()}
 								items={countriesTotals.map(countriesToItemOfTitlesList)}
 							/>
 							||

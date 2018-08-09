@@ -4,7 +4,7 @@ import { Action } from 'redux-act';
 import { errorHandler } from 'client/common/store/errorHandler';
 import { ownedAdsActions } from './actions';
 import { AdsAPI } from 'client/common/api/AdsAPI';
-import { ResponseWhitPagination } from 'client/common/utils/interface';
+import { ResponseWhitPagination } from 'client/ssr/pages/interfacePagination';
 import { IAds, ICreateAdRequest, AdsActionType, PageNames } from './interfaces';
 import { Toasts } from 'client/common/utils/Toasts';
 import { delay } from 'redux-saga';

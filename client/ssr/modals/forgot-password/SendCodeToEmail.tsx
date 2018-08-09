@@ -4,6 +4,7 @@ import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface'
 import { IUserActions, UserActions } from 'client/common/entities/user/rootActions';
 import { bindModuleAction } from 'client/common/entities/user/utils';
 import { connect, Dispatch } from 'react-redux';
+import { hideSendCodeToEmailModal } from './forgotPasswordModalTriggers';
 
 export interface IState {
 	email: string;
@@ -28,6 +29,8 @@ class SendCodeToEmail extends React.Component<null, IState> {
 		return false;
 	}
 
+	close = () => hideSendCodeToEmailModal();
+
 	render() {
 		return (
 			<Modal
@@ -35,6 +38,13 @@ class SendCodeToEmail extends React.Component<null, IState> {
 				useOnRequestClose={true}
 			>
 				<div className='auth-modal'>
+					<button
+						type='button'
+						className='auth-modal__close close'
+						onClick={this.close}
+					>
+						<span>&times;</span>
+					</button>
 					<div className='text-center p-40'>
 						<h2 className='m-b-30'>Forgot password?</h2>
 						<h4 className='grey-text m-b-0'>

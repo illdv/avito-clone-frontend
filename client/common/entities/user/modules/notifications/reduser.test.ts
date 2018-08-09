@@ -1,7 +1,6 @@
 import reducer from './reducer';
 import { notificationActions } from './actions';
 
-const token = 1;
 const initialState = {
 	items: [],
 	noReadCount: 0,
@@ -14,8 +13,8 @@ describe('SET_NO_READ_COUNT', () => {
 	});
 
 	it('REQUEST', () => {
-		const action = notificationActions.setNoReadCount.REQUEST( token );
+		const action = notificationActions.setNoReadCount.REQUEST( 5 );
 		expect(reducer(initialState, action))
-			.toEqual({...initialState, noReadCount: token});
+			.toEqual({...initialState, noReadCount: 5});
 	});
 });

@@ -16,12 +16,14 @@ class CategoryOptions extends React.Component<IProps> {
 				<div className='container'>
 					<br/>
 					<h3>Options</h3>
-					<div className='row'>
+					<div className='row search'>
 						{
 							this.props.options.map(option => (
 								<div key={option.item.id} className='form-group col-lg-4 col-sm-3'>
+									<label htmlFor={option.item.name}>{option.item.name.replace('_', ' ')}</label>
 									<input
 										type='text'
+										id={option.item.name}
 										value={option.value}
 										placeholder={option.item.name}
 										className='form-control'
