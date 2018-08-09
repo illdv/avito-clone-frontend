@@ -1,9 +1,11 @@
 import React from 'react';
-import { withRouter } from 'react-router';
+import { RouteComponentProps, withRouter } from 'react-router';
 
 import Menu from 'client/spa/profile/blocks/menu/Menu';
-
-const WithMenu: React.SFC = ({ children }) => (
+interface IWithMenu {
+	path: any;
+}
+const WithMenu: React.SFC<IWithMenu & RouteComponentProps<any>> = ({ children }) => (
 	<section className='page'>
 		<div className='container page__container-lg'>
 			<div className='row'>
