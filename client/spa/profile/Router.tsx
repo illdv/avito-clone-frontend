@@ -1,6 +1,6 @@
 import React from 'react';
-import { Router as RouterConnect } from 'react-router';
-import { Link, Route, Switch} from 'react-router-dom';
+import { Redirect, Router as RouterConnect } from 'react-router';
+import { Link, Route, Switch } from 'react-router-dom';
 
 import Header from 'client/ssr/blocks/header/Header';
 import Toolbar from 'client/spa/profile/blocks/toolbar/Toolbar';
@@ -26,8 +26,9 @@ import {
 	myAdsPagePath,
 	defaultPagePath,
 	notificationPagePath,
-	profileSettingsPagePath,
+	profileSettingsPagePath, myActiveAdsPagePath,
 } from './constants';
+import Page404 from 'client/common/layouts/Page404';
 
 const PageNoCreate = () => (
 	<h1>Page not yet created</h1>
@@ -41,24 +42,56 @@ class Router extends React.Component {
 	render() {
 		return (
 			<>
-				<RouterConnect history={ history }>
+				<RouterConnect history={history}>
 					<PrivareWrap>
 						<Header />
 						<Toolbar />
-						<Switch>
-							<WithFooter path='/profile/ad'>
-								<Route path='/profile/ad/create' component={ CreateAd } />
-								<Route path='/profile/ad/edit/:id' component={ EditAd } />
-							</WithFooter>
-							<WithFooter>
-								<WithMenu>
-									<Route path={ '/profile/mock' } component={ PageNoCreate } />
-									<Route path={ profileSettingsPagePath } component={ ProfileSettings } />
-									<Route path={ notificationPagePath } component={ Notifications } />
-									<Route path={ myAdsPagePath } component={ MyAds }/>
+						<WithFooter>
+							<Switch>
+								<Route
+									path='/profile/page_not_found'
+									component={Page404}
+								/>
+								<Route
+									path='/profile/ad/create'
+									component={CreateAd}
+								/>
+								<Route
+									path='/profile/ad/edit/:id'
+									component={EditAd}
+								/>
+								<WithMenu
+									path={[
+										'/profile/mock',
+										profileSettingsPagePath,
+										notificationPagePath,
+										myAdsPagePath,
+									]}
+								>
+									<Route
+										path={profileSettingsPagePath}
+										component={ProfileSettings}
+									/>
+									<Route
+										path={notificationPagePath}
+										component={Notifications}
+									/>
+									<Route
+										path={myAdsPagePath}
+										component={MyAds}
+									/>
 								</WithMenu>
-							</WithFooter>
-						</Switch>
+								<Redirect
+									exact
+									from='/profile'
+									to={myActiveAdsPagePath}
+								/>
+								<Redirect
+									from='/profile/**'
+									to='/profile/page_not_found'
+								/>
+							</Switch>
+						</WithFooter>
 					</PrivareWrap>
 				</RouterConnect>
 			</>

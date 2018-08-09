@@ -15,13 +15,13 @@ const SuccessModal: React.SFC<ISuccess> = ({}) => {
 			name={ModalNames.success}
 			useOnRequestClose={true}
 		>
-			<div className='login-block'>
+			<div className='auth-modal'>
 				<div className='login-links d-block text-center no-border'>
 					<h1 className='m-b-30'>Well done!</h1>
 					<h3 className='grey-text p-x-10'>Your password has been changed <br />successfully</h3>
 				</div>
 				<div className='login-form'>
-					<div className='form-group col-sm-12 p-x-40 m-t-40'>
+					<div className='form-group row auth-input__wrapper'>
 						<button
 							type='submit'
 							className='btn orange-btn big-btn'
