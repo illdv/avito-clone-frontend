@@ -11,12 +11,12 @@ export const categoryToItemOfTitlesList = ({ id, title, total_ads_count, slug }:
 
 function getNewWhereLike() {
 	const newQueryParams: any = { ...getQueryLoop() };
-	const queryData = {};
+	const queryData           = {};
 
 	if (newQueryParams && newQueryParams.whereLike) {
-		queryData['whereLike[title]'] =  newQueryParams.whereLike.title;
-		queryData['whereLike[body]'] =  newQueryParams.whereLike.body;
-		queryData['whereLike[description]'] =  newQueryParams.whereLike.description;
+		queryData['whereLike[title]']       = newQueryParams.whereLike.title;
+		queryData['whereLike[body]']        = newQueryParams.whereLike.body;
+		queryData['whereLike[description]'] = newQueryParams.whereLike.description;
 	}
 
 	console.log('queryString = ', `&${queryString.stringify(queryData)}`);
@@ -60,4 +60,62 @@ function calcUrlSearchForLocation(countryId, regionId, cityId) {
 	delete newQueryParams.region_id;
 
 	return queryString.stringify({ ...newQueryParams, country_id: countryId });
+}
+
+export interface ILocationStatus {
+	hasCountry: boolean;
+	hasRegion: boolean;
+	hasCity: boolean;
+}
+
+export enum LocationType {
+	SelectCountry,
+	SelectRegion,
+	SelectCity,
+	NotSelectedLocation,
+}
+
+function getLocationStatus(): ILocationStatus {
+	const newQueryParams: any = { ...getQueryLoop() };
+
+	const hasRegion  = newQueryParams.region_id;
+	const hasCountry = newQueryParams.country_id;
+	const hasCity    = newQueryParams.city_id;
+
+	return {
+		hasRegion,
+		hasCountry,
+		hasCity,
+	};
+}
+
+function getLocationType(): LocationType {
+	const { hasCity, hasCountry, hasRegion } = getLocationStatus();
+	if (hasCountry && hasRegion && hasCity) {
+		return LocationType.SelectCity;
+	}
+
+	if (hasCountry && hasRegion) {
+		return LocationType.SelectRegion;
+	}
+
+	if (hasCountry) {
+		return LocationType.SelectCountry;
+	}
+
+	return LocationType.NotSelectedLocation;
+}
+
+export function getNextLocationName() {
+	const locationStatus = getLocationType();
+	switch (locationStatus) {
+		case LocationType.SelectCountry:
+			return 'Regions';
+		case LocationType.SelectRegion:
+			return 'Cities';
+		case LocationType.SelectCity:
+			return 'Countries';
+		case LocationType.NotSelectedLocation:
+			return 'Countries';
+	}
 }
