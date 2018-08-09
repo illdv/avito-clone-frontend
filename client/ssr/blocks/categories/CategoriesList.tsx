@@ -62,22 +62,12 @@ const CategoriesList: React.SFC<ICategoriesList> = ({locationState, categories})
 
 	return (
 		<div className='tiles'>
-			{categories[11] ?
+			{categories[1] ?
 				<CategoryCard
-					href={ getQueryHref(locationState, categories[11]) }
-					category={categories[11]}
+					href={ getQueryHref(locationState, categories[1]) }
+					category={categories[1]}
 					img='/static/img/categories/car.png'
 					textAlign='category text-right'
-				/>
-				: error
-			}
-			{categories[7] ?
-				<CategoryCard
-					href={ getQueryHref(locationState, categories[7]) }
-					category={categories[7]}
-					img='/static/img/categories/property.png'
-					imageAlign='tile__image right'
-					textAlign='category text-left'
 				/>
 				: error
 			}
@@ -85,57 +75,19 @@ const CategoriesList: React.SFC<ICategoriesList> = ({locationState, categories})
 				<CategoryCard
 					href={ getQueryHref(locationState, categories[5]) }
 					category={categories[5]}
+					img='/static/img/categories/property.png'
+					imageAlign='tile__image right'
+					textAlign='category text-left'
+				/>
+				: error
+			}
+			{categories[7] ?
+				<CategoryCard
+					href={ getQueryHref(locationState, categories[7]) }
+					category={categories[7]}
 					vertical={true}
 					img='/static/img/categories/dog.png'
 					imageAlign='tile__image_vertical'
-				/>
-				: error
-			}
-			{categories[0] ?
-				<CategoryCard
-					href={ getQueryHref(locationState, categories[0]) }
-					category={categories[0]}
-					img='/static/img/categories/mac.png'
-					textAlign='category text-left'
-					imageAlign='tile__image right'
-				/>
-				: error
-			}
-			{categories[3] ?
-				<CategoryCard
-					href={ getQueryHref(locationState, categories[3]) }
-					category={categories[3]}
-					img='/static/img/categories/kitchen.png'
-					textAlign='category text-right'
-
-				/>
-				: error
-			}
-			{categories[4] ?
-				<CategoryCard
-					href={ getQueryHref(locationState, categories[4]) }
-					category={categories[4]}
-					img='/static/img/categories/shirt.png'
-					textAlign='category text-right'
-				/>
-				: error
-			}
-			{categories[1] ?
-				<CategoryCard
-					href={ getQueryHref(locationState, categories[1]) }
-					category={categories[1]}
-					img='/static/img/categories/job.png'
-					vertical={true}
-					imageAlign='tile__image_vertical'
-				/>
-				: error
-			}
-			{categories[9] ?
-				<CategoryCard
-					href={ getQueryHref(locationState, categories[9]) }
-					category={categories[9]}
-					img='/static/img/categories/work.png'
-					textAlign='category text-right'
 				/>
 				: error
 			}
@@ -143,6 +95,54 @@ const CategoriesList: React.SFC<ICategoriesList> = ({locationState, categories})
 				<CategoryCard
 					href={ getQueryHref(locationState, categories[2]) }
 					category={categories[2]}
+					img='/static/img/categories/mac.png'
+					textAlign='category text-left'
+					imageAlign='tile__image right'
+				/>
+				: error
+			}
+			{categories[4] ?
+				<CategoryCard
+					href={ getQueryHref(locationState, categories[4]) }
+					category={categories[4]}
+					img='/static/img/categories/kitchen.png'
+					textAlign='category text-right'
+
+				/>
+				: error
+			}
+			{categories[6] ?
+				<CategoryCard
+					href={ getQueryHref(locationState, categories[6]) }
+					category={categories[6]}
+					img='/static/img/categories/shirt.png'
+					textAlign='category text-right'
+				/>
+				: error
+			}
+			{categories[3] ?
+				<CategoryCard
+					href={ getQueryHref(locationState, categories[3]) }
+					category={categories[3]}
+					img='/static/img/categories/job.png'
+					vertical={true}
+					imageAlign='tile__image_vertical'
+				/>
+				: error
+			}
+			{categories[8] ?
+				<CategoryCard
+					href={ getQueryHref(locationState, categories[8]) }
+					category={categories[8]}
+					img='/static/img/categories/work.png'
+					textAlign='category text-right'
+				/>
+				: error
+			}
+			{categories[4] ?
+				<CategoryCard
+					href={ getQueryHref(locationState, categories[4]) }
+					category={categories[4]}
 					img='/static/img/categories/tennis.png'
 					textAlign='category text-left'
 					imageAlign='tile__image right'
