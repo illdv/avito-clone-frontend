@@ -86,8 +86,8 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 			options,
 			rangePrice: {
 				priceType: query.type || null,
-				priceFrom: query.price_from || null,
-				priceTo: query.price_to || null,
+				priceFrom: useOrDefault(() => query.whereBetween.price[0], null),
+				priceTo: useOrDefault(() => query.whereBetween.price[1], null),
 			},
 		};
 	}
@@ -188,12 +188,16 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 			query.type = priceType;
 		}
 
+		let between = '';
+
 		if (priceFrom && priceFrom.length > 0) {
-			query.price_from = priceFrom;
+			between += `&whereBetween[price]=${priceFrom}`;
+		} else if (priceTo && priceTo.length > 0) {
+			between += `&whereBetween[price]=0`;
 		}
 
 		if (priceTo && priceTo.length > 0) {
-			query.price_to = priceTo;
+			between += `&whereBetween[price]=${priceTo}`;
 		}
 
 		let optionsString = '';
@@ -203,9 +207,9 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 			}
 		});
 
-		const options   = optionsString.length > 1 ? optionsString : '';
+		const options     = optionsString.length > 1 ? optionsString : '';
 		const queryParams = queryString.stringify(query);
-		const href      = `/search?${queryParams}${options }`;
+		const href        = `/search?${queryParams}${options}${between}`;
 
 		pushInRouter(href);
 	}

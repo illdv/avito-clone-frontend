@@ -78,7 +78,7 @@ export const categoriesByLocation: prepareMethod = async (sugar, req) => {
 			query['country_id'] = req.cookies.idCountry;
 		}
 	}
-	const response = await instance.get(`/categories?${formatData({...query})}`);
+	const response = await instance.get(`/categories?${formatData({...query, ...getLitleCategories})}`);
 
 	return response.data;
 }; 
