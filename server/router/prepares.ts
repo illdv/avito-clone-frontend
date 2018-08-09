@@ -163,7 +163,7 @@ const getInstanceWithLanguageByReq = req => {
 	});
 
 	axiosInstance.interceptors.response.use(response => {
-		// console.log(response);
+		console.log(response);
 		return response;
 	});
 
@@ -261,11 +261,16 @@ export const search: prepareMethod = async ({ query = {currentPage: '1'}, accumu
 async function getNameLocation(queryParams, req) {
 	const hasRegion  = queryParams.region_id;
 	const hasCountry = queryParams.country_id;
+	const hasCity = queryParams.city_id;
+
+	if (hasCountry && hasRegion && hasCity) {
+		const responseRegions = await getInstanceWithLanguageByReq(req).get(`/cities/${queryParams.city_id}`);
+		return responseRegions.data[0].title;
+	}
 
 	if (hasCountry && hasRegion) {
-		const responseRegions = await getInstanceWithLanguageByReq(req).get(`/countries/${queryParams.country_id}/regions`);
-		const region = responseRegions.data.find(item => item.region_id === Number(queryParams.region_id));
-		return region.title;
+		const responseRegions = await getInstanceWithLanguageByReq(req).get(`/regions/${queryParams.region_id}`);
+		return responseRegions.data[0].title;
 	}
 
 	if (hasCountry) {
