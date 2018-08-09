@@ -153,7 +153,7 @@ export const query: prepareMethod = async (sugar, req) => {
 };
 
 const getInstanceWithLanguageByReq = req => {
-	return axios.create({
+	const axiosInstance = axios.create({
 		baseURL: process.env.API_FOR_LOCATION,
 		headers: {
 			'Content-Type': 'application/json',
@@ -161,6 +161,13 @@ const getInstanceWithLanguageByReq = req => {
 			'Accept-Language': req.headers['accept-language'],
 		},
 	});
+
+	axiosInstance.interceptors.response.use(response => {
+		// console.log(response);
+		return response;
+	});
+
+	return axiosInstance;
 };
 
 export const getCountries: prepareMethod = async (sugar, req) => {
@@ -203,8 +210,6 @@ function getNewWhereLike(query) {
 		queryData['whereLike[description]'] =  newQueryParams.whereLike.description;
 	}
 
-	console.log('queryString = ', `&${queryString.stringify(queryData)}`);
-
 	return `&${queryString.stringify(queryData)}`;
 }
 
@@ -214,8 +219,6 @@ function getNewOption(option: object) {
 		const value = option[key];
 		return `options[${key}]=${value}`;
 	}).join('&');
-
-	console.log('getNewOption = ', `&${url}`);
 
 	return `&${url}`;
 }
@@ -227,18 +230,12 @@ export const search: prepareMethod = async ({ query = {currentPage: '1'}, accumu
 	delete newQuery.options;
 
 	try {
-		const url = formatData({
+		const searchUrl = formatData({
 			...getDataForAdsIndexPage,
 			...newQuery,
 		}) + getNewWhereLike(query) + getNewOption(mainQuery.options);
 
-		console.log('Search url = ', url);
-		console.log('getDataForAdsIndexPage = ', getDataForAdsIndexPage);
-		console.log('newQuery = ', newQuery);
-		console.log('getNewWhereLike(query) = ', getNewWhereLike(query));
-		console.log('query.options = ', newQuery.options);
-
-		const response     = await getLiteAdsByQueryString(url);
+		const response     = await getLiteAdsByQueryString(searchUrl);
 
 		const { current_page, last_page, per_page, total } = response;
 
@@ -249,10 +246,10 @@ export const search: prepareMethod = async ({ query = {currentPage: '1'}, accumu
 			total,
 		};
 
-		console.log('Search response = ', response);
 		return {
 			ads: response.data,
 			pagination,
+			searchUrl,
 		};
 
 	} catch (err) {
@@ -261,11 +258,31 @@ export const search: prepareMethod = async ({ query = {currentPage: '1'}, accumu
 	}
 };
 
+async function getNameLocation(queryParams, req) {
+	const hasRegion  = queryParams.region_id;
+	const hasCountry = queryParams.country_id;
+
+	if (hasCountry && hasRegion) {
+		const responseRegions = await getInstanceWithLanguageByReq(req).get(`/countries/${queryParams.country_id}/regions`);
+		const region = responseRegions.data.find(item => item.region_id === Number(queryParams.region_id));
+		return region.title;
+	}
+
+	if (hasCountry) {
+		const responseCountries = await getInstanceWithLanguageByReq(req).get(`/countries`);
+		const country = responseCountries.data.find(item => item.country_id === Number(queryParams.country_id));
+		return country.title;
+	}
+
+	return null;
+}
+
 export const breadcrumbs: prepareMethod = async ({ query, accumulation }, req) => {
 	const categoryQueue = findCategoriesQueueById(accumulation.categories, query.category);
+	const nameLocation  = await getNameLocation(query, req);
 	return [
 		{
-			title: `All listings in ${accumulation.location.locationName}`,
+			title: `All listings in ${nameLocation || accumulation.location.locationName}`,
 			href: '/category',
 		},
 		...categoryQueueToBreadcrumbsFormat(categoryQueue, categoryQueue.length),
@@ -279,19 +296,22 @@ export const countriesTotal: prepareMethod = async ({ query: queryParams, accumu
 		const hasCity    = queryParams.city_id;
 
 		if (hasRegion && !hasCity) {
-			const responseRegions = await getInstanceWithLanguageByReq(req)
-				.get(`/regions/${queryParams.region_id}/cities?appends[]=total_ads&category_id=${queryParams.category_id}`);
-			return responseRegions.data;
+			const responseCity = await getInstanceWithLanguageByReq(req)
+				.get(`/regions/${queryParams.region_id}/cities?appends[]=total_ads&${accumulation.search.searchUrl}`);
+			console.log('responseCity = ', responseCity);
+			return responseCity.data;
 		}
 
 		if (hasCountry && !hasCity) {
 			const responseRegions = await getInstanceWithLanguageByReq(req)
-				.get(`/countries/${queryParams.country_id}/regions?appends[]=total_ads&category_id=${queryParams.category_id}`);
+				.get(`/countries/${queryParams.country_id}/regions?appends[]=total_ads&${accumulation.search.searchUrl}`);
+			console.log('responseRegions = ', responseRegions);
 			return responseRegions.data;
 		}
 
 		const responseCountries = await getInstanceWithLanguageByReq(req)
-			.get(`/countries?appends[]=total_ads&category_id=${queryParams.category_id}`);
+			.get(`/countries?appends[]=total_ads&${accumulation.search.searchUrl}`);
+		console.log('responseCountries = ', responseCountries);
 		return responseCountries.data;
 	} catch (e) {
 		console.log('countriesTotal = ', e);
@@ -301,7 +321,8 @@ export const countriesTotal: prepareMethod = async ({ query: queryParams, accumu
 
 export const categoriesTotal: prepareMethod = async ({ query, accumulation }, req) => {
 	try {
-		const response = await instance.get(`/categories/${query.category_id}?appends[]=total_ads_count`);
+		const response = await instance
+			.get(`/categories/${query.category_id}?appends[]=total_ads_count&${accumulation.search.searchUrl}`);
 		return response.data.category.children;
 	} catch (e) {
 		console.log('categoriesTotal = ', e);

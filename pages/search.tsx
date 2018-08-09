@@ -10,7 +10,7 @@ import SearchPage, { ICountriesTotal } from 'client/ssr/pages/Search';
 import { IAds } from 'client/common/entities/user/modules/owned-ads/interfaces';
 import SetQuery from 'client/ssr/contexts/QueryContext';
 import { SetBreadcrumbs } from 'client/ssr/contexts/Breadcrumbs';
-import { IPagination } from 'client/ssr/pages/interfacePagination'
+import { IPagination } from 'client/ssr/pages/interfacePagination';
 
 const isServer: boolean = typeof window === 'undefined';
 

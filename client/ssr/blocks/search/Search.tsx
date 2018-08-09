@@ -90,8 +90,6 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 				priceTo: query.price_to || null,
 			},
 		};
-
-		console.log('this.state', this.state);
 	}
 
 	onSelectCategory = category => {
