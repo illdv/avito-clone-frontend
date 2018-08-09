@@ -19,6 +19,8 @@ function getNewWhereLike() {
 		queryData['whereLike[description]'] =  newQueryParams.whereLike.description;
 	}
 
+	console.log('queryString = ', `&${queryString.stringify(queryData)}`);
+
 	return `&${queryString.stringify(queryData)}`;
 }
 
