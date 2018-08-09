@@ -70,6 +70,7 @@ class ManagerAd extends React.Component<IProps, IState> {
 					price: { disable: false, value: '' },
 					description: { disable: false, value: '' },
 					address: { disable: false, value: ''},
+					city_id: {value: ''},
 				},
 				selectedCategories: [],
 				attachedImages: [],
@@ -261,7 +262,7 @@ class ManagerAd extends React.Component<IProps, IState> {
 						typeIds={ this.state.typeIds }
 
 					/>
-					<div className='container'>
+					<div className='container page-create'>
 						<button
 							onClick={ this.next }
 							className='btn orange-btn w-25 float-right'

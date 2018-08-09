@@ -2,8 +2,11 @@ import React from 'react';
 import FooterNavigation from 'client/ssr/blocks/footer/FooterNavigation/FooterNavigation';
 
 require('./Footer.sass');
+export interface IShowFooterProps{
+	notShowCategory?: boolean;
+}
 
-class Footer extends React.Component {
+class Footer extends React.Component<IShowFooterProps> {
 	constructor(props, context) {
 		super(props, context);
 	}
@@ -11,11 +14,14 @@ class Footer extends React.Component {
 	render() {
 		return (
 			<div className='footer'>
-				<div className='top-footer'>
-					<div className='container top-footer__container'>
-						<FooterNavigation/>
+				{
+					!this.props.notShowCategory &&
+					<div className='top-footer'>
+						<div className='container top-footer__container'>
+							<FooterNavigation/>
+						</div>
 					</div>
-				</div>
+				}
 				<div className='middle-footer'>
 					<div className='container'>
 						<div className='row'>
@@ -57,7 +63,7 @@ class Footer extends React.Component {
 										</li>
 									</ul>
 
-									<ul className='navbar-nav'>
+									<ul className='footer-nav'>
 										<li className='nav-item footer-nav__item'>
 											<a href='#'>
 												Privacy &amp; Terms

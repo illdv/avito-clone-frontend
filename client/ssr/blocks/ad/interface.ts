@@ -144,6 +144,7 @@ export interface IFavoriteState {
 }
 
 export interface IGMProps {
+	city: IAdCity;
 	address: string;
 	default_map: IGMMarkerProp;
 	isMarkerShown: IGMMarkerProp;

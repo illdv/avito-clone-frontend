@@ -21,7 +21,6 @@ export const transformationAdToManagerState =
 				item: option,
 			};
 		});
-
 		const selectedCategories: ICategory[] = findCategoriesQueueById(caregories, initialAd.category_id);
 		const typeIds = getSelectAdTypeIdsBySelectedCategories(selectedCategories);
 
@@ -33,6 +32,7 @@ export const transformationAdToManagerState =
 				price: { disable: false, value: initialAd.price },
 				description: { disable: false, value: initialAd.description },
 				address: {disable: false, value: initialAd.address},
+				city_id: {value: initialAd.city_id},
 			},
 			selectedCategories,
 			attachedImages,

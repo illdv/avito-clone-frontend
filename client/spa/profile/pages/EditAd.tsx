@@ -84,7 +84,7 @@ class EditAd extends React.Component<IProps, IState> {
 			title: state.adInfoFields.title.value,
 			address: state.adInfoFields.address.value,
 			description: state.adInfoFields.description.value,
-			city_id: this.props.locationState.session.idCity,
+			city_id: state.adInfoFields.city_id.value,
 			category_id: useOrDefault(() => selectedCategories[selectedCategories.length - 1].id, null),
 			body: '1212',
 			longitude: state.location.lng,

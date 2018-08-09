@@ -11,6 +11,7 @@ export interface InitialModalProps {
 	name: ModalNames;
 	style?: object;
 	useOnRequestClose?: boolean;
+	isLast?: boolean;
 }
 
 export interface ModalWrapProps {
@@ -61,6 +62,10 @@ class ModalWrap extends React.PureComponent<ModalWrapProps> {
 
 	get isOpen() {
 		return !!this.modal; // Convert to boolean
+	}
+	get isLast() {
+		let index = this.props.modals.indexOf(this.modal);
+		console.log(index);
 	}
 
 	get isModalLast() {

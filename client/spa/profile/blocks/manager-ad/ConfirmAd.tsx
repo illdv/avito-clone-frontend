@@ -88,7 +88,7 @@ const ConfirmAd = ({
 					</div>
 				</div>
 				<div className='row'>
-					<div className='col-md-12 col-lg-10 col-xl-7'>
+					<div className='col-md-12 col-lg-10 col-xl-7 page-confirmation'>
 						<h4>Choose service</h4>
 						<div className='service-block'>
 							<div className='service-block__item row'>

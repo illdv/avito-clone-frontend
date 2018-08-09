@@ -15,6 +15,10 @@ function show(id) {
 	return AxiosWrapper.get(`/ads/${id}`);
 }
 
+function getCity(id) {
+	return AxiosWrapper.get(`../../city/${id}`);
+}
+
 function create({ images, options, ...ads }: ICreateAdRequest) {
 
 	const files    = images.map(img => img.file);
@@ -98,4 +102,5 @@ export const AdsAPI = {
 	useAction,
 	deleteImage,
 	similar,
+	getCity,
 };

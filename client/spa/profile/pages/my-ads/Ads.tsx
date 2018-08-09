@@ -139,17 +139,17 @@ class Ads extends React.Component<IProps, ISelectedAd> {
 			  }
 			  {
 				  this.props.ads.length === 0 &&
-				  <span className='no-content'>{this.props.noContent}</span>
-
-			  }
-			  {
-				  this.props.submitAd &&
-				  <div className='row'>
-					  <div className='col-4'>
-						  <CreateAdvertisementButton className={
-						  	'btn orange-btn-outline publish-offer__button publish-offer__button_min-padding'} />
+				  <>
+					  <span className='no-content'>{this.props.noContent}</span>
+					  <div className='row'>
+						  <div className='col-4'>
+							  <CreateAdvertisementButton
+								  className={
+									  'btn orange-btn-outline publish-offer__button publish-offer__button_min-padding'}
+							  />
+						  </div>
 					  </div>
-				  </div>
+				  </>
 			  }
 			</>
 		);

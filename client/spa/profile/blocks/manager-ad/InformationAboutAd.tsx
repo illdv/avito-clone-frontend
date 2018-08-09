@@ -2,20 +2,15 @@ import React, { ChangeEvent } from 'react';
 
 import CategoriesSelector from './CategoriesSelector';
 import { ImageSelector } from './ImageSelector'; // TODO Rename Images
-import Lease from './Lease';
-
 import { IOption } from './interface';
 
 import {
-	ISellerInfoFields,
-	IAdInfoFields,
-	AdInfoFieldsNames,
+	AdInfoFieldsNames, IAdInfoFields, IAttachedImage, ILocation, ISellerInfoFields,
 	SellerFieldsNames,
-	IAttachedImage,
-	ILocation,
 } from '../../interfaces/managerAd';
 import CategoryOptions from './CategoryOptions';
 import SelectorAdType from './CategoryTypeSelector';
+import LocationSelect from 'client/ssr/blocks/search/components/LocationSelect';
 
 interface IProps {
 	defaultCategoryId: number;
@@ -30,13 +25,20 @@ interface IProps {
 	typeIds: number[];
 
 	deleteImage(index: number): void;
+
 	onSelectTypeAd(id: number): void;
+
 	onSelectLocation(location: ILocation): void;
+
 	onUpdateImages(images: IAttachedImage[]): void;
+
 	onSelectCategories(categories: ICategory[]): void;
+
 	creatorChangeOptionById(id: number): (e: ChangeEvent<HTMLInputElement>) => void;
-	createtorChangeAdInfoField(name: AdInfoFieldsNames): (e: ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => void;
-	createtorChangeSellerInfoField(name: SellerFieldsNames): (e:ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => void;
+
+	createtorChangeAdInfoField(name: AdInfoFieldsNames): (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+
+	createtorChangeSellerInfoField(name: SellerFieldsNames): (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 }
 
 interface IPropsForInput {
@@ -45,7 +47,8 @@ interface IPropsForInput {
 	value: string;
 	title: string;
 	inputClass: string;
-	onChange(e: ChangeEvent<HTMLInputElement|HTMLTextAreaElement>): void;
+
+	onChange(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void;
 }
 
 const Input = ({ id, title, type = 'text', onChange, inputClass, value }: IPropsForInput) => (
@@ -87,26 +90,7 @@ const TextArea = ({ id, title, onChange, inputClass, value }: IPropsForInput) =>
 	</div>
 );
 
-const InformationAboutAd = ({
-	sellerInfoFields,
-	adInfoFields,
-	categories,
-	createtorChangeAdInfoField,
-	selectedCategories,
-	onSelectCategories,
-	attachedImages,
-	onUpdateImages,
-	deleteImage,
-	defaultCategoryId,
-	createtorChangeSellerInfoField,
-	location,
-	options,
-	selectedType,
-	typeIds,
-	onSelectTypeAd,
-	creatorChangeOptionById,
-	onSelectLocation,
-}: IProps) => (
+const InformationAboutAd = ({ sellerInfoFields, adInfoFields, categories, createtorChangeAdInfoField, selectedCategories, onSelectCategories, attachedImages, onUpdateImages, deleteImage, defaultCategoryId, createtorChangeSellerInfoField, location, options, selectedType, typeIds, onSelectTypeAd, creatorChangeOptionById, onSelectLocation}: IProps) => (
 	<section className='page'>
 		<div className='container page__container-sm'>
 			<div className='row'>
@@ -128,8 +112,8 @@ const InformationAboutAd = ({
 									<input
 										type='text'
 										className='form-control'
-										value={ sellerInfoFields.name.value }
-										disabled={ sellerInfoFields.name.disable }
+										value={sellerInfoFields.name.value}
+										disabled={sellerInfoFields.name.disable}
 									/>
 								</div>
 							</div>
@@ -145,8 +129,8 @@ const InformationAboutAd = ({
 										readOnly
 										type='email'
 										className='form-control'
-										value={ sellerInfoFields.email.value }
-										disabled={ sellerInfoFields.email.disable }
+										value={sellerInfoFields.email.value}
+										disabled={sellerInfoFields.email.disable}
 									/>
 								</div>
 							</div>
@@ -164,7 +148,7 @@ const InformationAboutAd = ({
 										className='form-control'
 										value={sellerInfoFields.phone.value}
 										disabled={sellerInfoFields.phone.disable}
-										onChange={ createtorChangeSellerInfoField(SellerFieldsNames.phone) }
+										onChange={createtorChangeSellerInfoField(SellerFieldsNames.phone)}
 									/>
 								</div>
 							</div>
@@ -178,10 +162,10 @@ const InformationAboutAd = ({
 				</div>
 				<div className='col-lg-12'>
 					<CategoriesSelector
-						categories={ categories }
-						defaultCategoryId={ defaultCategoryId }
-						selectedCategories={ selectedCategories }
-						onSelectCategories={ onSelectCategories }
+						categories={categories}
+						defaultCategoryId={defaultCategoryId}
+						selectedCategories={selectedCategories}
+						onSelectCategories={onSelectCategories}
 					/>
 				</div>
 			</div>
@@ -208,7 +192,10 @@ const InformationAboutAd = ({
 				</div>
 			</div> */}
 
-			<CategoryOptions options={options} creatorChangeOptionById={creatorChangeOptionById} />
+			<CategoryOptions
+				options={options}
+				creatorChangeOptionById={creatorChangeOptionById}
+			/>
 
 			{
 				typeIds.length > 0 &&
@@ -224,30 +211,41 @@ const InformationAboutAd = ({
 					id={'title'}
 					title={'Ad title'}
 					inputClass={'col-md-9 col-lg-6'}
-					value={ adInfoFields.title.value }
-					onChange={ createtorChangeAdInfoField(AdInfoFieldsNames.title) }
+					value={adInfoFields.title.value}
+					onChange={createtorChangeAdInfoField(AdInfoFieldsNames.title)}
 				/>
 				<TextArea
 					id={'description'}
 					title={'Advertisement description'}
 					inputClass={'col-md-9 col-lg-6'}
-					value={ adInfoFields.description.value }
-					onChange={ createtorChangeAdInfoField(AdInfoFieldsNames.description) }
+					value={adInfoFields.description.value}
+					onChange={createtorChangeAdInfoField(AdInfoFieldsNames.description)}
 				/>
 				<Input
 					id={'price'}
 					title={'Price'}
 					type='number'
 					inputClass={'col-md-3'}
-					value={ adInfoFields.price.value }
-					onChange={ createtorChangeAdInfoField(AdInfoFieldsNames.price) }
+					value={adInfoFields.price.value}
+					onChange={createtorChangeAdInfoField(AdInfoFieldsNames.price)}
 				/>
+				{/*<div className='offer-form__item form-group row align-items-center'>*/}
+					{/*<label*/}
+						{/*htmlFor='location'*/}
+						{/*className='col-md-3 col-lg-4 offer-form__label'*/}
+					{/*>*/}
+						{/*Select location*/}
+					{/*</label>*/}
+					{/*<div className='col-md-9 col-lg-6'>*/}
+						{/*<LocationSelect city_id={adInfoFields.city_id.value}/>*/}
+					{/*</div>*/}
+				{/*</div>*/}
 				<Input
 					id={'address'}
 					title={'Address'}
 					inputClass={'col-md-9 col-lg-6'}
-					value={ adInfoFields.address.value}
-					onChange={ createtorChangeAdInfoField(AdInfoFieldsNames.address) }
+					value={adInfoFields.address.value}
+					onChange={createtorChangeAdInfoField(AdInfoFieldsNames.address)}
 				/>
 				<div className='offer-form__item form-group row align-items-center'>
 					<label
@@ -258,9 +256,9 @@ const InformationAboutAd = ({
 					</label>
 					<div className='col-md-9 col-lg-6'>
 						<ImageSelector
-							attachedImages={ attachedImages }
-							onUpdateImages={ onUpdateImages }
-							deleteImage={ deleteImage }
+							attachedImages={attachedImages}
+							onUpdateImages={onUpdateImages}
+							deleteImage={deleteImage}
 						/>
 					</div>
 				</div>

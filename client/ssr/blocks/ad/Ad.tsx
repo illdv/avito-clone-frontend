@@ -54,7 +54,7 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 		return categories.map(category => {
 			return {
 				title: category.title,
-				href: '/category/' + encodeURI(category.title),
+				href: '/search?city_id=' + this.props.ad.city.city_id + '&category=' + encodeURI(category.id),
 			};
 		});
 	}
@@ -97,7 +97,7 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 		return {
 			title: 'All listings in ' + this.props.ad.city.title,
 			// href: encodeURI('/' + this.props.ad.city.title),
-			href: encodeURI('/category'),
+			href: encodeURI(`/search?city_id=${this.props.ad.city.city_id}`),
 
 		};
 	}
@@ -188,6 +188,7 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 						<Kit />
 						<PlaceMap
 							address={ad.address}
+							city={ad.city}
 							default_map={this.state.default_map}
 							isMarkerShown={this.state.default_map}
 						/>

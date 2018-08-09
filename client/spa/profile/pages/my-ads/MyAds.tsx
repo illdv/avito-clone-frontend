@@ -9,6 +9,7 @@ import { UserActions } from 'client/common/entities/user/rootActions';
 
 import Ads from './Ads';
 import { IActiveButtonConfig } from 'client/spa/profile/interfaces/controlButtons';
+import Footer from 'client/ssr/blocks/footer/Footer';
 
 export interface IProps {
 	user: IUserState;

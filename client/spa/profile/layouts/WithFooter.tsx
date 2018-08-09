@@ -6,7 +6,7 @@ import Footer from 'client/ssr/blocks/footer/Footer';
 const WithFooter: React.SFC<any> = ({ children }) => (
 	<>
 		{children}
-		<Footer />
+		<Footer notShowCategory={true}/>
 	</>
 );
 

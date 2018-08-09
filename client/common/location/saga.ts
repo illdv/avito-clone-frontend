@@ -27,7 +27,6 @@ import { getFavoritesFromLocalStorage } from 'client/common/entities/user/Custom
 
 function* sagaInitializeLocation(action) {
 	const payload: ILocationStoreState = action.payload;
-
 	if (!payload.session.idCity && !payload.session.idRegion && !payload.session.idCountry) {
 		if (localStorage.getItem('location-ask') !== 'no-ask') {
 			showLocationModal(ModalNames.location);
@@ -148,7 +147,7 @@ function* sagaChangeCountryForLocal(action) {
 		try {
 			const getRegions = yield call(get, 'getRegions', { id: idCountry });
 			const regions: IRegion[] = getRegions.data;
-			
+
 			yield put(changeState({
 				...locationState,
 				local: {
@@ -253,7 +252,7 @@ function* sagaChangeRegionForLocal(action) {
 		try {
 			const getCities = yield call(get, 'getCities', { id: idRegion });
 			const cities: ICity[] = getCities.data;
-			
+
 			yield put(changeState({
 				...locationState,
 				local: {
@@ -374,7 +373,7 @@ export {
 
 	sagaChangeRegionForLocal,
 	sagaChangeRegionForSession,
-	
+
 	sagaChangeCountryForLocal,
 	sagaChangeCountryForSession,
 };
