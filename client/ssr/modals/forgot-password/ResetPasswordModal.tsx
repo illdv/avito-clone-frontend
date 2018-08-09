@@ -45,6 +45,13 @@ class ResetPasswordModal extends React.Component<null, IState> {
 				useOnRequestClose={true}
 			>
 				<div className='auth-modal'>
+					<button
+						type='button'
+						className='auth-modal__close close'
+						// onClick={this.close}
+					>
+						<span>&times;</span>
+					</button>
 					<div className='text-center p-40'>
 						<h1 className='m-b-30'>Reset password</h1>
 						<h4 className='grey-text p-x-10'>Enter your email address, secret code and new password</h4>

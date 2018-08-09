@@ -68,6 +68,13 @@ export class AuthModal extends React.Component<{}, ILoginModalState> {
 						>
 							REGISTER
 						</a>
+						<button
+							type='button'
+							className='auth-modal__close close'
+							// onClick={this.close}
+						>
+							<span>&times;</span>
+						</button>
 					</div>
 					{
 						this.state.activeTab === LoginModalTabs.login
