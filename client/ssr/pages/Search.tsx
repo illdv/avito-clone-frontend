@@ -12,6 +12,7 @@ import ListOfSubcategories from 'client/ssr/blocks/list-of-subcategories/ListOfS
 import { categoryToItemOfTitlesList, countriesToItemOfTitlesList } from 'client/ssr/pages/utils';
 import Pagination from 'client/ssr/pages/Pagination';
 import { IPagination } from 'client/ssr/pages/interfacePagination'
+import { useOrDefault } from 'client/spa/profile/utils/createAd'
 
 export interface ICountriesTotal {
 	country_id: number;
@@ -37,6 +38,8 @@ class SearchPage extends React.Component<ISearchPageProp> {
 		const { countriesTotal, search, categoriesTotal } = this.props;
 
 		const countriesTotals = countriesTotal.filter(item => item.total_ads !== 0);
+
+		console.log('search = ', search);
 
 		return (
 			<React.Fragment >
@@ -72,10 +75,10 @@ class SearchPage extends React.Component<ISearchPageProp> {
 					</div >
 				</div >
 				{
-					search.ads.length ?
+					useOrDefault(() => search.ads.length, 0) ?
 						<div >
 							<Ads
-								title={`Search result (${search.ads.length})`}
+								title={`Search result (${search.pagination.total})`}
 								ads={search.ads}
 							/>
 							<div className={'d-flex justify-content-center'} >

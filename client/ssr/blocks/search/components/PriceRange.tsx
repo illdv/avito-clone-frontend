@@ -51,7 +51,7 @@ const PriceRange: React.SFC<IPriceRange> = ({ to, type, from, setPriceType, setP
 				<div className='form-group filters-panel__item'>
 					<input
 						type='number'
-						value={from}
+						value={from || ''}
 						placeholder='Price from $'
 						className='search__options form-control'
 						onChange={handlePriceFrom}
@@ -60,7 +60,7 @@ const PriceRange: React.SFC<IPriceRange> = ({ to, type, from, setPriceType, setP
 				<div className='form-group filters-panel__item'>
 					<input
 						type='number'
-						value={to}
+						value={to || ''}
 						placeholder='To $'
 						className='search__options form-control'
 						onChange={handlePriceTo}

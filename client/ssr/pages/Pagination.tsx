@@ -53,7 +53,7 @@ class Pagination extends Component<IProps, IState> {
 				}
 				{
 					Array(last_page).fill(0).map((item, index) => (
-						<PaginationItem active={current_page === index + 1}>
+						<PaginationItem key={index} active={current_page === index + 1}>
 							<PaginationLink href={this.calcHrefGoPage(index + 1)} >
 								{index + 1}
 							</PaginationLink >
