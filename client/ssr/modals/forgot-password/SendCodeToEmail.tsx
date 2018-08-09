@@ -35,6 +35,13 @@ class SendCodeToEmail extends React.Component<null, IState> {
 				useOnRequestClose={true}
 			>
 				<div className='auth-modal'>
+					<button
+						type='button'
+						className='auth-modal__close close'
+						// onClick={this.close}
+					>
+						<span>&times;</span>
+					</button>
 					<div className='text-center p-40'>
 						<h2 className='m-b-30'>Forgot password?</h2>
 						<h4 className='grey-text m-b-0'>
