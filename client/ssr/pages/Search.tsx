@@ -39,8 +39,6 @@ class SearchPage extends React.Component<ISearchPageProp> {
 
 		const countriesTotals = countriesTotal.filter(item => item.total_ads !== 0);
 
-		console.log('search = ', search);
-
 		return (
 			<React.Fragment >
 				<Header />

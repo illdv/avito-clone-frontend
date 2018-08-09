@@ -209,8 +209,21 @@ function getNewWhereLike(query) {
 	return `&${queryString.stringify(queryData)}`;
 }
 
+function getNewOption(option: object) {
+
+	const url = Object.keys(option).map(key => {
+		const value = option[key];
+		return `options[${key}]=${value}`;
+	}).join('&');
+
+	console.log('getNewOption = ', `&${url}`);
+
+	return `&${url}`;
+}
+
 export const search: prepareMethod = async ({ query = {currentPage: '1'}, accumulation }, req) => {
-	const newQuery = {...accumulation.query || query};
+	const mainQuery = {...accumulation.query || query};
+	const newQuery = {...mainQuery};
 	delete newQuery.whereLike;
 	delete newQuery.options;
 
@@ -218,7 +231,7 @@ export const search: prepareMethod = async ({ query = {currentPage: '1'}, accumu
 		const url = formatData({
 			...getDataForAdsIndexPage,
 			...newQuery,
-		}) + getNewWhereLike(query);
+		}) + getNewWhereLike(query) + getNewOption(mainQuery.options);
 
 		console.log('Search url = ', url);
 		console.log('getDataForAdsIndexPage = ', getDataForAdsIndexPage);
@@ -237,6 +250,7 @@ export const search: prepareMethod = async ({ query = {currentPage: '1'}, accumu
 			total,
 		};
 
+		console.log('Search response = ', response);
 		return {
 			ads: response.data,
 			pagination,
