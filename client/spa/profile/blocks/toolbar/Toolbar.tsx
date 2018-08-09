@@ -7,6 +7,7 @@ import * as history from 'client/common/history';
 import {IRootState} from 'client/common/store/storeInterface';
 
 import { createAdPagePagePath, editAdPagePathCreator, defaultPagePath } from '../../constants';
+import CreateAdvertisementButton from 'client/spa/profile/pages/my-ads/components/CreateAdvertisementButton';
 
 const goBack = () => window.history.back();
 
@@ -31,17 +32,6 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
 	 },
 	*/
 });
-
-const CreateAdvertisementButton = () => (
-	<Link to={createAdPagePagePath}>
-		<button
-			className='btn orange-btn'
-		>
-			Submit an advertisement
-		</button>
-	</Link>
-);
-
 const GoBackButton = () => (
 	<Link to={defaultPagePath}>
 		<button
@@ -103,7 +93,7 @@ class ToolBar extends React.Component<IProps, IState> {
 								?
 									<GoBackButton />
 								:
-									<CreateAdvertisementButton />
+									<CreateAdvertisementButton className={'btn orange-btn'} />
 							}
 						</div>
 					</div>

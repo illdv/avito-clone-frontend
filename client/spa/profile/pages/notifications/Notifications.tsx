@@ -48,6 +48,7 @@ class Notification extends Component<IProps, IState> {
 					</button>
 				}
 			</div>
+
 		);
 	}
 
