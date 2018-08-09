@@ -65,11 +65,11 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 	constructor(props, context) {
 		super(props, context);
 		const query: any      = this.props.query || {};
-		const categoryId      = useOrDefault(() => query.category_id, null)
+		const categoryId      = useOrDefault(() => query.category_id, null);
 		const categoriesQueue = categoryId && findCategoriesQueueById(this.props.categories, Number(categoryId)) || [];
 		let options           = [];
 
-		if (categoriesQueue.length > 0) {
+		if (categoriesQueue.length > 1) {
 			const totalOptions = categoriesQueue[categoriesQueue.length - 1].total_options;
 			totalOptions.forEach(option => {
 				options.push({
@@ -78,8 +78,6 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 				});
 			});
 		}
-
-		console.log(query);
 
 		this.state = {
 			duplicateCategories: this.props.categories,
