@@ -9,20 +9,37 @@ export const categoryToItemOfTitlesList = ({ id, title, total_ads_count, slug }:
 	return { id, title, count: total_ads_count, href: `?${parsed}` };
 };
 
+function getNewWhereLike() {
+	const newQueryParams: any = { ...getQueryLoop() };
+	const queryData = {};
+
+	if (newQueryParams && newQueryParams.whereLike) {
+		queryData['whereLike[title]'] =  newQueryParams.whereLike.title;
+		queryData['whereLike[body]'] =  newQueryParams.whereLike.body;
+		queryData['whereLike[description]'] =  newQueryParams.whereLike.description;
+	}
+
+	return `&${queryString.stringify(queryData)}`;
+}
+
 // TODO: Rename method to locationToItemOfTitlesList
 export const countriesToItemOfTitlesList = (countriesTotal: ICountriesTotal): ItemOfTitlesList => {
 	const { country_id, region_id, city_id, title, total_ads } = countriesTotal;
 
+	const href = `?${calcUrlSearchForLocation(country_id, region_id, city_id)}` + getNewWhereLike();
+	console.log('New href = ', href);
 	return {
 		id: city_id || region_id || country_id,
 		title,
 		count: total_ads,
-		href: `?${calcUrlSearchForLocation(country_id, region_id, city_id)}`,
+		href,
 	};
 };
 
 function calcUrlSearchForLocation(countryId, regionId, cityId) {
-	const newQueryParams = { ...getQueryLoop() };
+	const newQueryParams: any = { ...getQueryLoop() };
+	console.log('Old getQueryLoo = ', getQueryLoop());
+	delete newQueryParams.whereLike;
 
 	const hasRegion  = newQueryParams.region_id;
 	const hasCountry = newQueryParams.country_id;
@@ -30,7 +47,6 @@ function calcUrlSearchForLocation(countryId, regionId, cityId) {
 
 	if (hasRegion && !hasCity) {
 		return queryString.stringify({ ...newQueryParams, city_id: cityId });
-
 	}
 
 	if (hasCountry && !hasCity) {
@@ -40,6 +56,6 @@ function calcUrlSearchForLocation(countryId, regionId, cityId) {
 
 	delete newQueryParams.city_id;
 	delete newQueryParams.region_id;
-	console.log('newQueryParams', newQueryParams);
+
 	return queryString.stringify({ ...newQueryParams, country_id: countryId });
 }

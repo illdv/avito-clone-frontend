@@ -4,8 +4,8 @@ import { connect, Dispatch } from 'react-redux';
 import { IRootState } from 'client/common/store/storeInterface';
 import { Pagination as BPagination, PaginationItem, PaginationLink } from 'reactstrap';
 import { IPagination } from 'client/ssr/pages/interfacePagination';
-import { getQuery, getQueryLoop } from 'client/ssr/contexts/QueryContext'
-import * as queryString from 'querystring'
+import { getQuery, getQueryLoop } from 'client/ssr/contexts/QueryContext';
+import * as queryString from 'querystring';
 
 export interface IState {
 
@@ -32,10 +32,9 @@ class Pagination extends Component<IProps, IState> {
 	state: IState = {};
 
 	calcHrefGoPage = (currentPage: number) => {
-		const { pagination } = this.props;
 
 		const newQueryParams = { ...getQueryLoop() };
-		const searchUrl      = queryString.stringify({ ...newQueryParams, currentPage });
+		const searchUrl      = queryString.stringify({ ...newQueryParams, page: currentPage });
 
 		return '?' + searchUrl;
 	}

@@ -13,6 +13,7 @@ import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface'
 import PriceRange from 'client/ssr/blocks/search/components/PriceRange';
 import { getQuery, IQuery } from 'client/ssr/contexts/QueryContext';
 import { findCategoriesQueueById, useOrDefault } from 'client/spa/profile/utils/createAd';
+import { pushInRouter } from 'client/common/utils/utils'
 
 require('./Search.sass');
 
@@ -57,10 +58,10 @@ const getOption = (option: IOption, creatorChangeOption) => (
 class Search extends React.Component<ISearchProps, ISearchState> {
 	constructor(props, context) {
 		super(props, context);
-		const query: any = this.props.query || {};
-		const categoryId = useOrDefault(() => query.category_id, null)
+		const query: any      = this.props.query || {};
+		const categoryId      = useOrDefault(() => query.category_id, null)
 		const categoriesQueue = categoryId && findCategoriesQueueById(this.props.categories, Number(categoryId)) || [];
-		let options = [];
+		let options           = [];
 
 		if (categoriesQueue.length > 0) {
 			const totalOptions = categoriesQueue[categoriesQueue.length - 1].total_options;
@@ -86,7 +87,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 			},
 		};
 
-		console.log('this.state', this.state)
+		console.log('this.state', this.state);
 	}
 
 	onSelectCategory = category => {
@@ -180,7 +181,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 			query.country_id = idCountry;
 		}
 
-		if (priceType && priceType.length > 0 ) {
+		if (priceType && priceType.length > 0) {
 			query.type = priceType;
 		}
 
@@ -198,7 +199,12 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 				optionsString += `&options[${option.item.id}]=${option.value}`;
 			}
 		});
-		window.location.href = `/search?${queryString.stringify(query)}${optionsString.length > 1 ? optionsString : '' }`;
+
+		const options   = optionsString.length > 1 ? optionsString : '';
+		const queryParams = queryString.stringify(query);
+		const href      = `/search?${queryParams}${options }`;
+
+		pushInRouter(href);
 	}
 
 	get subcategories() {
