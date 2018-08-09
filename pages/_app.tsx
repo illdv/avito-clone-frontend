@@ -12,6 +12,7 @@ import { isServer } from '../client/common/utils/utils';
 import { CustomStorage } from 'client/common/entities/user/CustomStorage';
 import { UserActions } from 'client/common/entities/user/rootActions';
 import { useOrDefault } from 'client/spa/profile/utils/createAd';
+import SetQuery from 'client/ssr/contexts/QueryContext';
 
 if (isServer) {
 	types.disableChecking();
@@ -55,7 +56,9 @@ class ExampleApp extends App {
 		return (
 			<Container >
 				<Provider store={ store } >
-					<Component { ...pageProps } />
+					<SetQuery query={pageProps.query} >
+						<Component { ...pageProps } />
+					</SetQuery>
 				</Provider >
 			</Container >
 		);

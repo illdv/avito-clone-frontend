@@ -47,12 +47,18 @@ const mapStateToProps = (state: IRootState) => ({
 });
 
 const getOption = (option: IOption, creatorChangeOption) => (
-	<input
-		className='search search__options form-control'
-		value={option.value}
-		placeholder={option.item.name}
-		onChange={creatorChangeOption(option.item.id)}
-	/>
+	<>
+		<label htmlFor={option.item.name}>
+			{option.item.name.replace('_', ' ')}
+			</label>
+		<input
+			className='search__options form-control'
+			id={option.item.name}
+			value={option.value}
+			placeholder={option.item.name}
+			onChange={creatorChangeOption(option.item.id)}
+		/>
+	</>
 );
 
 class Search extends React.Component<ISearchProps, ISearchState> {
@@ -338,6 +344,9 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 											key={category.id}
 											className='form-group col-6 col-md-3'
 										>
+											<label htmlFor=''>
+												Sub-Category
+											</label>
 											<SelectCategories
 												currentCategory={category}
 												categories={category.children}
