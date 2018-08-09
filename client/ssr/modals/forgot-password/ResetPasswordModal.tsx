@@ -2,6 +2,7 @@ import React from 'react';
 import Modal from '../../../common/modal-juggler/Modal';
 import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
 import { UserActions } from '../../../common/entities/user/rootActions';
+import { hideForgotPasswordModal } from './forgotPasswordModalTriggers';
 
 export interface IState {
 	fields: {
@@ -38,6 +39,8 @@ class ResetPasswordModal extends React.Component<null, IState> {
 		return false;
 	};
 
+	close = () => hideForgotPasswordModal();
+
 	render() {
 		return (
 			<Modal
@@ -48,7 +51,7 @@ class ResetPasswordModal extends React.Component<null, IState> {
 					<button
 						type='button'
 						className='auth-modal__close close'
-						// onClick={this.close}
+						onClick={this.close}
 					>
 						<span>&times;</span>
 					</button>
