@@ -28,44 +28,47 @@ const PriceRange: React.SFC<IPriceRange> = ({ to, type, from, setPriceType, setP
 		setPriceTo(priceBefore);
 	};
 	return (
-		<div className='row '>
-			<div className='col-lg-12 filters-panel'>
-				<div className='filters-panel__item'>
-					<select
-						id='type'
-						className='search__options form-control'
-						onChange={handlePriceType}
+		<div className='search form-inline form-row'>
+			<div className='form-group col-6 col-md-3'>
+				<label htmlFor='type'>Add Type</label>
+				<select
+					id='type'
+					className='search__options form-control'
+					onChange={handlePriceType}
+				>
+					<option
+						value=''
+						selected
 					>
-						<option
-							value=''
-							selected
-						>
-							Add Type
-						</option>
-						<option value='for-sale' selected={checkSelected('for-sale', type)}>Sell</option>
-						<option value='for-rent' selected={checkSelected('for-rent', type)}>Rent</option>
-						<option value='for-buy' selected={checkSelected('for-buy', type)}>Buy now</option>
-					</select>
-				</div>
+						Add Type
+					</option>
+					<option value='for-sale' selected={checkSelected('for-sale', type)}>Sell</option>
+					<option value='for-rent' selected={checkSelected('for-rent', type)}>Rent</option>
+					<option value='for-buy' selected={checkSelected('for-buy', type)}>Buy now</option>
+				</select>
+			</div>
 
-				<div className='form-group filters-panel__item'>
-					<input
-						type='number'
-						value={from || ''}
-						placeholder='Price from $'
-						className='search__options form-control'
-						onChange={handlePriceFrom}
-					/>
-				</div>
-				<div className='form-group filters-panel__item'>
-					<input
-						type='number'
-						value={to || ''}
-						placeholder='To $'
-						className='search__options form-control'
-						onChange={handlePriceTo}
-					/>
-				</div>
+			<div className='form-group col-6 col-md-3'>
+				<label htmlFor='priceFrom'>Price From</label>
+				<input
+					id='priceFrom'
+					type='number'
+					value={from || ''}
+					placeholder='Price from $'
+					className='search__options form-control'
+					onChange={handlePriceFrom}
+				/>
+			</div>
+			<div className='form-group col-6 col-md-3'>
+				<label htmlFor='priceTo'>Price To</label>
+				<input
+					id='priceTo'
+					type='number'
+					value={to || ''}
+					placeholder='To $'
+					className='search__options form-control'
+					onChange={handlePriceTo}
+				/>
 			</div>
 		</div>
 	);
