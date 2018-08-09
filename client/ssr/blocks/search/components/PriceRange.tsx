@@ -10,7 +10,7 @@ interface IPriceRange {
 	setPriceTo: (priceBefore: string) => void;
 }
 
-const checkSelecte = (value, selected) => {
+const checkSelected = (value, selected) => {
 	return value === selected;
 };
 
@@ -42,9 +42,9 @@ const PriceRange: React.SFC<IPriceRange> = ({ to, type, from, setPriceType, setP
 						>
 							Add Type
 						</option>
-						<option value='for-sale' selected={checkSelecte('for-sale', type)}>Sell</option>
-						<option value='for-rent' selected={checkSelecte('for-rent', type)}>Rent</option>
-						<option value='for-buy' selected={checkSelecte('for-buy', type)}>Buy now</option>
+						<option value='for-sale' selected={checkSelected('for-sale', type)}>Sell</option>
+						<option value='for-rent' selected={checkSelected('for-rent', type)}>Rent</option>
+						<option value='for-buy' selected={checkSelected('for-buy', type)}>Buy now</option>
 					</select>
 				</div>
 
