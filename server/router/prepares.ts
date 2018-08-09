@@ -79,7 +79,7 @@ export const categoriesByLocation: prepareMethod = async (sugar, req) => {
 		}
 	}
 
-	const response = await instance.get(`/categories?${formatData({...query, ...getLitleCategories})}`);
+	const response = await instance.get(`/categories?${formatData({...query})}`);
 
 	return response.data;
 }; 

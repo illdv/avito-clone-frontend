@@ -101,10 +101,11 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 			if (this.state.activeCategories[0] !== category) {
 				this.setState({
 					activeCategories: [category],
+					options: [],
 				});
 			}
 		} else {
-			this.setState({ activeCategories: [] });
+			this.setState({ activeCategories: [], options: [] });
 		}
 	}
 

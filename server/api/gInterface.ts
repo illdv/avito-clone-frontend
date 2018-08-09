@@ -108,7 +108,8 @@ export interface IGetLiteCategoriesRequest {
 	appends: [
 		CategoryAppendsFields.total_ads_count,
 		CategoryAppendsFields.children,
-		CategoryAppendsFields.total_options
+		CategoryAppendsFields.total_options,
+		CategoryAppendsFields.ads_count
 	];
 	with: [
 		CategoryWithFields.options
