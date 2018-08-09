@@ -7,7 +7,7 @@ interface IFootCategory {
 const FootSubCategories: React.SFC<IFootCategory> = ({subcategories}) => {
 	const subcategoryList = subcategories.map(subcategory => (
 		<li key={subcategory.title}>
-			<a href={`/category/${encodeURI(subcategory.title)}`}>
+			<a href={`/search?category_id=${subcategory.id}`}>
 				<span>{subcategory.title}</span>
 			</a>
 		</li>
