@@ -163,7 +163,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 		});
 	}
 
-	showSearchLocationModal = () => showLocationModal(ModalNames.searchLocation);
+	showSearchLocationModal = () => showLocationModal(ModalNames.location);
 
 	onSubmit = e => {
 		e.preventDefault();

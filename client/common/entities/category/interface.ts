@@ -20,6 +20,7 @@ interface ICategory {
 	parent_id: string;
 	total_ads_count: number;
 	children: ICategory[];
+	ads_count?: number;
 	total_options: ITotalOptions[];
 }
 
