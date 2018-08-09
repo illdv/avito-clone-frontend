@@ -60,7 +60,13 @@ export const adForShow: prepareMethod = async ({ params }) => {
 	}
 };
 
-export const categories: prepareMethod = async (sugar, req) => {
+export const categories: prepareMethod = async () => {
+	const response = await instance.get(`/categories?${formatData(getLitleCategories)}`);
+
+	return response.data;
+};
+
+export const categoriesByLocation: prepareMethod = async (sugar, req) => {
 	const query = {};
 
 	if (req.cookies) {
@@ -73,12 +79,10 @@ export const categories: prepareMethod = async (sugar, req) => {
 		}
 	}
 
-	console.log(`/categories?${formatData({...query, ...getLitleCategories})}`);
-
 	const response = await instance.get(`/categories?${formatData({...query, ...getLitleCategories})}`);
 
 	return response.data;
-};
+}; 
 
 const getLiteAdsByQueryString = async (queryStringParams: string) => {
 	const response = await instance.get(`/ads/?${ queryStringParams }`);

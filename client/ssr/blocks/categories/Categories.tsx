@@ -5,10 +5,10 @@ import CategoriesList from 'client/ssr/blocks/categories/CategoriesList';
 require('./Categories.sass');
 
 interface ICategoriesComponent {
-	categories: ICategories;
+	categoriesByLocation: ICategory[];
 }
 
-const Categories: React.SFC<ICategoriesComponent> = ({ categories }: { categories: Category }) => {
+const Categories: React.SFC<ICategoriesComponent> = ({ categoriesByLocation }) => {
 	return (
 		<section className='section-xs'>
 			<div className='container'>
@@ -19,7 +19,7 @@ const Categories: React.SFC<ICategoriesComponent> = ({ categories }: { categorie
 				</div>
 				<div className='row p-y-20'>
 					<div className='col-12'>
-						<CategoriesList categories={categories}/>
+						<CategoriesList categories={categoriesByLocation} />
 					</div>
 				</div>
 			</div>
@@ -27,4 +27,4 @@ const Categories: React.SFC<ICategoriesComponent> = ({ categories }: { categorie
 	);
 };
 
-export default getCategories(Categories);
+export default Categories;

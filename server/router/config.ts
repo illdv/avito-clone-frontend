@@ -8,7 +8,7 @@ export const getRoutes = () => ([
 	{
 		path: '/',
 		page: '/index',
-		prepare: ['adsPaginationPage', 'categories'],
+		prepare: ['adsPaginationPage', 'categories', 'categoriesByLocation'],
 	},
 	{
 		path: '/ad/:id',
