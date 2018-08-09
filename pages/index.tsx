@@ -84,7 +84,7 @@ export class Index extends React.Component<IIndexProps, IIndexProps> {
 					/>
 
 					<Ads
-						title='Houses, villas, cottages'
+						title='Last ads'
 						ads={ads}
 					/>
 					<Footer />

@@ -38,11 +38,10 @@ const request = {
 };
 const error = new Error('lol');
 
-jest.mock("redux-saga");
-const saga = sagaHelper(create({payload: request}));
+jest.mock('redux-saga');
 
 describe('Success created ad', () => {
-	const saga = sagaHelper(create({payload: request}));
+	const saga = sagaHelper(create({payload:request}));
 
 	saga('Send request for create ad', result => {
 		expect(result)
@@ -80,8 +79,8 @@ describe('Success created ad', () => {
 	});
 });
 
-describe('Faile', () => {
-	const saga = sagaHelper(create({payload: request}));
+describe('Fails', () => {
+	const saga = sagaHelper(create({ payload: request }));
 
 	saga('Send request for create ad', result => {
 		expect(result)

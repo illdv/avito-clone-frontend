@@ -1,10 +1,14 @@
 import { AxiosWrapper } from './AxiosWrapper';
 import { AdsActionType, ICreateAdRequest, IEditAdRequest } from '../entities/user/modules/owned-ads/interfaces';
-import { getMyAd } from 'server/api/ad';
+import { getMyAd, getDataForAdsIndexPage } from 'server/api/ad';
 import { formatData } from 'server/router/prepares';
 
 function get() {
 	return AxiosWrapper.get('/ads');
+}
+
+function getPage(page) {
+	return AxiosWrapper.get(`/ads?${formatData(getDataForAdsIndexPage)}&count=32&page=${page}`);
 }
 
 function getMy() {
@@ -90,6 +94,7 @@ function deleteImage(id: string) {
 
 export const AdsAPI = {
 	get,
+	getPage,
 	getMy,
 	show,
 	create,
