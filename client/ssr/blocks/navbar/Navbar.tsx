@@ -21,6 +21,7 @@ class Navbar extends React.Component<IProps> {
 		super(props, context);
 	}
 
+
 	render() {
 		const method = this.props.user.profile
 			? () => location.href = createAdPagePagePath
@@ -36,16 +37,16 @@ class Navbar extends React.Component<IProps> {
 							</a>
 							<ul className='main-navigation'>
 								<li className='nav-item'>
-									<a href='/category/cars'>Cars</a>
+									<a href='/search?category_id=14'>Cars</a>
 								</li>
 								<li className='nav-item '>
-									<a href='/category/properties'>The property</a>
+									<a href='/search?category_id=1'>The property</a>
 								</li>
 								<li className='nav-item'>
-									<a href='/category/business-jobs'>Job</a>
+									<a href='/search?category_id=4'>Job</a>
 								</li>
 								<li className='nav-item'>
-									<a href='/category'>Yet...</a>
+									<a href='/search'>Yet...</a>
 								</li>
 							</ul>
 						</nav>
