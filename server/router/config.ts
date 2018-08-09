@@ -26,15 +26,10 @@ export const getRoutes = () => ([
 		prepare: ['location'],
 	},
 	{
-		path: '/category/:categorySlug?',
-		page: '/category',
-		prepare: ['category'],
-	},
-	{
 		path: '/search',
 		page: '/search',
-		prepare: ['categories', 'search', 'query', 'breadcrumbs', 'countriesTotal', 'categoriesTotal'],
+		prepare: ['categories', 'search', 'breadcrumbs', 'countriesTotal', 'categoriesTotal'],
 	},
 ] as IRoute[]);
 
-export const getCommonPrepares = () => (['location']);
+export const getCommonPrepares = () => (['location', 'query']);
