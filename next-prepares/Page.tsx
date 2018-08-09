@@ -7,4 +7,5 @@ export class NextJSPageWithPrepares<T, P> extends React.Component<T, P> {
 
 }
 
+
 export default NextJSPageWithPrepares;
