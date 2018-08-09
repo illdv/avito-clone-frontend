@@ -194,14 +194,50 @@ export const getCities: prepareMethod = async ({ query }, req) => {
 	}
 };
 
+function getNewWhereLike(query) {
+	const newQueryParams: any = { ...query };
+	const queryData = {};
+
+	if (newQueryParams && newQueryParams.whereLike) {
+		queryData['whereLike[title]'] =  newQueryParams.whereLike.title;
+		queryData['whereLike[body]'] =  newQueryParams.whereLike.body;
+		queryData['whereLike[description]'] =  newQueryParams.whereLike.description;
+	}
+
+	console.log('queryString = ', `&${queryString.stringify(queryData)}`);
+
+	return `&${queryString.stringify(queryData)}`;
+}
+
+function getNewOption(option: object) {
+
+	const url = Object.keys(option).map(key => {
+		const value = option[key];
+		return `options[${key}]=${value}`;
+	}).join('&');
+
+	console.log('getNewOption = ', `&${url}`);
+
+	return `&${url}`;
+}
+
 export const search: prepareMethod = async ({ query = {currentPage: '1'}, accumulation }, req) => {
+	const mainQuery = {...accumulation.query || query};
+	const newQuery = {...mainQuery};
+	delete newQuery.whereLike;
+	delete newQuery.options;
+
 	try {
 		const url = formatData({
 			...getDataForAdsIndexPage,
-			...(accumulation.query || query),
-		});
+			...newQuery,
+		}) + getNewWhereLike(query) + getNewOption(mainQuery.options);
 
-		console.log(url);
+		console.log('Search url = ', url);
+		console.log('getDataForAdsIndexPage = ', getDataForAdsIndexPage);
+		console.log('newQuery = ', newQuery);
+		console.log('getNewWhereLike(query) = ', getNewWhereLike(query));
+		console.log('query.options = ', newQuery.options);
 
 		const response     = await getLiteAdsByQueryString(url);
 
@@ -214,6 +250,7 @@ export const search: prepareMethod = async ({ query = {currentPage: '1'}, accumu
 			total,
 		};
 
+		console.log('Search response = ', response);
 		return {
 			ads: response.data,
 			pagination,
