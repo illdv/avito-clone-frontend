@@ -21,7 +21,7 @@ const CategoryCard: React.SFC<ICategoryCard> = props => {
 			<div className='tile__inner'>
 				<div className={textAlign}>
 					<h4 className='category__caption'>{category.title}</h4>
-					<span className='category__count'>{category.ads_count} ads</span>
+					<span className='category__count'>{category.total_ads_count} ads</span>
 				</div>
 				<div className={imageAlign}>
 					<img
