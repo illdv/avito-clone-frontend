@@ -60,8 +60,23 @@ export const adForShow: prepareMethod = async ({ params }) => {
 	}
 };
 
-export const categories: prepareMethod = async () => {
-	const response = await instance.get(`/categories?${formatData(getLitleCategories)}`);
+export const categories: prepareMethod = async (sugar, req) => {
+	const query = {};
+
+	if (req.cookies) {
+		if (req.cookies.idCity) {
+			query['city_id'] = req.cookies.idCity;
+		} else if (req.cookies.idRegion) {
+			query['region_id'] = req.cookies.idRegion;
+		} else if (req.cookies.idCountry) {
+			query['country_id'] = req.cookies.idCountry;
+		}
+	}
+
+	console.log(`/categories?${formatData({...query, ...getLitleCategories})}`);
+
+	const response = await instance.get(`/categories?${formatData({...query, ...getLitleCategories})}`);
+
 	return response.data;
 };
 

@@ -1,5 +1,6 @@
 import * as i18nextMiddleware from 'i18next-express-middleware';
 import * as Backend from 'i18next-node-fs-backend';
+import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
 import * as bodyParser from 'body-parser';
 import * as requestIp from 'request-ip';
@@ -48,7 +49,9 @@ i18nInstance
                     resave: false,
                     saveUninitialized: true,
                     cookie: { secure: true }
-                }))
+				}))
+				
+				server.use(cookieParser());
 		
 				server.use(bodyParser.urlencoded({ extended: false }));
 				server.use(bodyParser.json());

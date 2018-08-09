@@ -14,6 +14,7 @@ export const getLitleCategories: IGetLiteCategoriesRequest = {
 		CategoryAppendsFields.total_ads_count,
 		CategoryAppendsFields.children,
 		CategoryAppendsFields.total_options,
+		CategoryAppendsFields.ads_count,
 	],
 	with: [
 		CategoryWithFields.options,
