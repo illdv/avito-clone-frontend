@@ -97,6 +97,7 @@ class MyAds extends Component<IProps> {
 			ads={ads}
 			enabledEdit={true}
 			activeButtons={this.disapprovedAdsButtonsConfig}
+			noContent={''}
 		/>
 	)
 
@@ -119,6 +120,7 @@ class MyAds extends Component<IProps> {
 			ads={ads}
 			enabledEdit={true}
 			activeButtons={this.completedAdsButtonsConfig}
+			noContent={'While you do not have completed announcements'}
 		/>
 	)
 
@@ -141,6 +143,8 @@ class MyAds extends Component<IProps> {
 			ads={ads}
 			enabledEdit={true}
 			activeButtons={this.activeAdsButtonsConfig}
+			noContent={'While you do not have announcements'}
+			submitAd={true}
 		/>
 	);
 

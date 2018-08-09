@@ -6,15 +6,16 @@ interface ICategoryCard {
 	textAlign?: string;
 	imageAlign?: string;
 	vertical?: boolean;
+	href: string;
 }
 
-const CategoryCard: React.SFC<ICategoryCard> = data => {
+const CategoryCard: React.SFC<ICategoryCard> = props => {
 
-	const {category, vertical, img, textAlign = 'category', imageAlign = 'tile__image'} = data;
+	const {category, vertical, img, textAlign = 'category', imageAlign = 'tile__image'} = props;
 
 	const card = (
 		<a
-			href={`/search/?category=${ category.id }`}
+			href={props.href}
 			className={vertical ? 'tile_vertical' : 'tile'}
 		>
 			<div className='tile__inner'>
@@ -31,6 +32,7 @@ const CategoryCard: React.SFC<ICategoryCard> = data => {
 			</div>
 		</a>
 	);
+
 	return (category.title ? card : null);
 };
 

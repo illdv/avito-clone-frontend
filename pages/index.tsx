@@ -38,7 +38,6 @@ export class Index extends React.Component<IIndexProps, IIndexProps> {
 		const {adsPaginationPage, categories, location} = query;
 
 		if (!adsPaginationPage || !categories || !location) {
-			console.log('loopState', loopState);
 			return ({
 				adsPaginationPage: loopState.adsPaginationPage,
 				location: loopState.location,
