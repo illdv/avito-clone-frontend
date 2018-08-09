@@ -14,7 +14,8 @@ export const countriesToItemOfTitlesList = (countriesTotal: ICountriesTotal): It
 	const { country_id, region_id, city_id, title, total_ads } = countriesTotal;
 
 	return {
-		id: country_id, title,
+		id: city_id || region_id || country_id,
+		title,
 		count: total_ads,
 		href: `?${calcUrlSearchForLocation(country_id, region_id, city_id)}`,
 	};
@@ -23,9 +24,9 @@ export const countriesToItemOfTitlesList = (countriesTotal: ICountriesTotal): It
 function calcUrlSearchForLocation(countryId, regionId, cityId) {
 	const newQueryParams = { ...getQueryLoop() };
 
-	const hasRegion = newQueryParams.region_id;
+	const hasRegion  = newQueryParams.region_id;
 	const hasCountry = newQueryParams.country_id;
-	const hasCity = newQueryParams.city_id;
+	const hasCity    = newQueryParams.city_id;
 
 	if (hasRegion && !hasCity) {
 		return queryString.stringify({ ...newQueryParams, city_id: cityId });

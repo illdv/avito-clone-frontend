@@ -10,6 +10,9 @@ import { IAds } from 'client/common/entities/user/modules/owned-ads/interfaces';
 import BreadcrumbsWrap from 'client/ssr/wraps/BreadcrumbFromContext';
 import ListOfSubcategories from 'client/ssr/blocks/list-of-subcategories/ListOfSubcategories';
 import { categoryToItemOfTitlesList, countriesToItemOfTitlesList } from 'client/ssr/pages/utils';
+import Pagination from 'client/ssr/pages/Pagination';
+import { IPagination } from 'client/ssr/pages/interfacePagination'
+import { useOrDefault } from 'client/spa/profile/utils/createAd'
 
 export interface ICountriesTotal {
 	country_id: number;
@@ -20,7 +23,7 @@ export interface ICountriesTotal {
 }
 
 interface ISearchPageProp {
-	search: IAds[];
+	search: { ads: IAds[], pagination: IPagination };
 	countriesTotal: ICountriesTotal[];
 	categoriesTotal: ICategory[];
 }
@@ -32,9 +35,11 @@ class SearchPage extends React.Component<ISearchPageProp> {
 	}
 
 	render() {
-		console.log(this.props.countriesTotal);
+		const { countriesTotal, search, categoriesTotal } = this.props;
 
-		const countriesTotals = this.props.countriesTotal.filter(item => item.total_ads !== 0)
+		const countriesTotals = countriesTotal.filter(item => item.total_ads !== 0);
+
+		console.log('search = ', search);
 
 		return (
 			<React.Fragment >
@@ -47,10 +52,16 @@ class SearchPage extends React.Component<ISearchPageProp> {
 							classNameForContainer='breadcrumb'
 							classNameForItem='breadcrumb-item'
 						/>
-						<ListOfSubcategories
-							title={'All'}
-							items={this.props.categoriesTotal.map(categoryToItemOfTitlesList)}
-						/>
+						{
+							categoriesTotal.length > 0
+							&&
+							<ListOfSubcategories
+								title={'All'}
+								items={categoriesTotal.map(categoryToItemOfTitlesList)}
+							/>
+							||
+							null
+						}
 						{
 							countriesTotals.length > 0
 							&&
@@ -64,12 +75,16 @@ class SearchPage extends React.Component<ISearchPageProp> {
 					</div >
 				</div >
 				{
-					this.props.search.length > 0
-						?
-						<Ads
-							title={`Search result (${this.props.search.length})`}
-							ads={this.props.search}
-						/>
+					useOrDefault(() => search.ads.length, 0) ?
+						<div >
+							<Ads
+								title={`Search result (${search.pagination.total})`}
+								ads={search.ads}
+							/>
+							<div className={'d-flex justify-content-center'} >
+								<Pagination pagination={search.pagination}/>
+							</div >
+						</div >
 						:
 						<EmptySearch />
 				}
