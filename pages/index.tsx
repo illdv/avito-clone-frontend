@@ -28,6 +28,7 @@ interface IIndexProps {
 	adsPaginationPage: {
 		ads: IAd[];
 		vip: IAd[];
+		lastPage: number;
 	};
 	location: any;
 }
@@ -59,7 +60,7 @@ export class Index extends React.Component<IIndexProps, IIndexProps> {
 	render() {
 		loopState = this.props;
 		const { categories, location, categoriesByLocation } = this.props;
-		const {ads, vip} = this.props.adsPaginationPage;
+		const {ads, vip, lastPage} = this.props.adsPaginationPage;
 		return (
 			<React.Fragment>
 				<SetCategories categories={categories}>
@@ -81,11 +82,14 @@ export class Index extends React.Component<IIndexProps, IIndexProps> {
 					<Ads
 						title='Vip ads'
 						ads={vip}
+						loadMore={false}
 					/>
 
 					<Ads
 						title='Last ads'
 						ads={ads}
+						lastPage={lastPage}
+						loadMore={true}
 					/>
 					<Footer />
 					<ToastContainer />
