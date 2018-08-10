@@ -12,7 +12,9 @@ require('./Ads.sass');
 
 export interface IAdsState {
 	ads: IAd[];
-	order: ISortedBy;
+	page: number;
+	spinner: boolean;
+	sort: string;
 }
 
 export interface IAdsProps {
@@ -41,7 +43,9 @@ class Ads extends React.Component<IAdsProps, IAdsState> {
 		super(props);
 		this.state = {
 			ads: this.props.ads,
-			order: null,
+			page: 1,
+			spinner: false,
+			sort: '',
 		};
 	}
 	addToFavorites = (id: number) => {
@@ -53,13 +57,26 @@ class Ads extends React.Component<IAdsProps, IAdsState> {
 	}
 
 	onSelectOrder = (order: ISelectSort) => {
+		this.state.page = 1;
 		const parse: ISortedBy = JSON.parse(order);
 		const sort = `orderBy[${parse.field}]=${parse.sort}`;
+		this.state.sort = sort;
 		AdsAPI.get(sort).then(res => {
-			this.setState({
-				ads: res.data.data,
-				order: parse,
-			});
+			this.setState({ads: res.data.data});
+		})
+			.catch(err => {
+				console.log(err);
+		});
+	};
+
+	onLoadMore = () => {
+		this.state.spinner = true;
+		this.state.page++;
+		AdsAPI.getPage(this.state.sort, this.state.page)
+			.then(value => {
+				this.state.ads = [...this.state.ads, ...value.data.data];
+				this.state.spinner = false;
+				this.forceUpdate();
 		})
 			.catch(err => {
 				console.log(err);
@@ -68,7 +85,7 @@ class Ads extends React.Component<IAdsProps, IAdsState> {
 
 	render() {
 		const { title, lastPage, loadMore } = this.props;
-		const { ads, order } = this.state;
+		const { ads, page, spinner } = this.state;
 
 		return (
 			<section>
@@ -107,8 +124,9 @@ class Ads extends React.Component<IAdsProps, IAdsState> {
 							<LoadMore
 								loadMore={loadMore}
 								lastPage={lastPage}
-								addToFavorites={this.addToFavorites}
-								order={order}
+								page={page}
+								spinner={spinner}
+								onLoadMore={this.onLoadMore}
 							/>
 						</div>
 					: null

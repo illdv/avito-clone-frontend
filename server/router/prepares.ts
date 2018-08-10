@@ -46,9 +46,8 @@ export const adsPaginationPage: prepareMethod = async (sugar, req) => {
 				query['country_id'] = req.cookies.idCountry;
 			}
 		}
-		console.log(`/ads?${formatData({ ...query, ...getDataForAdsIndexPage })}`);
-		console.log(`/ads?${formatData(getDataForAdsIndexPage)}`);
-		const response = await instance.get(`/ads?${formatData({ ...query, ...getDataForAdsIndexPage })}`);
+
+		const response = await instance.get(`/ads?${formatData({...query, ...getDataForAdsIndexPage})}`);
 		const ads      = response.data.data;
 		const vip      = response.data.vip;
 		const lastPage = response.data.last_page;
