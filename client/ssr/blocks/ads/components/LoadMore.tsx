@@ -5,6 +5,7 @@ import AdCard from 'client/ssr/blocks/ads/components/AdCard';
 import { IRootState } from 'client/common/store/storeInterface';
 import { AdsAPI } from 'client/common/api/AdsAPI';
 import Spinner from '../../../../common/blocks/spinner/Spinner';
+import { ISortedBy } from 'client/ssr/blocks/ads/Ads';
 
 require('../Ads.sass');
 
@@ -20,6 +21,7 @@ export interface IAdsProps {
 	loadMore: boolean;
 	lastPage: number;
 	addToFavorites(id: number): void;
+	order: ISortedBy,
 }
 
 class LoadMore extends React.Component<IAdsProps, IAdsState> {
@@ -31,8 +33,12 @@ class LoadMore extends React.Component<IAdsProps, IAdsState> {
 
 	handleCreateMoreAds = () => () => {
 		this.state.page++;
+		let uri = `page=${this.state.page}`;
 		this.state.spinner = true;
-		AdsAPI.getPage(this.state.page)
+		if (this.props.order) {
+			uri += `&orderBy[${this.props.order.field}]=${this.props.order.sort}`;
+		}
+		AdsAPI.getPage(uri)
 			.then(value => {
 				this.state.moreAds = [...this.state.moreAds, ...value.data.data];
 				this.state.spinner = false;

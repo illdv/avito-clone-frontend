@@ -7,8 +7,8 @@ function get(data) {
 	return AxiosWrapper.get(`/ads?${formatData(getDataForAdsIndexPage)}&${data}`);
 }
 
-function getPage(page) {
-	return AxiosWrapper.get(`/ads?${formatData(getDataForAdsIndexPage)}&count=32&page=${page}`);
+function getPage(uri) {
+	return AxiosWrapper.get(`/ads?${formatData(getDataForAdsIndexPage)}&count=32&${uri}`);
 }
 
 function getMy() {
