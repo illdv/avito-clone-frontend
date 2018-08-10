@@ -10,6 +10,7 @@ import {
 
 import { getDataForAdShowPage, getDataForAdsIndexPage } from '../api/ad';
 import { getLitleCategories } from '../api/category';
+import { queryStringifyPlus } from './utils';
 
 interface ISugar {
 	params?: any;
@@ -29,8 +30,15 @@ const instance = axios.create({
 	},
 });
 
+instance.interceptors.response.use(response => {
+	console.log('---------------------------------------------------------');
+	console.log('url = ', response.config.url);
+	console.log('data = ', JSON.stringify(response.data));
+	return response;
+});
+
 export const formatData = (data): string => {
-	return queryString.stringify(data, { arrayFormat: 'bracket' });
+	return queryStringifyPlus(data);
 };
 
 export const adsPaginationPage: prepareMethod = async (sugar, req) => {
@@ -47,7 +55,7 @@ export const adsPaginationPage: prepareMethod = async (sugar, req) => {
 			}
 		}
 
-		const response = await instance.get(`/ads?${formatData({...query, ...getDataForAdsIndexPage})}`);
+		const response = await instance.get(`/ads?${formatData({ ...query, ...getDataForAdsIndexPage })}`);
 		const ads      = response.data.data;
 		const vip      = response.data.vip;
 		const lastPage = response.data.last_page;
@@ -170,12 +178,12 @@ const getInstanceWithLanguageByReq = req => {
 		},
 	});
 
-	axiosInstance.interceptors.response.use(response => {
+	/*axiosInstance.interceptors.response.use(response => {
 		console.log('---------------------------------------------------------');
 		console.log('url = ', response.config.url);
 		console.log('data = ', JSON.stringify(response.data));
 		return response;
-	});
+	});*/
 
 	return axiosInstance;
 };
@@ -212,7 +220,8 @@ export const getCities: prepareMethod = async ({ query }, req) => {
 
 function getNewWhereLike(query) {
 	const newQueryParams: any = { ...query };
-	const queryData           = {};
+
+	const queryData = {};
 
 	if (newQueryParams && newQueryParams.whereLike) {
 		queryData['whereLike[title]']       = newQueryParams.whereLike.title;
@@ -223,45 +232,13 @@ function getNewWhereLike(query) {
 	return `&${queryString.stringify(queryData)}`;
 }
 
-function getNewOption(option: object) {
-
-	const url = Object.keys(option).map(key => {
-		const value = option[key];
-		return `options[${key}]=${value}`;
-	}).join('&');
-
-	return `&${url}`;
-}
-
-function getUrlForWhereBetween(whereBetween, index) {
-	if (whereBetween.price[index]) {
-		return `&whereBetween[price][${index}]=${whereBetween.price[index]}`;
-	} else {
-		return '';
-	}
-}
-
-function getNewWhereBetween(whereBetween) {
-	return getUrlForWhereBetween(whereBetween, 0) + getUrlForWhereBetween(whereBetween, 1);
-}
-
 export const searchUrl: prepareMethod = async ({ query = { currentPage: '1' }, accumulation }, req) => {
 	try {
 		const mainQuery = { ...accumulation.query || query };
-
-		const newWhereLike    = getNewWhereLike(query);
-		const newOption       = getNewOption(mainQuery.options);
-		const newWhereBetween = getNewWhereBetween(mainQuery.whereBetween);
-
-		delete mainQuery.whereLike;
-		delete mainQuery.options;
-		delete mainQuery.whereBetween;
-
-		const lastUrl = formatData({
+		return formatData({
 			...getDataForAdsIndexPage,
 			...mainQuery,
 		});
-		return lastUrl + newWhereLike + newOption + newWhereBetween;
 	} catch (e) {
 		return '';
 	}
@@ -332,7 +309,6 @@ export const countriesTotal: prepareMethod = async ({ query: queryParams, accumu
 		const hasRegion  = queryParams.region_id;
 		const hasCountry = queryParams.country_id;
 		const hasCity    = queryParams.city_id;
-
 
 		if (hasRegion && !hasCity) {
 			const responseCity = await getInstanceWithLanguageByReq(req)
