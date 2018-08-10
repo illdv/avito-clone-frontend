@@ -76,6 +76,7 @@ export class LocationModal extends React.Component<ILocationModalProps> {
 
 	close = () => {
 		hideLocationModal(this.props.name);
+		location.reload();
 	}
 
 	render() {
