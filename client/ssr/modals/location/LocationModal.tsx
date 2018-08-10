@@ -126,6 +126,7 @@ export class LocationModal extends React.Component<ILocationModalProps> {
 									value={this.initSelectedOption(idCity, this.prepareDataForCityToOptions)}
 								/>
 							</div>
+							{this.props.children}
 						</form>
 					</div>
 					<div className='modal-footer p-20'>
