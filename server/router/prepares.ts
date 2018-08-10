@@ -4,13 +4,8 @@ import * as queryString from 'query-string';
 import {
 	categoryQueueToBreadcrumbsFormat,
 	findCategoriesQueueById,
-	findCategoriesQueueBySlug,
-	getCurrentCategoryByQueue,
-	getIdFromCategory,
 	getLocationNameByLocations,
 	getLocationsIdByRequest,
-	getMainCategory,
-	getSubcategoryByCategoryQueue,
 } from '../utils/categoryPrepare';
 
 import { getDataForAdShowPage, getDataForAdsIndexPage } from '../api/ad';
@@ -78,10 +73,10 @@ export const categoriesByLocation: prepareMethod = async (sugar, req) => {
 			query['country_id'] = req.cookies.idCountry;
 		}
 	}
-	const response = await instance.get(`/categories?${formatData({...query, ...getLitleCategories})}`);
+	const response = await instance.get(`/categories?${formatData({ ...query, ...getLitleCategories })}`);
 
 	return response.data;
-}; 
+};
 
 const getLiteAdsByQueryString = async (queryStringParams: string) => {
 	const response = await instance.get(`/ads/?${ queryStringParams }`);
@@ -202,12 +197,12 @@ export const getCities: prepareMethod = async ({ query }, req) => {
 
 function getNewWhereLike(query) {
 	const newQueryParams: any = { ...query };
-	const queryData = {};
+	const queryData           = {};
 
 	if (newQueryParams && newQueryParams.whereLike) {
-		queryData['whereLike[title]'] =  newQueryParams.whereLike.title;
-		queryData['whereLike[body]'] =  newQueryParams.whereLike.body;
-		queryData['whereLike[description]'] =  newQueryParams.whereLike.description;
+		queryData['whereLike[title]']       = newQueryParams.whereLike.title;
+		queryData['whereLike[body]']        = newQueryParams.whereLike.body;
+		queryData['whereLike[description]'] = newQueryParams.whereLike.description;
 	}
 
 	return `&${queryString.stringify(queryData)}`;
@@ -223,19 +218,28 @@ function getNewOption(option: object) {
 	return `&${url}`;
 }
 
-export const search: prepareMethod = async ({ query = {currentPage: '1'}, accumulation }, req) => {
-	const mainQuery = {...accumulation.query || query};
-	const newQuery = {...mainQuery};
-	delete newQuery.whereLike;
-	delete newQuery.options;
-
+export const searchUrl: prepareMethod = async ({ query = { currentPage: '1' }, accumulation }, req) => {
 	try {
-		const searchUrl = formatData({
+		const mainQuery = { ...accumulation.query || query };
+		const newQuery  = { ...mainQuery };
+		delete newQuery.whereLike;
+		delete newQuery.options;
+
+		const newWhereLike = getNewWhereLike(query);
+		const newOption    = getNewOption(mainQuery.options);
+		const lastUrl      = formatData({
 			...getDataForAdsIndexPage,
 			...newQuery,
-		}) + getNewWhereLike(query) + getNewOption(mainQuery.options);
+		});
+		return lastUrl + newWhereLike + newOption;
+	} catch (e) {
+		return '';
+	}
+};
 
-		const response     = await getLiteAdsByQueryString(searchUrl);
+export const search: prepareMethod = async ({ query = { currentPage: '1' }, accumulation }, req) => {
+	try {
+		const response = await getLiteAdsByQueryString(accumulation.searchUrl);
 
 		const { current_page, last_page, per_page, total } = response;
 
@@ -249,7 +253,6 @@ export const search: prepareMethod = async ({ query = {currentPage: '1'}, accumu
 		return {
 			ads: response.data,
 			pagination,
-			searchUrl,
 		};
 
 	} catch (err) {
@@ -261,7 +264,7 @@ export const search: prepareMethod = async ({ query = {currentPage: '1'}, accumu
 async function getNameLocation(queryParams, req) {
 	const hasRegion  = queryParams.region_id;
 	const hasCountry = queryParams.country_id;
-	const hasCity = queryParams.city_id;
+	const hasCity    = queryParams.city_id;
 
 	if (hasCountry && hasRegion && hasCity) {
 		const responseRegions = await getInstanceWithLanguageByReq(req).get(`/cities/${queryParams.city_id}`);
@@ -275,7 +278,7 @@ async function getNameLocation(queryParams, req) {
 
 	if (hasCountry) {
 		const responseCountries = await getInstanceWithLanguageByReq(req).get(`/countries`);
-		const country = responseCountries.data.find(item => item.country_id === Number(queryParams.country_id));
+		const country           = responseCountries.data.find(item => item.country_id === Number(queryParams.country_id));
 		return country.title;
 	}
 
@@ -300,23 +303,22 @@ export const countriesTotal: prepareMethod = async ({ query: queryParams, accumu
 		const hasCountry = queryParams.country_id;
 		const hasCity    = queryParams.city_id;
 
+		console.log('accumulation.searchUrl = ', accumulation.searchUrl);
+
 		if (hasRegion && !hasCity) {
 			const responseCity = await getInstanceWithLanguageByReq(req)
-				.get(`/regions/${queryParams.region_id}/cities?appends[]=total_ads&${accumulation.search.searchUrl}`);
-			console.log('responseCity = ', responseCity);
+				.get(`/regions/${queryParams.region_id}/cities?appends[]=total_ads&${accumulation.searchUrl}`);
 			return responseCity.data;
 		}
 
 		if (hasCountry && !hasCity) {
 			const responseRegions = await getInstanceWithLanguageByReq(req)
-				.get(`/countries/${queryParams.country_id}/regions?appends[]=total_ads&${accumulation.search.searchUrl}`);
-			console.log('responseRegions = ', responseRegions);
+				.get(`/countries/${queryParams.country_id}/regions?appends[]=total_ads&${accumulation.searchUrl}`);
 			return responseRegions.data;
 		}
 
 		const responseCountries = await getInstanceWithLanguageByReq(req)
-			.get(`/countries?appends[]=total_ads&${accumulation.search.searchUrl}`);
-		console.log('responseCountries = ', responseCountries);
+			.get(`/countries?appends[]=total_ads&${accumulation.searchUrl}`);
 		return responseCountries.data;
 	} catch (e) {
 		console.log('countriesTotal = ', e);
@@ -326,9 +328,12 @@ export const countriesTotal: prepareMethod = async ({ query: queryParams, accumu
 
 export const categoriesTotal: prepareMethod = async ({ query, accumulation }, req) => {
 	try {
-		const response = await instance
-			.get(`/categories/${query.category_id}?appends[]=total_ads_count&${accumulation.search.searchUrl}`);
-		return response.data.category.children;
+		if (query.category_id) {
+			const response = await instance
+				.get(`/categories/${query.category_id}?appends[]=total_ads_count&${accumulation.searchUrl}`);
+			return response.data.category.children;
+		}
+		return [];
 	} catch (e) {
 		console.log('categoriesTotal = ', e);
 		return [];
