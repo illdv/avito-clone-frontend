@@ -92,7 +92,7 @@ class  AdCard extends React.Component<IProps> {
 					<Link href={`/ad/${ad.id}`}>
 						<a><h6 className='ad__title'>{ad.title}</h6></a>
 					</Link>
-					<span>{ ad.price }</span>
+					<span><b>$</b> { ad.price }</span>
 					<span>{ ad.description.slice(0, 110) + '...' }</span>
 					<span>{ ad.updated_at }</span>
 				</div>

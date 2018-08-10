@@ -33,12 +33,26 @@ export const formatData = (data): string => {
 	return queryString.stringify(data, { arrayFormat: 'bracket' });
 };
 
-export const adsPaginationPage: prepareMethod = async () => {
+export const adsPaginationPage: prepareMethod = async (sugar, req) => {
 	try {
-		const response = await instance.get(`/ads?${formatData(getDataForAdsIndexPage)}`);
+		const query = {};
+
+		if (req.cookies) {
+			if (eval(req.cookies.idCity)) {
+				query['city_id'] = req.cookies.idCity;
+			} else if (eval(req.cookies.idRegion)) {
+				query['region_id'] = req.cookies.idRegion;
+			} else if (eval(req.cookies.idCountry)) {
+				query['country_id'] = req.cookies.idCountry;
+			}
+		}
+		console.log(`/ads?${formatData({...query, ...getDataForAdsIndexPage})}`);
+		console.log(`/ads?${formatData(getDataForAdsIndexPage)}`);
+		const response = await instance.get(`/ads?${formatData({...query, ...getDataForAdsIndexPage})}`);
 		const ads      = response.data.data;
 		const vip      = response.data.vip;
-		return { ads, vip };
+		const lastPage = response.data.last_page;
+		return { ads, vip, lastPage };
 	} catch (e) {
 		console.log(e);
 	}
@@ -316,18 +330,18 @@ export const countriesTotal: prepareMethod = async ({ query: queryParams, accumu
 
 		if (hasRegion && !hasCity) {
 			const responseCity = await getInstanceWithLanguageByReq(req)
-				.get(`/regions/${queryParams.region_id}/cities?appends[]=total_ads&${accumulation.searchUrl}`);
+				.get(`/regions/${queryParams.region_id}/cities?appends[]=total_ads&${accumulation.search.searchUrl}`);
 			return responseCity.data;
 		}
 
 		if (hasCountry && !hasCity) {
 			const responseRegions = await getInstanceWithLanguageByReq(req)
-				.get(`/countries/${queryParams.country_id}/regions?appends[]=total_ads&${accumulation.searchUrl}`);
+				.get(`/countries/${queryParams.country_id}/regions?appends[]=total_ads&${accumulation.search.searchUrl}`);
 			return responseRegions.data;
 		}
 
 		const responseCountries = await getInstanceWithLanguageByReq(req)
-			.get(`/countries?appends[]=total_ads&${accumulation.searchUrl}`);
+			.get(`/countries?appends[]=total_ads&${accumulation.search.searchUrl}`);
 		return responseCountries.data;
 	} catch (e) {
 		console.log('countriesTotal = ', e);

@@ -3,8 +3,8 @@ import { AdsActionType, ICreateAdRequest, IEditAdRequest } from '../entities/use
 import { getMyAd, getDataForAdsIndexPage } from 'server/api/ad';
 import { formatData } from 'server/router/prepares';
 
-function get() {
-	return AxiosWrapper.get('/ads');
+function get(data) {
+	return AxiosWrapper.get(`/ads?${formatData(getDataForAdsIndexPage)}&${data}`);
 }
 
 function getPage(page) {
