@@ -41,7 +41,7 @@ class FavoritesPage extends React.Component<IProps> {
 							{/* <div className='col-lg-9'> */}
 							<div className='col-lg-12'>
 								{
-									favoriteAds
+									this.props.user.favorites.ids.length > 0
 									?
 										<Favorites ads={ favoriteAds } removeFavoriteAds={ this.removeFavoriteAds }/>
 									:
