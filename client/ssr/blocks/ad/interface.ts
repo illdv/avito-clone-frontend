@@ -47,6 +47,8 @@ export interface IChartState {
 			backgroundColor: string[];
 			borderColor: string[];
 			borderWidth: number;
+			pointBorderColor: string[];
+			pointBackgroundColor: string;
 		}];
 	};
 	options?: {};

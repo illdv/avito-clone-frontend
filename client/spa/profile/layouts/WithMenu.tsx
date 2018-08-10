@@ -6,7 +6,7 @@ interface IWithMenu {
 	path: any;
 }
 const WithMenu: React.SFC<IWithMenu & RouteComponentProps<any>> = ({ children }) => (
-	<section className='page'>
+	<section className='page page__my-ads'>
 		<div className='container page__container-lg'>
 			<div className='row'>
 				<div className='col-lg-3'>

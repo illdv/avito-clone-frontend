@@ -103,7 +103,7 @@ function* removeFavoriteAds(action: Action<{ favoritesId: number[] }>) {
 
 	if (token) {
 		try {
-			yield call(favoritesAPI.deleteFavorites, { favorites_ids: favoritesIds });
+			yield call(favoritesAPI.deleteFavorites, { favorites_ids: selectedFavoriteIds });
 		} catch (e) {
 			yield call(errorHandler, e);
 		}
