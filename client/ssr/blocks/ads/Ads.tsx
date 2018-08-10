@@ -6,6 +6,7 @@ import { IRootState } from 'client/common/store/storeInterface';
 import { UserActions } from 'client/common/entities/user/rootActions';
 import AdsFilter from 'client/ssr/blocks/ads/components/AdsFilter';
 import LoadMore from 'client/ssr/blocks/ads/components/LoadMore';
+import { AdsAPI } from 'client/common/api/AdsAPI';
 
 require('./Ads.sass');
 
@@ -61,7 +62,7 @@ class Ads extends React.Component<IAdsProps, IAdsState> {
 	};
 
 	render() {
-		const { title } = this.props;
+		const { title, lastPage, loadMore } = this.props;
 		const { ads } = this.state;
 
 		return (
