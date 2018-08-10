@@ -4,12 +4,10 @@ import { getMyAd, getDataForAdsIndexPage } from 'server/api/ad';
 import { formatData } from 'server/router/prepares';
 
 function get(sort) {
-	console.log(`/ads?${formatData(getDataForAdsIndexPage)}&${sort}`);
 	return AxiosWrapper.get(`/ads?${formatData(getDataForAdsIndexPage)}&${sort}`);
 }
 
 function getPage(sort, page) {
-	console.log(`/ads?${formatData(getDataForAdsIndexPage)}&page=${page}&${sort}`);
 	return AxiosWrapper.get(`/ads?${formatData(getDataForAdsIndexPage)}&page=${page}&${sort}`);
 }
 
