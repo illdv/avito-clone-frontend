@@ -15,6 +15,7 @@ export interface IAdsState {
 	per_page: number;
 	moreAds: IAd[];
 	spinner: boolean;
+	ads: IAd[];
 }
 
 export interface IAdsProps {
@@ -23,8 +24,13 @@ export interface IAdsProps {
 	ads: IAd[];
 }
 
-export enum IAdsOrder {
-	ASC = 'ASC', DESC = 'DESC', DEFAULT = 'DEFAULT',
+export interface ISelectSort {
+	order: string;
+}
+export interface ISortedBy {
+	field: string;
+	title: string;
+	sort: string;
 }
 
 export enum IAdsFilter {
@@ -39,6 +45,7 @@ class Ads extends React.Component<IAdsProps, IAdsState> {
 			per_page: 32,
 			moreAds: [],
 			spinner: false,
+			ads: this.props.ads,
 		};
 	}
 	addToFavorites = (id: number) => {
@@ -49,9 +56,16 @@ class Ads extends React.Component<IAdsProps, IAdsState> {
 		console.log('filter', filter);
 	}
 
-	onSelectOrder = (order: IAdsOrder) => {
-		console.log('filter', order);
-	}
+	onSelectOrder = (order: ISelectSort) => {
+		const parse: ISortedBy = JSON.parse(order);
+		const sort = `orderBy[${parse.field}]=${parse.sort}`;
+		AdsAPI.get(sort).then(res => {
+			this.setState({ads: res.data.data});
+		})
+			.catch(err => {
+				console.log(err);
+		});
+	};
 
 	createMoreAds = () => () => {
 		this.state.page++;
@@ -68,8 +82,8 @@ class Ads extends React.Component<IAdsProps, IAdsState> {
 	}
 
 	render() {
-		const { ads, title } = this.props;
-		const { page, moreAds, per_page, spinner } = this.state;
+		const { title } = this.props;
+		const { page, moreAds, per_page, ads, spinner } = this.state;
 
 		return (
 			<section>
