@@ -11,6 +11,7 @@ import { IAds } from 'client/common/entities/user/modules/owned-ads/interfaces';
 import SetQuery from 'client/ssr/contexts/QueryContext';
 import { SetBreadcrumbs } from 'client/ssr/contexts/Breadcrumbs';
 import { IPagination } from 'client/ssr/pages/interfacePagination';
+import SetSearchUrl from 'client/ssr/contexts/SearchUrlContext';
 
 const isServer: boolean = typeof window === 'undefined';
 
@@ -25,6 +26,7 @@ interface ICategoryProps {
 	breadcrumbs: any;
 	countriesTotal: ICountriesTotal[];
 	categoriesTotal: any;
+	searchUrl: any;
 }
 
 let loopState;
@@ -32,10 +34,11 @@ let loopState;
 class Category extends React.Component<ICategoryProps> {
 	static async getInitialProps({ query }) {
 
-		const {categoriesTotal, countriesTotal, breadcrumbs, query: queryResult, search, categories, location} = query;
+		const { categoriesTotal, countriesTotal, breadcrumbs, query: queryResult, search, categories, location } = query;
 
-		if (!categoriesTotal  || !countriesTotal  || !breadcrumbs  || !queryResult  || !search  || !categories  || !location) {
+		if (!categoriesTotal || !countriesTotal || !breadcrumbs || !queryResult || !search || !categories || !location) {
 			return ({
+				searchUrl: loopState.searchUrl,
 				categoriesTotal: loopState.categoriesTotal,
 				countriesTotal: loopState.countriesTotal,
 				breadcrumbs: loopState.breadcrumbs,
@@ -47,6 +50,7 @@ class Category extends React.Component<ICategoryProps> {
 		}
 
 		return ({
+			searchUrl: query.searchUrl,
 			categoriesTotal,
 			countriesTotal,
 			breadcrumbs,
@@ -59,15 +63,19 @@ class Category extends React.Component<ICategoryProps> {
 
 	render() {
 		loopState = this.props;
-		const { search, categories, query, breadcrumbs, countriesTotal, categoriesTotal } = this.props;
+
+		const { search, categories, query, breadcrumbs, countriesTotal, categoriesTotal, searchUrl } = this.props;
+
 		return (
-			<SetQuery query={query} >
-				<SetCategories categories={categories} >
-					<SetBreadcrumbs breadCrumbs={breadcrumbs} >
-						<SearchPage search={search} countriesTotal={countriesTotal} categoriesTotal={categoriesTotal} />
-					</SetBreadcrumbs >
-				</SetCategories >
-			</SetQuery >
+			<SetSearchUrl searchUrl={searchUrl} >
+				<SetQuery query={query} >
+					<SetCategories categories={categories} >
+						<SetBreadcrumbs breadCrumbs={breadcrumbs} >
+							<SearchPage search={search} countriesTotal={countriesTotal} categoriesTotal={categoriesTotal} />
+						</SetBreadcrumbs >
+					</SetCategories >
+				</SetQuery >
+			</SetSearchUrl >
 		);
 	}
 }

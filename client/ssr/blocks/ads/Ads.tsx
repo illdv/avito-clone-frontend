@@ -5,16 +5,12 @@ import AdCard from 'client/ssr/blocks/ads/components/AdCard';
 import { IRootState } from 'client/common/store/storeInterface';
 import { UserActions } from 'client/common/entities/user/rootActions';
 import AdsFilter from 'client/ssr/blocks/ads/components/AdsFilter';
+import LoadMore from 'client/ssr/blocks/ads/components/LoadMore';
 import { AdsAPI } from 'client/common/api/AdsAPI';
-import Spinner from '../../../common/blocks/spinner/Spinner';
 
 require('./Ads.sass');
 
 export interface IAdsState {
-	page: number;
-	per_page: number;
-	moreAds: IAd[];
-	spinner: boolean;
 	ads: IAd[];
 }
 
@@ -22,6 +18,8 @@ export interface IAdsProps {
 	user: IUserState;
 	title: string;
 	ads: IAd[];
+	loadMore: boolean;
+	lastPage: number;
 }
 
 export interface ISelectSort {
@@ -41,10 +39,6 @@ class Ads extends React.Component<IAdsProps, IAdsState> {
 	constructor(props) {
 		super(props);
 		this.state = {
-			page: 1,
-			per_page: 32,
-			moreAds: [],
-			spinner: false,
 			ads: this.props.ads,
 		};
 	}
@@ -67,23 +61,9 @@ class Ads extends React.Component<IAdsProps, IAdsState> {
 		});
 	};
 
-	createMoreAds = () => () => {
-		this.state.page++;
-		this.state.spinner = true;
-		this.forceUpdate();
-		AdsAPI.getPage(this.state.page)
-			.then(value => {
-				this.state.moreAds = [...this.state.moreAds,...value.data.data];
-				this.state.per_page = parseInt(value.data.per_page, 10);
-				this.state.spinner = false;
-				this.forceUpdate();
-			});
-		console.log('Page', this.state.page);
-	}
-
 	render() {
-		const { title } = this.props;
-		const { page, moreAds, per_page, ads, spinner } = this.state;
+		const { title, lastPage, loadMore } = this.props;
+		const { ads } = this.state;
 
 		return (
 			<section>
@@ -118,47 +98,12 @@ class Ads extends React.Component<IAdsProps, IAdsState> {
 										</div>
 									))
 								}
-								{
-									moreAds ?
-										moreAds.map((ad: IAd) => (
-											<div
-												key={ad.id}
-												className='col-md-4 col-lg-3'
-											>
-												<AdCard
-													ad={ad}
-													favoritesIds={this.props.user.favorites.ids}
-													addToFavorites={this.addToFavorites}
-												/>
-											</div>
-										))
-									: null
-								}
 							</div>
-							{
-								spinner ?
-									<div className='row'>
-										<div className='col-md-12 d-flex justify-content-center'>
-											<Spinner />
-										</div>
-									</div>
-								:null
-							}
-							{
-								(page * per_page <= ads.length ||
-								moreAds.length > 0 && (page - 1) * per_page <= moreAds.length) ?
-									<div className='row'>
-										<div className='col-md-12 d-flex justify-content-center bg-light'>
-											<button
-												type='button'
-												className='btn owner-type__button button_dark button_dark-outline active'
-												onClick={this.createMoreAds()}
-											>Load more...
-											</button>
-										</div>
-									</div>
-								: null
-							}
+							<LoadMore
+								loadMore={loadMore}
+								lastPage={lastPage}
+								addToFavorites={this.addToFavorites}
+							/>
 						</div>
 					: null
 				}
