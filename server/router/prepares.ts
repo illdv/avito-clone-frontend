@@ -43,7 +43,8 @@ export const adsPaginationPage: prepareMethod = async () => {
 		const response = await instance.get(`/ads?${formatData(getDataForAdsIndexPage)}`);
 		const ads      = response.data.data;
 		const vip      = response.data.vip;
-		return { ads, vip };
+		const lastPage = response.data.last_page;
+		return { ads, vip, lastPage };
 	} catch (e) {
 		console.log(e);
 	}
