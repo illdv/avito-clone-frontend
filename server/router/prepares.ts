@@ -158,7 +158,7 @@ const getInstanceWithLanguageByReq = req => {
 	});
 
 	axiosInstance.interceptors.response.use(response => {
-		console.log(response);
+		console.log('axios = ', response);
 		return response;
 	});
 
@@ -218,20 +218,29 @@ function getNewOption(option: object) {
 	return `&${url}`;
 }
 
+function getNewWhereBetween(whereBetween) {
+	console.log('whereBetween = ', whereBetween);
+	return `&whereBetween[price][0]=${whereBetween.price[0]}&whereBetween[price][1]=${whereBetween.price[1]}`;
+}
+
 export const searchUrl: prepareMethod = async ({ query = { currentPage: '1' }, accumulation }, req) => {
 	try {
 		const mainQuery = { ...accumulation.query || query };
-		const newQuery  = { ...mainQuery };
-		delete newQuery.whereLike;
-		delete newQuery.options;
 
 		const newWhereLike = getNewWhereLike(query);
 		const newOption    = getNewOption(mainQuery.options);
+		const newWhereBetween    = getNewWhereBetween(mainQuery.whereBetween);
+
+		delete mainQuery.whereLike;
+		delete mainQuery.options;
+		delete mainQuery.whereBetween;
+
 		const lastUrl      = formatData({
 			...getDataForAdsIndexPage,
-			...newQuery,
+			...mainQuery,
 		});
-		return lastUrl + newWhereLike + newOption;
+		console.log('SearchUrl result = ' + lastUrl + newWhereLike + newOption + newWhereBetween);
+		return lastUrl + newWhereLike + newOption + newWhereBetween;
 	} catch (e) {
 		return '';
 	}

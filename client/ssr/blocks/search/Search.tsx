@@ -191,13 +191,13 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 		let between = '';
 
 		if (priceFrom && priceFrom.length > 0) {
-			between += `&whereBetween[price]=${priceFrom}`;
+			between += `&whereBetween[price][0]=${priceFrom}`;
 		} else if (priceTo && priceTo.length > 0) {
-			between += `&whereBetween[price]=0`;
+			between += `&whereBetween[price][0]=0`;
 		}
 
 		if (priceTo && priceTo.length > 0) {
-			between += `&whereBetween[price]=${priceTo}`;
+			between += `&whereBetween[price][1]=${priceTo}`;
 		}
 
 		let optionsString = '';
