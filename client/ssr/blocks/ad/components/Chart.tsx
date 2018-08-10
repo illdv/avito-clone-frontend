@@ -13,7 +13,7 @@ class Chart extends Component<IChart, IChartState> {
 					data: this.formationData(),
 					label: 'Price',
 					backgroundColor: [
-						'rgba(255, 99, 132, 0.2)',
+						'rgba(255, 185, 27, 1)',
 					],
 					borderColor: [
 						'rgba(255,99,132,1)',
@@ -58,7 +58,7 @@ class Chart extends Component<IChart, IChartState> {
 			<div className='row p-t-60'>
 				<div className='col-lg-8'>
 					<div className='offer-location'>
-						<Line data={this.state.data} options={this.state.options} />
+						<Line data={this.state.data} options={this.state.options}  />
 					</div>
 				</div>
 				<SimilarAds
