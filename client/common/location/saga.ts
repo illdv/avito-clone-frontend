@@ -320,9 +320,6 @@ function* sagaChangeCityForLocal(action) {
 	const locationState: ILocationStoreState = yield select(getLocationState);
 	const idCity: number = action.payload;
 
-	console.log('idCity', idCity);
-	console.log('locationState', locationState);
-
 	if (locationState.local.idCity === idCity) {
 		return null;
 	}

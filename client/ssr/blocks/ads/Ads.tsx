@@ -64,7 +64,6 @@ class Ads extends React.Component<IAdsProps, IAdsState> {
 				this.state.spinner = false;
 				this.forceUpdate();
 			});
-		console.log('Page', this.state.page);
 	}
 
 	render() {
