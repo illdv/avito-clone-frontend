@@ -46,9 +46,9 @@ export const adsPaginationPage: prepareMethod = async (sugar, req) => {
 				query['country_id'] = req.cookies.idCountry;
 			}
 		}
-		console.log(`/ads?${formatData({...query, ...getDataForAdsIndexPage})}`);
+		console.log(`/ads?${formatData({ ...query, ...getDataForAdsIndexPage })}`);
 		console.log(`/ads?${formatData(getDataForAdsIndexPage)}`);
-		const response = await instance.get(`/ads?${formatData({...query, ...getDataForAdsIndexPage})}`);
+		const response = await instance.get(`/ads?${formatData({ ...query, ...getDataForAdsIndexPage })}`);
 		const ads      = response.data.data;
 		const vip      = response.data.vip;
 		const lastPage = response.data.last_page;
@@ -172,7 +172,9 @@ const getInstanceWithLanguageByReq = req => {
 	});
 
 	axiosInstance.interceptors.response.use(response => {
-		console.log('axios = ', response);
+		console.log('---------------------------------------------------------');
+		console.log('url = ', response.config.url);
+		console.log('data = ', JSON.stringify(response.data));
 		return response;
 	});
 
@@ -232,28 +234,34 @@ function getNewOption(option: object) {
 	return `&${url}`;
 }
 
+function getUrlForWhereBetween(whereBetween, index) {
+	if (whereBetween.price[index]) {
+		return `&whereBetween[price][${index}]=${whereBetween.price[index]}`;
+	} else {
+		return '';
+	}
+}
+
 function getNewWhereBetween(whereBetween) {
-	console.log('whereBetween = ', whereBetween);
-	return `&whereBetween[price][0]=${whereBetween.price[0]}&whereBetween[price][1]=${whereBetween.price[1]}`;
+	return getUrlForWhereBetween(whereBetween, 0) + getUrlForWhereBetween(whereBetween, 1);
 }
 
 export const searchUrl: prepareMethod = async ({ query = { currentPage: '1' }, accumulation }, req) => {
 	try {
 		const mainQuery = { ...accumulation.query || query };
 
-		const newWhereLike = getNewWhereLike(query);
-		const newOption    = getNewOption(mainQuery.options);
-		const newWhereBetween    = getNewWhereBetween(mainQuery.whereBetween);
+		const newWhereLike    = getNewWhereLike(query);
+		const newOption       = getNewOption(mainQuery.options);
+		const newWhereBetween = getNewWhereBetween(mainQuery.whereBetween);
 
 		delete mainQuery.whereLike;
 		delete mainQuery.options;
 		delete mainQuery.whereBetween;
 
-		const lastUrl      = formatData({
+		const lastUrl = formatData({
 			...getDataForAdsIndexPage,
 			...mainQuery,
 		});
-		console.log('SearchUrl result = ' + lastUrl + newWhereLike + newOption + newWhereBetween);
 		return lastUrl + newWhereLike + newOption + newWhereBetween;
 	} catch (e) {
 		return '';
@@ -326,22 +334,21 @@ export const countriesTotal: prepareMethod = async ({ query: queryParams, accumu
 		const hasCountry = queryParams.country_id;
 		const hasCity    = queryParams.city_id;
 
-		console.log('accumulation.searchUrl = ', accumulation.searchUrl);
 
 		if (hasRegion && !hasCity) {
 			const responseCity = await getInstanceWithLanguageByReq(req)
-				.get(`/regions/${queryParams.region_id}/cities?appends[]=total_ads&${accumulation.search.searchUrl}`);
+				.get(`/regions/${queryParams.region_id}/cities?appends[]=total_ads&${accumulation.searchUrl}`);
 			return responseCity.data;
 		}
 
 		if (hasCountry && !hasCity) {
 			const responseRegions = await getInstanceWithLanguageByReq(req)
-				.get(`/countries/${queryParams.country_id}/regions?appends[]=total_ads&${accumulation.search.searchUrl}`);
+				.get(`/countries/${queryParams.country_id}/regions?appends[]=total_ads&${accumulation.searchUrl}`);
 			return responseRegions.data;
 		}
 
 		const responseCountries = await getInstanceWithLanguageByReq(req)
-			.get(`/countries?appends[]=total_ads&${accumulation.search.searchUrl}`);
+			.get(`/countries?appends[]=total_ads&${accumulation.searchUrl}`);
 		return responseCountries.data;
 	} catch (e) {
 		console.log('countriesTotal = ', e);
