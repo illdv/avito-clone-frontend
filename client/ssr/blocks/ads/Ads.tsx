@@ -9,6 +9,10 @@ import LoadMore from 'client/ssr/blocks/ads/components/LoadMore';
 
 require('./Ads.sass');
 
+export interface IAdsState {
+	ads: IAd[];
+}
+
 export interface IAdsProps {
 	user: IUserState;
 	title: string;
@@ -17,15 +21,26 @@ export interface IAdsProps {
 	lastPage: number;
 }
 
-export enum IAdsOrder {
-	ASC = 'ASC', DESC = 'DESC', DEFAULT = 'DEFAULT',
+export interface ISelectSort {
+	order: string;
+}
+export interface ISortedBy {
+	field: string;
+	title: string;
+	sort: string;
 }
 
 export enum IAdsFilter {
 	personal = 'personal', company = 'company', all = 'all',
 }
 
-class Ads extends React.Component<IAdsProps> {
+class Ads extends React.Component<IAdsProps, IAdsState> {
+	constructor(props) {
+		super(props);
+		this.state = {
+			ads: this.props.ads,
+		};
+	}
 	addToFavorites = (id: number) => {
 		UserActions.favorites.selectFavorite.REQUEST({ id });
 	}
@@ -34,12 +49,20 @@ class Ads extends React.Component<IAdsProps> {
 		console.log('filter', filter);
 	}
 
-	onSelectOrder = (order: IAdsOrder) => {
-		console.log('filter', order);
-	}
+	onSelectOrder = (order: ISelectSort) => {
+		const parse: ISortedBy = JSON.parse(order);
+		const sort = `orderBy[${parse.field}]=${parse.sort}`;
+		AdsAPI.get(sort).then(res => {
+			this.setState({ads: res.data.data});
+		})
+			.catch(err => {
+				console.log(err);
+		});
+	};
 
 	render() {
-		const { ads, title, loadMore, lastPage } = this.props;
+		const { title } = this.props;
+		const { ads } = this.state;
 
 		return (
 			<section>

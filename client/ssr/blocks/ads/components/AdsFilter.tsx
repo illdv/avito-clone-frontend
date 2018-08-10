@@ -6,6 +6,12 @@ interface IAdsFilter {
 
 }
 
+const SORT_CHANGE = [
+	{ field: 'created_at', sort: 'desc', title: 'Default' },
+	{ field: 'price', sort: 'desc', title: 'Expensive' },
+	{ field: 'price', sort: 'asc', title: 'Cheap' },
+];
+
 const AdsFilter: React.SFC<IAdsFilter> = ({ selectFilter, selectOrder }) => {
 	const handleChange = event => selectOrder(event.target.value);
 	const handleClick  = (filter: string) => () => selectFilter(filter);
@@ -43,11 +49,16 @@ const AdsFilter: React.SFC<IAdsFilter> = ({ selectFilter, selectOrder }) => {
 						name='categories'
 						className='form-control w-25'
 						onChange={handleChange}
-						defaultValue='DEFAULT'
+						defaultValue='created_at'
 					>
-						<option value='DEFAULT'>Default</option>
-						<option value='ASC'>Expensive</option>
-						<option value='DESC'>Cheap</option>
+						{
+							SORT_CHANGE.map(sort => {
+							return <option
+								value={JSON.stringify(sort)}
+								key={sort.title}
+							>{sort.title}</option>;
+							})
+						}
 					</select>
 				</div>
 			</div>
