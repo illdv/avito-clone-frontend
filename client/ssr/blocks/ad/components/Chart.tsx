@@ -31,7 +31,7 @@ class Chart extends Component<IChart, IChartState> {
 					display: false,
 				},
 				title: {
-					display: true,
+					display: false,
 					text: 'Price change',
 					fontFamily: "'Roboto'",
 					fontSize: 16,
