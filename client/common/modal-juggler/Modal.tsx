@@ -65,7 +65,6 @@ class ModalWrap extends React.PureComponent<ModalWrapProps> {
 	}
 	get isLast() {
 		let index = this.props.modals.indexOf(this.modal);
-		console.log(index);
 	}
 
 	get isModalLast() {

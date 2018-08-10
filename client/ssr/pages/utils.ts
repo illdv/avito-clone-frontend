@@ -19,8 +19,6 @@ function getNewWhereLike() {
 		queryData['whereLike[description]'] = newQueryParams.whereLike.description;
 	}
 
-	console.log('queryString = ', `&${queryString.stringify(queryData)}`);
-
 	return `&${queryString.stringify(queryData)}`;
 }
 
@@ -29,7 +27,6 @@ export const countriesToItemOfTitlesList = (countriesTotal: ICountriesTotal): It
 	const { country_id, region_id, city_id, title, total_ads } = countriesTotal;
 
 	const href = `?${calcUrlSearchForLocation(country_id, region_id, city_id)}` + getNewWhereLike();
-	console.log('New href = ', href);
 	return {
 		id: city_id || region_id || country_id,
 		title,
@@ -40,7 +37,6 @@ export const countriesToItemOfTitlesList = (countriesTotal: ICountriesTotal): It
 
 function calcUrlSearchForLocation(countryId, regionId, cityId) {
 	const newQueryParams: any = { ...getQueryLoop() };
-	console.log('Old getQueryLoo = ', getQueryLoop());
 	delete newQueryParams.whereLike;
 
 	const hasRegion  = newQueryParams.region_id;
