@@ -5,6 +5,7 @@ import { IUserActions, UserActions } from 'client/common/entities/user/rootActio
 import { bindModuleAction } from 'client/common/entities/user/utils';
 import { connect, Dispatch } from 'react-redux';
 import { hideSendCodeToEmailModal } from './forgotPasswordModalTriggers';
+import { IRootState } from 'client/common/store/storeInterface';
 
 export interface IState {
 	email: string;
@@ -32,6 +33,7 @@ class SendCodeToEmail extends React.Component<null, IState> {
 	close = () => hideSendCodeToEmailModal();
 
 	render() {
+
 		return (
 			<Modal
 				name={ModalNames.sendCodeToEmail}

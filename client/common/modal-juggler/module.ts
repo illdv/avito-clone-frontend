@@ -1,6 +1,6 @@
 import { createAction, createReducer } from 'redux-act';
 
-import { IModal, IModalJugglerState, ModalNames } from './modalJugglerInterface';
+import { IMeta, IModal, IModalJugglerState, ModalNames } from './modalJugglerInterface';
 
 const REDUCER = 'MODAL';
 const NS      = `${REDUCER}__`;
@@ -12,7 +12,7 @@ export const SHOW_AND_HIDE_ALL       = `${NS}SHOW_AND_HIDE_ALL`;
 export const SHOW_AND_HIDE_SPECIFIED = `${NS}SHOW_AND_HIDE_SPECIFIED`;
 
 export const show                 = createAction(SHOW, (name: ModalNames) => name);
-export const hide                 = createAction(HIDE, (name: ModalNames) => name);
+export const hide                 = createAction(HIDE, (data: {name: ModalNames, meta?: string}) => data);
 export const hideAll              = createAction(HIDE_ALL);
 export const showAndHideAll       = createAction(SHOW_AND_HIDE_ALL, (name: ModalNames) => name);
 export const showAndHideSpecified
@@ -20,43 +20,49 @@ export const showAndHideSpecified
 
 const defaultState: IModalJugglerState = {
 	modals: [],
+	meta: '',
 };
 
 const reducer = createReducer({}, defaultState);
 
 reducer.on(show, (state, payload): IModalJugglerState => {
 	const modal: IModal = { name: payload, zIndex: state.modals.length + 100 };
-
+	const meta: string = state.meta;
 	return {
 		...state,
 		modals: [...state.modals, modal],
+		meta: meta,
 	};
 });
 
 reducer.on(hide, (state, payload): IModalJugglerState => ({
 	...state,
-	modals: state.modals.filter((modal: IModal) => modal.name !== payload)
+	modals: state.modals.filter((modal: IModal) => modal.name !== payload.name),
+	meta: payload.meta,
 }));
 
 reducer.on(hideAll, (state): IModalJugglerState => ({
 	...state,
-	modals: []
+	modals: [],
+	meta: '',
 }));
 
 reducer.on(showAndHideAll, (state, payload): IModalJugglerState => ({
 	...state,
-	modals: [{ name: payload, zIndex: 100 }]
-}))
+	modals: [{ name: payload, zIndex: 100 }],
+	meta: '',
+}));
 
 reducer.on(showAndHideSpecified, (state, payload): IModalJugglerState => {
 	const filteredModals = state.modals.filter((modal: IModal) => {
-		return payload.specefied.indexOf(modal.name) === -1;// If not found, then true
-	})
+		return payload.specefied.indexOf(modal.name) === -1; // If not found, then true
+	});
 
 	return {
 		...state,
-		modals: filteredModals.concat({ name: payload.name, zIndex: filteredModals.length })
-	}
+		modals: filteredModals.concat({ name: payload.name, zIndex: filteredModals.length }),
+		meta: '',
+	};
 });
 
 export default reducer;

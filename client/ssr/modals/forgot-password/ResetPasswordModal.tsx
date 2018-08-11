@@ -1,22 +1,27 @@
 import React from 'react';
 import Modal from '../../../common/modal-juggler/Modal';
-import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
+import { IModalJugglerState, ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
 import { UserActions } from '../../../common/entities/user/rootActions';
 import { hideForgotPasswordModal } from './forgotPasswordModalTriggers';
+import { IRootState } from 'client/common/store/storeInterface';
+import { connect } from 'react-redux';
+import fetch from 'node-fetch';
 
 export interface IState {
 	fields: {
-		email: string;
 		code: string;
 		password: string;
 		password_confirmation: string;
 	};
 }
 
-class ResetPasswordModal extends React.Component<null, IState> {
+export interface IProps {
+	meta: string;
+}
+
+class ResetPasswordModal extends React.Component<IProps, IState> {
 	state: IState = {
 		fields: {
-			email: '',
 			code: '',
 			password: '',
 			password_confirmation: '',
@@ -31,8 +36,8 @@ class ResetPasswordModal extends React.Component<null, IState> {
 	};
 
 	onSubmit = () => {
-		const {email, code, password, password_confirmation} = this.state.fields;
-		UserActions.common.resetPasswordByCode.REQUEST({email, token: code, password, password_confirmation});
+		const {code, password, password_confirmation} = this.state.fields;
+		UserActions.common.resetPasswordByCode.REQUEST({email: this.props.meta, token: code, password, password_confirmation});
 	};
 
 	shouldComponentUpdate() {
@@ -60,24 +65,25 @@ class ResetPasswordModal extends React.Component<null, IState> {
 						<h4 className='grey-text p-x-10'>Enter your email address, secret code and new password</h4>
 					</div>
 					<div className='auth-form'>
-						<div className='form-group row auth-input__wrapper'>
-							<label
-								className='col-sm-5 col-form-label'
-								htmlFor='email'
-							>
-								Email
-							</label>
-							<input
-								onChange={this.onChange}
-								type='email'
-								id='email'
-								className='col-sm-6 form-control'
-								name='email'
-								required
-								placeholder='Enter email'
-								autoComplete='off'
-							/>
-						</div>
+						{/*<div className='form-group row auth-input__wrapper'>*/}
+							{/*<label*/}
+								{/*className='col-sm-5 col-form-label'*/}
+								{/*htmlFor='email'*/}
+							{/*>*/}
+								{/*Email*/}
+							{/*</label>*/}
+							{/*<input*/}
+								{/*type='email'*/}
+								{/*id='email'*/}
+								{/*className='col-sm-6 form-control'*/}
+								{/*name='email'*/}
+								{/*required*/}
+								{/*placeholder='Enter email'*/}
+								{/*value={this.state.fields.email}*/}
+								{/*disabled*/}
+								{/*autoComplete='off'*/}
+							{/*/>*/}
+						{/*</div>*/}
 						<div className='form-group row auth-input__wrapper'>
 							<label
 								className='col-sm-5 col-form-label'
@@ -147,5 +153,8 @@ class ResetPasswordModal extends React.Component<null, IState> {
 		);
 	}
 }
+const mapStateToProps = (state: IRootState) => ({
+	meta: state.modalJuggler.meta,
+});
 
-export default ResetPasswordModal;
+export default connect(mapStateToProps)(ResetPasswordModal);
