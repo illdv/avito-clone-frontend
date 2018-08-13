@@ -1,5 +1,7 @@
 import React from 'react';
 
+const like = <img src='/static/img/icons/like.svg' alt='' class='no-results__like'/>
+
 const EmptyFavorites = () => (
 	<section>
 		<div className='container page__container-lg'>
@@ -8,7 +10,7 @@ const EmptyFavorites = () => (
 			</h1>
 			<div className='no-results'>
 				<span className='d-block'>
-					Click on like for add ads in Favourites.
+					Click on {like} for add ads in Favourites.
 				</span>
 			</div>
 		</div>
