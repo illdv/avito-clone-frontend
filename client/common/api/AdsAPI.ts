@@ -2,13 +2,19 @@ import { AxiosWrapper } from './AxiosWrapper';
 import { AdsActionType, ICreateAdRequest, IEditAdRequest } from '../entities/user/modules/owned-ads/interfaces';
 import { getMyAd, getDataForAdsIndexPage } from 'server/api/ad';
 import { formatData } from 'server/router/prepares';
+import { getQueryWithLocation } from '../utils/utils';
 
 function get(sort) {
-	return AxiosWrapper.get(`/ads?${formatData(getDataForAdsIndexPage)}&${sort}`);
+	const query = getQueryWithLocation();
+	console.log(`/ads?${formatData({...query, ...getDataForAdsIndexPage})}&${sort}`);
+	return AxiosWrapper.get(`/ads?${formatData({...query, ...getDataForAdsIndexPage})}&${sort}`);
 }
 
 function getPage(sort, page) {
-	return AxiosWrapper.get(`/ads?${formatData(getDataForAdsIndexPage)}&page=${page}&${sort}`);
+	const query = getQueryWithLocation();
+	query.page = page;
+	console.log(`/ads?${formatData({...query, ...getDataForAdsIndexPage})}&${sort}`);
+	return AxiosWrapper.get(`/ads?${formatData({...query, ...getDataForAdsIndexPage})}&${sort}`);
 }
 
 function getMy() {

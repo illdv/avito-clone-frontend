@@ -10,7 +10,7 @@ import {
 
 import { getDataForAdShowPage, getDataForAdsIndexPage } from '../api/ad';
 import { getLitleCategories } from '../api/category';
-import { queryStringifyPlus } from './utils';
+import { queryStringifyPlus, getQueryWithLocation } from './utils';
 
 interface ISugar {
 	params?: any;
@@ -31,9 +31,6 @@ const instance = axios.create({
 });
 
 instance.interceptors.response.use(response => {
-	console.log('---------------------------------------------------------');
-	console.log('url = ', response.config.url);
-	console.log('data = ', JSON.stringify(response.data));
 	return response;
 });
 
@@ -43,17 +40,7 @@ export const formatData = (data): string => {
 
 export const adsPaginationPage: prepareMethod = async (sugar, req) => {
 	try {
-		const query = {};
-
-		if (req.cookies) {
-			if (eval(req.cookies.idCity)) {
-				query['city_id'] = req.cookies.idCity;
-			} else if (eval(req.cookies.idRegion)) {
-				query['region_id'] = req.cookies.idRegion;
-			} else if (eval(req.cookies.idCountry)) {
-				query['country_id'] = req.cookies.idCountry;
-			}
-		}
+		const query = getQueryWithLocation(req);
 
 		const response = await instance.get(`/ads?${formatData({ ...query, ...getDataForAdsIndexPage })}`);
 		const ads      = response.data.data;
@@ -83,17 +70,8 @@ export const categories: prepareMethod = async () => {
 };
 
 export const categoriesByLocation: prepareMethod = async (sugar, req) => {
-	const query = {};
+	const query = getQueryWithLocation(req);
 
-	if (req.cookies) {
-		if (eval(req.cookies.idCity)) {
-			query['city_id'] = req.cookies.idCity;
-		} else if (eval(req.cookies.idRegion)) {
-			query['region_id'] = req.cookies.idRegion;
-		} else if (eval(req.cookies.idCountry)) {
-			query['country_id'] = req.cookies.idCountry;
-		}
-	}
 	const response = await instance.get(`/categories?${formatData({ ...query, ...getLitleCategories })}`);
 
 	return response.data;
