@@ -2,7 +2,6 @@ import React from 'react';
 
 import Header from 'client/ssr/blocks/header/Header';
 import Navbar from 'client/ssr/blocks/navbar/Navbar';
-import Search from 'client/ssr/blocks/search/Search';
 import Footer from 'client/ssr/blocks/footer/Footer';
 import Ads from 'client/ssr/blocks/ads/Ads';
 import EmptySearch from 'client/ssr/blocks/empty-search/EmptySearch';
@@ -14,7 +13,7 @@ import Pagination from 'client/ssr/pages/Pagination';
 import { IPagination } from 'client/ssr/pages/interfacePagination';
 import { useOrDefault } from 'client/spa/profile/utils/createAd';
 import ShowArray from 'client/common/blocks/ShowArray';
-import SearchStateful from 'client/ssr/blocks/search/SearchStateful'
+import SearchStateful from 'client/ssr/blocks/search/SearchStateful';
 
 export interface ICountriesTotal {
 	country_id: number;

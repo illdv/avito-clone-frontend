@@ -11,23 +11,26 @@ import { ILocationStoreState } from 'client/common/location/module';
 import { showLocationModal } from 'client/ssr/modals/location/locationModalTriggers';
 import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
 import PriceRange from 'client/ssr/blocks/search/components/PriceRange';
-import { getQuery, getQueryLoop, IQuery } from 'client/ssr/contexts/QueryContext';
+import { getQueryLoop } from 'client/ssr/contexts/QueryContext';
 import { findCategoriesQueueById, useOrDefault } from 'client/spa/profile/utils/createAd';
 import { pushInRouter } from 'client/common/utils/utils';
+import { IQuery } from 'client/common/search/interface';
 
 require('./Search.sass');
-
-interface ISearchProps {
-	categories: Category;
-	idActiveCategory: number;
-	locationState: ILocationStoreState;
-	priceRange?: boolean;
-	query: IQuery;
-}
 
 interface IOption {
 	value: string;
 	item: ITotalOptions;
+}
+
+interface ISearchProps {
+	onSearch: () => void;
+	query: IQuery;
+
+	categories: Category;
+	idActiveCategory: number;
+	locationState: ILocationStoreState;
+	priceRange?: boolean;
 }
 
 interface ISearchState {
@@ -288,6 +291,51 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 		return this.state.activeCategories.map(category => category.id);
 	}
 
+	renderLineSearch = () => {
+		return (
+			<div className='search form-inline form-row p-t-20' >
+				<div className='form-group col-6 col-md-3' >
+					<SelectCategories
+						categories={this.props.categories}
+						onSelect={this.onSelectCategory}
+						label={'Category'}
+						selectedCategoriesIds={this.selectedCategoriesIds}
+						idDefaultCategory={this.props.query.category_id}
+						parent={null}
+					/>
+				</div >
+				<div className='form-group col-6 col-md-4' >
+					<input
+						className='search__options form-control'
+						placeholder='Search'
+						name='search'
+						value={this.state.searchString}
+						onChange={this.changeSearchString}
+					/>
+				</div >
+				<div className='form-group col-6 col-md-3' >
+					<input
+						readOnly
+						type='text'
+						placeholder='Search'
+						defaultValue={this.localeName}
+						onClick={this.showSearchLocationModal}
+						className='search__options form-control search_input--no-disable'
+					/>
+				</div >
+				<div className='form-group col-12 col-md-2' >
+					<button
+						className='btn orange-btn-outline search__button'
+						type='submit'
+					>
+						<i className='fas fa-search p-r-5' />
+						Search
+					</button >
+				</div >
+			</div >
+		);
+	}
+
 	render() {
 		const { priceRange } = this.props;
 
@@ -295,46 +343,8 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 			<form
 				action='#'
 				onSubmit={this.onSubmit}
-			>выбирем
-				<div className='search form-inline form-row p-t-20' >
-					<div className='form-group col-6 col-md-3' >
-						<SelectCategories
-							categories={this.props.categories}
-							onSelect={this.onSelectCategory}
-							label={'Category'}
-							selectedCategoriesIds={this.selectedCategoriesIds}
-							idDefaultCategory={useOrDefault(() => this.props.query.category_id, -1)}
-							parent={null}
-						/>
-					</div >
-					<div className='form-group col-6 col-md-4' >
-						<input
-							className='search__options form-control'
-							placeholder='Search'
-							name='search'
-							value={this.state.searchString}
-							onChange={this.changeSearchString}
-						/>
-					</div >
-					<div className='form-group col-6 col-md-3' >
-						<input
-							readOnly
-							type='text'
-							placeholder='Search'
-							defaultValue={this.localeName}
-							onClick={this.showSearchLocationModal}
-							className='search__options form-control search_input--no-disable'
-						/>
-					</div >
-					<div className='form-group col-12 col-md-2' >
-						<button
-							className='btn orange-btn-outline search__button'
-							type='submit'
-						>
-							<i className='fas fa-search p-r-5' />Search
-						</button >
-					</div >
-				</div >
+			>
+				{this.renderLineSearch}
 				{
 					this.isSubcategories &&
 					<div className='search form-inline form-row' >
@@ -395,4 +405,4 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 	}
 }
 
-export default connect(mapStateToProps)(getQuery(getCategories(Search)));
+export default connect(mapStateToProps)(getCategories(Search));

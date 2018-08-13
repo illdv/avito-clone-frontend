@@ -13,7 +13,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@types/react-router": "^4.0.29",
     "axios": "^0.18.0",
     "babel-core": "^6.26.3",
     "body-parser": "^1.18.3",
@@ -65,6 +64,8 @@
     "typescript": "^2.9.2"
   },
   "devDependencies": {
+    "@types/react-redux": "^6.0.6",
+    "@types/react-router": "^4.0.29",
     "@types/jest": "^23.3.0",
     "@types/next": "^6.0.4",
     "@types/node": "^10.5.2",

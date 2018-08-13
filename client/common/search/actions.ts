@@ -4,18 +4,18 @@ import { IQuery } from 'client/ssr/contexts/QueryContext';
 
 const createAsyncAction = createActionCreator('SEARCH');
 
-const initialization   = createAsyncAction('INITIALIZATION');
+const initialize   = createAsyncAction('INITIALIZE');
 const changeSearchData = createAsyncAction('CHANGE_SEARCH_DATA');
 const search           = createAsyncAction('CREATE');
 
 export interface ISearchActions {
 	changeSearchData: IAsyncAction<object>;
 	search: IAsyncAction<{}, { ads: IAds[] }>;
-	initialization: IAsyncAction<{ query: IQuery }, {}>;
+	initialize: IAsyncAction<{ query: IQuery }, {}>;
 }
 
 export const SearchActions: ISearchActions = {
 	changeSearchData,
 	search,
-	initialization,
+	initialize,
 };
