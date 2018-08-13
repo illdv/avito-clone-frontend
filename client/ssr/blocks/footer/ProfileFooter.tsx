@@ -4,10 +4,6 @@ import FooterNavigation from 'client/ssr/blocks/footer/FooterNavigation/FooterNa
 require('./Footer.sass');
 
 class ProfileFooter extends React.Component {
-	constructor(props, context) {
-		super(props, context);
-	}
-
 	render() {
 		return (
 			<footer className='footer'>

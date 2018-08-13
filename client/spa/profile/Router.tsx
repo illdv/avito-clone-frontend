@@ -30,15 +30,7 @@ import {
 } from './constants';
 import Page404 from 'client/common/layouts/Page404';
 
-const PageNoCreate = () => (
-	<h1>Page not yet created</h1>
-);
-
-class Router extends React.Component {
-	constructor(props, context) {
-		super(props, context);
-	}
-
+export default class Router extends React.Component {
 	render() {
 		return (
 			<>
@@ -98,5 +90,3 @@ class Router extends React.Component {
 		);
 	}
 }
-
-export default Router;

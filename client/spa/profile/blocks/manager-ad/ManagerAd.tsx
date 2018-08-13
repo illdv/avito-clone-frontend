@@ -62,7 +62,8 @@ class ManagerAd extends React.Component<IProps, IState> {
 			this.state = transformationAdToManagerState(this.props.initialAd, this.props.categories, sellerInfoFields);
 		} else {
 			// Create Ad
-			this.state = {
+			// @ts-ignore
+            this.state = {
 				step: 1,
 				sellerInfoFields,
 				adInfoFields: {
@@ -169,9 +170,9 @@ class ManagerAd extends React.Component<IProps, IState> {
 
 			if (findedOption.length > 0) {
 				return findedOption[0];
-			} else {
-				return option;
 			}
+
+            return option;
 		});
 
 		if (typeIds.length > 0) {
