@@ -11,9 +11,9 @@ import { ILocationStoreState } from 'client/common/location/module';
 import { showLocationModal } from 'client/ssr/modals/location/locationModalTriggers';
 import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
 import PriceRange from 'client/ssr/blocks/search/components/PriceRange';
-import { getQuery, IQuery } from 'client/ssr/contexts/QueryContext';
+import { getQuery, getQueryLoop, IQuery } from 'client/ssr/contexts/QueryContext';
 import { findCategoriesQueueById, useOrDefault } from 'client/spa/profile/utils/createAd';
-import { pushInRouter } from 'client/common/utils/utils'
+import { pushInRouter } from 'client/common/utils/utils';
 
 require('./Search.sass');
 
@@ -48,9 +48,9 @@ const mapStateToProps = (state: IRootState) => ({
 
 const getOption = (option: IOption, creatorChangeOption) => (
 	<>
-		<label htmlFor={option.item.name}>
+		<label htmlFor={option.item.name} >
 			{option.item.name.replace('_', ' ')}
-			</label>
+		</label >
 		<input
 			className='search__options form-control'
 			id={option.item.name}
@@ -67,7 +67,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 		const query: any      = this.props.query || {};
 		const categoryId      = useOrDefault(() => query.category_id, null);
 		const categoriesQueue = categoryId && findCategoriesQueueById(this.props.categories, Number(categoryId)) || [];
-		let options           = [];
+		const options         = [];
 
 		if (categoriesQueue.length > 1) {
 			const totalOptions = categoriesQueue[categoriesQueue.length - 1].total_options;
@@ -231,13 +231,14 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 	}
 
 	get localeName() {
-		const { idCity, idRegion, idCountry } = this.props.locationState.local;
+		const { city_id, region_id, country_id } = getQueryLoop();
 
-		if (idCity) {
-			if (this.props.locationState.loaded.local.cities.length > 0) {
+		if (city_id) {
+			const cities = this.props.locationState.loaded.local.cities;
+			if (cities.length > 0) {
 
-				const result = this.props.locationState.loaded.local.cities.filter(city => {
-					return city.city_id === idCity;
+				const result = cities.filter(city => {
+					return Number(city_id) === city.city_id;
 				});
 
 				if (result.length > 0) {
@@ -246,10 +247,10 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 			}
 		}
 
-		if (idRegion) {
+		if (region_id) {
 			if (this.props.locationState.loaded.local.regions.length > 0) {
 				const result = this.props.locationState.loaded.local.regions.filter(region => {
-					return region.region_id === idRegion;
+					return Number(region_id) === region.region_id;
 				});
 				if (result.length > 0) {
 					return result[0].title;
@@ -257,10 +258,10 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 			}
 		}
 
-		if (idCountry) {
+		if (country_id) {
 			if (this.props.locationState.loaded.local.countries.length > 0) {
 				const result = this.props.locationState.loaded.local.countries.filter(country => {
-					return country.country_id === idCountry;
+					return Number(country_id) === country.country_id;
 				});
 				if (result.length > 0) {
 					return result[0].title;
@@ -283,7 +284,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 		this.setState(({ rangePrice }) => ({ rangePrice: { ...rangePrice, priceTo } }));
 	}
 
-	get selectetCategoriesIds() {
+	get selectedCategoriesIds() {
 		return this.state.activeCategories.map(category => category.id);
 	}
 
@@ -294,14 +295,14 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 			<form
 				action='#'
 				onSubmit={this.onSubmit}
-			>
+			>выбирем
 				<div className='search form-inline form-row p-t-20' >
 					<div className='form-group col-6 col-md-3' >
 						<SelectCategories
 							categories={this.props.categories}
 							onSelect={this.onSelectCategory}
 							label={'Category'}
-							selectedCategoriesIds={this.selectetCategoriesIds}
+							selectedCategoriesIds={this.selectedCategoriesIds}
 							idDefaultCategory={useOrDefault(() => this.props.query.category_id, -1)}
 							parent={null}
 						/>
@@ -340,25 +341,26 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 						{
 							this.subcategories.map(category => (
 								category.children.length > 0
-									? (
-										<div
-											key={category.id}
-											className='form-group col-6 col-md-3'
-										>
-											<label htmlFor=''>
-												Sub-Category
-											</label>
-											<SelectCategories
-												currentCategory={category}
-												categories={category.children}
-												selectedCategoriesIds={this.selectetCategoriesIds}
-												idDefaultCategory={useOrDefault(() => this.props.query.category_id, -1)}
-												onSelect={this.onSelectSubcategory}
-												label={'Subcategory'}
-												parent={category}
-											/>
-										</div >
-									)
+									?
+										<>
+											<div
+												key={category.id}
+												className='form-group col-6 col-md-3'
+											>
+												<label htmlFor='' >
+													Sub-Category
+												</label >
+												<SelectCategories
+													currentCategory={category}
+													categories={category.children}
+													selectedCategoriesIds={this.selectedCategoriesIds}
+													idDefaultCategory={useOrDefault(() => this.props.query.category_id, -1)}
+													onSelect={this.onSelectSubcategory}
+													label={'Subcategory'}
+													parent={category}
+												/>
+											</div >
+										</>
 									: null
 							))
 						}
@@ -369,7 +371,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 									key={option.item.id}
 									className='form-group col-6 col-md-3'
 								>
-									{getOption(option, this.creatorChangeOption)}
+									{ getOption(option, this.creatorChangeOption) }
 								</div >
 							))
 						}

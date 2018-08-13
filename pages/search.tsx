@@ -12,10 +12,9 @@ import SetQuery from 'client/ssr/contexts/QueryContext';
 import { SetBreadcrumbs } from 'client/ssr/contexts/Breadcrumbs';
 import { IPagination } from 'client/ssr/pages/interfacePagination';
 import SetSearchUrl from 'client/ssr/contexts/SearchUrlContext';
+import { isServer } from 'client/common/utils/utils';
 
-const isServer: boolean = typeof window === 'undefined';
-
-if (isServer) {
+if (isServer()) {
 	types.disableChecking();
 }
 

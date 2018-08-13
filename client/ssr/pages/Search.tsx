@@ -14,6 +14,7 @@ import Pagination from 'client/ssr/pages/Pagination';
 import { IPagination } from 'client/ssr/pages/interfacePagination';
 import { useOrDefault } from 'client/spa/profile/utils/createAd';
 import ShowArray from 'client/common/blocks/ShowArray';
+import SearchStateful from 'client/ssr/blocks/search/SearchStateful'
 
 export interface ICountriesTotal {
 	country_id: number;
@@ -45,7 +46,7 @@ class SearchPage extends React.Component<ISearchPageProp> {
 				<div className='bottom-header p-y-20' >
 					<div className='container' >
 						<Navbar />
-						<Search priceRange={true} />
+						<SearchStateful/>
 						<BreadcrumbsWrap
 							classNameForContainer='breadcrumb'
 							classNameForItem='breadcrumb-item'

@@ -1,4 +1,5 @@
 import { ComplexActionCreator1, createAction } from 'redux-act';
+import { Dispatch } from 'react-redux';
 import { ActionCreatorsMapObject, bindActionCreators } from 'redux';
 
 export interface IAsyncAction<R = {}, S = {}, F = IPayloadError> extends ActionCreatorsMapObject {
@@ -37,7 +38,7 @@ export const createActionCreator = (reducer: string) => (actionType: string) => 
 /**
  * Use for map dispatch actions from Module.
  */
-export function bindModuleAction<T>(moduleActions: T, dispatch: any): T {
+export function bindModuleAction<T>(moduleActions: T, dispatch: Dispatch<any>): T {
 	return Object.entries(moduleActions).reduce((result, [key, value]): T => {
 		result[key] = bindActionCreators(value as any, dispatch);
 		return result;
