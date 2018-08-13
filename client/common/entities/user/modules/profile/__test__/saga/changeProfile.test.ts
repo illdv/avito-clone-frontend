@@ -1,6 +1,6 @@
 import { call, put } from 'redux-saga/effects';
 import sagaHelper from 'redux-saga-testing';
-import { UserAPI } from 'client/common/api/userAPI';
+import { UserAPI } from 'client/common/api/UserAPI';
 import { profileActions } from 'client/common/entities/user/modules/profile/actions';
 import { changeProfile } from 'client/common/entities/user/modules/profile/saga';
 import { errorHandler } from 'client/common/store/errorHandler';
