@@ -9,14 +9,11 @@ import EmptySearch from 'client/ssr/blocks/empty-search/EmptySearch';
 import { IAds } from 'client/common/entities/user/modules/owned-ads/interfaces';
 import BreadcrumbsWrap from 'client/ssr/wraps/BreadcrumbFromContext';
 import ListOfSubcategories from 'client/ssr/blocks/list-of-subcategories/ListOfSubcategories';
-import {
-	categoryToItemOfTitlesList,
-	countriesToItemOfTitlesList,
-	getNextLocationName,
-} from 'client/ssr/pages/utils';
+import { categoryToItemOfTitlesList, countriesToItemOfTitlesList, getNextLocationName } from 'client/ssr/pages/utils';
 import Pagination from 'client/ssr/pages/Pagination';
 import { IPagination } from 'client/ssr/pages/interfacePagination';
 import { useOrDefault } from 'client/spa/profile/utils/createAd';
+import ShowArray from 'client/common/blocks/ShowArray';
 
 export interface ICountriesTotal {
 	country_id: number;
@@ -32,7 +29,6 @@ interface ISearchPageProp {
 	categoriesTotal: ICategory[];
 }
 
-// TODO: is not page.
 class SearchPage extends React.Component<ISearchPageProp> {
 	constructor(props, context) {
 		super(props, context);
@@ -44,7 +40,7 @@ class SearchPage extends React.Component<ISearchPageProp> {
 		const countriesTotals = countriesTotal.filter(item => item.total_ads !== 0);
 
 		return (
-			<React.Fragment >
+			<>
 				<Header />
 				<div className='bottom-header p-y-20' >
 					<div className='container' >
@@ -54,44 +50,37 @@ class SearchPage extends React.Component<ISearchPageProp> {
 							classNameForContainer='breadcrumb'
 							classNameForItem='breadcrumb-item'
 						/>
-						{
-							categoriesTotal.length > 0
-							&&
+						<ShowArray list={categoriesTotal} >
 							<ListOfSubcategories
 								title={'All'}
 								items={categoriesTotal.map(categoryToItemOfTitlesList)}
 							/>
-							||
-							null
-						}
-						{
-							countriesTotals.length > 0
-							&&
+						</ShowArray >
+						<ShowArray list={countriesTotals} >
 							<ListOfSubcategories
 								title={getNextLocationName()}
 								items={countriesTotals.map(countriesToItemOfTitlesList)}
 							/>
-							||
-							null
-						}
+						</ShowArray >
 					</div >
 				</div >
 				{
-					useOrDefault(() => search.ads.length, 0) ?
+					useOrDefault(() => search.ads.length, 0)
+						?
 						<div >
 							<Ads
 								title={`Search result (${search.pagination.total})`}
 								ads={search.ads}
 							/>
 							<div className={'d-flex justify-content-center'} >
-								<Pagination pagination={search.pagination}/>
+								<Pagination pagination={search.pagination} />
 							</div >
 						</div >
 						:
 						<EmptySearch />
 				}
 				<Footer />
-			</React.Fragment >
+			</>
 		);
 	}
 }
