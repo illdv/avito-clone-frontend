@@ -20,7 +20,15 @@ function show(id) {
 }
 
 function getCity(id) {
-	return AxiosWrapper.get(`../../city/${id}`);
+	return AxiosWrapper.get(`../../cities/${id}`);
+}
+
+function  getRegionsById(id) {
+	return AxiosWrapper.get(`../../countries/${id}/regions`);
+}
+
+function getCitiesById(id) {
+	return AxiosWrapper.get(`../../regions/${id}/cities`);
 }
 
 function create({ images, options, ...ads }: ICreateAdRequest) {
@@ -108,4 +116,7 @@ export const AdsAPI = {
 	deleteImage,
 	similar,
 	getCity,
+	getRegionsById,
+	getCitiesById,
+	// getRegionsWithCountryByCityId
 };

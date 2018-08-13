@@ -1,6 +1,6 @@
 import React from 'react';
 
-const like = <img src='/static/img/icons/like.svg' alt='' class='no-results__like'/>
+const like = <img src='/static/img/icons/like.svg' alt='' className='no-results__like'/>
 
 const EmptyFavorites = () => (
 	<section>

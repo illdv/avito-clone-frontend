@@ -106,7 +106,10 @@ class EditAd extends React.Component<IProps, IState> {
 		if (this.props.user.ownedAds.isLoading || this.state.notFound) {
 			return <Spinner />;
 		}
-		return  <ManagerAd initialAd={ this.state.editingAd } callback={ this.onEdit } />;
+		return  <ManagerAd initialAd={ this.state.editingAd }
+		                   callback={ this.onEdit }
+		                   loadedLocation={ this.props.locationState.loaded }
+		/>;
 	}
 }
 

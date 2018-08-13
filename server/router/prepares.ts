@@ -191,6 +191,7 @@ const getInstanceWithLanguageByReq = req => {
 export const getCountries: prepareMethod = async (sugar, req) => {
 	try {
 		const response = await getInstanceWithLanguageByReq(req).get('/countries');
+		console.log(response.data);
 		return response.data;
 	} catch (err) {
 		console.log(err);
@@ -291,6 +292,8 @@ async function getNameLocation(queryParams, req) {
 
 	return null;
 }
+
+
 
 export const breadcrumbs: prepareMethod = async ({ query, accumulation }, req) => {
 	const categoryQueue = findCategoriesQueueById(accumulation.categories, query.category);
