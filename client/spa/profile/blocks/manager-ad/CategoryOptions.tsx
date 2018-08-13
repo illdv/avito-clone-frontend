@@ -1,15 +1,13 @@
 import React from 'react';
-import { IOption } from './interface';
+import {IOption} from './interface';
 
 interface IProps {
 	options: IOption[];
+
 	creatorChangeOptionById(id: number): (e: any) => void;
 }
 
 class CategoryOptions extends React.Component<IProps> {
-	constructor(props, context) {
-		super(props, context);
-	}
 	render() {
 		if (this.props.options.length > 0) {
 			return (
@@ -27,7 +25,7 @@ class CategoryOptions extends React.Component<IProps> {
 										value={option.value}
 										placeholder={option.item.name}
 										className='form-control'
-										onChange={ this.props.creatorChangeOptionById(option.item.id) }
+										onChange={this.props.creatorChangeOptionById(option.item.id)}
 									/>
 								</div>
 							))
@@ -35,9 +33,9 @@ class CategoryOptions extends React.Component<IProps> {
 					</div>
 				</div>
 			);
-		} else {
-			return null;
 		}
+
+		return null;
 	}
 }
 

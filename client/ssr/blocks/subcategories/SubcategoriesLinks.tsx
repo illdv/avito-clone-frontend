@@ -11,9 +11,6 @@ interface ISubcategoryLinksProps {
 }
 
 class SubcategoryLinks extends React.Component<ISubcategoryLinksProps> {
-	constructor(props, context) {
-		super(props, context);
-	}
 	render() {
 		return (
 			null

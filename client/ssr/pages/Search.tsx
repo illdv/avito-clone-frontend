@@ -34,10 +34,6 @@ interface ISearchPageProp {
 
 // TODO: is not page.
 class SearchPage extends React.Component<ISearchPageProp> {
-	constructor(props, context) {
-		super(props, context);
-	}
-
 	render() {
 		const { countriesTotal, search, categoriesTotal } = this.props;
 
