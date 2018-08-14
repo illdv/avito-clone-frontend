@@ -67,10 +67,10 @@ class ManagerAd extends React.Component<IProps, IState> {
 				step: 1,
 				sellerInfoFields,
 				adInfoFields: {
-					title: { disable: false, value: '' },
-					price: { disable: false, value: '' },
-					description: { disable: false, value: '' },
-					address: { disable: false, value: ''},
+					title: { disable: false, value: '', error: null },
+					price: { disable: false, value: '', error: null },
+					description: { disable: false, value: '', error: null },
+					address: { disable: false, value: '', error: null },
 					city_id: {value: ''},
 				},
 				selectedCategories: [],
@@ -91,10 +91,36 @@ class ManagerAd extends React.Component<IProps, IState> {
 
 	}
 
+	validation = () => {
+	 if (this.state.selectedCategories[0].id === null) {
+			this.state.adInfoFields.title.error = 'error';
+		 	console.log('this.state.adInfoFields.title.error = \'error\';');
+		}  else if (this.state.adInfoFields.title.value === '') {
+			this.state.adInfoFields.title.error = 'error';
+		 	console.log('this.state.adInfoFields.title.error = \'error\';');
+		} else if (this.state.adInfoFields.description.value === '') {
+			this.state.adInfoFields.description.error = 'error';
+		 	console.log('this.state.adInfoFields.description.error = \'error\';');
+		} else if (this.state.adInfoFields.price.value === '') {
+			this.state.adInfoFields.price.error = 'error';
+		 	console.log('this.state.adInfoFields.price.error = \'error\';');
+		} else if (this.state.adInfoFields.address.value === '') {
+			this.state.adInfoFields.address.error = 'error';
+			console.log('this.state.adInfoFields.address.error = \'error\';');
+		 	this.forceUpdate();
+		} else {
+	 	return (true);
+	 }
+		return (false);
+	}
+
 	next = () => {
-		this.setState({
-			step: this.state.step + 1,
-		});
+		const success = this.validation();
+		if (success) {
+			this.setState({
+				step: this.state.step + 1,
+			});
+		}
 	}
 
 	back = () => {

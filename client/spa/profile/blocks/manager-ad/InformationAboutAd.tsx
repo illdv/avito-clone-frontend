@@ -244,7 +244,7 @@ const InformationAboutAd = ({ sellerInfoFields, adInfoFields, categories, create
 					id={'address'}
 					title={'Address'}
 					inputClass={'col-md-9 col-lg-6'}
-					value={adInfoFields.address.value}
+					value={ adInfoFields.address.error || adInfoFields.address.value }
 					onChange={createtorChangeAdInfoField(AdInfoFieldsNames.address)}
 				/>
 				<div className='offer-form__item form-group row align-items-center'>
