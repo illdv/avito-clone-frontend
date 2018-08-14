@@ -7,12 +7,12 @@ import {UserActions} from 'client/common/entities/user/rootActions';
 import {filterNotification} from './utils';
 import {FilterType} from './interface';
 
-const FilterButton = (props: { buttonFilter: FilterType, length: number, isActive: boolean }) => {
-	const {buttonFilter, length, isActive} = props;
+const FilterButton = (props: { buttonFilter: FilterType, length: number, isActive: boolean, onClick: () => void }) => {
+	const {buttonFilter, length, isActive, onClick} = props;
 
 	return (
 		<a
-			onClick={this.onSelectFilter(buttonFilter)}
+			onClick={onClick}
 			className={`filter-offer__link ${isActive ? 'link-active' : ''}`}
 		>
 			{buttonFilter}
@@ -22,16 +22,13 @@ const FilterButton = (props: { buttonFilter: FilterType, length: number, isActiv
 	);
 };
 
-interface IFilteredNotifications {
-
-}
-
 export interface IState {
 	selectedFilter: FilterType;
 	all: INotification[];
 	noRead: INotification[];
 	read: INotification[];
 	selectedIds: string[];
+	selectedAll: boolean;
 }
 
 export interface IProps {
@@ -50,6 +47,7 @@ class Notification extends Component<IProps, IState> {
 		noRead: [],
 		read: [],
 		selectedIds: [],
+		selectedAll: false,
 	};
 
 	static getDerivedStateFromProps(nextProps: IProps, prevState: IState): IState {
@@ -61,31 +59,61 @@ class Notification extends Component<IProps, IState> {
 				noRead: filterNotification(FilterType.NoRead, items),
 				read: filterNotification(FilterType.Read, items),
 				selectedIds: [],
+				selectedAll: false,
 			};
 		}
 		return null;
 	}
 
-	selectedAll = () => {
-		let {selected, selectedAll, ids} = this.state;
-		if (selectedAll) {
-			selected.clear();
-		} else {
-			selected = this.collectionIdAds(ids);
-		}
-
-		this.setState({
-			selectedIds: selected,
-			selectedAll: !selectedAll,
-		});
-		console.log(this.state.selected);
+	componentDidMount() {
+		UserActions.notifications.loading.REQUEST({});
 	}
 
-	private collectionIdAds(ids: number[]) {
-		const idsList = [];
-		ids.forEach(ad => idsList.add(ad));
+	onSelectFilter = (selectedFilter: FilterType) => () => {
+		this.setState({
+			selectedFilter: selectedFilter,
+		});
+	}
 
-		return idsList;
+	getSelectedNotification = () => {
+		const {all, read, noRead, selectedFilter} = this.state;
+
+		switch (selectedFilter) {
+			case FilterType.All:
+				return all;
+			case FilterType.NoRead:
+				return noRead;
+			case FilterType.Read:
+				return read;
+		}
+	}
+
+	onSelectAll = () => {
+		if (this.state.selectedAll) {
+			this.setState({
+				selectedIds: [],
+				selectedAll: false,
+			});
+		} else {
+			let allNoRead = [];
+			this.state.noRead.map(item => {
+				allNoRead = [...allNoRead, item.id];
+			});
+
+			this.setState({
+				selectedIds: allNoRead,
+				selectedAll: true,
+			});
+		}
+	}
+
+	selectedCurrent = (e) => {
+		const selectedId = e.target.value;
+		if (e.target.checked) {
+			this.onSelect(selectedId);
+		} else {
+			this.onUnSelect(selectedId);
+		}
 	}
 
 	onSelect = (id: string) => {
@@ -96,6 +124,11 @@ class Notification extends Component<IProps, IState> {
 					id,
 				},
 		});
+		if (this.state.selectedIds.length === this.state.noRead.length) {
+			this.setState({
+				selectedAll: true,
+			});
+		}
 	}
 
 	onUnSelect = (selectedId: string) => {
@@ -104,23 +137,12 @@ class Notification extends Component<IProps, IState> {
 		});
 	}
 
-	onSelectAll = () => {
-		this.setState({
-			selectedIds: this.props.user.notifications.items,
-		});
-	}
-
 	removeChecked = () => {
-
+		UserActions.notifications.read.REQUEST({...this.state.selectedIds});
 	}
 
-	selectedCurrent = (e) => {
-		const selectedId = e.target.value;
-		if (e.target.checked) {
-			this.onSelect(selectedId);
-		} else {
-			this.onUnSelect(selectedId);
-		}
+	onClick = (ids: string[]) => () => {
+		UserActions.notifications.read.REQUEST({ids});
 	}
 
 	convertToItem = ({id, data, read_at, updated_at}: INotification) => {
@@ -188,19 +210,6 @@ class Notification extends Component<IProps, IState> {
 		);
 	}
 
-	getSelectedNotification = () => {
-		const {all, read, noRead, selectedFilter} = this.state;
-
-		switch (selectedFilter) {
-			case FilterType.All:
-				return all;
-			case FilterType.NoRead:
-				return read;
-			case FilterType.Read:
-				return read;
-		}
-	}
-
 	renderCheckBox = () => {
 		if (this.state.selectedFilter === FilterType.Read) {
 			return null;
@@ -210,7 +219,7 @@ class Notification extends Component<IProps, IState> {
 				<input
 					type='checkbox'
 					className='custom-checkbox'
-					onChange={this.selectedAll}
+					onChange={this.onSelectAll}
 					checked={this.state.selectedAll}
 				/>
 				<button
@@ -220,12 +229,10 @@ class Notification extends Component<IProps, IState> {
 					Readed
 				</button>
 			</div>
-		)
+		);
 	}
 
 	renderListNotification() {
-		const {all, read, noRead, selectedFilter} = this.state;
-
 		const selectedNotification = this.getSelectedNotification();
 
 		if (selectedNotification.length === 0) {
@@ -247,18 +254,6 @@ class Notification extends Component<IProps, IState> {
 		);
 	}
 
-	onSelectFilter = (selectedFilter: FilterType) => () => {
-		this.setState({selectedFilter});
-	}
-
-	onClick = (ids: string[]) => () => {
-		UserActions.notifications.read.REQUEST({ids});
-	}
-
-	componentDidMount() {
-		UserActions.notifications.loading.REQUEST({});
-	}
-
 	render() {
 		const {all, read, noRead, selectedFilter} = this.state;
 
@@ -269,16 +264,19 @@ class Notification extends Component<IProps, IState> {
 						buttonFilter={FilterType.All}
 						length={all.length}
 						isActive={selectedFilter === FilterType.All}
+						onClick={this.onSelectFilter(FilterType.All)}
 					/>
 					<FilterButton
 						buttonFilter={FilterType.NoRead}
 						length={noRead.length}
 						isActive={selectedFilter === FilterType.NoRead}
+						onClick={this.onSelectFilter(FilterType.NoRead)}
 					/>
 					<FilterButton
 						buttonFilter={FilterType.Read}
 						length={read.length}
 						isActive={selectedFilter === FilterType.Read}
+						onClick={this.onSelectFilter(FilterType.Read)}
 					/>
 				</div>
 				{this.renderListNotification()}
