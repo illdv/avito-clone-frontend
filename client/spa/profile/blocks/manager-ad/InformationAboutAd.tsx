@@ -45,13 +45,14 @@ interface IPropsForInput {
 	id: string;
 	type?: string;
 	value: string;
+	error?: string;
 	title: string;
 	inputClass: string;
 
 	onChange(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void;
 }
 
-const Input = ({ id, title, type = 'text', onChange, inputClass, value }: IPropsForInput) => (
+const Input = ({ id, title, type = 'text', onChange, inputClass, value, error }: IPropsForInput) => (
 	<div className='offer-form__item form-group row align-items-center'>
 		<label
 			htmlFor={id}
@@ -67,6 +68,9 @@ const Input = ({ id, title, type = 'text', onChange, inputClass, value }: IProps
 				onChange={onChange}
 				className='form-control'
 			/>
+			<label>
+				{error}
+			</label>
 		</div>
 	</div>
 );
@@ -212,6 +216,7 @@ const InformationAboutAd = ({ sellerInfoFields, adInfoFields, categories, create
 					title={'Ad title'}
 					inputClass={'col-md-9 col-lg-6'}
 					value={adInfoFields.title.value}
+					error={adInfoFields.title.error}
 					onChange={createtorChangeAdInfoField(AdInfoFieldsNames.title)}
 				/>
 				<TextArea
@@ -219,6 +224,7 @@ const InformationAboutAd = ({ sellerInfoFields, adInfoFields, categories, create
 					title={'Advertisement description'}
 					inputClass={'col-md-9 col-lg-6'}
 					value={adInfoFields.description.value}
+					error={adInfoFields.description.error}
 					onChange={createtorChangeAdInfoField(AdInfoFieldsNames.description)}
 				/>
 				<Input
@@ -227,6 +233,7 @@ const InformationAboutAd = ({ sellerInfoFields, adInfoFields, categories, create
 					type='number'
 					inputClass={'col-md-3'}
 					value={adInfoFields.price.value}
+					error={adInfoFields.price.error}
 					onChange={createtorChangeAdInfoField(AdInfoFieldsNames.price)}
 				/>
 				{/*<div className='offer-form__item form-group row align-items-center'>*/}
@@ -244,7 +251,8 @@ const InformationAboutAd = ({ sellerInfoFields, adInfoFields, categories, create
 					id={'address'}
 					title={'Address'}
 					inputClass={'col-md-9 col-lg-6'}
-					value={ adInfoFields.address.error || adInfoFields.address.value }
+					value={adInfoFields.address.value}
+					error={adInfoFields.address.error}
 					onChange={createtorChangeAdInfoField(AdInfoFieldsNames.address)}
 				/>
 				<div className='offer-form__item form-group row align-items-center'>

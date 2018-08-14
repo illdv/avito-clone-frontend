@@ -92,30 +92,38 @@ class ManagerAd extends React.Component<IProps, IState> {
 	}
 
 	validation = () => {
-	 if (this.state.selectedCategories[0].id === null) {
-			this.state.adInfoFields.title.error = 'error';
-		 	console.log('this.state.adInfoFields.title.error = \'error\';');
-		}  else if (this.state.adInfoFields.title.value === '') {
-			this.state.adInfoFields.title.error = 'error';
-		 	console.log('this.state.adInfoFields.title.error = \'error\';');
-		} else if (this.state.adInfoFields.description.value === '') {
-			this.state.adInfoFields.description.error = 'error';
-		 	console.log('this.state.adInfoFields.description.error = \'error\';');
-		} else if (this.state.adInfoFields.price.value === '') {
-			this.state.adInfoFields.price.error = 'error';
-		 	console.log('this.state.adInfoFields.price.error = \'error\';');
-		} else if (this.state.adInfoFields.address.value === '') {
-			this.state.adInfoFields.address.error = 'error';
-			console.log('this.state.adInfoFields.address.error = \'error\';');
-		 	this.forceUpdate();
+
+		const newInputs = Object.assign({}, this.state.adInfoFields);
+
+		if (this.state.adInfoFields.title.value === '') {
+			console.log('error1');
+		 	newInputs.title.error = 'error';
+		}
+		if (this.state.adInfoFields.description.value === '') {
+			console.log('error2');
+		 	newInputs.description.error = 'error';
+		}
+		if (this.state.adInfoFields.price.value === '') {
+			console.log('error3');
+		 	newInputs.price.error = 'error';
+		}
+		if (this.state.adInfoFields.address.value === '') {
+			console.log('error4');
+		 	newInputs.address.error = 'error';
+		}
+		console.log(JSON.stringify(newInputs));
+		console.log(JSON.stringify(this.state.adInfoFields));
+		if (JSON.stringify(newInputs) === JSON.stringify(this.state.adInfoFields)) {
+			return (true);
 		} else {
-	 	return (true);
-	 }
-		return (false);
+	 		this.setState({ adInfoFields: newInputs });
+			return (false);
+	 	}
 	}
 
 	next = () => {
 		const success = this.validation();
+		console.log(success);
 		if (success) {
 			this.setState({
 				step: this.state.step + 1,
