@@ -11,7 +11,7 @@ import {
 	showConfirmationAccountDeletionModal,
 } from 'client/spa/modals/confirmation-account-deletion/confirmationAccountDeletionModalTriggers';
 import Spinner from '../../../../common/blocks/spinner/Spinner';
-import {UserAPI} from "../../../../common/api/userAPI";
+import { UserAPI } from 'client/common/api/UserAPI';
 
 enum FieldsNames {
 	fullName = 'fullName',
