@@ -134,13 +134,18 @@ class ManagerAd extends React.Component<IProps, IState> {
 		}
 
 	onSelectCityAd = (city_id: AdInfoFieldsNames) =>
-		(e: ChangeEvent<HTMLInputElement>) => {
+		(e: ChangeEvent<HTMLInputElement>, title: string) => {
+
 			this.setState({
 				adInfoFields: {
 					...this.state.adInfoFields,
 					[city_id]: {
 						value: Number(e.target.value),
 					},
+				},
+				location:{
+					...this.state.location,
+					name: title,
 				},
 			});
 	};

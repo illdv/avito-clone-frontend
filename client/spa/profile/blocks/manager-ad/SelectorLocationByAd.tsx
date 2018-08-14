@@ -6,7 +6,7 @@ export interface IProps {
 	location: ILoaded;
 	currentCity: number;
 
-	onChange(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void;
+	onChange(e: ChangeEvent<HTMLInputElement>, title?: string ): void;
 }
 export interface IDefaultFields {
 	id?: number,
@@ -53,7 +53,7 @@ class SelectorLocationByAd extends Component<IProps, IState> {
 		};
 	};
 
-	changeCountry = e => {
+	changeCountry = (e) => {
 		const id: number = Number(e.target.value);
 		if (id !== this.state.country_id) {
 			this.setState({
@@ -62,6 +62,7 @@ class SelectorLocationByAd extends Component<IProps, IState> {
 				title_city: '',
 				city_id: null,
 				region_id: null,
+				title_country: 'Select country',
 				title_region: 'Select region',
 			});
 		}
@@ -73,6 +74,13 @@ class SelectorLocationByAd extends Component<IProps, IState> {
 				});
 			})
 			.catch(e => console.log(e));
+		const count = this.props.location.session.countries.find(country => {
+			return country.country_id === id;
+		})
+
+		this.setState({
+			title_country: count.title,
+		});
 	};
 
 	changeRegion = e => {
@@ -93,6 +101,14 @@ class SelectorLocationByAd extends Component<IProps, IState> {
 				});
 			})
 			.catch(e => console.log(e));
+
+		const regi = this.state.regions.find(region => {
+			return region.region_id === id;
+		})
+
+		this.setState({
+			title_region: regi.title,
+		});
 	};
 
 	async componentWillMount() {
@@ -103,14 +119,17 @@ class SelectorLocationByAd extends Component<IProps, IState> {
 			const country = this.props.location.session.countries.find(country => {
 				return country.country_id === cityResponse.data[0].country_id;
 			});
+			const currentRegion = regionResponse.data.find(region => {
+				return region.region_id === cityResponse.data[0].region_id;
+			});
 			this.setState({
 				regions: regionResponse.data,
 				cities: cities.data,
 				country_id: country.country_id,
 				city_id: this.props.currentCity,
-				region_id: regionResponse.data[0].region_id,
+				region_id: cityResponse.data[0].region_id,
 				title_country: country.title,
-				title_region: regionResponse.data[0].title,
+				title_region: currentRegion.title,
 				title_city: cityResponse.data[0].title,
 			});
 		} else {
@@ -124,7 +143,11 @@ class SelectorLocationByAd extends Component<IProps, IState> {
 	}
 
 	selectCity = (e) => {
-		this.props.onChange(e);
+		const city = this.state.cities.find(city => {
+			return Number(city.city_id) === Number(e.target.value);
+		});
+		const loc = this.state.title_country + ', ' + this.state.title_region + ', ' + city.title;
+		this.props.onChange(e, loc);
 	}
 
 	render() {
