@@ -13,8 +13,8 @@ export interface IState {
 class LoginForm extends React.Component<null, IState> {
 	state: IState = {
 		fields: {
-			email: 'dev@cronix.ms',
-			password: '111111',
+			email: '',
+			password: '',
 		},
 		isRememberMe: true,
 	};
