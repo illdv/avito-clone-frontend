@@ -1,15 +1,13 @@
 import React from 'react';
 import Modal from '../../../common/modal-juggler/Modal';
-import { IModalJugglerState, ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
+import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
 import { UserActions } from '../../../common/entities/user/rootActions';
 import { hideForgotPasswordModal } from './forgotPasswordModalTriggers';
 import { IRootState } from 'client/common/store/storeInterface';
 import { connect } from 'react-redux';
-import fetch from 'node-fetch';
 
 export interface IState {
 	fields: {
-		email: string,
 		code: string;
 		password: string;
 		password_confirmation: string;
