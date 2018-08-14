@@ -82,7 +82,8 @@ function* edit(action: Action<any>) {
 
 function* deleteImage(action: Action<{ id: string }>) {
 	try {
-		yield call(AdsAPI.deleteImage, action.payload.id);
+		// @ts-ignore
+        yield call(AdsAPI.deleteImage, action.payload.id);
 		yield put(ownedAdsActions.deleteImage.SUCCESS({}));
 		Toasts.info('Image deleted');
 	} catch (e) {

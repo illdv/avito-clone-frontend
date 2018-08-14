@@ -12,8 +12,6 @@ describe('Favorites Ads Saga', () => {
 	});
 
 	it('should set new favorite Ad', () => {
-
 		// expect(value).toEqual(expectedState);
 	});
-
 });

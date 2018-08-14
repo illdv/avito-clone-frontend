@@ -11,6 +11,7 @@ import {
 	showConfirmationAccountDeletionModal,
 } from 'client/spa/modals/confirmation-account-deletion/confirmationAccountDeletionModalTriggers';
 import Spinner from '../../../../common/blocks/spinner/Spinner';
+import { UserAPI } from 'client/common/api/UserAPI';
 
 enum FieldsNames {
 	fullName = 'fullName',
@@ -70,9 +71,23 @@ export class ProfileSettings extends React.Component<IProps, IState> {
 		});
 	}
 
+	clearPasswordFields = () => () => {
+		this.setState({
+			passwordFields: {
+				old_password: '',
+				password: '',
+				password_confirmation: '',
+			},
+		});
+	}
+
 	onPasswordChange = () => {
 		const {old_password, password, password_confirmation} = this.state.passwordFields;
+		UserAPI.changePassword(this.state.passwordFields).then(
+			this.clearPasswordFields(),
+		);
 		UserActions.profile.changePassword.REQUEST({old_password, password, password_confirmation});
+
 	}
 	
 	onFileLoad = file => this.setState({ file });
@@ -250,6 +265,7 @@ export class ProfileSettings extends React.Component<IProps, IState> {
 									name='old_password'
 									className='form-control'
 									id='old_password'
+									value={ this.state.passwordFields.old_password }
 									onChange={this.onChange}
 								/>
 							</div>
@@ -267,6 +283,7 @@ export class ProfileSettings extends React.Component<IProps, IState> {
 									name='password'
 									className='form-control'
 									id='password'
+									value={ this.state.passwordFields.password }
 									onChange={this.onChange}
 								/>
 							</div>
@@ -284,6 +301,7 @@ export class ProfileSettings extends React.Component<IProps, IState> {
 									className='form-control'
 									id='password_confirmation'
 									name='password_confirmation'
+									value={ this.state.passwordFields.password_confirmation }
 									onChange={this.onChange}
 								/>
 							</div>

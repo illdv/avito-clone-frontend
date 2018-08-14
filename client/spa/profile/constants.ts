@@ -16,6 +16,7 @@ export const profileSettingsPagePath = `${profilePagePath}/settings`;
 export const createAdPagePagePath = `${profilePagePath}/ad/create`;
 
 // edit ad
+export const editAdPagePath = `${profilePagePath}/ad/edit/:id`;
 export const editAdPagePathCreator = (id: number) => `${profilePagePath}/ad/edit/${id}`;
 
 export const defaultPagePath = myActiveAdsPagePath;

@@ -10,6 +10,7 @@ import {
 	ILocationStoreState,
 } from 'client/common/location/module';
 import LocationModal from './LocationModal';
+import { hideLocationModal } from 'client/ssr/modals/location/locationModalTriggers';
 
 export interface ISearchLocationModalProps {
 	locationState: ILocationStoreState;
@@ -30,6 +31,8 @@ const mapDispatchToProps = dispatch => ({
 
 export class SearchLocationModal extends React.Component<ISearchLocationModalProps> {
 
+	close = () => hideLocationModal(ModalNames.searchLocation);
+
 	render() {
 		return (
 			<LocationModal
@@ -43,7 +46,13 @@ export class SearchLocationModal extends React.Component<ISearchLocationModalPro
 				changeCountry={this.props.changeCountryLocal}
 				changeRegion={this.props.changeRegionLocal}
 				changeCity={this.props.changeCityLocal}
-			/>
+			>
+				<div className='modal-footer p-20'>
+					<button type='button' className='btn button orange-btn w-100' onClick={this.close}>Confirm
+						location
+					</button>
+				</div>
+			</LocationModal>
 		);
 	}
 }

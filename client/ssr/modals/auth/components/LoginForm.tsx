@@ -1,6 +1,7 @@
 import React from 'react';
 import { UserActions } from 'client/common/entities/user/rootActions';
 import { showSendCodeToEmailModal } from 'client/ssr/modals/forgot-password/forgotPasswordModalTriggers';
+import { hideLoginModal } from 'client/ssr/modals/auth/loginModalTriggers';
 
 export interface IState {
 	fields?: {
@@ -13,8 +14,8 @@ export interface IState {
 class LoginForm extends React.Component<null, IState> {
 	state: IState = {
 		fields: {
-			email: 'dev@cronix.ms',
-			password: '111111',
+			email: '',
+			password: '',
 		},
 		isRememberMe: true,
 	};
@@ -44,6 +45,7 @@ class LoginForm extends React.Component<null, IState> {
 	}
 
 	onForgot = () => {
+		hideLoginModal();
 		showSendCodeToEmailModal();
 	}
 

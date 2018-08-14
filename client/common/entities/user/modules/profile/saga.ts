@@ -2,7 +2,7 @@ import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import { Action } from 'redux-act';
 import { AxiosResponse } from 'axios';
 
-import { UserAPI } from '../../../../../../client/common/api/userAPI';
+import { UserAPI } from '../../../../api/UserAPI';
 import { errorHandler } from '../../../../../../client/common/store/errorHandler';
 import { ModalNames } from '../../../../../../client/common/modal-juggler/modalJugglerInterface';
 import { show } from '../../../../../../client/common/modal-juggler/module';

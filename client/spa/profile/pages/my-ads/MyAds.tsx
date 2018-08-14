@@ -3,6 +3,7 @@ import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
 import { NavLink, Route, Switch } from 'react-router-dom';
 
+import Page404 from 'client/common/layouts/Page404';
 import { IRootState } from 'client/common/store/storeInterface';
 import { AdsActionType } from 'client/common/entities/user/modules/owned-ads/interfaces';
 import { UserActions } from 'client/common/entities/user/rootActions';
@@ -10,6 +11,8 @@ import { UserActions } from 'client/common/entities/user/rootActions';
 import Ads from './Ads';
 import { IActiveButtonConfig } from 'client/spa/profile/interfaces/controlButtons';
 import Footer from 'client/ssr/blocks/footer/Footer';
+import { Redirect } from 'react-router';
+import { myDisapprovedAdsPagePath, myCompletedAdsPagePath, myActiveAdsPagePath } from '../../constants';
 
 export interface IProps {
 	user: IUserState;
@@ -19,14 +22,14 @@ const mapStateToProps = (state: IRootState) => ({
 	user: state.user,
 });
 
-const FilterButton: React.SFC<{to: string, label: string, count: number}> = ({to, label, count}) => (
+const FilterButton: React.SFC<{ to: string, label: string, count: number }> = ({ to, label, count }) => (
 	<NavLink
 		to={ to }
 		className='filter-offer__link'
 		activeClassName='link-active'
 	>
-		{label}
-		<span className='grey-text'> {count}</span>
+		{ label }
+		<span className='grey-text'> { count }</span>
 	</NavLink>
 );
 
@@ -154,14 +157,15 @@ class MyAds extends Component<IProps> {
 		return (
 			<>
 				<div className='filter-offer d-flex'>
-					<FilterButton to='/profile/my-ads/disapproved' label='Disapproved' count={sortedAds.disapproved.length} />
-					<FilterButton to='/profile/my-ads/active'      label='Active'      count={sortedAds.active.length} />
-					<FilterButton to='/profile/my-ads/completed'   label='Completed'   count={sortedAds.completed.length} />
+					<FilterButton to={ myDisapprovedAdsPagePath } label='Disapproved' count={sortedAds.disapproved.length} />
+					<FilterButton to={ myActiveAdsPagePath }      label='Active'      count={sortedAds.active.length} />
+					<FilterButton to={ myCompletedAdsPagePath }   label='Completed'   count={sortedAds.completed.length} />
 				</div>
 				<Switch>
-					<Route path='/profile/my-ads/disapproved' component={this.creatorDisapprovedAdsComponent(sortedAds.disapproved)} />
-					<Route path='/profile/my-ads/completed' component={this.creatorCompletedAdsComponent(sortedAds.completed)} />
-					<Route path='/profile/my-ads/active' component={this.creatorActiveAdsComponent(sortedAds.active)} />
+					<Route path={ myDisapprovedAdsPagePath } component={this.creatorDisapprovedAdsComponent(sortedAds.disapproved)} />
+					<Route path={ myCompletedAdsPagePath } component={this.creatorCompletedAdsComponent(sortedAds.completed)} />
+					<Route path={ myActiveAdsPagePath } component={this.creatorActiveAdsComponent(sortedAds.active)} />
+					<Redirect exact to={ myActiveAdsPagePath } />
 				</Switch>
 			</>
 		);

@@ -6,7 +6,7 @@ import SelectCategories from './components/SelectCategories';
 import { IRootState } from 'client/common/store/storeInterface';
 import { getLocationState } from 'client/common/store/selectors';
 import { Category, getCategories } from 'client/ssr/blocks/categories/context';
-import { ILocationStoreState } from 'client/common/location/module';
+import { changeCountryLocal, ILocationStoreState } from 'client/common/location/module';
 
 import { showLocationModal } from 'client/ssr/modals/location/locationModalTriggers';
 import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
