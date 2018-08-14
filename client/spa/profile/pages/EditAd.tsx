@@ -109,6 +109,7 @@ class EditAd extends React.Component<IProps, IState> {
 		return  <ManagerAd initialAd={ this.state.editingAd }
 		                   callback={ this.onEdit }
 		                   loadedLocation={ this.props.locationState.loaded }
+		                   isEditing={ true }
 		/>;
 	}
 }

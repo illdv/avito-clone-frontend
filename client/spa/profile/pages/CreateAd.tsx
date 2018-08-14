@@ -49,7 +49,7 @@ class CreateAd extends React.Component<IProps> {
 		if (!this.props.user.profile) {
 			return <Spinner />;
 		}
-		return  <ManagerAd callback={ this.onSave } loadedLocation={ this.props.location.loaded } />;
+		return  <ManagerAd callback={ this.onSave } loadedLocation={ this.props.location.loaded } isEditing={false}/>;
 	}
 }
 
