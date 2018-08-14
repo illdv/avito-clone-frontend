@@ -27,7 +27,7 @@ class CreateAd extends React.Component<IProps> {
 		UserActions.ownedAds.create.REQUEST({
 			title: state.adInfoFields.title.value,
 			description: state.adInfoFields.description.value,
-			city_id: this.props.location.local.idCity || 1,
+			city_id: state.adInfoFields.city_id.value || 0,
 			price: state.adInfoFields.price.value,
 			address: state.adInfoFields.address.value,
 			body: '123213',
@@ -49,7 +49,7 @@ class CreateAd extends React.Component<IProps> {
 		if (!this.props.user.profile) {
 			return <Spinner />;
 		}
-		return  <ManagerAd callback={ this.onSave } />;
+		return  <ManagerAd callback={ this.onSave } loadedLocation={ this.props.location.loaded } />;
 	}
 }
 
