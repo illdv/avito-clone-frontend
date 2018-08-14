@@ -41,37 +41,39 @@ const error = new Error('lol');
 jest.mock('redux-saga');
 
 describe('Success created ad', () => {
-	const saga = sagaHelper(create({payload:request}));
+	// @ts-ignore
+	const saga = sagaHelper(create({payload: request}));
 
-	saga('Send request for create ad', result => {
+	   saga('Send request for create ad', result => {
 		expect(result)
 			.toEqual(
+				// @ts-ignore
 				call(AdsAPI.create, request),
 			);
 	});
 
-	saga('Ad success create', result => {
+	   saga('Ad success create', result => {
 		expect(result)
 			.toEqual(
 				put(ownedAdsActions.create.SUCCESS({})),
 			);
 	});
 
-	saga('Change page', result => {
+	   saga('Change page', result => {
 		expect(result)
 			.toEqual(
 				put(ownedAdsActions.changePage.REQUEST(PageNames.Profile)),
 			);
 	});
 
-	saga('Delay', result => {
+	   saga('Delay', result => {
 		expect(result)
 			.toEqual(
 				delay(500),
 			);
 	});
 
-	saga('Toast', result => {
+	   saga('Toast', result => {
 		expect(result)
 			.toEqual(
 				Toasts.info('Ad created'),
@@ -80,25 +82,27 @@ describe('Success created ad', () => {
 });
 
 describe('Fails', () => {
+	// @ts-ignore
 	const saga = sagaHelper(create({ payload: request }));
 
-	saga('Send request for create ad', result => {
+	   saga('Send request for create ad', result => {
 		expect(result)
 			.toEqual(
+				// @ts-ignore
 				call(AdsAPI.create, request),
 			);
 
-		return error;
+			return error;
 	});
 
-	saga('Get fail and processing', result => {
+	   saga('Get fail and processing', result => {
 		expect(result)
 			.toEqual(
 				call(errorHandler, error),
 			);
 	});
 
-	saga('Create fail action', result => {
+	   saga('Create fail action', result => {
 		expect(result)
 			.toEqual(
 				put(ownedAdsActions.create.FAILURE({})),

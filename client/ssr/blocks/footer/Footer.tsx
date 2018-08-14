@@ -7,9 +7,7 @@ export interface IShowFooterProps{
 }
 
 class Footer extends React.Component<IShowFooterProps> {
-	constructor(props, context) {
-		super(props, context);
-	}
+
 
 	render() {
 		return (

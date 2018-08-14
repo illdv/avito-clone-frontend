@@ -17,11 +17,6 @@ interface IProps {
 }
 
 class Navbar extends React.Component<IProps> {
-	constructor(props, context) {
-		super(props, context);
-	}
-
-
 	render() {
 		const method = this.props.user.profile
 			? () => location.href = createAdPagePagePath
