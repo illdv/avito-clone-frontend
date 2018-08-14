@@ -31,12 +31,12 @@ function* resetPassword(action) {
 		yield call(UserAPI.sendCodeToEmail, action.payload);
 		yield put(commonActions.sendCode.SUCCESS({}));
 		const email = action.payload.email;
-		yield put(hide({ name: ModalNames.sendCodeToEmail, meta: email }));
+		yield put(hide({name: ModalNames.sendCodeToEmail, meta: email}));
 		yield put(show(ModalNames.forgotPassword));
 
 		const userData = yield take(commonActions.resetPasswordByCode.REQUEST);
 		yield call(UserAPI.resetPasswordByCode, userData.payload);
-		yield put(hide({ name: ModalNames.forgotPassword }));
+		yield put(hide({name: ModalNames.forgotPassword}));
 		yield put(show(ModalNames.success));
 	} catch (e) {
 		yield call(errorHandler, e);

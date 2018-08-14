@@ -27,11 +27,9 @@ const reducer = createReducer({}, defaultState);
 
 reducer.on(show, (state, payload): IModalJugglerState => {
 	const modal: IModal = { name: payload, zIndex: state.modals.length + 100 };
-	const meta: string = state.meta;
 	return {
 		...state,
 		modals: [...state.modals, modal],
-		meta: meta,
 	};
 });
 

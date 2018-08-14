@@ -1,5 +1,3 @@
-import { CategoryFilterAppender } from 'log4js';
-
 export enum AdAppendsFields {
 	total_visits = 'total_visits',
 	today_visits = 'today_visits',

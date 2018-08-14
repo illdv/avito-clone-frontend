@@ -9,6 +9,7 @@ import fetch from 'node-fetch';
 
 export interface IState {
 	fields: {
+		email: string,
 		code: string;
 		password: string;
 		password_confirmation: string;
@@ -37,11 +38,11 @@ class ResetPasswordModal extends React.Component<IProps, IState> {
 
 	onSubmit = () => {
 		const {code, password, password_confirmation} = this.state.fields;
-		UserActions.common.resetPasswordByCode.REQUEST({email: this.props.meta, token: code, password, password_confirmation});
-	};
-
-	shouldComponentUpdate() {
-		return false;
+		UserActions.common.resetPasswordByCode.REQUEST({
+			email: this.props.meta,
+			token: code, password,
+			password_confirmation,
+		});
 	};
 
 	close = () => hideForgotPasswordModal();
@@ -65,25 +66,25 @@ class ResetPasswordModal extends React.Component<IProps, IState> {
 						<h4 className='grey-text p-x-10'>Enter your email address, secret code and new password</h4>
 					</div>
 					<div className='auth-form'>
-						{/*<div className='form-group row auth-input__wrapper'>*/}
-							{/*<label*/}
-								{/*className='col-sm-5 col-form-label'*/}
-								{/*htmlFor='email'*/}
-							{/*>*/}
-								{/*Email*/}
-							{/*</label>*/}
-							{/*<input*/}
-								{/*type='email'*/}
-								{/*id='email'*/}
-								{/*className='col-sm-6 form-control'*/}
-								{/*name='email'*/}
-								{/*required*/}
-								{/*placeholder='Enter email'*/}
-								{/*value={this.state.fields.email}*/}
-								{/*disabled*/}
-								{/*autoComplete='off'*/}
-							{/*/>*/}
-						{/*</div>*/}
+						<div className='form-group row auth-input__wrapper'>
+							<label
+								className='col-sm-5 col-form-label'
+								htmlFor='email'
+							>
+								Email
+							</label>
+							<input
+								type='text'
+								id='email'
+								className='col-sm-6 form-control'
+								name='email'
+								required
+								placeholder='Enter email'
+								value={this.props.meta || ''}
+								disabled
+								autoComplete='off'
+							/>
+						</div>
 						<div className='form-group row auth-input__wrapper'>
 							<label
 								className='col-sm-5 col-form-label'
