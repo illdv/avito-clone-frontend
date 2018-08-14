@@ -41,8 +41,9 @@ export const formatData = (data): string => {
 export const adsPaginationPage: prepareMethod = async (sugar, req) => {
 	try {
 		const query = getQueryWithLocation(req);
+		const orderBy = 'orderBy[created_at]=desc';
 
-		const response = await instance.get(`/ads?${formatData({ ...query, ...getDataForAdsIndexPage })}`);
+		const response = await instance.get(`/ads?${orderBy}&${formatData({ ...query, ...getDataForAdsIndexPage })}`);
 		const ads      = response.data.data;
 		const vip      = response.data.vip;
 		const lastPage = response.data.last_page;

@@ -174,7 +174,7 @@ const CategoryList = ({ items, title }: ICategoryListProps) => (
 					onClick={item.onClick}
 					className={activeClassName(item.isActive)}
 				>
-					{`${item.title} ${item.countChildren}`}
+					{item.title}
 				</a>
 			))
 		}

@@ -17,12 +17,15 @@ import {
 import { UserActions } from 'client/common/entities/user/rootActions';
 import { getCategories } from 'client/ssr/blocks/categories/context';
 import { IOption } from './interface';
+import { ILoaded } from '../../../../common/location/module';
+import Ad from 'client/ssr/blocks/ad/Ad';
 
 interface IProps {
 	initialAd?: IAd;
 	user: IUserState;
 	categories: ICategory[];
 	callback(state: IState): void;
+	loadedLocation: ILoaded;
 }
 
 export interface IState {
@@ -71,7 +74,7 @@ class ManagerAd extends React.Component<IProps, IState> {
 					price: { disable: false, value: '' },
 					description: { disable: false, value: '' },
 					address: { disable: false, value: ''},
-					city_id: {value: ''},
+					city_id: {value: 0},
 				},
 				selectedCategories: [],
 				attachedImages: [],
@@ -130,6 +133,22 @@ class ManagerAd extends React.Component<IProps, IState> {
 			});
 		}
 
+	onSelectCityAd = (city_id: AdInfoFieldsNames) =>
+		(e: ChangeEvent<HTMLInputElement>, title: string) => {
+
+			this.setState({
+				adInfoFields: {
+					...this.state.adInfoFields,
+					[city_id]: {
+						value: Number(e.target.value),
+					},
+				},
+				location:{
+					...this.state.location,
+					name: title,
+				},
+			});
+	};
 	createtorChangeSellerInfoField = (name: SellerFieldsNames) =>
 		(e: ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => {
 			this.setState({
@@ -261,6 +280,8 @@ class ManagerAd extends React.Component<IProps, IState> {
 						onSelectTypeAd={ this.onSelectTypeAd }
 						selectedType={ this.state.selectedType }
 						typeIds={ this.state.typeIds }
+						loadedLocation={this.props.loadedLocation}
+						onSelectCityAd={ this.onSelectCityAd }
 
 					/>
 					<div className='container page-create'>

@@ -45,7 +45,7 @@ class Ads extends React.Component<IAdsProps, IAdsState> {
 			ads: this.props.ads,
 			page: 1,
 			spinner: false,
-			sort: '',
+			sort: 'orderBy[created_at]=desc',
 		};
 	}
 	addToFavorites = (id: number) => {

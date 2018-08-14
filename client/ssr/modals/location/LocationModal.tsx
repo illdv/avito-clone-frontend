@@ -75,8 +75,7 @@ export class LocationModal extends React.Component<ILocationModalProps> {
 	}
 
 	close = () => {
-		hideLocationModal(this.props.name);
-		location.reload();
+		hideLocationModal(ModalNames.location);
 	}
 
 	render() {
@@ -128,11 +127,6 @@ export class LocationModal extends React.Component<ILocationModalProps> {
 							</div>
 							{this.props.children}
 						</form>
-					</div>
-					<div className='modal-footer p-20'>
-						<button type='button' className='btn button orange-btn w-100' onClick={this.close}>Confirm
-							location
-						</button>
 					</div>
 				</div>
 			</Modal>

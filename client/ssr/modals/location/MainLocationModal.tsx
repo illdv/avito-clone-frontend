@@ -36,6 +36,8 @@ export class MainLocationModal extends React.Component<IMainLocationModalProps> 
 		hideLocationModal(ModalNames.location);
 	}
 
+	confirm = () => location.reload();
+
 	render() {
 		return (
 			<LocationModal
@@ -53,6 +55,11 @@ export class MainLocationModal extends React.Component<IMainLocationModalProps> 
 				<a onClick={this.doNotAskAgain}>
 					Do not ask again.
 				</a>
+				<div className='modal-footer p-20'>
+					<button type='button' className='btn button orange-btn w-100' onClick={this.confirm}>Confirm
+						location
+					</button>
+				</div>
 			</LocationModal>
 		);
 	}
