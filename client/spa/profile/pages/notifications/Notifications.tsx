@@ -75,7 +75,7 @@ class Notification extends Component<IProps, IState> {
 		}
 
 		this.setState({
-			selected: selected,
+			selectedIds: selected,
 			selectedAll: !selectedAll,
 		});
 		console.log(this.state.selected);
@@ -90,9 +90,9 @@ class Notification extends Component<IProps, IState> {
 
 	onSelect = (id: string) => {
 		this.setState({
-			selected:
+			selectedIds:
 				{
-					...this.state.selected,
+					...this.state.selectedIds,
 					id,
 				},
 		});
@@ -100,13 +100,13 @@ class Notification extends Component<IProps, IState> {
 
 	onUnSelect = (selectedId: string) => {
 		this.setState({
-			selected: this.state.selected.filter(id => id !== selectedId),
+			selectedIds: this.state.selectedIds.filter(id => id !== selectedId),
 		});
 	}
 
 	onSelectAll = () => {
 		this.setState({
-			selected: this.props.user.notifications.items,
+			selectedIds: this.props.user.notifications.items,
 		});
 	}
 
