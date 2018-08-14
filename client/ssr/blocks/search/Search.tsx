@@ -11,7 +11,6 @@ import { ILocationStoreState } from 'client/common/location/module';
 import { showLocationModal } from 'client/ssr/modals/location/locationModalTriggers';
 import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
 import PriceRange from 'client/ssr/blocks/search/components/PriceRange';
-import { getQueryLoop } from 'client/ssr/contexts/QueryContext';
 import { findCategoriesQueueById, useOrDefault } from 'client/spa/profile/utils/createAd';
 import { pushInRouter } from 'client/common/utils/utils';
 import { IQuery } from 'client/common/search/interface';
@@ -23,25 +22,26 @@ interface IOption {
 	item: ITotalOptions;
 }
 
-interface ISearchProps {
+interface IProps {
 	onSearch: () => void;
 	query: IQuery;
-
+	urlString: string;
 	categories: Category;
 	idActiveCategory: number;
 	locationState: ILocationStoreState;
 	priceRange?: boolean;
 }
 
-interface ISearchState {
+interface IState {
+	urlString: string;
 	searchString: string;
-	activeCategories: any;
+	selectedCategories: any;
 	duplicateCategories: any;
 	options: IOption[];
 	rangePrice: {
-		priceType: string;
-		priceFrom: string;
-		priceTo: string;
+		priceType: number;
+		priceFrom: number;
+		priceTo: number;
 	};
 }
 
@@ -64,52 +64,74 @@ const getOption = (option: IOption, creatorChangeOption) => (
 	</>
 );
 
-class Search extends React.Component<ISearchProps, ISearchState> {
+class Search extends React.Component<IProps, IState> {
 	constructor(props, context) {
 		super(props, context);
-		const query: any      = this.props.query || {};
-		const categoryId      = useOrDefault(() => query.category_id, null);
-		const categoriesQueue = categoryId && findCategoriesQueueById(this.props.categories, Number(categoryId)) || [];
-		const options         = [];
+	}
 
-		if (categoriesQueue.length > 1) {
-			const totalOptions = categoriesQueue[categoriesQueue.length - 1].total_options;
-			totalOptions.forEach(option => {
-				options.push({
-					value: query && query.options[option.id] || '',
-					item: option,
+	state: IState = {
+		urlString: '',
+		searchString: '',
+		rangePrice: {
+			priceType: null,
+			priceTo: null,
+			priceFrom: null,
+		},
+		options: [],
+		duplicateCategories: [],
+		selectedCategories: [],
+	};
+
+	static getDerivedStateFromProps(nextProps: IProps, prevState: IState): IState {
+		const { urlString, query, categories } = nextProps;
+		const { whereLike }                    = query;
+		const options                          = [];
+
+		if (urlString !== prevState.urlString) {
+			const categoryId      = query.category_id;
+			const categoriesQueue = categoryId && findCategoriesQueueById(categories, Number(categoryId)) || [];
+
+			if (categoriesQueue.length > 1) {
+				const totalOptions = categoriesQueue[categoriesQueue.length - 1].total_options;
+				totalOptions.forEach(option => {
+					options.push({
+						value: query && query.options[option.id] || '',
+						item: option,
+					});
 				});
-			});
-		}
+			}
 
-		this.state = {
-			duplicateCategories: this.props.categories,
-			activeCategories: categoriesQueue,
-			searchString: useOrDefault(() => query.whereLike.title, ''),
-			options,
-			rangePrice: {
-				priceType: query.type || null,
-				priceFrom: useOrDefault(() => query.whereBetween.price[0], null),
-				priceTo: useOrDefault(() => query.whereBetween.price[1], null),
-			},
-		};
+			return {
+				urlString,
+				searchString: whereLike.title,
+				selectedCategories: categoriesQueue,
+				duplicateCategories: categories,
+				options,
+				rangePrice: {
+					priceType: query.type || null,
+					priceFrom: query.whereBetween['price[0]'],
+					priceTo: query.whereBetween['price[1]'],
+				},
+			};
+		}
+		return null;
 	}
 
 	onSelectCategory = category => {
 		if (category) {
-			if (this.state.activeCategories[0] !== category) {
+			if (this.state.selectedCategories[0] !== category) {
 				this.setState({
-					activeCategories: [category],
+					selectedCategories: [category],
 					options: [],
 				});
 			}
 		} else {
-			this.setState({ activeCategories: [], options: [] });
+			this.setState({ selectedCategories: [], options: [] });
 		}
 	}
 
 	onSelectSubcategory = (category, parent) => {
-		const categories = this.state.activeCategories;
+		const categories = this.state.selectedCategories;
 
 		const indexParent = categories.indexOf(parent);
 
@@ -119,7 +141,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 				newCategories.push(category);
 
 				this.setState({
-					activeCategories: newCategories,
+					selectedCategories: newCategories,
 					options: this.getCorrectOptions(category),
 				});
 			} else {
@@ -128,7 +150,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 		} else {
 			const newCategories = categories.slice(0, indexParent + 1);
 			this.setState({
-				activeCategories: newCategories,
+				selectedCategories: newCategories,
 			});
 		}
 	}
@@ -166,17 +188,19 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 
 	onSubmit = e => {
 		e.preventDefault();
-		const { idCity, idRegion, idCountry }                   = this.props.locationState.local;
-		const { rangePrice: { priceType, priceFrom, priceTo } } = this.state;
+
+		const { idCity, idRegion, idCountry }                  = this.props.locationState.local;
+		const { rangePrice, searchString, selectedCategories } = this.state;
+		const { priceType, priceFrom, priceTo }                = rangePrice;
 
 		const query: any = {
-			'whereLike[title]': this.state.searchString,
-			'whereLike[body]': this.state.searchString,
-			'whereLike[description]': this.state.searchString,
+			'whereLike[title]': searchString,
+			'whereLike[body]': searchString,
+			'whereLike[description]': searchString,
 		};
 
-		if (this.state.activeCategories.length > 0) {
-			query.category_id = this.state.activeCategories[this.state.activeCategories.length - 1].id;
+		if (selectedCategories.length > 0) {
+			query.category_id = selectedCategories[selectedCategories.length - 1].id;
 		}
 
 		if (idCity) {
@@ -187,19 +211,19 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 			query.country_id = idCountry;
 		}
 
-		if (priceType && priceType.length > 0) {
+		if (priceType) {
 			query.type = priceType;
 		}
 
 		let between = '';
 
-		if (priceFrom && priceFrom.length > 0) {
+		if (priceFrom) {
 			between += `&whereBetween[price][0]=${priceFrom}`;
-		} else if (priceTo && priceTo.length > 0) {
+		} else if (priceTo) {
 			between += `&whereBetween[price][0]=0`;
 		}
 
-		if (priceTo && priceTo.length > 0) {
+		if (priceTo) {
 			between += `&whereBetween[price][1]=${priceTo}`;
 		}
 
@@ -218,7 +242,7 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 	}
 
 	get subcategories() {
-		return this.state.activeCategories;
+		return this.state.selectedCategories;
 	}
 
 	get isSubcategories() {
@@ -226,24 +250,22 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 	}
 
 	get categories() {
-		return this.state.activeCategories;
+		return this.state.selectedCategories;
 	}
 
 	get lastSubcategory() {
-		return this.state.activeCategories[this.state.activeCategories.length - 1];
+		return this.state.selectedCategories[this.state.selectedCategories.length - 1];
 	}
 
 	get localeName() {
-		const { city_id, region_id, country_id } = getQueryLoop();
+		const { city_id, region_id, country_id } = this.props.query;
 
 		if (city_id) {
 			const cities = this.props.locationState.loaded.local.cities;
 			if (cities.length > 0) {
-
 				const result = cities.filter(city => {
 					return Number(city_id) === city.city_id;
 				});
-
 				if (result.length > 0) {
 					return result[0].title;
 				}
@@ -251,8 +273,9 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 		}
 
 		if (region_id) {
-			if (this.props.locationState.loaded.local.regions.length > 0) {
-				const result = this.props.locationState.loaded.local.regions.filter(region => {
+			const regions = this.props.locationState.loaded.local.regions;
+			if (regions.length > 0) {
+				const result = regions.filter(region => {
 					return Number(region_id) === region.region_id;
 				});
 				if (result.length > 0) {
@@ -262,8 +285,9 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 		}
 
 		if (country_id) {
-			if (this.props.locationState.loaded.local.countries.length > 0) {
-				const result = this.props.locationState.loaded.local.countries.filter(country => {
+			const countries = this.props.locationState.loaded.local.countries;
+			if (countries.length > 0) {
+				const result = countries.filter(country => {
 					return Number(country_id) === country.country_id;
 				});
 				if (result.length > 0) {
@@ -275,20 +299,35 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 		return 'World';
 	}
 
-	onSetPriceType = (priceType: string) => {
-		this.setState(({ rangePrice }) => ({ rangePrice: { ...rangePrice, priceType } }));
+	onSetPriceType = (priceType: number) => {
+		this.setState(({ rangePrice }) => ({
+			rangePrice: {
+				...rangePrice,
+				priceType,
+			},
+		}));
 	}
 
-	onSetPriceFrom = (priceFrom: string) => {
-		this.setState(({ rangePrice }) => ({ rangePrice: { ...rangePrice, priceFrom } }));
+	onSetPriceFrom = (priceFrom: number) => {
+		this.setState(({ rangePrice }) => ({
+			rangePrice: {
+				...rangePrice,
+				priceFrom,
+			},
+		}));
 	}
 
-	onSetPriceTo = (priceTo: string) => {
-		this.setState(({ rangePrice }) => ({ rangePrice: { ...rangePrice, priceTo } }));
+	onSetPriceTo = (priceTo: number) => {
+		this.setState(({ rangePrice }) => ({
+			rangePrice: {
+				...rangePrice,
+				priceTo,
+			},
+		}));
 	}
 
 	get selectedCategoriesIds() {
-		return this.state.activeCategories.map(category => category.id);
+		return this.state.selectedCategories.map(category => category.id);
 	}
 
 	renderLineSearch = () => {
@@ -336,6 +375,54 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 		);
 	}
 
+	renderSubcategories = () => {
+		if (this.isSubcategories) {
+			return (
+				<div className='search form-inline form-row' >
+					{
+						this.subcategories.map(category => (
+							category.children.length > 0
+								?
+								<>
+									<div
+										key={category.id}
+										className='form-group col-6 col-md-3'
+									>
+										<label htmlFor='' >
+											Sub-Category
+										</label >
+										<SelectCategories
+											currentCategory={category}
+											categories={category.children}
+											selectedCategoriesIds={this.selectedCategoriesIds}
+											idDefaultCategory={useOrDefault(() => this.props.query.category_id, -1)}
+											onSelect={this.onSelectSubcategory}
+											label={'Subcategory'}
+											parent={category}
+										/>
+									</div >
+								</>
+								: null
+						))
+					}
+					{
+						this.lastSubcategory &&
+						this.state.options.map(option => (
+							<div
+								key={option.item.id}
+								className='form-group col-6 col-md-3'
+							>
+								{getOption(option, this.creatorChangeOption)}
+							</div >
+						))
+					}
+				</div >
+			);
+		}
+
+		return null;
+	}
+
 	render() {
 		const { priceRange } = this.props;
 
@@ -344,49 +431,8 @@ class Search extends React.Component<ISearchProps, ISearchState> {
 				action='#'
 				onSubmit={this.onSubmit}
 			>
-				{this.renderLineSearch}
-				{
-					this.isSubcategories &&
-					<div className='search form-inline form-row' >
-						{
-							this.subcategories.map(category => (
-								category.children.length > 0
-									?
-										<>
-											<div
-												key={category.id}
-												className='form-group col-6 col-md-3'
-											>
-												<label htmlFor='' >
-													Sub-Category
-												</label >
-												<SelectCategories
-													currentCategory={category}
-													categories={category.children}
-													selectedCategoriesIds={this.selectedCategoriesIds}
-													idDefaultCategory={useOrDefault(() => this.props.query.category_id, -1)}
-													onSelect={this.onSelectSubcategory}
-													label={'Subcategory'}
-													parent={category}
-												/>
-											</div >
-										</>
-									: null
-							))
-						}
-						{
-							this.lastSubcategory &&
-							this.state.options.map(option => (
-								<div
-									key={option.item.id}
-									className='form-group col-6 col-md-3'
-								>
-									{ getOption(option, this.creatorChangeOption) }
-								</div >
-							))
-						}
-					</div >
-				}
+				{this.renderLineSearch()}
+				{this.renderSubcategories()}
 				{
 					priceRange
 						?

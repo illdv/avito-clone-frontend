@@ -4,6 +4,7 @@ import { IQuery } from 'client/common/search/interface';
 
 export interface ISearchState {
 	query: IQuery;
+	queryString: string;
 }
 
 const defaultState: ISearchState = {
@@ -11,17 +12,32 @@ const defaultState: ISearchState = {
 		country_id: null,
 		region_id: null,
 		city_id: null,
-		search: null,
 		currentPage: null,
 		price_from: null,
+		whereBetween: {
+			'price[1]': null,
+			'price[0]': null,
+		},
+		whereLike: {
+			body: '',
+			description: '',
+			title: '',
+		},
 	},
+	queryString: '',
 };
 
 const reducer = createReducer({}, defaultState);
 
-reducer.on(SearchActions.initialize.REQUEST, (state, payload = defaultState): ISearchState => ({
-	...state,
-	...payload,
-}));
+reducer.on(SearchActions.initialize.REQUEST, (state, payload = defaultState): ISearchState => {
+	return {
+		...state,
+		...payload,
+		query: {
+			...state.query,
+			...payload.query,
+		},
+	};
+});
 
-export default  reducer;
+export default reducer;

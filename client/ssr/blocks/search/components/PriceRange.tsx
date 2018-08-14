@@ -2,12 +2,12 @@ import * as React from 'react';
 require('./PriceRange.sass');
 
 interface IPriceRange {
-	to: string;
-	type: string;
-	from: string;
-	setPriceType: (priceType: string) => void;
-	setPriceFrom: (priceFrom: string) => void;
-	setPriceTo: (priceBefore: string) => void;
+	to: number;
+	type: number;
+	from: number;
+	setPriceType: (priceType: number) => void;
+	setPriceFrom: (priceFrom: number) => void;
+	setPriceTo: (priceBefore: number) => void;
 }
 
 const checkSelected = (value, selected) => {
@@ -16,15 +16,15 @@ const checkSelected = (value, selected) => {
 
 const PriceRange: React.SFC<IPriceRange> = ({ to, type, from, setPriceType, setPriceFrom, setPriceTo }) => {
 	const handlePriceType = (event: React.FormEvent<HTMLSelectElement>) => {
-		const priceType: string = event.currentTarget.value;
+		const priceType: number = Number(event.currentTarget.value);
 		setPriceType(priceType);
 	};
 	const handlePriceFrom =  (event: React.FormEvent<HTMLInputElement>) => {
-		const priceFrom: string = event.currentTarget.value;
+		const priceFrom: number = Number(event.currentTarget.value);
 		setPriceFrom(priceFrom);
 	};
 	const handlePriceTo =  (event: React.FormEvent<HTMLInputElement>) => {
-		const priceBefore: string = event.currentTarget.value;
+		const priceBefore: number = Number(event.currentTarget.value);
 		setPriceTo(priceBefore);
 	};
 	return (

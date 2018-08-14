@@ -6,4 +6,15 @@ export interface IQuery {
 	price_from?: object;
 	search?: string;
 	currentPage?: number;
+	options?: any;
+	type?: number;
+	whereBetween?: {
+		'price[0]': number | null,
+		'price[1]': number | null,
+	};
+	whereLike?: {
+		body: string,
+		description: string,
+		title: string,
+	};
 }
