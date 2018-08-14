@@ -26,9 +26,11 @@ import {
 	myAdsPagePath,
 	defaultPagePath,
 	notificationPagePath,
-	profileSettingsPagePath, myActiveAdsPagePath,
+	profileSettingsPagePath, myActiveAdsPagePath, createAdPagePagePath, editAdPagePath,
 } from './constants';
 import Page404 from 'client/common/layouts/Page404';
+
+const myAdsPagesPaths = [ profileSettingsPagePath, notificationPagePath, myAdsPagePath ];
 
 export default class Router extends React.Component {
 	render() {
@@ -40,48 +42,17 @@ export default class Router extends React.Component {
 						<Toolbar />
 						<WithFooter>
 							<Switch>
-								<Route
-									path='/profile/page_not_found'
-									component={Page404}
-								/>
-								<Route
-									path='/profile/ad/create'
-									component={CreateAd}
-								/>
-								<Route
-									path='/profile/ad/edit/:id'
-									component={EditAd}
-								/>
-								<WithMenu
-									path={[
-										'/profile/mock',
-										profileSettingsPagePath,
-										notificationPagePath,
-										myAdsPagePath,
-									]}
-								>
-									<Route
-										path={profileSettingsPagePath}
-										component={ProfileSettings}
-									/>
-									<Route
-										path={notificationPagePath}
-										component={Notifications}
-									/>
-									<Route
-										path={myAdsPagePath}
-										component={MyAds}
-									/>
+								<Route path={ createAdPagePagePath } component={ CreateAd } />
+								<Route path={ editAdPagePath } component={ EditAd } />
+
+								<WithMenu path={ myAdsPagesPaths } >
+									<Route path={ profileSettingsPagePath } component={ ProfileSettings } />
+									<Route path={ notificationPagePath } component={ Notifications } />
+									<Route path={ myAdsPagePath } component={ MyAds } />
 								</WithMenu>
-								<Redirect
-									exact
-									from='/profile'
-									to={myActiveAdsPagePath}
-								/>
-								<Redirect
-									from='/profile/**'
-									to='/profile/page_not_found'
-								/>
+
+								<Redirect exact from='/profile' to={ myActiveAdsPagePath } />
+								<Route from='/profile/**' component={ Page404 } />
 							</Switch>
 						</WithFooter>
 					</PrivareWrap>
