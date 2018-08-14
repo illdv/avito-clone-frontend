@@ -50,6 +50,10 @@ export class LocationModal extends React.Component<ILocationModalProps> {
 		this.props.changeCountry(selectedCountryOption.value);
 	}
 
+	onClearCountry = () => {
+		this.props.changeCountry(null);
+	}
+
 	get prepareDataForRegionToOptions() {
 		const result = this.props.regions.map(item => ({
 			value: item.region_id,
@@ -60,6 +64,10 @@ export class LocationModal extends React.Component<ILocationModalProps> {
 
 	onSelectRegion = (selectedRegionOption: ISelectedOption): void => {
 		this.props.changeRegion(selectedRegionOption.value);
+	}
+
+	onClearRegion = () => {
+		this.props.changeRegion(null);
 	}
 
 	get prepareDataForCityToOptions() {
@@ -74,10 +82,16 @@ export class LocationModal extends React.Component<ILocationModalProps> {
 		this.props.changeCity(selectedCityOption.value);
 	}
 
+	onClearCity = () => {
+		this.props.changeCity(null);
+	}
+
 	close = () => {
 		hideLocationModal(this.props.name);
 		location.reload();
 	}
+
+
 
 	render() {
 		const { idCountry, idRegion, idCity } = this.props;
@@ -98,33 +112,60 @@ export class LocationModal extends React.Component<ILocationModalProps> {
 									Country
 								</label>
 								<Select
-									className='col-9'
+									className='col-8'
 									onChange={this.onSelectCountry}
 									options={this.prepareDataForCountryToOptions}
 									value={this.initSelectedOption(idCountry, this.prepareDataForCountryToOptions)}
 								/>
+								<button
+									onClick={this.onClearCountry}
+									type='button'
+									className='close col-1'
+									data-dismiss='alert'
+									aria-label='Close'
+								>
+									<span aria-hidden='true'>&times;</span>
+								</button>
 							</div>
 							<div className='form-group row align-items-center'>
 								<label htmlFor='chooseState' className='col-3 choose-location__label'>
 									State(region)
 								</label>
 								<Select
-									className='col-9'
+									className='col-8'
 									onChange={this.onSelectRegion}
 									options={this.prepareDataForRegionToOptions}
 									value={this.initSelectedOption(idRegion, this.prepareDataForRegionToOptions)}
 								/>
+								<button
+									onClick={this.onClearRegion}
+									type='button'
+									className='close col-1'
+									data-dismiss='alert'
+									aria-label='Close'
+								>
+									<span aria-hidden='true'>&times;</span>
+								</button>
 							</div>
 							<div className='form-group row align-items-center'>
 								<label htmlFor='chooseCity' className='col-3 choose-location__label'>
 									City
 								</label>
 								<Select
-									className='col-9'
+									className='col-8'
 									onChange={this.onSelectedCity}
 									options={this.prepareDataForCityToOptions}
 									value={this.initSelectedOption(idCity, this.prepareDataForCityToOptions)}
 								/>
+								<button
+									onClick={this.onClearCity}
+									type='button'
+									className='close col-1'
+									data-dismiss='alert'
+									aria-label='Close'
+								>
+									<span aria-hidden='true'>&times;</span>
+								</button>
 							</div>
 							{this.props.children}
 						</form>
