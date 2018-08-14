@@ -18,9 +18,9 @@ function* loading() {
 	}
 }
 
-function* read(action: Action<{ id: string }>) {
+function* read(action: Action<{ ids: string[] }>) {
 	try {
-		yield call(NotificationAPI.read, action.payload.id);
+		yield call(NotificationAPI.read, action.payload.ids);
 		yield put(notificationActions.read.SUCCESS({}));
 		yield put(notificationActions.loading.REQUEST({}));
 	} catch (e) {

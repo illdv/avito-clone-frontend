@@ -8,7 +8,7 @@ const setNoReadCount = createAsyncAction('SET_NO_READ_COUNT');
 
 export interface INotificationActions {
 	loading: IAsyncAction<{}, INotification[]>;
-	read: IAsyncAction<{ id: string }>;
+	read: IAsyncAction<{ ids: string[] }>;
 	setNoReadCount: IAsyncAction<number>;
 }
 

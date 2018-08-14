@@ -1,11 +1,12 @@
-import { AxiosWrapper } from './AxiosWrapper';
+import {AxiosWrapper} from './AxiosWrapper';
 
 function loading() {
 	return AxiosWrapper.get('/notifications');
 }
 
-function read(id: string) {
-	return AxiosWrapper.put(`/notifications/${id}`, { action: 'markAsRead' });
+function read(ids: string[]) {
+	const promiseRead = ids.map(id => AxiosWrapper.put(`/notifications/${id}`, {action: 'markAsRead'}));
+	return Promise.all(promiseRead);
 }
 
 export const NotificationAPI = {
