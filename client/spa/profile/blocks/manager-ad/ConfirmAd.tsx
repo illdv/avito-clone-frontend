@@ -13,6 +13,7 @@ export interface IProps {
 	next(): void;
 	back(): void;
 	vip(e): void;
+	isEditing: boolean;
 }
 
 const ConfirmAd = ({
@@ -28,6 +29,7 @@ const ConfirmAd = ({
 	vip,
 	next,
 	back,
+	isEditing,
 }: IProps) => {
 	const category = selectedCategories.map(item => item.title).join('/');
 
@@ -89,73 +91,78 @@ const ConfirmAd = ({
 				</div>
 				<div className='row'>
 					<div className='col-md-12 col-lg-10 col-xl-7 page-confirmation'>
-						<h4>Choose service</h4>
-						<div className='service-block'>
-							<div className='service-block__item row'>
-								<div className='col-md-1'>
-									<input
-										readOnly
-										type='radio'
-										name='service'
-										value={'Free'}
-										defaultChecked
-										className='service-block__check'
-										onChange={vip}
-									/>
-								</div>
-								<div className='service-block__info col-md-6'>
-									<h5>Free</h5>
-									<span className='d-block'>Free advertisement submission</span>
-									<span className='d-block service-block__period'>Effective 7 days</span>
-								</div>
-								<div className='service-block__price col-md-5'>
-									<h5>0$</h5>
-									<span className='price__discount'>A discount</span>
-								</div>
-							</div>
-							<div className='service-block__item row'>
-								<div className='col-md-1'>
-									<input
-										readOnly
-										type='radio'
-										name='service'
-										value={'Quick'}
-										className='service-block__check'
-										onChange={vip}
-									/>
-								</div>
-								<div className='service-block__info col-md-6'>
-									<h5>Quick sale</h5>
-									<span className='d-block'>10 times as many impressions</span>
-									<span className='d-block service-block__period'>Effective 7 days</span>
-								</div>
-								<div className='service-block__price col-md-5'>
-									<h5>27$</h5>
-									<span className='price__discount'>A discount</span>
-								</div>
-							</div>
-							<div className='service-block__item row'>
-								<div className='col-md-1'>
-									<input
-										readOnly
-										type='radio'
-										name='service'
-										value={'Turbo'}
-										className='service-block__check'
-										onChange={vip}
-									/>
-								</div>
-								<div className='service-block__info col-md-6'>
-									<h5>Turbo</h5>
-									<span className='d-block'>10 times as many impressions</span>
-									<span className='d-block service-block__period'>Effective 14 days</span>
-								</div>
-								<div className='service-block__price col-md-5'>
-									<h5>47$</h5>
-									<span className='price__discount'>A discount</span>
-								</div>
-							</div>
-						</div>
+						{
+							!isEditing &&
+								<>
+									<h4>Choose service</h4>
+									<div className='service-block'>
+										<div className='service-block__item row'>
+											<div className='col-md-1'>
+												<input
+													readOnly
+													type='radio'
+													name='service'
+													value={'Free'}
+													defaultChecked
+													className='service-block__check'
+													onChange={vip}
+												/>
+											</div>
+											<div className='service-block__info col-md-6'>
+												<h5>Free</h5>
+												<span className='d-block'>Free advertisement submission</span>
+												<span className='d-block service-block__period'>Effective 7 days</span>
+											</div>
+											<div className='service-block__price col-md-5'>
+												<h5>0$</h5>
+												<span className='price__discount'>A discount</span>
+											</div>
+										</div>
+										<div className='service-block__item row'>
+											<div className='col-md-1'>
+												<input
+													readOnly
+													type='radio'
+													name='service'
+													value={'Quick'}
+													className='service-block__check'
+													onChange={vip}
+												/>
+											</div>
+											<div className='service-block__info col-md-6'>
+												<h5>Quick sale</h5>
+												<span className='d-block'>10 times as many impressions</span>
+												<span className='d-block service-block__period'>Effective 7 days</span>
+											</div>
+											<div className='service-block__price col-md-5'>
+												<h5>27$</h5>
+												<span className='price__discount'>A discount</span>
+											</div>
+										</div>
+										<div className='service-block__item row'>
+											<div className='col-md-1'>
+												<input
+													readOnly
+													type='radio'
+													name='service'
+													value={'Turbo'}
+													className='service-block__check'
+													onChange={vip}
+												/>
+											</div>
+											<div className='service-block__info col-md-6'>
+												<h5>Turbo</h5>
+												<span className='d-block'>10 times as many impressions</span>
+												<span className='d-block service-block__period'>Effective 14 days</span>
+											</div>
+											<div className='service-block__price col-md-5'>
+												<h5>47$</h5>
+												<span className='price__discount'>A discount</span>
+											</div>
+										</div>
+									</div>
+								</>
+						}
 						<div className='text-right'>
 							<a
 								onClick={back}
@@ -172,7 +179,6 @@ const ConfirmAd = ({
 							</a>
 						</div>
 					</div>
-
 				</div>
 			</div>
 		</section>

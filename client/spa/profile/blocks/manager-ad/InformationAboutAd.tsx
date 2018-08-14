@@ -239,17 +239,6 @@ const InformationAboutAd = ({
 					value={adInfoFields.price.value}
 					onChange={createtorChangeAdInfoField(AdInfoFieldsNames.price)}
 				/>
-				{/*<div className='offer-form__item form-group row align-items-center'>*/}
-				{/*<label*/}
-				{/*htmlFor='location'*/}
-				{/*className='col-md-3 col-lg-4 offer-form__label'*/}
-				{/*>*/}
-				{/*Select location*/}
-				{/*</label>*/}
-				{/*<div className='col-md-9 col-lg-6'>*/}
-				{/*<LocationSelect city_id={adInfoFields.city_id.value}/>*/}
-				{/*</div>*/}
-				{/*</div>*/}
 				<SelectorLocationByAd
 					location={loadedLocation}
 					onChange={onSelectCityAd(AdInfoFieldsNames.city_id)}

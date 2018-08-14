@@ -26,6 +26,7 @@ interface IProps {
 	categories: ICategory[];
 	callback(state: IState): void;
 	loadedLocation: ILoaded;
+	isEditing: boolean;
 }
 
 export interface IState {
@@ -143,7 +144,7 @@ class ManagerAd extends React.Component<IProps, IState> {
 						value: Number(e.target.value),
 					},
 				},
-				location:{
+				location: {
 					...this.state.location,
 					name: title,
 				},
@@ -309,6 +310,7 @@ class ManagerAd extends React.Component<IProps, IState> {
 					vip={ this.isVip }
 					back={ this.back }
 					next={ this.callCallback }
+					isEditing={this.props.isEditing}
 				/>
 			);
 		}

@@ -178,7 +178,7 @@ class SelectorLocationByAd extends Component<IProps, IState> {
 							<option defaultValue={this.state.region_id}>{this.state.title_region}</option>
 							{
 								this.state.regions.map(region => {
-									return <Options id={region.region_id} title={region.title}/>
+									return <Options id={region.region_id} title={region.title} key={region.region_id}/>
 								})
 							}
 						</select>
@@ -191,7 +191,7 @@ class SelectorLocationByAd extends Component<IProps, IState> {
 							<option defaultValue={this.state.city_id}>{this.state.title_city}</option>
 							{
 								this.state.cities.map(city => {
-									return <Options id={city.city_id} title={city.title}/>
+									return <Options id={city.city_id} title={city.title} key={city.city_id}/>
 								})
 							}
 						</select>
