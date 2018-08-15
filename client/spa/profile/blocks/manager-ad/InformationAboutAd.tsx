@@ -19,7 +19,7 @@ interface IProps {
 	attachedImages: IAttachedImage[];
 	adInfoFields: IAdInfoFields;
 	selectedCategories: ICategory[];
-	selectedCategoriesError: string;
+	selectedCategoriesError: ISelectedCategoriesError;
 	sellerInfoFields: ISellerInfoFields;
 	location: ILocation;
 	categories: ICategory[];
@@ -51,7 +51,7 @@ interface IPropsForInput {
 	id: string;
 	type?: string;
 	value: string;
-	error?: string;
+	error: string;
 	title: string;
 	inputClass: string;
 
@@ -101,13 +101,11 @@ const TextArea = ({ id, title, onChange, inputClass, value, error }: IPropsForIn
 	</div>
 );
 
-const InformationAboutAd = ({
-	                            sellerInfoFields, adInfoFields, categories, createtorChangeAdInfoField,
-	                            selectedCategories, selectedCategoriesError, onSelectCategories, attachedImages,
+const InformationAboutAd = ({ sellerInfoFields, adInfoFields, categories, createtorChangeAdInfoField,
+								selectedCategories, selectedCategoriesError, onSelectCategories, attachedImages,
 								onUpdateImages, deleteImage, defaultCategoryId, createtorChangeSellerInfoField,
-	                            location, options, selectedType, typeIds, onSelectTypeAd, creatorChangeOptionById,
-								onSelectLocation, loadedLocation, onSelectCityAd
-                            }: IProps) => (
+								location, options, selectedType, typeIds, onSelectTypeAd, creatorChangeOptionById,
+								onSelectLocation, loadedLocation, onSelectCityAd}: IProps) => (
 	<section className='page'>
 		<div className='container page__container-sm'>
 			<div className='row'>
@@ -254,6 +252,7 @@ const InformationAboutAd = ({
 					location={loadedLocation}
 					onChange={onSelectCityAd(AdInfoFieldsNames.city_id)}
 					currentCity={adInfoFields.city_id.value}
+					error={adInfoFields.city_id.error}
 				/>
 				<Input
 					id={'address'}

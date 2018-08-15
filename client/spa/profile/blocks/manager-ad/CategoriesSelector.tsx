@@ -11,7 +11,7 @@ export interface IState {
 export interface IProps {
 	categories: ICategory[];
 	selectedCategories: ICategory[];
-	selectedCategoriesError: string;
+	selectedCategoriesError: ISelectedCategoriesError;
 	onSelectCategories: (selectedCategories: ICategory[]) => void;
 	defaultCategoryId: number;
 }
@@ -81,12 +81,15 @@ export class CategoriesSelector extends Component<IProps, IState> {
 	}
 
 	renderCategory = (category: ICategory) => {
+		const selectedCategoriesError = this.props.selectedCategoriesError.subCategory;
+
 		if (useOrDefault(() => category.children.length, 0) > 0) {
 			return (
 				<CategoryList
 					key={category.id}
 					items={category.children.map(this.toItem)}
 					title={category.title}
+					selectedCategoriesError={selectedCategoriesError}
 				/>
 			);
 		} else {
@@ -96,26 +99,19 @@ export class CategoriesSelector extends Component<IProps, IState> {
 
 	render() {
 		const categories = this.props.categories;
-		const selectedCategoriesError = this.props.selectedCategoriesError;
+		const selectedCategoriesError = this.props.selectedCategoriesError.category;
 
 		return (
-			<>
-				<div className='select-category'>
-					<CategoryList
-						items={categories.map(this.toItem)}
-						title={'Categories'}
-						selectedCategoriesError={selectedCategoriesError}
-					/>
-					{
-						this.state.selectedCategory.map(this.renderCategory)
-					}
-				</div>
-				<div>
-					<span className='text-danger'>
-						{selectedCategoriesError}
-					</span>
-				</div>
-			</>
+			<div className='select-category'>
+				<CategoryList
+					items={categories.map(this.toItem)}
+					title={'Categories'}
+					selectedCategoriesError={selectedCategoriesError}
+				/>
+				{
+					this.state.selectedCategory.map(this.renderCategory)
+				}
+			</div>
 		);
 	}
 }

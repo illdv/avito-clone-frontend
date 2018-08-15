@@ -24,6 +24,11 @@ interface ICategory {
 	total_options: ITotalOptions[];
 }
 
+interface ISelectedCategoriesError {
+	category: string;
+	subCategory: string;
+}
+
 interface ITotalOptions {
 	id: number;
 	category_id: number;

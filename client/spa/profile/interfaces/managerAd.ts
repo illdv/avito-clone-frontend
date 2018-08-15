@@ -20,6 +20,7 @@ export interface IField {
 }
 export interface INumberField {
 	value: number;
+	error: string;
 }
 
 export interface IAdInfoFields {
