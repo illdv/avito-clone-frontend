@@ -38,11 +38,11 @@ export const formatData = (data): string => {
 	return queryStringifyPlus(data);
 };
 
+export const orderBy = 'orderBy[created_at]=desc';
+
 export const adsPaginationPage: prepareMethod = async (sugar, req) => {
 	try {
 		const query = getQueryWithLocation(req);
-		const orderBy = 'orderBy[created_at]=desc';
-
 		const response = await instance.get(`/ads?${orderBy}&${formatData({ ...query, ...getDataForAdsIndexPage })}`);
 		const ads      = response.data.data;
 		const vip      = response.data.vip;
@@ -79,7 +79,7 @@ export const categoriesByLocation: prepareMethod = async (sugar, req) => {
 };
 
 const getLiteAdsByQueryString = async (queryStringParams: string) => {
-	const response = await instance.get(`/ads/?${ queryStringParams }`);
+	const response = await instance.get(`/ads/?${orderBy}&${ queryStringParams }`);
 	return response.data;
 };
 
