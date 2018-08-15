@@ -11,6 +11,7 @@ export interface IState {
 export interface IProps {
 	categories: ICategory[];
 	selectedCategories: ICategory[];
+	selectedCategoriesError: string;
 	onSelectCategories: (selectedCategories: ICategory[]) => void;
 	defaultCategoryId: number;
 }
@@ -95,17 +96,26 @@ export class CategoriesSelector extends Component<IProps, IState> {
 
 	render() {
 		const categories = this.props.categories;
+		const selectedCategoriesError = this.props.selectedCategoriesError;
 
 		return (
-			<div className='select-category'>
-				<CategoryList
-					items={categories.map(this.toItem)}
-					title={'Categories'}
-				/>
-				{
-					this.state.selectedCategory.map(this.renderCategory)
-				}
-			</div>
+			<>
+				<div className='select-category'>
+					<CategoryList
+						items={categories.map(this.toItem)}
+						title={'Categories'}
+						selectedCategoriesError={selectedCategoriesError}
+					/>
+					{
+						this.state.selectedCategory.map(this.renderCategory)
+					}
+				</div>
+				<div>
+					<span className='text-danger'>
+						{selectedCategoriesError}
+					</span>
+				</div>
+			</>
 		);
 	}
 }
@@ -159,12 +169,13 @@ interface ICategoryListItem {
 interface ICategoryListProps {
 	items: ICategoryListItem[];
 	title: string;
+	selectedCategoriesError: string;
 }
 
-const CategoryList = ({ items, title }: ICategoryListProps) => (
+const CategoryList = ({ items, title, selectedCategoriesError }: ICategoryListProps) => (
 	<div
 		className='select-column w-25'
-		style={{ maxWidth: '25%' }}
+		style={selectedCategoriesError === '' ? {maxWidth: '25%'} : {maxWidth: '25%', border: '1px solid red'}}
 	>
 		<div className='select-column__category'>{title}</div>
 		{

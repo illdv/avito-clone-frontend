@@ -37,6 +37,7 @@ export interface IState {
 	isVip: number;
 	typeIds: number[];
 	selectedType: number;
+	selectedCategoriesError: string;
 }
 
 const mapStateToProps = (state: IRootState) => ({
@@ -67,10 +68,10 @@ class ManagerAd extends React.Component<IProps, IState> {
 				step: 1,
 				sellerInfoFields,
 				adInfoFields: {
-					title: { disable: false, value: '', error: null },
-					price: { disable: false, value: '', error: null },
-					description: { disable: false, value: '', error: null },
-					address: { disable: false, value: '', error: null },
+					title: { disable: false, value: '', error: '' },
+					price: { disable: false, value: '', error: '' },
+					description: { disable: false, value: '', error: '' },
+					address: { disable: false, value: '', error: '' },
 					city_id: {value: ''},
 				},
 				selectedCategories: [],
@@ -86,6 +87,7 @@ class ManagerAd extends React.Component<IProps, IState> {
 				isVip: 0,
 				typeIds: [],
 				selectedType: null,
+				selectedCategoriesError: '',
 			};
 		}
 
@@ -93,30 +95,44 @@ class ManagerAd extends React.Component<IProps, IState> {
 
 	validation = () => {
 
-		const newInputs = Object.assign({}, this.state.adInfoFields);
+		const newInputs = {
+			selectedCategoriesError: '',
+			adInfoFields: {
+				title: {...this.state.adInfoFields.title},
+				price: {...this.state.adInfoFields.price},
+				description: {...this.state.adInfoFields.description},
+				address: {...this.state.adInfoFields.address},
+			}};
+		let errors = [];
 
+		if (this.state.selectedCategories.length === 0) {
+			newInputs.selectedCategoriesError = 'Please select a category';
+			errors = [...errors, 'error'];
+		}
 		if (this.state.adInfoFields.title.value === '') {
-			console.log('error1');
-		 	newInputs.title.error = 'error';
+		 	newInputs.adInfoFields.title.error = 'Please fill in the field';
+			errors = [...errors, 'error'];
 		}
 		if (this.state.adInfoFields.description.value === '') {
-			console.log('error2');
-		 	newInputs.description.error = 'error';
+		 	newInputs.adInfoFields.description.error = 'Please fill in the field';
+			errors = [...errors, 'error'];
 		}
 		if (this.state.adInfoFields.price.value === '') {
-			console.log('error3');
-		 	newInputs.price.error = 'error';
+		 	newInputs.adInfoFields.price.error = 'Please fill in the field';
+			errors = [...errors, 'error'];
 		}
 		if (this.state.adInfoFields.address.value === '') {
-			console.log('error4');
-		 	newInputs.address.error = 'error';
+		 	newInputs.adInfoFields.address.error = 'Please fill in the field';
+			errors = [...errors, 'error'];
 		}
-		console.log(JSON.stringify(newInputs));
-		console.log(JSON.stringify(this.state.adInfoFields));
-		if (JSON.stringify(newInputs) === JSON.stringify(this.state.adInfoFields)) {
+		console.log(JSON.stringify(this.state));
+		if (errors.length === 0) {
 			return (true);
 		} else {
-	 		this.setState({ adInfoFields: newInputs });
+	 		this.setState({
+				adInfoFields: newInputs.adInfoFields,
+				selectedCategoriesError: newInputs.selectedCategoriesError,
+			});
 			return (false);
 	 	}
 	}
@@ -159,6 +175,7 @@ class ManagerAd extends React.Component<IProps, IState> {
 					[name]: {
 						...this.state.adInfoFields[name],
 						value: e.target.value,
+						error: '',
 					},
 				},
 			});
@@ -222,6 +239,7 @@ class ManagerAd extends React.Component<IProps, IState> {
 			options: updatedOptions,
 			selectedType,
 			typeIds,
+			selectedCategoriesError: '',
 		});
 	}
 
@@ -282,6 +300,7 @@ class ManagerAd extends React.Component<IProps, IState> {
 						createtorChangeAdInfoField={ this.createtorChangeAdInfoField }
 						createtorChangeSellerInfoField={ this.createtorChangeSellerInfoField }
 						selectedCategories={ this.state.selectedCategories }
+						selectedCategoriesError={ this.state.selectedCategoriesError }
 						onSelectCategories={ this.onSelectCategories }
 						onUpdateImages={ this.onUpdateImages }
 						deleteImage={ this.deleteImage }

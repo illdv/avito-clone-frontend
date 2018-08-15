@@ -17,6 +17,7 @@ interface IProps {
 	attachedImages: IAttachedImage[];
 	adInfoFields: IAdInfoFields;
 	selectedCategories: ICategory[];
+	selectedCategoriesError: string;
 	sellerInfoFields: ISellerInfoFields;
 	location: ILocation;
 	categories: ICategory[];
@@ -65,17 +66,16 @@ const Input = ({ id, title, type = 'text', onChange, inputClass, value, error }:
 				id={id}
 				type={type}
 				value={value}
+				placeholder={error}
 				onChange={onChange}
-				className='form-control'
+				className={'form-control'}
+				style={error === '' ? {border: '1px solid silver'} : {border: '1px solid red'}}
 			/>
-			<label>
-				{error}
-			</label>
 		</div>
 	</div>
 );
 
-const TextArea = ({ id, title, onChange, inputClass, value }: IPropsForInput) => (
+const TextArea = ({ id, title, onChange, inputClass, value, error }: IPropsForInput) => (
 	<div className='offer-form__item form-group row align-items-center'>
 		<label
 			htmlFor={id}
@@ -87,14 +87,16 @@ const TextArea = ({ id, title, onChange, inputClass, value }: IPropsForInput) =>
 			<textarea
 				id={id}
 				value={value}
+				placeholder={error}
 				onChange={onChange}
+				style={error === '' ? {border: '1px solid silver'} : {border: '1px solid red'}}
 				className='form-control'
 			/>
 		</div>
 	</div>
 );
 
-const InformationAboutAd = ({ sellerInfoFields, adInfoFields, categories, createtorChangeAdInfoField, selectedCategories, onSelectCategories, attachedImages, onUpdateImages, deleteImage, defaultCategoryId, createtorChangeSellerInfoField, location, options, selectedType, typeIds, onSelectTypeAd, creatorChangeOptionById, onSelectLocation}: IProps) => (
+const InformationAboutAd = ({ sellerInfoFields, adInfoFields, categories, createtorChangeAdInfoField, selectedCategories, selectedCategoriesError, onSelectCategories, attachedImages, onUpdateImages, deleteImage, defaultCategoryId, createtorChangeSellerInfoField, location, options, selectedType, typeIds, onSelectTypeAd, creatorChangeOptionById, onSelectLocation}: IProps) => (
 	<section className='page'>
 		<div className='container page__container-sm'>
 			<div className='row'>
@@ -169,6 +171,7 @@ const InformationAboutAd = ({ sellerInfoFields, adInfoFields, categories, create
 						categories={categories}
 						defaultCategoryId={defaultCategoryId}
 						selectedCategories={selectedCategories}
+						selectedCategoriesError={selectedCategoriesError}
 						onSelectCategories={onSelectCategories}
 					/>
 				</div>
