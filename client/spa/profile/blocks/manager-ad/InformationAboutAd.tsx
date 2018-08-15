@@ -6,7 +6,7 @@ import { IOption } from './interface';
 import { connect } from 'react-redux';
 
 import {
-	AdInfoFieldsNames, IAdInfoFields, IAdInfoFieldsRequired, IAttachedImage, ILocation, ISellerInfoFields,
+	AdInfoFieldsNames, IAdInfoFields, IAttachedImage, ILocation, ISellerInfoFields,
 	SellerFieldsNames,
 } from '../../interfaces/managerAd';
 import CategoryOptions from './CategoryOptions';
