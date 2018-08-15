@@ -13,7 +13,7 @@ export class AdsAPI {
 		return AxiosWrapper.get(`/ads?&${AdsAPI.queryStr(getDataForAdsIndexPage)}&${data}`);
 	}
 
-	public static getPage(page): AxiosPromise<any>  {
+	public static getPage(sort, page): AxiosPromise<any>  {
 		return AxiosWrapper.get(`/ads?${AdsAPI.queryStr(getDataForAdsIndexPage)}&page=${page}`);
 	}
 
