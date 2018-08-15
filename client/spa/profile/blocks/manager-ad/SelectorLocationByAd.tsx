@@ -112,8 +112,7 @@ class SelectorLocationByAd extends Component<IProps, IState> {
 	};
 
 	async componentWillMount() {
-		console.log(this.props.currentCity);
-		if (this.props.currentCity !== 0) {
+		if (this.props.currentCity !== null) {
 			const cityResponse = await AdsAPI.getCity(this.props.currentCity);
 			const regionResponse = await AdsAPI.getRegionsById(cityResponse.data[0].country_id);
 			const cities = await AdsAPI.getCitiesById(cityResponse.data[0].region_id);
@@ -158,10 +157,10 @@ class SelectorLocationByAd extends Component<IProps, IState> {
 					htmlFor='location'
 					className='col-md-3 col-lg-4 offer-form__label'
 				>
-					Select location
+					Address
 				</label>
 				<div className='col-md-4 col-lg-2'>
-					<select className='form-control' onChange={this.changeCountry}>
+					<select className='form-control' onChange={this.changeCountry} required={true}>
 						<option defaultValue={this.state.country_id}>
 							{this.state.title_country}
 						</option>
@@ -175,7 +174,7 @@ class SelectorLocationByAd extends Component<IProps, IState> {
 				{
 					this.state.regions.length > 0 &&
 					<div className='col-md-4 col-lg-2'>
-						<select className='form-control' onChange={this.changeRegion}>
+						<select className='form-control' onChange={this.changeRegion} required={true}>
 							<option defaultValue={this.state.region_id}>{this.state.title_region}</option>
 							{
 								this.state.regions.map(region => {
@@ -188,7 +187,7 @@ class SelectorLocationByAd extends Component<IProps, IState> {
 				{
 					this.state.cities.length > 0 &&
 					<div className='col-md-4 col-lg-2'>
-						<select className='form-control' onChange={this.selectCity}>
+						<select className='form-control' onChange={this.selectCity} required={true}>
 							<option defaultValue={this.state.city_id}>{this.state.title_city}</option>
 							{
 								this.state.cities.map(city => {

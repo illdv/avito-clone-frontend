@@ -32,7 +32,6 @@ export const transformationAdToManagerState =
 				price: { disable: false, value: initialAd.price },
 				description: { disable: false, value: initialAd.description },
 				address: {disable: false, value: initialAd.address},
-				body: {disable: false, value: initialAd.body},
 				city_id: initialAd.city_id,
 			},
 			selectedCategories,
