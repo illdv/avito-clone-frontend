@@ -26,9 +26,9 @@ function clearObject(dirtyObject) {
 			return result;
 		}
 		if (typeof value === 'object' && !Array.isArray(value)) {
-			return {...result, [key]: clearObject(value)};
+			return { ...result, [key]: clearObject(value) };
 		}
-		return {...result, [key]: value};
+		return { ...result, [key]: value };
 	}, {});
 }
 
@@ -40,6 +40,7 @@ interface IOption {
 interface IProps {
 	onSearch: () => void;
 	query: IQuery;
+	locationName: string;
 	urlString: string;
 	categories: Category;
 	idActiveCategory: number;
@@ -53,6 +54,7 @@ interface IState {
 	selectedCategories: any;
 	duplicateCategories: any;
 	options: IOption[];
+	locationName: string;
 	rangePrice: {
 		priceType: number;
 		priceFrom: number;
@@ -92,15 +94,17 @@ class Search extends React.Component<IProps, IState> {
 			priceTo: null,
 			priceFrom: null,
 		},
+		locationName: 'World',
 		options: [],
 		duplicateCategories: [],
 		selectedCategories: [],
 	};
 
 	static getDerivedStateFromProps(nextProps: IProps, prevState: IState): IState {
-		const { urlString, query, categories } = nextProps;
+		const { urlString, query, categories, locationName } = nextProps;
 		const { whereLike }                    = query;
-		const options                          = [];
+
+		const options = [];
 
 		if (urlString !== prevState.urlString) {
 			const categoryId      = query.category_id;
@@ -117,6 +121,7 @@ class Search extends React.Component<IProps, IState> {
 			}
 
 			return {
+				locationName,
 				urlString,
 				searchString: whereLike.title,
 				selectedCategories: categoriesQueue,
@@ -256,7 +261,7 @@ class Search extends React.Component<IProps, IState> {
 			...selectedOptions,
 		};
 
-		const clearQuery      = clearObject(query);
+		const clearQuery  = clearObject(query);
 		const queryParams = queryStringifyPlus(clearQuery);
 		const href        = `/search?${queryParams}`;
 
@@ -277,10 +282,6 @@ class Search extends React.Component<IProps, IState> {
 
 	get lastSubcategory() {
 		return this.state.selectedCategories[this.state.selectedCategories.length - 1];
-	}
-
-	get localeName() {
-		return this.props.locationState.locationName;
 	}
 
 	onChangeRange = ({ type, to, from }: IRangePrice) => {
@@ -324,7 +325,7 @@ class Search extends React.Component<IProps, IState> {
 						readOnly
 						type='text'
 						placeholder='Search'
-						defaultValue={this.localeName}
+						defaultValue={this.props.locationName}
 						onClick={this.showSearchLocationModal}
 						className='search__options form-control search_input--no-disable'
 					/>

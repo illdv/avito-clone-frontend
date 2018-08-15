@@ -13,6 +13,8 @@ import { SetBreadcrumbs } from 'client/ssr/contexts/Breadcrumbs';
 import { IPagination } from 'client/ssr/pages/interfacePagination';
 import SetSearchUrl from 'client/ssr/contexts/SearchUrlContext';
 import { isServer } from 'client/common/utils/utils';
+import { ISearchBreadcrumbs } from 'client/ssr/blocks/search/SearchStateful';
+import { useOrDefault } from 'client/spa/profile/utils/createAd'
 
 if (isServer()) {
 	types.disableChecking();
@@ -22,6 +24,8 @@ export interface ISearch {
 	ads: IAds[];
 	pagination: IPagination;
 	vip: IAds[];
+	total: number;
+	breadcrumbs: ISearchBreadcrumbs;
 }
 
 interface ICategoryProps {
@@ -69,13 +73,28 @@ class Category extends React.Component<ICategoryProps> {
 	render() {
 		loopState = this.props;
 
-		const { search, categories, query, breadcrumbs, countriesTotal, categoriesTotal, searchUrl } = this.props;
+		const { search, categories, query, countriesTotal, categoriesTotal, searchUrl } = this.props;
+
+		const { breadcrumbs, total } = search;
+
+		const locationName    = useOrDefault(() => breadcrumbs.location.title, 'World');
+
+		const breadcrumbsItems = [
+			{
+				title: `All listings in ${locationName} ${total}`,
+				href: '',
+			},
+			...breadcrumbs.categories.map(item => ({
+				title: item.title,
+				href: `/search?category_id=${item.id}`,
+			})),
+		];
 
 		return (
 			<SetSearchUrl searchUrl={searchUrl} >
 				<SetQuery query={query} >
 					<SetCategories categories={categories} >
-						<SetBreadcrumbs breadCrumbs={breadcrumbs} >
+						<SetBreadcrumbs breadCrumbs={breadcrumbsItems} >
 							<SearchPage search={search} countriesTotal={countriesTotal} categoriesTotal={categoriesTotal} />
 						</SetBreadcrumbs >
 					</SetCategories >

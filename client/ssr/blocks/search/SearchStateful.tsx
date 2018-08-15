@@ -7,7 +7,17 @@ import { ISearchActions, SearchActions } from 'client/common/search/actions';
 import { getQueryLoop } from 'client/ssr/contexts/QueryContext';
 import Search from 'client/ssr/blocks/search/Search';
 import { ISearchState } from 'client/common/search/store';
-import { getSearchUrlLoop } from 'client/ssr/contexts/SearchUrlContext'
+import { getSearchUrlLoop } from 'client/ssr/contexts/SearchUrlContext';
+
+export interface ISearchBreadcrumbs {
+	categories: ICategory[];
+	location: {
+		country_id?: number,
+		region_id?: number,
+		city_id?: number,
+		title?: string,
+	};
+}
 
 export interface IState {
 
@@ -16,6 +26,7 @@ export interface IState {
 export interface IProps {
 	searchActions: ISearchActions;
 	search?: ISearchState;
+	locationName: string;
 }
 
 const mapStateToProps = (state: IRootState) => ({
@@ -43,7 +54,15 @@ class SearchStateful extends Component<IProps, IState> {
 
 		const { query, queryString } = this.props.search;
 
-		return <Search onSearch={this.onSearch()} query={query} urlString={queryString} priceRange={true} />;
+		return (
+			<Search
+				onSearch={this.onSearch()}
+				locationName={this.props.locationName}
+				query={query}
+				urlString={queryString}
+				priceRange={true}
+			/>
+		);
 	}
 }
 

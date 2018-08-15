@@ -239,6 +239,8 @@ export const search: prepareMethod = async ({ query = { currentPage: '1' }, accu
 			ads: response.data,
 			vip: response.vip,
 			pagination,
+			breadcrumbs: response.breadcrumbs,
+			total: response.total,
 		};
 
 	} catch (err) {
@@ -247,6 +249,7 @@ export const search: prepareMethod = async ({ query = { currentPage: '1' }, accu
 	}
 };
 
+// TODO: delete it
 async function getNameLocation(queryParams, req) {
 	const hasRegion  = queryParams.region_id;
 	const hasCountry = queryParams.country_id;
@@ -272,6 +275,7 @@ async function getNameLocation(queryParams, req) {
 	return null;
 }
 
+// TODO: delete it
 export const breadcrumbs: prepareMethod = async ({ query, accumulation }, req) => {
 	const categoryQueue = findCategoriesQueueById(accumulation.categories, query.category);
 	const nameLocation  = await getNameLocation(query, req);
