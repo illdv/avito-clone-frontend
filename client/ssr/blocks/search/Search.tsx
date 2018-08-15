@@ -14,6 +14,7 @@ import { findCategoriesQueueById, useOrDefault } from 'client/spa/profile/utils/
 import { pushInRouter } from 'client/common/utils/utils';
 import { IQuery } from 'client/common/search/interface';
 import { queryStringifyPlus } from 'server/router/utils';
+import { defaultState } from 'client/common/search/store';
 
 require('./Search.sass');
 
@@ -100,9 +101,29 @@ class Search extends React.Component<IProps, IState> {
 		selectedCategories: [],
 	};
 
+	static defaultProps = {
+		query: {
+			country_id: null,
+			region_id: null,
+			city_id: null,
+			currentPage: null,
+			price_from: null,
+			whereBetween: {
+				price: [],
+			},
+			whereLike: {
+				body: '',
+				description: '',
+				title: '',
+			},
+		},
+		categories: [],
+	};
+
 	static getDerivedStateFromProps(nextProps: IProps, prevState: IState): IState {
-		const { urlString, query, categories, locationName } = nextProps;
-		const { whereLike }                    = query;
+		const { urlString, categories, query, locationName } = nextProps;
+
+		const { whereLike } = query;
 
 		const options = [];
 
