@@ -140,7 +140,7 @@ class ManagerAd extends React.Component<IProps, IState> {
 			this.setState({
 				adInfoFields: {
 					...this.state.adInfoFields,
-					[city_id]: Number(e.target.value),
+					city_id: Number(e.target.value),
 				},
 				location: {
 					...this.state.location,
