@@ -237,6 +237,7 @@ export const search: prepareMethod = async ({ query = { currentPage: '1' }, accu
 
 		return {
 			ads: response.data,
+			vip:  response.vip,
 			pagination,
 		};
 

@@ -24,7 +24,7 @@ export interface ICountriesTotal {
 }
 
 interface ISearchPageProp {
-	search: { ads: IAds[], pagination: IPagination };
+	search: { ads: IAds[], pagination: IPagination, vip: IAds[] };
 	countriesTotal: ICountriesTotal[];
 	categoriesTotal: ICategory[];
 }
@@ -69,6 +69,10 @@ class SearchPage extends React.Component<ISearchPageProp> {
 					useOrDefault(() => search.ads.length, 0)
 						?
 						<div >
+							<Ads
+								title={`VIP`}
+								ads={search.vip}
+							/>
 							<Ads
 								title={`Search result (${search.pagination.total})`}
 								ads={search.ads}
