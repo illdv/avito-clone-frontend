@@ -276,7 +276,7 @@ export const breadcrumbs: prepareMethod = async ({ query, accumulation }, req) =
 	const nameLocation  = await getNameLocation(query, req);
 	return [
 		{
-			title: `All listings in ${nameLocation || accumulation.location.locationName}`,
+			title: `All listings in ${nameLocation}`,
 			href: '/category',
 		},
 		...categoryQueueToBreadcrumbsFormat(categoryQueue, categoryQueue.length),
@@ -301,12 +301,16 @@ export const countriesTotal: prepareMethod = async ({ query: queryParams, accumu
 			return responseRegions.data;
 		}
 
-		const responseCountries = await getInstanceWithLanguageByReq(req)
-			.get(`/countries?appends[]=total_ads&${accumulation.searchUrl}`);
-		return responseCountries.data;
+		if (!hasCountry && !hasRegion && !hasCity) {
+			const responseCountries = await getInstanceWithLanguageByReq(req)
+				.get(`/countries?appends[]=total_ads&${accumulation.searchUrl}`);
+			return responseCountries.data;
+		}
+
+		return [];
 	} catch (e) {
 		console.log('countriesTotal = ', e);
-		return [];
+		throw e;
 	}
 };
 

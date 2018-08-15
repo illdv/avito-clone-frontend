@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import queryString from 'query-string';
 
 import SelectCategories from './components/SelectCategories';
 import { IRootState } from 'client/common/store/storeInterface';
@@ -10,12 +9,28 @@ import { ILocationStoreState } from 'client/common/location/module';
 
 import { showLocationModal } from 'client/ssr/modals/location/locationModalTriggers';
 import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
-import PriceRange from 'client/ssr/blocks/search/components/PriceRange';
+import PriceRange, { IRangePrice } from 'client/ssr/blocks/search/components/PriceRange';
 import { findCategoriesQueueById, useOrDefault } from 'client/spa/profile/utils/createAd';
 import { pushInRouter } from 'client/common/utils/utils';
 import { IQuery } from 'client/common/search/interface';
+import { queryStringifyPlus } from 'server/router/utils';
 
 require('./Search.sass');
+
+/**
+ * Delete all value equal null, undefined or empty string.
+ */
+function clearObject(dirtyObject) {
+	return Object.entries(dirtyObject).reduce((result, [key, value]) => {
+		if (!value || value === '') {
+			return result;
+		}
+		if (typeof value === 'object' && !Array.isArray(value)) {
+			return {...result, [key]: clearObject(value)};
+		}
+		return {...result, [key]: value};
+	}, {});
+}
 
 interface IOption {
 	value: string;
@@ -109,8 +124,8 @@ class Search extends React.Component<IProps, IState> {
 				options,
 				rangePrice: {
 					priceType: query.type || null,
-					priceFrom: query.whereBetween['price[0]'],
-					priceTo: query.whereBetween['price[1]'],
+					priceFrom: useOrDefault(() => query.whereBetween.price[0], null),
+					priceTo: useOrDefault(() => query.whereBetween.price[1], null),
 				},
 			};
 		}
@@ -186,57 +201,64 @@ class Search extends React.Component<IProps, IState> {
 
 	showSearchLocationModal = () => showLocationModal(ModalNames.location);
 
+	getIdSelectedCategory = () => {
+		const { selectedCategories } = this.state;
+
+		if (selectedCategories.length > 0) {
+			return selectedCategories[selectedCategories.length - 1].id;
+		}
+		return null;
+	}
+
+	getSelectedRange = () => {
+		const { rangePrice }         = this.state;
+		const { priceFrom, priceTo } = rangePrice;
+
+		return {
+			price: [
+				priceFrom,
+				priceTo,
+			],
+		};
+	}
+
+	getSelectedOptions = () => {
+		const { options } = this.state;
+
+		return options.map(option => ({
+			[option.item.id]: option.value,
+		}));
+	}
+
 	onSubmit = e => {
 		e.preventDefault();
 
-		const { idCity, idRegion, idCountry }                  = this.props.locationState.local;
-		const { rangePrice, searchString, selectedCategories } = this.state;
-		const { priceType, priceFrom, priceTo }                = rangePrice;
+		const { idCity, idRegion, idCountry } = this.props.locationState.local;
+		const { rangePrice, searchString }    = this.state;
+		const { priceType }                   = rangePrice;
+
+		const idSelectedCategory = this.getIdSelectedCategory();
+		const whereBetween       = this.getSelectedRange();
+		const selectedOptions    = this.getSelectedOptions();
 
 		const query: any = {
-			'whereLike[title]': searchString,
-			'whereLike[body]': searchString,
-			'whereLike[description]': searchString,
+			whereLike: {
+				title: searchString,
+				body: searchString,
+				description: searchString,
+			},
+			category_id: idSelectedCategory,
+			city_id: idCity,
+			region_id: idRegion,
+			country_id: idCountry,
+			type: priceType,
+			whereBetween,
+			...selectedOptions,
 		};
 
-		if (selectedCategories.length > 0) {
-			query.category_id = selectedCategories[selectedCategories.length - 1].id;
-		}
-
-		if (idCity) {
-			query.city_id = idCity;
-		} else if (idRegion) {
-			query.region_id = idRegion;
-		} else if (idCountry) {
-			query.country_id = idCountry;
-		}
-
-		if (priceType) {
-			query.type = priceType;
-		}
-
-		let between = '';
-
-		if (priceFrom) {
-			between += `&whereBetween[price][0]=${priceFrom}`;
-		} else if (priceTo) {
-			between += `&whereBetween[price][0]=0`;
-		}
-
-		if (priceTo) {
-			between += `&whereBetween[price][1]=${priceTo}`;
-		}
-
-		let optionsString = '';
-		this.state.options.forEach(option => {
-			if (option.value.length > 0) {
-				optionsString += `&options[${option.item.id}]=${option.value}`;
-			}
-		});
-
-		const options     = optionsString.length > 1 ? optionsString : '';
-		const queryParams = queryString.stringify(query);
-		const href        = `/search?${queryParams}${options}${between}`;
+		const clearQuery      = clearObject(query);
+		const queryParams = queryStringifyPlus(clearQuery);
+		const href        = `/search?${queryParams}`;
 
 		pushInRouter(href);
 	}
@@ -258,72 +280,17 @@ class Search extends React.Component<IProps, IState> {
 	}
 
 	get localeName() {
-		const { city_id, region_id, country_id } = this.props.query;
-
-		if (city_id) {
-			const cities = this.props.locationState.loaded.local.cities;
-			if (cities.length > 0) {
-				const result = cities.filter(city => {
-					return Number(city_id) === city.city_id;
-				});
-				if (result.length > 0) {
-					return result[0].title;
-				}
-			}
-		}
-
-		if (region_id) {
-			const regions = this.props.locationState.loaded.local.regions;
-			if (regions.length > 0) {
-				const result = regions.filter(region => {
-					return Number(region_id) === region.region_id;
-				});
-				if (result.length > 0) {
-					return result[0].title;
-				}
-			}
-		}
-
-		if (country_id) {
-			const countries = this.props.locationState.loaded.local.countries;
-			if (countries.length > 0) {
-				const result = countries.filter(country => {
-					return Number(country_id) === country.country_id;
-				});
-				if (result.length > 0) {
-					return result[0].title;
-				}
-			}
-		}
-
-		return 'World';
+		return this.props.locationState.locationName;
 	}
 
-	onSetPriceType = (priceType: number) => {
-		this.setState(({ rangePrice }) => ({
+	onChangeRange = ({ type, to, from }: IRangePrice) => {
+		this.setState({
 			rangePrice: {
-				...rangePrice,
-				priceType,
+				priceType: type,
+				priceTo: to,
+				priceFrom: from,
 			},
-		}));
-	}
-
-	onSetPriceFrom = (priceFrom: number) => {
-		this.setState(({ rangePrice }) => ({
-			rangePrice: {
-				...rangePrice,
-				priceFrom,
-			},
-		}));
-	}
-
-	onSetPriceTo = (priceTo: number) => {
-		this.setState(({ rangePrice }) => ({
-			rangePrice: {
-				...rangePrice,
-				priceTo,
-			},
-		}));
+		});
 	}
 
 	get selectedCategoriesIds() {
@@ -426,6 +393,14 @@ class Search extends React.Component<IProps, IState> {
 	render() {
 		const { priceRange } = this.props;
 
+		const { rangePrice: { priceType, priceTo, priceFrom } } = this.state;
+
+		const range: IRangePrice = {
+			type: priceType,
+			to: priceTo,
+			from: priceFrom,
+		};
+
 		return (
 			<form
 				action='#'
@@ -437,12 +412,8 @@ class Search extends React.Component<IProps, IState> {
 					priceRange
 						?
 						<PriceRange
-							type={this.state.rangePrice.priceType}
-							from={this.state.rangePrice.priceFrom}
-							to={this.state.rangePrice.priceTo}
-							setPriceType={this.onSetPriceType}
-							setPriceFrom={this.onSetPriceFrom}
-							setPriceTo={this.onSetPriceTo}
+							range={range}
+							onChangeRange={this.onChangeRange}
 						/>
 						: null
 				}

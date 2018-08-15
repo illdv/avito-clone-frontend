@@ -9,8 +9,7 @@ export interface IQuery {
 	options?: any;
 	type?: number;
 	whereBetween?: {
-		'price[0]': number | null,
-		'price[1]': number | null,
+		price: number[],
 	};
 	whereLike?: {
 		body: string,
