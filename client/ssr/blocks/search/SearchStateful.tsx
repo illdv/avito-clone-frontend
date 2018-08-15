@@ -42,8 +42,6 @@ class SearchStateful extends Component<IProps, IState> {
 
 		const { query, queryString } = this.props.search;
 
-		console.log('this.props.search = ', this.props.search);
-
 		return <Search onSearch={this.onSearch()} query={query} urlString={queryString} priceRange={true} />;
 	}
 }

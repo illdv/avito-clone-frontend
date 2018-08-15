@@ -315,10 +315,13 @@ export const categoriesTotal: prepareMethod = async ({ query, accumulation }, re
 			const response = await instance
 				.get(`/categories/${query.category_id}?appends[]=total_ads_count&${accumulation.searchUrl}`);
 			return response.data.category.children;
+		} else {
+			const response = await instance
+				.get(`/categories?appends[]=total_ads_count&${accumulation.searchUrl}`);
+			return response.data;
 		}
-		return [];
 	} catch (e) {
 		console.log('categoriesTotal = ', e);
-		return [];
+		throw e;
 	}
 };

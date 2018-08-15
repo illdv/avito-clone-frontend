@@ -35,9 +35,10 @@ class SearchPage extends React.Component<ISearchPageProp> {
 	}
 
 	render() {
-		const { countriesTotal, search, categoriesTotal } = this.props;
+		const { countriesTotal, categoriesTotal, search } = this.props;
 
-		const countriesTotals = countriesTotal.filter(item => item.total_ads !== 0);
+		const filteredCategoriesTotal = categoriesTotal.filter(item => item.total_ads_count !== 0);
+		const filteredCountriesTotal  = countriesTotal.filter(item => item.total_ads !== 0);
 
 		return (
 			<>
@@ -45,21 +46,21 @@ class SearchPage extends React.Component<ISearchPageProp> {
 				<div className='bottom-header p-y-20' >
 					<div className='container' >
 						<Navbar />
-						<SearchStateful/>
+						<SearchStateful />
 						<BreadcrumbsWrap
 							classNameForContainer='breadcrumb'
 							classNameForItem='breadcrumb-item'
 						/>
-						<ShowArray list={categoriesTotal} >
+						<ShowArray list={filteredCategoriesTotal} hideIfListEmpty >
 							<ListOfSubcategories
-								title={'All'}
-								items={categoriesTotal.map(categoryToItemOfTitlesList)}
+								title={'Category'}
+								items={filteredCategoriesTotal.map(categoryToItemOfTitlesList)}
 							/>
 						</ShowArray >
-						<ShowArray list={countriesTotals} >
+						<ShowArray list={filteredCountriesTotal} hideIfListEmpty>
 							<ListOfSubcategories
 								title={getNextLocationName()}
-								items={countriesTotals.map(countriesToItemOfTitlesList)}
+								items={filteredCountriesTotal.map(countriesToItemOfTitlesList)}
 							/>
 						</ShowArray >
 					</div >

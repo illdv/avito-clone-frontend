@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { connect, Dispatch } from 'react-redux';
 
 export interface IState {
 
@@ -8,7 +7,7 @@ export interface IState {
 
 export interface IProps {
 	list: object[];
-	showIfListEmpty?: boolean;
+	hideIfListEmpty?: boolean;
 }
 
 const isNotNull = (item: any): boolean => {
@@ -24,13 +23,13 @@ class ShowArray extends Component<IProps, IState> {
 	state: IState = {};
 
 	createRules = () => {
-		const { showIfListEmpty } = this.props;
+		const { hideIfListEmpty } = this.props;
 
 		const rules: Array<(item: any) => boolean> = [
 			isNotNull,
 		];
 
-		if (showIfListEmpty) {
+		if (hideIfListEmpty) {
 			rules.push(isListEmpty);
 		}
 
