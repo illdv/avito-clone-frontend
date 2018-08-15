@@ -12,16 +12,25 @@ import SetQuery from 'client/ssr/contexts/QueryContext';
 import { SetBreadcrumbs } from 'client/ssr/contexts/Breadcrumbs';
 import { IPagination } from 'client/ssr/pages/interfacePagination';
 import SetSearchUrl from 'client/ssr/contexts/SearchUrlContext';
+import { isServer } from 'client/common/utils/utils';
+import { ISearchBreadcrumbs } from 'client/ssr/blocks/search/SearchStateful';
+import { useOrDefault } from 'client/spa/profile/utils/createAd'
 
-const isServer: boolean = typeof window === 'undefined';
-
-if (isServer) {
+if (isServer()) {
 	types.disableChecking();
+}
+
+export interface ISearch {
+	ads: IAds[];
+	pagination: IPagination;
+	vip: IAds[];
+	total: number;
+	breadcrumbs: ISearchBreadcrumbs;
 }
 
 interface ICategoryProps {
 	categories: any[];
-	search: { ads: IAds[], pagination: IPagination };
+	search: ISearch;
 	query: any;
 	breadcrumbs: any;
 	countriesTotal: ICountriesTotal[];
@@ -64,13 +73,30 @@ class Category extends React.Component<ICategoryProps> {
 	render() {
 		loopState = this.props;
 
-		const { search, categories, query, breadcrumbs, countriesTotal, categoriesTotal, searchUrl } = this.props;
+		const { search, categories, query, countriesTotal, categoriesTotal, searchUrl } = this.props;
+
+		const { total, breadcrumbs } = search;
+
+		const locationName    = useOrDefault(() => breadcrumbs.location.title, 'World');
+
+		const categoriesBreadcrumbs = (breadcrumbs.categories || []).map((item, index) => ({
+			title: `${item.title} ${index === breadcrumbs.categories.length - 1 ? total : ''}`,
+			href: `/search?category_id=${item.id}`,
+		}));
+
+		const breadcrumbsItems = [
+			{
+				title: `All listings in ${locationName}`,
+				href: '',
+			},
+			...categoriesBreadcrumbs,
+		];
 
 		return (
 			<SetSearchUrl searchUrl={searchUrl} >
 				<SetQuery query={query} >
 					<SetCategories categories={categories} >
-						<SetBreadcrumbs breadCrumbs={breadcrumbs} >
+						<SetBreadcrumbs breadCrumbs={breadcrumbsItems} >
 							<SearchPage search={search} countriesTotal={countriesTotal} categoriesTotal={categoriesTotal} />
 						</SetBreadcrumbs >
 					</SetCategories >
