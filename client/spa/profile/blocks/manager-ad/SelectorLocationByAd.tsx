@@ -112,6 +112,7 @@ class SelectorLocationByAd extends Component<IProps, IState> {
 	};
 
 	async componentWillMount() {
+		console.log(this.props.currentCity);
 		if (this.props.currentCity !== 0) {
 			const cityResponse = await AdsAPI.getCity(this.props.currentCity);
 			const regionResponse = await AdsAPI.getRegionsById(cityResponse.data[0].country_id);
