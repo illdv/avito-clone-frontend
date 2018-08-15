@@ -17,4 +17,5 @@ export interface IModal {
 
 export interface IModalJugglerState {
 	modals: IModal[];
+	meta?: string;
 }

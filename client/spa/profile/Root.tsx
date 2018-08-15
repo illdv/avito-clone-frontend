@@ -21,9 +21,6 @@ const Content = dynamic(import('client/spa/profile/Router') as any, {
 });
 
 class Profile extends React.Component {
-	constructor(props, context) {
-		super(props, context);
-	}
 	render() {
 		return (
 			<>

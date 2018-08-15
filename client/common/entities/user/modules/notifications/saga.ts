@@ -9,7 +9,7 @@ import { AxiosResponse } from 'axios';
 
 function* loading() {
 	try {
-		const response: AxiosResponse<INotification[]> = yield call(NotificationAPI.loading);
+		const response: AxiosResponse<INotification[]> = yield call(NotificationAPI.get);
 		yield put(notificationActions.loading.SUCCESS(response.data));
 	} catch (e) {
 		yield call(errorHandler, e);

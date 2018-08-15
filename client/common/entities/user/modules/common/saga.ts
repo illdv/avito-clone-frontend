@@ -2,10 +2,10 @@ import { call, put, select, take, takeEvery, takeLatest } from 'redux-saga/effec
 import { Action } from 'redux-act';
 import axios, { AxiosResponse } from 'axios';
 
-import { UserAPI } from 'client/common/api/userAPI';
+import { UserAPI } from 'client/common/api/UserAPI';
 import { errorHandler } from 'client/common/store/errorHandler';
 import { ModalNames } from 'client/common/modal-juggler/modalJugglerInterface';
-import { show } from 'client/common/modal-juggler/module';
+import { hide, show } from 'client/common/modal-juggler/module';
 import { hideLoginModal } from 'client/ssr/modals/auth/loginModalTriggers';
 import { Toasts } from 'client/common/utils/Toasts';
 import { pushInRouter } from 'client/common/utils/utils';
@@ -30,18 +30,19 @@ function* resetPassword(action) {
 	try {
 		yield call(UserAPI.sendCodeToEmail, action.payload);
 		yield put(commonActions.sendCode.SUCCESS({}));
+		const email = action.payload.email;
+		yield put(hide({name: ModalNames.sendCodeToEmail, meta: email}));
 		yield put(show(ModalNames.forgotPassword));
 
 		const userData = yield take(commonActions.resetPasswordByCode.REQUEST);
-
 		yield call(UserAPI.resetPasswordByCode, userData.payload);
+		yield put(hide({name: ModalNames.forgotPassword}));
 		yield put(show(ModalNames.success));
 	} catch (e) {
 		yield call(errorHandler, e);
 	}
-	yield put(show(ModalNames.login));
+	// yield put(show(ModalNames.login));
 }
-
 function* login(action: Action<ILoginRequest>) {
 	try {
 		const response: AxiosResponse<IAuthResponse> = yield call(UserAPI.login, action.payload);

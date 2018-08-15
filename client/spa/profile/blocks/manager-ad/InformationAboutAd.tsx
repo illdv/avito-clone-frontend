@@ -3,6 +3,7 @@ import React, { ChangeEvent } from 'react';
 import CategoriesSelector from './CategoriesSelector';
 import { ImageSelector } from './ImageSelector'; // TODO Rename Images
 import { IOption } from './interface';
+import { connect } from 'react-redux';
 
 import {
 	AdInfoFieldsNames, IAdInfoFields, IAttachedImage, ILocation, ISellerInfoFields,
@@ -10,7 +11,8 @@ import {
 } from '../../interfaces/managerAd';
 import CategoryOptions from './CategoryOptions';
 import SelectorAdType from './CategoryTypeSelector';
-import LocationSelect from 'client/ssr/blocks/search/components/LocationSelect';
+import { ILoaded } from 'client/common/location/locationInterface';
+import SelectorLocationByAd from 'client/spa/profile/blocks/manager-ad/SelectorLocationByAd';
 
 interface IProps {
 	defaultCategoryId: number;
@@ -23,10 +25,13 @@ interface IProps {
 	options: IOption[];
 	selectedType: number;
 	typeIds: number[];
+	loadedLocation: ILoaded;
 
 	deleteImage(index: number): void;
 
 	onSelectTypeAd(id: number): void;
+
+	onSelectCityAd(city_id: number, title?: string): (e: ChangeEvent<HTMLInputElement>) => void;
 
 	onSelectLocation(location: ILocation): void;
 
@@ -90,7 +95,12 @@ const TextArea = ({ id, title, onChange, inputClass, value }: IPropsForInput) =>
 	</div>
 );
 
-const InformationAboutAd = ({ sellerInfoFields, adInfoFields, categories, createtorChangeAdInfoField, selectedCategories, onSelectCategories, attachedImages, onUpdateImages, deleteImage, defaultCategoryId, createtorChangeSellerInfoField, location, options, selectedType, typeIds, onSelectTypeAd, creatorChangeOptionById, onSelectLocation}: IProps) => (
+const InformationAboutAd = ({
+	                            sellerInfoFields, adInfoFields, categories, createtorChangeAdInfoField,
+	                            selectedCategories, onSelectCategories, attachedImages, onUpdateImages,
+	                            deleteImage, defaultCategoryId, createtorChangeSellerInfoField,
+	                            location, options, selectedType, typeIds, onSelectTypeAd, creatorChangeOptionById, onSelectLocation, loadedLocation, onSelectCityAd
+                            }: IProps) => (
 	<section className='page'>
 		<div className='container page__container-sm'>
 			<div className='row'>
@@ -229,17 +239,11 @@ const InformationAboutAd = ({ sellerInfoFields, adInfoFields, categories, create
 					value={adInfoFields.price.value}
 					onChange={createtorChangeAdInfoField(AdInfoFieldsNames.price)}
 				/>
-				{/*<div className='offer-form__item form-group row align-items-center'>*/}
-					{/*<label*/}
-						{/*htmlFor='location'*/}
-						{/*className='col-md-3 col-lg-4 offer-form__label'*/}
-					{/*>*/}
-						{/*Select location*/}
-					{/*</label>*/}
-					{/*<div className='col-md-9 col-lg-6'>*/}
-						{/*<LocationSelect city_id={adInfoFields.city_id.value}/>*/}
-					{/*</div>*/}
-				{/*</div>*/}
+				<SelectorLocationByAd
+					location={loadedLocation}
+					onChange={onSelectCityAd(AdInfoFieldsNames.city_id)}
+					currentCity={adInfoFields.city_id.value}
+				/>
 				<Input
 					id={'address'}
 					title={'Address'}

@@ -3,20 +3,24 @@ import Modal from '../../../common/modal-juggler/Modal';
 import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
 import { UserActions } from '../../../common/entities/user/rootActions';
 import { hideForgotPasswordModal } from './forgotPasswordModalTriggers';
+import { IRootState } from 'client/common/store/storeInterface';
+import { connect } from 'react-redux';
 
 export interface IState {
 	fields: {
-		email: string;
 		code: string;
 		password: string;
 		password_confirmation: string;
 	};
 }
 
-class ResetPasswordModal extends React.Component<null, IState> {
+export interface IProps {
+	meta: string;
+}
+
+class ResetPasswordModal extends React.Component<IProps, IState> {
 	state: IState = {
 		fields: {
-			email: '',
 			code: '',
 			password: '',
 			password_confirmation: '',
@@ -31,12 +35,12 @@ class ResetPasswordModal extends React.Component<null, IState> {
 	};
 
 	onSubmit = () => {
-		const {email, code, password, password_confirmation} = this.state.fields;
-		UserActions.common.resetPasswordByCode.REQUEST({email, token: code, password, password_confirmation});
-	};
-
-	shouldComponentUpdate() {
-		return false;
+		const {code, password, password_confirmation} = this.state.fields;
+		UserActions.common.resetPasswordByCode.REQUEST({
+			email: this.props.meta,
+			token: code, password,
+			password_confirmation,
+		});
 	};
 
 	close = () => hideForgotPasswordModal();
@@ -68,13 +72,14 @@ class ResetPasswordModal extends React.Component<null, IState> {
 								Email
 							</label>
 							<input
-								onChange={this.onChange}
-								type='email'
+								type='text'
 								id='email'
 								className='col-sm-6 form-control'
 								name='email'
 								required
 								placeholder='Enter email'
+								value={this.props.meta || ''}
+								disabled
 								autoComplete='off'
 							/>
 						</div>
@@ -147,5 +152,8 @@ class ResetPasswordModal extends React.Component<null, IState> {
 		);
 	}
 }
+const mapStateToProps = (state: IRootState) => ({
+	meta: state.modalJuggler.meta,
+});
 
-export default ResetPasswordModal;
+export default connect(mapStateToProps)(ResetPasswordModal);

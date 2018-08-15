@@ -7,7 +7,10 @@ import {
 	myActiveAdsPagePath,
 	notificationPagePath,
 	profileSettingsPagePath,
+	myCompletedAdsPagePath,
+	myDisapprovedAdsPagePath,
 } from '../../constants';
+import { withRouter, RouteComponentProps } from 'react-router';
 
 const StylizedLinkStyle = {
 	display: 'inline-block',
@@ -15,11 +18,32 @@ const StylizedLinkStyle = {
 	height: '100%',
 };
 
-const StylizedLink: React.SFC<{ to: string }> = ({ to, children }) => (
+interface StylizedLinkProps {
+	to: string;
+	relations?: string[];
+	pathname?: string;
+}
+
+const checkIsActiveByRelate = (relations: string[], pathname: string) => () => {
+	if (!(relations instanceof Array)) {
+		return false;
+	}
+
+	return relations.some(relate => {
+		if (!relate || !pathname) {
+			return false;
+		}
+
+		return relate === pathname;
+	});
+}
+
+const StylizedLink: React.SFC<StylizedLinkProps> = ({ to, relations, pathname, children }) => (
 	<li className='account-navigation__item'>
 		<NavLink
 			to={ to }
 			activeClassName='account-navigation__item--active'
+			isActive={ relations && checkIsActiveByRelate(relations, pathname) }
 			style={ StylizedLinkStyle }
 		>
 			{ children }
@@ -27,43 +51,56 @@ const StylizedLink: React.SFC<{ to: string }> = ({ to, children }) => (
 	</li>
 );
 
-const Navigation: React.SFC<{countNotReadNotification: number, match: any}> = ({ countNotReadNotification }) => (
-	<div className='account-navigation'>
-		<ul className='list-unstyled m-b-0'>
-			<StylizedLink to={ myActiveAdsPagePath }>
-				My announcements
-			</StylizedLink>
+interface IProps extends RouteComponentProps<{}> {
+	countNotReadNotification: number;
+}
 
-			{/* <StylizedLink to={'/profile/mock'}>
-				Posts
-			</StylizedLink> */}
+class Navigation extends React.Component<IProps> {
+	render() {
 
-			<StylizedLink to={ notificationPagePath }>
-				Notifications
-				{
-					countNotReadNotification
-					?
-						<span className='notification account__notification'>{countNotReadNotification}</span>
-					:
-						null
-				}
-			</StylizedLink>
+		return (
+			<div className='account-navigation'>
+				<ul className='list-unstyled m-b-0'>
+					<StylizedLink
+						to={ myActiveAdsPagePath }
+						pathname={this.props.location.pathname}
+						relations={ [myActiveAdsPagePath, myCompletedAdsPagePath, myDisapprovedAdsPagePath] }
+					>
+						My announcements
+					</StylizedLink>
 
-			<StylizedLink to={ profileSettingsPagePath }>
-				Settings
-			</StylizedLink>
+					{/* <StylizedLink to={'/profile/mock'}>
+						Posts
+					</StylizedLink> */}
 
-			{/* <StylizedLink to={'/profile/mock'}>
-				History
-			</StylizedLink> */}
-			<li
-				className='account-navigation__item'
-				onClick={ UserActions.common.logout.REQUEST }
-			>
-				Logout
-			</li>
-		</ul>
-	</div>
-);
+					<StylizedLink to={ notificationPagePath }>
+						Notifications
+						{
+							this.props.countNotReadNotification
+							?
+								<span className='notification account__notification'>{this.props.countNotReadNotification}</span>
+							:
+								null
+						}
+					</StylizedLink>
 
-export default Navigation;
+					<StylizedLink to={ profileSettingsPagePath }>
+						Settings
+					</StylizedLink>
+
+					{/* <StylizedLink to={'/profile/mock'}>
+						History
+					</StylizedLink> */}
+					<li
+						className='account-navigation__item'
+						onClick={ UserActions.common.logout.REQUEST }
+					>
+						Logout
+					</li>
+				</ul>
+			</div>
+		);
+	}
+}
+
+export default withRouter(Navigation);
