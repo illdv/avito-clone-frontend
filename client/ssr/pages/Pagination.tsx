@@ -51,8 +51,8 @@ class Pagination extends Component<IProps, IState> {
 
 	formationPagination = (currentPage: number, lastPage: number) => {
 		return Array(lastPage).fill(0).map((index, item) => {
-			if (Math.abs(item + 1 - currentPage) < 4 || item + 1 === lastPage) {
-				if (Math.abs(item + 1 - currentPage) > 5) {
+			if (Math.abs(item + 1 - currentPage) < 6 || item + 1 === lastPage) {
+				if (Math.abs(item + 1 - currentPage) > 7) {
 					return (
 						<DotDot key={item + 1} />
 					);
