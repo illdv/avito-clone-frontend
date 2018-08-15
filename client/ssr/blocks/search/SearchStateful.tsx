@@ -7,6 +7,7 @@ import { ISearchActions, SearchActions } from 'client/common/search/actions';
 import { getQueryLoop } from 'client/ssr/contexts/QueryContext';
 import Search from 'client/ssr/blocks/search/Search';
 import { ISearchState } from 'client/common/search/store';
+import { getSearchUrlLoop } from 'client/ssr/contexts/SearchUrlContext'
 
 export interface IState {
 
@@ -29,9 +30,9 @@ class SearchStateful extends Component<IProps, IState> {
 
 	state: IState = {};
 
-	componentDidMount(): void {
+	componentWillMount(): void {
 		const { searchActions } = this.props;
-		searchActions.initialize.REQUEST({ query: getQueryLoop(), queryString: window.location.href });
+		searchActions.initialize.REQUEST({ query: getQueryLoop(), queryString: getSearchUrlLoop() });
 	}
 
 	onSearch = () => {

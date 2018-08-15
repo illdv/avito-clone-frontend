@@ -18,9 +18,15 @@ if (isServer()) {
 	types.disableChecking();
 }
 
+export interface ISearch {
+	ads: IAds[];
+	pagination: IPagination;
+	vip: IAds[];
+}
+
 interface ICategoryProps {
 	categories: any[];
-	search: { ads: IAds[], pagination: IPagination };
+	search: ISearch;
 	query: any;
 	breadcrumbs: any;
 	countriesTotal: ICountriesTotal[];

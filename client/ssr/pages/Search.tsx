@@ -14,6 +14,7 @@ import { IPagination } from 'client/ssr/pages/interfacePagination';
 import { useOrDefault } from 'client/spa/profile/utils/createAd';
 import ShowArray from 'client/common/blocks/ShowArray';
 import SearchStateful from 'client/ssr/blocks/search/SearchStateful';
+import { ISearch } from 'pages/search';
 
 export interface ICountriesTotal {
 	country_id: number;
@@ -24,7 +25,7 @@ export interface ICountriesTotal {
 }
 
 interface ISearchPageProp {
-	search: { ads: IAds[], pagination: IPagination, vip: IAds[] };
+	search: ISearch;
 	countriesTotal: ICountriesTotal[];
 	categoriesTotal: ICategory[];
 }

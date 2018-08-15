@@ -10,7 +10,7 @@ import {
 
 import { getDataForAdShowPage, getDataForAdsIndexPage } from '../api/ad';
 import { getLitleCategories } from '../api/category';
-import { queryStringifyPlus, getQueryWithLocation } from './utils';
+import { getQueryWithLocation, queryStringifyPlus } from './utils';
 
 interface ISugar {
 	params?: any;
@@ -237,7 +237,7 @@ export const search: prepareMethod = async ({ query = { currentPage: '1' }, accu
 
 		return {
 			ads: response.data,
-			vip:  response.vip,
+			vip: response.vip,
 			pagination,
 		};
 
@@ -264,7 +264,8 @@ async function getNameLocation(queryParams, req) {
 
 	if (hasCountry) {
 		const responseCountries = await getInstanceWithLanguageByReq(req).get(`/countries`);
-		const country           = responseCountries.data.find(item => item.country_id === Number(queryParams.country_id));
+
+		const country = responseCountries.data.find(item => item.country_id === Number(queryParams.country_id));
 		return country.title;
 	}
 
