@@ -242,7 +242,7 @@ const InformationAboutAd = ({
 				<SelectorLocationByAd
 					location={loadedLocation}
 					onChange={onSelectCityAd(AdInfoFieldsNames.city_id)}
-					currentCity={adInfoFields.city_id.value}
+					currentCity={adInfoFields.city_id}
 				/>
 				<Input
 					id={'address'}

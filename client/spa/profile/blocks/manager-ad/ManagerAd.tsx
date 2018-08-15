@@ -75,7 +75,7 @@ class ManagerAd extends React.Component<IProps, IState> {
 					price: { disable: false, value: '' },
 					description: { disable: false, value: '' },
 					address: { disable: false, value: ''},
-					city_id: {value: 0},
+					city_id: 0,
 				},
 				selectedCategories: [],
 				attachedImages: [],
@@ -140,9 +140,7 @@ class ManagerAd extends React.Component<IProps, IState> {
 			this.setState({
 				adInfoFields: {
 					...this.state.adInfoFields,
-					[city_id]: {
-						value: Number(e.target.value),
-					},
+					[city_id]: Number(e.target.value),
 				},
 				location: {
 					...this.state.location,
