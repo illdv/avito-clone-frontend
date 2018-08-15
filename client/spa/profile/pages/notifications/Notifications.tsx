@@ -1,16 +1,14 @@
 import * as React from 'react';
-import {Component} from 'react';
-import {connect} from 'react-redux';
+import { Component } from 'react';
+import { connect } from 'react-redux';
 
-import {IRootState} from 'client/common/store/storeInterface';
-import {UserActions} from 'client/common/entities/user/rootActions';
-import {NotificationAPI} from 'client/common/api/NotificationAPI';
-import {filterNotification} from './utils';
-import {FilterType} from './interface';
-import {notificationActions} from "../../../../common/entities/user/modules/notifications/actions";
+import { IRootState } from 'client/common/store/storeInterface';
+import { UserActions } from 'client/common/entities/user/rootActions';
+import { filterNotification } from './utils';
+import { FilterType } from './interface';
 
 const FilterButton = (props: { buttonFilter: FilterType, length: number, isActive: boolean, onClick: () => void }) => {
-	const {buttonFilter, length, isActive, onClick} = props;
+	const { buttonFilter, length, isActive, onClick } = props;
 
 	return (
 		<a
@@ -18,8 +16,8 @@ const FilterButton = (props: { buttonFilter: FilterType, length: number, isActiv
 			className={`filter-offer__link ${isActive ? 'link-active' : ''}`}
 		>
 			{buttonFilter}
-			<span className='grey-text'> {length}</span>
-		</a>
+			<span className='grey-text' > {length}</span >
+		</a >
 
 	);
 };
@@ -53,7 +51,7 @@ class Notification extends Component<IProps, IState> {
 	};
 
 	static getDerivedStateFromProps(nextProps: IProps, prevState: IState): IState {
-		const {items} = nextProps.user.notifications;
+		const { items } = nextProps.user.notifications;
 		if (items !== prevState.all) {
 			return {
 				selectedFilter: prevState.selectedFilter,
@@ -73,12 +71,12 @@ class Notification extends Component<IProps, IState> {
 
 	onSelectFilter = (selectedFilter: FilterType) => () => {
 		this.setState({
-			selectedFilter: selectedFilter,
+			selectedFilter,
 		});
 	}
 
 	getSelectedNotification = () => {
-		const {all, read, noRead, selectedFilter} = this.state;
+		const { all, read, noRead, selectedFilter } = this.state;
 
 		switch (selectedFilter) {
 			case FilterType.All:
@@ -97,10 +95,8 @@ class Notification extends Component<IProps, IState> {
 				selectedAll: false,
 			});
 		} else {
-			let allNoRead = [];
-			this.state.noRead.map(item => {
-				allNoRead = [...allNoRead, item.id];
-			});
+
+			const allNoRead = this.state.noRead.map(item => item.id);
 
 			this.setState({
 				selectedIds: allNoRead,
@@ -109,7 +105,7 @@ class Notification extends Component<IProps, IState> {
 		}
 	}
 
-	selectedCurrent = (e) => {
+	selectedCurrent = e => {
 		const selectedId = e.target.value;
 		if (e.target.checked) {
 			this.onSelect(selectedId);
@@ -119,7 +115,6 @@ class Notification extends Component<IProps, IState> {
 	}
 
 	onSelect = (id: string) => {
-		console.log('onSelect');
 		this.setState({
 			selectedIds:
 				[
@@ -135,7 +130,6 @@ class Notification extends Component<IProps, IState> {
 	}
 
 	onUnSelect = (selectedId: string) => {
-		console.log('onUnSelect');
 		this.setState({
 			selectedIds: this.state.selectedIds.filter(id => id !== selectedId),
 		});
@@ -143,24 +137,24 @@ class Notification extends Component<IProps, IState> {
 
 	removeChecked = () => {
 		const ids = this.state.selectedIds;
-		UserActions.notifications.read.REQUEST({ids});
+		UserActions.notifications.read.REQUEST({ ids });
 	}
 
 	onClick = (id: string) => () => {
 		const ids = [id];
-		UserActions.notifications.read.REQUEST({ids});
+		UserActions.notifications.read.REQUEST({ ids });
 	}
 
-	convertToItem = ({id, data, read_at, updated_at}: INotification) => {
+	convertToItem = ({ id, data, read_at, updated_at }: INotification) => {
 
-		const {selectedIds} = this.state;
+		const { selectedIds } = this.state;
 
 		return (
 			<div
 				className='message-block'
 				key={id}
 			>
-				<div className='message-block__item'>
+				<div className='message-block__item' >
 					{
 						!read_at &&
 						<input
@@ -171,31 +165,31 @@ class Notification extends Component<IProps, IState> {
 							checked={selectedIds.some(item => item === id)}
 						/>
 					}
-					<div className='message-block__inner'>
-						<div className='row no-gutters'>
-							<div className='col-md-3 col-lg-3'>
-								<img src='../images/Rectangle.png' alt='' className='message-block__img'/>
-							</div>
-							<div className='col-md-6 col-lg-6'>
-								<a href='#'>
-									<h5>
+					<div className='message-block__inner' >
+						<div className='row no-gutters' >
+							<div className='col-md-3 col-lg-3' >
+								<img src='../images/Rectangle.png' alt='' className='message-block__img' />
+							</div >
+							<div className='col-md-6 col-lg-6' >
+								<a href='#' >
+									<h5 >
 										Alex Smith
-									</h5>
-								</a>
-								<span className='d-inline-block message-block__offer-name'>
+									</h5 >
+								</a >
+								<span className='d-inline-block message-block__offer-name' >
 									Monthly discounts
-								</span>
-								<span className='message-block__message'>{data.message}</span>
-							</div>
-							<div className='col-md-2 col-lg-2 text-right message-info'>
+								</span >
+								<span className='message-block__message' >{data.message}</span >
+							</div >
+							<div className='col-md-2 col-lg-2 text-right message-info' >
 								{!read_at ?
-									<i className='message-info__icon fa fa-check'/>
+									<i className='message-info__icon fa fa-check' />
 									:
-									<i className='message-info__icon fa fa-check-double'/>
+									<i className='message-info__icon fa fa-check-double' />
 								}
-								<span className='message-info__date'>{updated_at}</span>
-							</div>
-							<div className='col-md-1 col-lg-1 text-right message-info'>
+								<span className='message-info__date' >{updated_at}</span >
+							</div >
+							<div className='col-md-1 col-lg-1 text-right message-info' >
 								{
 									!read_at &&
 									<button
@@ -205,14 +199,14 @@ class Notification extends Component<IProps, IState> {
 										data-dismiss='alert'
 										aria-label='Close'
 									>
-										<span aria-hidden='true'>&times;</span>
-									</button>
+										<span aria-hidden='true' >&times;</span >
+									</button >
 								}
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+							</div >
+						</div >
+					</div >
+				</div >
+			</div >
 		);
 	}
 
@@ -221,7 +215,7 @@ class Notification extends Component<IProps, IState> {
 			return null;
 		}
 		return (
-			<div className='remove-offer'>
+			<div className='remove-offer' >
 				<input
 					type='checkbox'
 					className='custom-checkbox'
@@ -233,8 +227,8 @@ class Notification extends Component<IProps, IState> {
 					onClick={this.removeChecked}
 				>
 					Readed
-				</button>
-			</div>
+				</button >
+			</div >
 		);
 	}
 
@@ -248,7 +242,7 @@ class Notification extends Component<IProps, IState> {
 					role='alert'
 				>
 					You don't have any new notifications!
-				</div>
+				</div >
 			);
 		}
 
@@ -261,11 +255,11 @@ class Notification extends Component<IProps, IState> {
 	}
 
 	render() {
-		const {all, read, noRead, selectedFilter} = this.state;
+		const { all, read, noRead, selectedFilter } = this.state;
 
 		return (
 			<>
-				<div className='filter-offer d-flex'>
+				<div className='filter-offer d-flex' >
 					<FilterButton
 						buttonFilter={FilterType.All}
 						length={all.length}
@@ -284,7 +278,7 @@ class Notification extends Component<IProps, IState> {
 						isActive={selectedFilter === FilterType.Read}
 						onClick={this.onSelectFilter(FilterType.Read)}
 					/>
-				</div>
+				</div >
 				{this.renderListNotification()}
 			</>
 		);
