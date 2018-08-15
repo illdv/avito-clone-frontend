@@ -56,7 +56,7 @@ class Notification extends Component<IProps, IState> {
 		const {items} = nextProps.user.notifications;
 		if (items !== prevState.all) {
 			return {
-				selectedFilter: FilterType.All,
+				selectedFilter: prevState.selectedFilter,
 				all: items,
 				noRead: filterNotification(FilterType.NoRead, items),
 				read: filterNotification(FilterType.Read, items),
@@ -146,7 +146,8 @@ class Notification extends Component<IProps, IState> {
 		UserActions.notifications.read.REQUEST({ids});
 	}
 
-	onClick = (ids: string[]) => () => {
+	onClick = (id: string) => () => {
+		const ids = [id];
 		UserActions.notifications.read.REQUEST({ids});
 	}
 
@@ -198,7 +199,7 @@ class Notification extends Component<IProps, IState> {
 								{
 									!read_at &&
 									<button
-										onClick={this.onClick([id])}
+										onClick={this.onClick(id)}
 										type='button'
 										className='close'
 										data-dismiss='alert'

@@ -3,16 +3,16 @@ import {AxiosPromise} from 'axios';
 
 export class NotificationAPI {
 	public static get(): AxiosPromise<any> {
-		return AxiosWrapper.get('/notifications');
+		return AxiosWrapper.get('/notifications?orderBy[created_at]=desc');
 	}
 
 	public static read(ids: string[]): AxiosPromise<any> {
-		return this.markAs(ids, 'read');
+		return NotificationAPI.markAs(ids, 'read');
 	}
 
 	private static markAs(ids: string[], action: string): AxiosPromise<any> {
 		const value = action.slice(0, 1).toUpperCase() + action.slice(1);
 
-			return AxiosWrapper.put(`/notifications/notification_ids=${ids}`, { action: `markAs${value}` });
+			return AxiosWrapper.patch(`/notifications`, { action: `markAs${value}`, ids: ids });
 	}
 }
