@@ -4,8 +4,10 @@ import {connect} from 'react-redux';
 
 import {IRootState} from 'client/common/store/storeInterface';
 import {UserActions} from 'client/common/entities/user/rootActions';
+import {NotificationAPI} from 'client/common/api/NotificationAPI';
 import {filterNotification} from './utils';
 import {FilterType} from './interface';
+import {notificationActions} from "../../../../common/entities/user/modules/notifications/actions";
 
 const FilterButton = (props: { buttonFilter: FilterType, length: number, isActive: boolean, onClick: () => void }) => {
 	const {buttonFilter, length, isActive, onClick} = props;
@@ -117,12 +119,13 @@ class Notification extends Component<IProps, IState> {
 	}
 
 	onSelect = (id: string) => {
+		console.log('onSelect');
 		this.setState({
 			selectedIds:
-				{
+				[
 					...this.state.selectedIds,
 					id,
-				},
+				],
 		});
 		if (this.state.selectedIds.length === this.state.noRead.length) {
 			this.setState({
@@ -132,13 +135,15 @@ class Notification extends Component<IProps, IState> {
 	}
 
 	onUnSelect = (selectedId: string) => {
+		console.log('onUnSelect');
 		this.setState({
 			selectedIds: this.state.selectedIds.filter(id => id !== selectedId),
 		});
 	}
 
 	removeChecked = () => {
-		UserActions.notifications.read.REQUEST({...this.state.selectedIds});
+		const ids = this.state.selectedIds;
+		UserActions.notifications.read.REQUEST({ids});
 	}
 
 	onClick = (ids: string[]) => () => {
