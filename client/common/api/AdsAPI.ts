@@ -6,20 +6,20 @@ import * as queryString from 'query-string';
 import {AxiosPromise} from 'axios';
 
 export class AdsAPI {
-	public static formatData = (data): string => {
+	public static queryStr = data => {
 		return queryString.stringify(data, {arrayFormat: 'bracket'});
 	}
 
 	public static get(data): AxiosPromise<any> {
-		return AxiosWrapper.get(`/ads?${this.formatData(getDataForAdsIndexPage)}&${data}`);
+		return AxiosWrapper.get(`/ads?&${AdsAPI.queryStr(getDataForAdsIndexPage)}&${data}`);
 	}
 
 	public static getPage(page): AxiosPromise<any>  {
-		return AxiosWrapper.get(`/ads?${this.formatData(getDataForAdsIndexPage)}&page=${page}`);
+		return AxiosWrapper.get(`/ads?${AdsAPI.queryStr(getDataForAdsIndexPage)}&page=${page}`);
 	}
 
 	public static getMy(): AxiosPromise<any>  {
-		return AxiosWrapper.get(`/ads?my=1&${this.formatData(getMyAd)}`);
+		return AxiosWrapper.get(`/ads?my=1&${AdsAPI.queryStr(getMyAd)}`);
 	}
 
 	public static show(id): AxiosPromise<any>  {
@@ -30,9 +30,16 @@ export class AdsAPI {
 		return AxiosWrapper.get(`../../cities/${id}`);
 	}
 
-	public static create({images, options, ...ads}: ICreateAdRequest): AxiosPromise<any>  {
-		const formData = AdsAPI.fill(images, options, ads);
+	public static getRegionsById(id) {
+		return AxiosWrapper.get(`../../countries/${id}/regions`);
+	}
 
+	public static getCitiesById(id) {
+		return AxiosWrapper.get(`../../regions/${id}/cities`);
+	}
+
+	public static create = ({images, options, ...ads}: ICreateAdRequest): AxiosPromise<any> => {
+		const formData =  AdsAPI.fill(images, options, ads);
 		return AxiosWrapper.post(`/ads/`, formData, {
 			headers: {Accept: 'application/json'},
 		});
@@ -68,6 +75,7 @@ export class AdsAPI {
 	}
 
 	private static fill(images, options, ...ads): FormData {
+
 		const files = images.map(img => img.file);
 		const formData = new FormData();
 
@@ -75,7 +83,7 @@ export class AdsAPI {
 			formData.append(`images[${i}]`, files[i]);
 		}
 
-		Object.entries(ads).forEach(([key, value]) => {
+		Object.entries(ads[0]).forEach(([key, value]) => {
 			formData.append(key, value);
 		});
 
@@ -85,7 +93,6 @@ export class AdsAPI {
 				formData.append(`options[${index}][value]`, option.value);
 			}
 		});
-
 		return formData;
 	}
 }

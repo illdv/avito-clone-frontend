@@ -63,9 +63,6 @@ class ModalWrap extends React.PureComponent<ModalWrapProps> {
 	get isOpen() {
 		return !!this.modal; // Convert to boolean
 	}
-	get isLast() {
-		let index = this.props.modals.indexOf(this.modal);
-	}
 
 	get isModalLast() {
 		let index = this.props.modals.indexOf(this.modal);

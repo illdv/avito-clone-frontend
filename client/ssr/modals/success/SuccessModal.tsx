@@ -2,6 +2,7 @@ import * as React from 'react';
 import { ModalNames } from 'client/common/modal-juggler/modalJugglerInterface';
 import Modal from 'client/common/modal-juggler/Modal';
 import { hideAllModal } from 'client/ssr/modals/forgot-password/forgotPasswordModalTriggers';
+import { showLoginModal } from 'client/ssr/modals/auth/loginModalTriggers';
 
 interface ISuccess {
 }
@@ -9,6 +10,7 @@ interface ISuccess {
 const SuccessModal: React.SFC<ISuccess> = ({}) => {
 	const onClose = () => {
 		hideAllModal();
+		showLoginModal();
 	};
 	return (
 		<Modal

@@ -185,7 +185,7 @@ const CategoryList = ({ items, title, selectedCategoriesError }: ICategoryListPr
 					onClick={item.onClick}
 					className={activeClassName(item.isActive)}
 				>
-					{`${item.title} ${item.countChildren}`}
+					{item.title}
 				</a>
 			))
 		}
