@@ -4,29 +4,24 @@ import { connect, Dispatch } from 'react-redux';
 import InformationAboutAd from './InformationAboutAd';
 import { IRootState } from 'client/common/store/storeInterface';
 import ConfirmAd from './ConfirmAd';
-import { transformationAdToManagerState, getSelectAdTypeIdsBySelectedCategories } from '../../utils/createAd';
+import { getSelectAdTypeIdsBySelectedCategories, transformationAdToManagerState } from '../../utils/createAd';
 
 import {
-	ISellerInfoFields,
-	IAdInfoFields,
-	IAttachedImage,
-	ILocation,
-	AdInfoFieldsNames,
+	AdInfoFieldsNames, IAdInfoFields, IAttachedImage, ILocation, ISellerInfoFields,
 	SellerFieldsNames,
 } from '../../interfaces/managerAd';
 import { UserActions } from 'client/common/entities/user/rootActions';
 import { getCategories } from 'client/ssr/blocks/categories/context';
 import { IOption } from './interface';
 import { ILoaded } from '../../../../common/location/module';
-import Ad from 'client/ssr/blocks/ad/Ad';
 
 interface IProps {
 	initialAd?: IAd;
 	user: IUserState;
 	categories: ICategory[];
-	callback(state: IState): void;
 	loadedLocation: ILoaded;
 	isEditing: boolean;
+	callback(state: IState): void;
 }
 
 export interface IState {
@@ -49,9 +44,151 @@ const mapStateToProps = (state: IRootState) => ({
 
 const findFieldAtPossibleNull = (obj, key, defaultValue) => {
 	return obj && obj[key] || defaultValue;
-}
+};
 
 class ManagerAd extends React.Component<IProps, IState> {
+	next = () => {
+		this.setState({
+			step: this.state.step + 1,
+		});
+	};
+	back = () => {
+		this.setState({
+			step: this.state.step - 1,
+		});
+	};
+	isVip = (e) => {
+		const plan = e.target.value;
+		if (plan === 'Quick' || plan === 'Turbo') {
+			this.setState({
+				isVip: 1,
+			});
+		} else {
+			this.setState({
+				isVip: 0,
+			});
+		}
+
+	};
+	createtorChangeAdInfoField = (name: AdInfoFieldsNames) =>
+		(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+			this.setState({
+				adInfoFields: {
+					...this.state.adInfoFields,
+					[name]: {
+						...this.state.adInfoFields[name],
+						value: e.target.value,
+					},
+				},
+			});
+		};
+	onSelectCityAd                 = (city_id: AdInfoFieldsNames) =>
+		(e: ChangeEvent<HTMLInputElement>, title: string) => {
+
+			this.setState({
+				adInfoFields: {
+					...this.state.adInfoFields,
+					city_id: Number(e.target.value),
+				},
+				location: {
+					...this.state.location,
+					name: title,
+				},
+			});
+		};
+	createtorChangeSellerInfoField = (name: SellerFieldsNames) =>
+		(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+			this.setState({
+				adInfoFields: {
+					...this.state.adInfoFields,
+					[name]: {
+						...this.state.adInfoFields[name],
+						value: e.target.value,
+					},
+				},
+			});
+		};
+	creatorChangeOptionById = (id: number) => (e: ChangeEvent<HTMLInputElement>) => {
+		const newOptions = this.state.options.map(option => {
+			if (option.item.id !== id) {
+				return option;
+			} else {
+				return {
+					item: option.item,
+					value: e.target.value,
+				};
+			}
+		});
+
+		this.setState({ options: newOptions });
+	};
+	onSelectCategories = (selectedCategories: ICategory[]) => {
+		let selectedType = null;
+		const options    = this.getOptionsBySelectedCategories(selectedCategories);
+		const typeIds    = getSelectAdTypeIdsBySelectedCategories(selectedCategories);
+
+		const updatedOptions = options.map((option): IOption => {
+			const findedOption = this.state.options.filter(ops => {
+				return ops.item.id === option.item.id;
+			});
+
+			if (findedOption.length > 0) {
+				return findedOption[0];
+			}
+
+			return option;
+		});
+
+		if (typeIds.length > 0) {
+			if (typeIds.indexOf(this.state.selectedType) !== -1) {
+				selectedType = this.state.selectedType;
+			} else {
+				selectedType = typeIds[0];
+			}
+		}
+
+		this.setState({
+			selectedCategories,
+			options: updatedOptions,
+			selectedType,
+			typeIds,
+		});
+	};
+	onSelectTypeAd = (id: number) => {
+		this.setState({
+			selectedType: id,
+		});
+	};
+	getOptionsBySelectedCategories = (selectedCategories: ICategory[]) => {
+		const lastCategory = selectedCategories.length > 0 && selectedCategories[selectedCategories.length - 1] || null;
+		return (lastCategory && lastCategory.total_options || []).map(option => {
+			return { value: '', item: option };
+		});
+
+	};
+	onUpdateImages = (images: IAttachedImage[]) => {
+		this.setState({ attachedImages: images });
+	};
+	findImageByIndex = index => {
+		return this.state.attachedImages[index];
+	};
+	deleteImageFromAttachments = (image: IAttachedImage) => {
+		this.setState({
+			attachedImages: this.state.attachedImages.filter(attachedImage => attachedImage !== image),
+		});
+	};
+	deleteImage = (index: number) => {
+		const image = this.findImageByIndex(index);
+		if (image.isBackend) {
+			UserActions.ownedAds.deleteImage.REQUEST({ id: image.id });
+			this.deleteImageFromAttachments(image);
+		} else {
+			this.deleteImageFromAttachments(image);
+		}
+	};
+	onSelectLocation = (location: ILocation) => this.setState({ location });
+	callCallback = () => this.props.callback(this.state);
+
 	constructor(props, context) {
 		super(props, context);
 
@@ -67,15 +204,15 @@ class ManagerAd extends React.Component<IProps, IState> {
 		} else {
 			// Create Ad
 			// @ts-ignore
-            this.state = {
+			this.state = {
 				step: 1,
 				sellerInfoFields,
 				adInfoFields: {
 					title: { disable: false, value: '' },
 					price: { disable: false, value: '' },
 					description: { disable: false, value: '' },
-					address: { disable: false, value: ''},
-					city_id: 0,
+					address: { disable: false, value: '11111' },
+					city_id: null,
 				},
 				selectedCategories: [],
 				attachedImages: [],
@@ -95,162 +232,6 @@ class ManagerAd extends React.Component<IProps, IState> {
 
 	}
 
-	next = () => {
-		this.setState({
-			step: this.state.step + 1,
-		});
-	}
-
-	back = () => {
-		this.setState({
-			step: this.state.step - 1,
-		});
-	}
-
-	isVip = (e) => {
-		const plan = e.target.value;
-		if (plan === 'Quick' || plan === 'Turbo') {
-			this.setState({
-				isVip: 1,
-			});
-		} else {
-			this.setState({
-				isVip: 0,
-			});
-		}
-
-	};
-
-	createtorChangeAdInfoField = (name: AdInfoFieldsNames) =>
-		(e: ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => {
-			this.setState({
-				adInfoFields: {
-					...this.state.adInfoFields,
-					[name]: {
-						...this.state.adInfoFields[name],
-						value: e.target.value,
-					},
-				},
-			});
-		}
-
-	onSelectCityAd = (city_id: AdInfoFieldsNames) =>
-		(e: ChangeEvent<HTMLInputElement>, title: string) => {
-
-			this.setState({
-				adInfoFields: {
-					...this.state.adInfoFields,
-					city_id: Number(e.target.value),
-				},
-				location: {
-					...this.state.location,
-					name: title,
-				},
-			});
-	};
-	createtorChangeSellerInfoField = (name: SellerFieldsNames) =>
-		(e: ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => {
-			this.setState({
-				adInfoFields: {
-					...this.state.adInfoFields,
-					[name]: {
-						...this.state.adInfoFields[name],
-						value: e.target.value,
-					},
-				},
-			});
-		}
-
-	creatorChangeOptionById = (id: number) => (e: ChangeEvent<HTMLInputElement>) => {
-		const newOptions = this.state.options.map(option => {
-			if (option.item.id !== id) {
-				return option;
-			} else {
-				return {
-					item: option.item,
-					value: e.target.value,
-				};
-			}
-		});
-
-		this.setState({ options: newOptions });
-	}
-
-	onSelectCategories = (selectedCategories: ICategory[]) => {
-		let selectedType = null;
-		const options = this.getOptionsBySelectedCategories(selectedCategories);
-		const typeIds = getSelectAdTypeIdsBySelectedCategories(selectedCategories);
-
-		const updatedOptions = options.map((option): IOption => {
-			const findedOption = this.state.options.filter(ops => {
-				return ops.item.id === option.item.id;
-			});
-
-			if (findedOption.length > 0) {
-				return findedOption[0];
-			}
-
-            return option;
-		});
-
-		if (typeIds.length > 0) {
-			if (typeIds.indexOf(this.state.selectedType) !== -1) {
-				selectedType = this.state.selectedType;
-			} else {
-				selectedType = typeIds[0];
-			}
-		}
-
-		this.setState({
-			selectedCategories,
-			options: updatedOptions,
-			selectedType,
-			typeIds,
-		});
-	}
-
-	onSelectTypeAd = (id: number) => {
-		this.setState({
-			selectedType: id,
-		});
-	}
-
-	getOptionsBySelectedCategories = (selectedCategories: ICategory[]) => {
-		const lastCategory = selectedCategories.length > 0 && selectedCategories[selectedCategories.length - 1] || null;
-		return (lastCategory && lastCategory.total_options || []).map(option => {
-			return { value: '', item: option };
-		});
-
-	}
-
-	onUpdateImages = (images: IAttachedImage[]) => {
-		this.setState({ attachedImages: images });
-	}
-
-	findImageByIndex = index => {
-		return this.state.attachedImages[index];
-	}
-
-	deleteImageFromAttachments = (image: IAttachedImage) => {
-		this.setState({
-			attachedImages: this.state.attachedImages.filter(attachedImage => attachedImage !== image),
-		});
-	}
-
-	deleteImage = (index: number) => {
-		const image = this.findImageByIndex(index);
-		if (image.isBackend) {
-			UserActions.ownedAds.deleteImage.REQUEST({ id: image.id });
-			this.deleteImageFromAttachments(image);
-		} else {
-			this.deleteImageFromAttachments(image);
-		}
-	}
-
-	onSelectLocation = (location: ILocation) =>  this.setState({ location });
-
-	callCallback = () => this.props.callback(this.state);
-
 	render() {
 		const { step } = this.state;
 		if (!this.props.categories) {
@@ -261,31 +242,31 @@ class ManagerAd extends React.Component<IProps, IState> {
 			return (
 				<div>
 					<InformationAboutAd
-						adInfoFields={ this.state.adInfoFields }
-						sellerInfoFields={ this.state.sellerInfoFields }
-						createtorChangeAdInfoField={ this.createtorChangeAdInfoField }
-						createtorChangeSellerInfoField={ this.createtorChangeSellerInfoField }
-						selectedCategories={ this.state.selectedCategories }
-						onSelectCategories={ this.onSelectCategories }
-						onUpdateImages={ this.onUpdateImages }
-						deleteImage={ this.deleteImage }
-						categories={ this.props.categories }
-						attachedImages={ this.state.attachedImages }
-						defaultCategoryId={ this.state.defaultCategoryId }
-						onSelectLocation={ this.onSelectLocation }
-						location={ this.state.location }
-						options={ this.state.options }
-						creatorChangeOptionById={ this.creatorChangeOptionById }
-						onSelectTypeAd={ this.onSelectTypeAd }
-						selectedType={ this.state.selectedType }
-						typeIds={ this.state.typeIds }
+						adInfoFields={this.state.adInfoFields}
+						sellerInfoFields={this.state.sellerInfoFields}
+						createtorChangeAdInfoField={this.createtorChangeAdInfoField}
+						createtorChangeSellerInfoField={this.createtorChangeSellerInfoField}
+						selectedCategories={this.state.selectedCategories}
+						onSelectCategories={this.onSelectCategories}
+						onUpdateImages={this.onUpdateImages}
+						deleteImage={this.deleteImage}
+						categories={this.props.categories}
+						attachedImages={this.state.attachedImages}
+						defaultCategoryId={this.state.defaultCategoryId}
+						onSelectLocation={this.onSelectLocation}
+						location={this.state.location}
+						options={this.state.options}
+						creatorChangeOptionById={this.creatorChangeOptionById}
+						onSelectTypeAd={this.onSelectTypeAd}
+						selectedType={this.state.selectedType}
+						typeIds={this.state.typeIds}
 						loadedLocation={this.props.loadedLocation}
-						onSelectCityAd={ this.onSelectCityAd }
+						onSelectCityAd={this.onSelectCityAd}
 
 					/>
 					<div className='container page-create'>
 						<button
-							onClick={ this.next }
+							onClick={this.next}
 							className='btn orange-btn w-25 float-right'
 						>
 							Continue
@@ -296,18 +277,18 @@ class ManagerAd extends React.Component<IProps, IState> {
 		} else {
 			return (
 				<ConfirmAd
-					selectedCategories={ this.state.selectedCategories }
-					fullName={ this.state.sellerInfoFields.name.value }
-					email={ this.state.sellerInfoFields.email.value }
-					phone={ this.state.sellerInfoFields.phone.value }
-					address={ this.state.adInfoFields.address.value}
-					title={ this.state.adInfoFields.title.value }
-					price={ this.state.adInfoFields.price.value }
-					description={ this.state.adInfoFields.description.value }
-					locationName={ this.state.location.name }
-					vip={ this.isVip }
-					back={ this.back }
-					next={ this.callCallback }
+					selectedCategories={this.state.selectedCategories}
+					fullName={this.state.sellerInfoFields.name.value}
+					email={this.state.sellerInfoFields.email.value}
+					phone={this.state.sellerInfoFields.phone.value}
+					address={this.state.adInfoFields.address.value}
+					title={this.state.adInfoFields.title.value}
+					price={this.state.adInfoFields.price.value}
+					description={this.state.adInfoFields.description.value}
+					locationName={this.state.location.name}
+					vip={this.isVip}
+					back={this.back}
+					next={this.callCallback}
 					isEditing={this.props.isEditing}
 				/>
 			);

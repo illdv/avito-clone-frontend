@@ -32,7 +32,6 @@ export const transformationAdToManagerState =
 				price: { disable: false, value: initialAd.price },
 				description: { disable: false, value: initialAd.description },
 				address: {disable: false, value: initialAd.address},
-				body: {disable: false, value: initialAd.body},
 				city_id: initialAd.city_id,
 			},
 			selectedCategories,
@@ -48,6 +47,13 @@ export const transformationAdToManagerState =
 			typeIds,
 			selectedType: initialAd.type_id,
 			isVip: initialAd.is_vip as number,
+			validation: {
+				title: { required: true, value: '' },
+				description: { required: true, value: '' },
+				price: { required: true, value: '' },
+				address: { required: true, value: '' },
+				city_id: { required: true, value: '' },
+			},
 		};
 	};
 
