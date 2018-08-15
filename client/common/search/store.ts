@@ -7,7 +7,7 @@ export interface ISearchState {
 	queryString: string;
 }
 
-const defaultState: ISearchState = {
+export const defaultState: ISearchState = {
 	query: {
 		country_id: null,
 		region_id: null,
@@ -15,8 +15,7 @@ const defaultState: ISearchState = {
 		currentPage: null,
 		price_from: null,
 		whereBetween: {
-			'price[1]': null,
-			'price[0]': null,
+			price: [],
 		},
 		whereLike: {
 			body: '',
