@@ -226,7 +226,6 @@ export const searchUrl: prepareMethod = async ({ query = { currentPage: '1' }, a
 export const search: prepareMethod = async ({ query = { currentPage: '1' }, accumulation }, req) => {
 	try {
 		const response = await getLiteAdsByQueryString(accumulation.searchUrl);
-
 		const { current_page, last_page, per_page, total } = response;
 
 		const pagination = {
@@ -235,7 +234,6 @@ export const search: prepareMethod = async ({ query = { currentPage: '1' }, accu
 			per_page,
 			total,
 		};
-
 		return {
 			ads: response.data,
 			pagination,
