@@ -75,19 +75,21 @@ class Category extends React.Component<ICategoryProps> {
 
 		const { search, categories, query, countriesTotal, categoriesTotal, searchUrl } = this.props;
 
-		const { breadcrumbs, total } = search;
+		const { total, breadcrumbs } = search;
 
 		const locationName    = useOrDefault(() => breadcrumbs.location.title, 'World');
 
+		const categoriesBreadcrumbs = (breadcrumbs.categories || []).map((item, index) => ({
+			title: `${item.title} ${index === breadcrumbs.categories.length - 1 ? total : ''}`,
+			href: `/search?category_id=${item.id}`,
+		}));
+
 		const breadcrumbsItems = [
 			{
-				title: `All listings in ${locationName} ${total}`,
+				title: `All listings in ${locationName}`,
 				href: '',
 			},
-			...breadcrumbs.categories.map(item => ({
-				title: item.title,
-				href: `/search?category_id=${item.id}`,
-			})),
+			...categoriesBreadcrumbs,
 		];
 
 		return (
