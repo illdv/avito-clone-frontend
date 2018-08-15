@@ -11,7 +11,6 @@ export enum AdInfoFieldsNames {
 	description = 'description',
 	address = 'address',
 	city_id = 'city_id',
-	body = 'body',
 }
 
 export interface IField {
@@ -23,7 +22,6 @@ export interface IAdInfoFields {
 	[AdInfoFieldsNames.title]: IField;
 	[AdInfoFieldsNames.price]: IField;
 	[AdInfoFieldsNames.description]: IField;
-	[AdInfoFieldsNames.body]: IField;
 	[AdInfoFieldsNames.address]: IField;
 	[AdInfoFieldsNames.city_id]: number;
 }
