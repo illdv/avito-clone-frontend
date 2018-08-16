@@ -2,13 +2,13 @@ import React from 'react';
 import ImageGallery from 'react-image-gallery';
 import { ISliderProps } from 'client/ssr/blocks/ad/interface';
 
-const SliderImages = (props: ISliderProps) => (
+const SliderImages = ({images}: ISliderProps) => (
 	<div className='col-lg-7 min-height'>
 		<div className='ads-image'>
 		{
-			props.images.length !== 0 &&
+			images.length !== 0 &&
 			<ImageGallery
-				items={props.images}
+				items={images}
 				showPlayButton={false}
 			/>
 		}
