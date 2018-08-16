@@ -4,7 +4,7 @@ import { connect, Dispatch } from 'react-redux';
 import { IRootState } from 'client/common/store/storeInterface';
 import { Pagination as BPagination, PaginationItem, PaginationLink } from 'reactstrap';
 import { IPagination } from 'client/ssr/pages/interfacePagination';
-import { getQuery, getQueryLoop } from 'client/ssr/contexts/QueryContext';
+import { getQueryLoop } from 'client/ssr/contexts/QueryContext';
 import * as queryString from 'querystring';
 
 export interface IState {
