@@ -32,7 +32,7 @@ interface IProps {
 
 	onSelectTypeAd(id: number): void;
 
-	onSelectCityAd(city_id: number, title?: string): (e: ChangeEvent<HTMLInputElement>) => void;
+	onSelectCityAd(city: AdInfoFieldsNames, title?: string): (e: ChangeEvent<HTMLInputElement>) => void;
 
 	onSelectLocation(location: ILocation): void;
 
