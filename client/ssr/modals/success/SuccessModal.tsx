@@ -10,7 +10,6 @@ interface ISuccess {
 const SuccessModal: React.SFC<ISuccess> = ({}) => {
 	const onClose = () => {
 		hideAllModal();
-		showLoginModal();
 	};
 	return (
 		<Modal
