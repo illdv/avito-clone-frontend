@@ -1,12 +1,11 @@
 import { ItemOfTitlesList } from 'client/ssr/blocks/list-of-subcategories/ListOfSubcategories';
 import { ICountriesTotal } from 'client/ssr/pages/Search';
 import { getQueryLoop } from 'client/ssr/contexts/QueryContext';
-import * as queryString from 'querystring';
 import { queryStringifyPlus } from '../../../server/router/utils';
 
 export const categoryToItemOfTitlesList = ({ id, title, total_ads_count, slug }: ICategory): ItemOfTitlesList => {
 	const query  = getQueryLoop();
-	const parsed = queryString.stringify({ ...query, category_id: id });
+	const parsed = queryStringifyPlus({ ...query, category_id: id });
 	return { id, title, count: total_ads_count, href: `?${parsed}` };
 };
 
@@ -31,17 +30,17 @@ function calcUrlSearchForLocation(countryId, regionId, cityId) {
 	const hasCountry = newQueryParams.country_id;
 	const hasCity    = newQueryParams.city_id;
 
+	delete newQueryParams.country_id;
+	delete newQueryParams.region_id;
+	delete newQueryParams.city_id;
+
 	if (hasRegion && !hasCity) {
 		return queryStringifyPlus({ ...newQueryParams, city_id: cityId });
 	}
 
 	if (hasCountry && !hasCity) {
-		delete newQueryParams.city_id;
 		return queryStringifyPlus({ ...newQueryParams, region_id: regionId });
 	}
-
-	delete newQueryParams.city_id;
-	delete newQueryParams.region_id;
 
 	return queryStringifyPlus({ ...newQueryParams, country_id: countryId });
 }

@@ -2,21 +2,17 @@ import React from 'react';
 
 import Header from 'client/ssr/blocks/header/Header';
 import Navbar from 'client/ssr/blocks/navbar/Navbar';
-import Search from 'client/ssr/blocks/search/Search';
 import Footer from 'client/ssr/blocks/footer/Footer';
 import Ads from 'client/ssr/blocks/ads/Ads';
 import EmptySearch from 'client/ssr/blocks/empty-search/EmptySearch';
-import { IAds } from 'client/common/entities/user/modules/owned-ads/interfaces';
 import BreadcrumbsWrap from 'client/ssr/wraps/BreadcrumbFromContext';
 import ListOfSubcategories from 'client/ssr/blocks/list-of-subcategories/ListOfSubcategories';
-import {
-	categoryToItemOfTitlesList,
-	countriesToItemOfTitlesList,
-	getNextLocationName,
-} from 'client/ssr/pages/utils';
+import { categoryToItemOfTitlesList, countriesToItemOfTitlesList, getNextLocationName } from 'client/ssr/pages/utils';
 import Pagination from 'client/ssr/pages/Pagination';
-import { IPagination } from 'client/ssr/pages/interfacePagination';
 import { useOrDefault } from 'client/spa/profile/utils/createAd';
+import ShowArray from 'client/common/blocks/ShowArray';
+import SearchStateful from 'client/ssr/blocks/search/SearchStateful';
+import { ISearch } from 'pages/search';
 
 export interface ICountriesTotal {
 	country_id: number;
@@ -27,67 +23,64 @@ export interface ICountriesTotal {
 }
 
 interface ISearchPageProp {
-	search: { ads: IAds[], pagination: IPagination };
+	search: ISearch;
 	countriesTotal: ICountriesTotal[];
 	categoriesTotal: ICategory[];
 }
 
-// TODO: is not page.
 class SearchPage extends React.Component<ISearchPageProp> {
 	render() {
-		const { countriesTotal, search, categoriesTotal } = this.props;
+		const { countriesTotal, categoriesTotal, search } = this.props;
 
-		const countriesTotals = countriesTotal.filter(item => item.total_ads !== 0);
+		const filteredCategoriesTotal = categoriesTotal.filter(item => item.total_ads_count !== 0);
+		const filteredCountriesTotal  = countriesTotal.filter(item => item.total_ads !== 0);
 
 		return (
-			<React.Fragment >
+			<>
 				<Header />
 				<div className='bottom-header p-y-20' >
 					<div className='container' >
 						<Navbar />
-						<Search priceRange={true} />
+						<SearchStateful locationName={useOrDefault(() => search.breadcrumbs.location.title, 'World')}/>
 						<BreadcrumbsWrap
 							classNameForContainer='breadcrumb'
 							classNameForItem='breadcrumb-item'
 						/>
-						{
-							categoriesTotal.length > 0
-							&&
+						<ShowArray list={filteredCategoriesTotal} hideIfListEmpty >
 							<ListOfSubcategories
-								title={'All'}
-								items={categoriesTotal.map(categoryToItemOfTitlesList)}
+								title={'Category'}
+								items={filteredCategoriesTotal.map(categoryToItemOfTitlesList)}
 							/>
-							||
-							null
-						}
-						{
-							countriesTotals.length > 0
-							&&
+						</ShowArray >
+						<ShowArray list={filteredCountriesTotal} hideIfListEmpty>
 							<ListOfSubcategories
 								title={getNextLocationName()}
-								items={countriesTotals.map(countriesToItemOfTitlesList)}
+								items={filteredCountriesTotal.map(countriesToItemOfTitlesList)}
 							/>
-							||
-							null
-						}
+						</ShowArray >
 					</div >
 				</div >
 				{
-					useOrDefault(() => search.ads.length, 0) ?
+					useOrDefault(() => search.ads.length, 0)
+						?
 						<div >
+							<Ads
+								title={`VIP`}
+								ads={search.vip}
+							/>
 							<Ads
 								title={`Search result (${search.pagination.total})`}
 								ads={search.ads}
 							/>
 							<div className={'d-flex justify-content-center'} >
-								<Pagination pagination={search.pagination}/>
+								<Pagination pagination={search.pagination} />
 							</div >
 						</div >
 						:
 						<EmptySearch />
 				}
 				<Footer />
-			</React.Fragment >
+			</>
 		);
 	}
 }

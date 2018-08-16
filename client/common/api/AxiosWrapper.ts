@@ -22,6 +22,10 @@ export class AxiosWrapper {
 		return instance.put(apiMethod, body, config);
 	}
 
+	public static patch(apiMethod: string, body: any = {}, config?: AxiosRequestConfig): AxiosPromise<any> {
+		return instance.patch(apiMethod, body, config);
+	}
+
 	public static deleteResponse(apiMethod: string, body?: any): AxiosPromise<any> {
 		return instance.delete(apiMethod, {data: body});
 	}

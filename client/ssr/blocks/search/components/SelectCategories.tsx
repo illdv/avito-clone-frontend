@@ -6,7 +6,7 @@ interface ISelectCategoryProps {
 	label: string;
 	parent: any;
 	categories: any;
-	idDefaultCategory?: number;
+	idDefaultCategory?: number | null;
 	currentCategory?: ICategory;
 	selectedCategoriesIds: number[];
 	onSelect: (category: any, parent: any | null) => void;

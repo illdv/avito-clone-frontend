@@ -15,6 +15,7 @@ import Ads from 'client/ssr/blocks/ads/Ads';
 
 import * as loaderPrepare from '../client/common/loader-prepare/loaderPrepare';
 import Page404 from 'client/common/layouts/Page404';
+import SearchStateful from 'client/ssr/blocks/search/SearchStateful'
 
 const isServer: boolean = typeof window === 'undefined';
 
@@ -75,7 +76,7 @@ export class Index extends React.Component<IIndexProps, IIndexProps> {
 					<div className='header_bottom p-y-20'>
 						<div className='container'>
 							<Navbar />
-							<Search priceRange={true}/>
+							<SearchStateful/>
 						</div>
 					</div>
 					<Categories categoriesByLocation={categoriesByLocation} />

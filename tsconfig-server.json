@@ -5,6 +5,7 @@
         "sourceMap": true, //генерировать sourceMaps, нужно для отладки
         "outDir": ".server", //проект билдится из папки /server в папку /.server
         "rootDir": "server",
+        "skipLibCheck": true,
         "lib": [
             "dom",
             "es2017"

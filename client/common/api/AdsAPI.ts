@@ -1,8 +1,11 @@
 import {AxiosWrapper} from './AxiosWrapper';
 import {AdsActionType, ICreateAdRequest, IEditAdRequest} from '../entities/user/modules/owned-ads/interfaces';
+import { getQueryWithLocation } from '../utils/utils';
+
 import {getMyAd, getDataForAdsIndexPage} from 'server/api/ad';
 import * as queryString from 'query-string';
 import {AxiosPromise} from 'axios';
+import { formatData } from 'server/router/prepares';
 
 export class AdsAPI {
 	public static queryStr = data => {
@@ -10,11 +13,14 @@ export class AdsAPI {
 	}
 
 	public static get(data): AxiosPromise<any> {
-		return AxiosWrapper.get(`/ads?&${AdsAPI.queryStr(getDataForAdsIndexPage)}&${data}`);
+		const query = getQueryWithLocation();
+		return AxiosWrapper.get(`/ads?${formatData({...query, ...getDataForAdsIndexPage})}&${data}`);
 	}
 
 	public static getPage(sort, page): AxiosPromise<any>  {
-		return AxiosWrapper.get(`/ads?${AdsAPI.queryStr(getDataForAdsIndexPage)}&page=${page}`);
+		const query = getQueryWithLocation();
+		query.page = page;
+		return AxiosWrapper.get(`/ads?${formatData({...query, ...getDataForAdsIndexPage})}&${sort}`);
 	}
 
 	public static getMy(): AxiosPromise<any>  {
