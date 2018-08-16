@@ -56,6 +56,10 @@ class Pagination extends Component<IProps, IState> {
 					return (
 						<DotDot key={item + 1} />
 					);
+				} else if (Math.sign(item + 5 - currentPage) === -1 ) {
+					return (
+						<DotDot key={item + 1}/>
+					);
 				} else {
 					return (
 						<PaginationItem
@@ -87,7 +91,27 @@ class Pagination extends Component<IProps, IState> {
 					</PaginationItem>
 				}
 				{
+					current_page === last_page &&
+					<PaginationItem>
+						<PaginationLink
+							href={this.calcHrefGoPage(1)}
+						>
+							1
+						</PaginationLink>
+					</PaginationItem>
+				}
+				{
 					this.formationPagination(current_page, last_page)
+				}
+				{
+					current_page + 7 < last_page &&
+					<PaginationItem>
+						<PaginationLink
+							href={this.calcHrefGoPage(last_page)}
+						>
+							{last_page}
+						</PaginationLink>
+					</PaginationItem>
 				}
 				{
 					current_page + 1 <= last_page &&
