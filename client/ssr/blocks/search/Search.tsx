@@ -3,49 +3,41 @@ import { connect } from 'react-redux';
 
 import SelectCategories from './components/SelectCategories';
 import { IRootState } from 'client/common/store/storeInterface';
-import { getLocationState } from 'client/common/store/selectors';
 import { Category, getCategories } from 'client/ssr/blocks/categories/context';
-import { changeCountryLocal, ILocationStoreState } from 'client/common/location/module';
 
 import { showLocationModal } from 'client/ssr/modals/location/locationModalTriggers';
 import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface';
-import PriceRange, { IRangePrice } from 'client/ssr/blocks/search/components/PriceRange';
+import PriceRange, { IRange } from 'client/ssr/blocks/search/components/PriceRange';
 import { findCategoriesQueueById, useOrDefault } from 'client/spa/profile/utils/createAd';
-import { pushInRouter } from 'client/common/utils/utils';
 import { IQuery } from 'client/common/search/interface';
-import { queryStringifyPlus } from 'server/router/utils';
-import { defaultState } from 'client/common/search/store';
 
 require('./Search.sass');
-
-/**
- * Delete all value equal null, undefined or empty string.
- */
-function clearObject(dirtyObject) {
-	return Object.entries(dirtyObject).reduce((result, [key, value]) => {
-		if (!value || value === '') {
-			return result;
-		}
-		if (typeof value === 'object' && !Array.isArray(value)) {
-			return { ...result, [key]: clearObject(value) };
-		}
-		return { ...result, [key]: value };
-	}, {});
-}
 
 interface IOption {
 	value: string;
 	item: ITotalOptions;
 }
 
+export interface IRangePrice {
+	priceType: number | null;
+	priceFrom: number | null;
+	priceTo: number | null;
+}
+
+export interface IDataForSearch {
+	rangePrice: IRangePrice;
+	searchString: string;
+	options: IOption[];
+	selectedCategories: any;
+}
+
 interface IProps {
-	onSearch: () => void;
+	onSearch: (data: IDataForSearch) => void;
 	query: IQuery;
 	locationName: string;
 	urlString: string;
 	categories: Category;
 	idActiveCategory: number;
-	locationState: ILocationStoreState;
 	priceRange?: boolean;
 }
 
@@ -56,16 +48,10 @@ interface IState {
 	duplicateCategories: any;
 	options: IOption[];
 	locationName: string;
-	rangePrice: {
-		priceType: number;
-		priceFrom: number;
-		priceTo: number;
-	};
+	rangePrice: IRangePrice;
 }
 
-const mapStateToProps = (state: IRootState) => ({
-	locationState: getLocationState(state),
-});
+const mapStateToProps = (state: IRootState) => ({});
 
 const getOption = (option: IOption, creatorChangeOption) => (
 	<>
@@ -227,68 +213,6 @@ class Search extends React.Component<IProps, IState> {
 
 	showSearchLocationModal = () => showLocationModal(ModalNames.location);
 
-	getIdSelectedCategory = () => {
-		const { selectedCategories } = this.state;
-
-		if (selectedCategories.length > 0) {
-			return selectedCategories[selectedCategories.length - 1].id;
-		}
-		return null;
-	}
-
-	getSelectedRange = () => {
-		const { rangePrice }         = this.state;
-		const { priceFrom, priceTo } = rangePrice;
-
-		return {
-			price: [
-				priceFrom,
-				priceTo,
-			],
-		};
-	}
-
-	getSelectedOptions = () => {
-		const { options } = this.state;
-
-		return options.map(option => ({
-			[option.item.id]: option.value,
-		}));
-	}
-
-	onSubmit = e => {
-		e.preventDefault();
-
-		const { idCity, idRegion, idCountry } = this.props.locationState.local;
-		const { rangePrice, searchString }    = this.state;
-		const { priceType }                   = rangePrice;
-
-		const idSelectedCategory = this.getIdSelectedCategory();
-		const whereBetween       = this.getSelectedRange();
-		const selectedOptions    = this.getSelectedOptions();
-
-		const query: any = {
-			whereLike: {
-				title: searchString,
-				body: searchString,
-				description: searchString,
-			},
-			category_id: idSelectedCategory,
-			city_id: idCity,
-			region_id: idRegion,
-			country_id: idCountry,
-			type: priceType,
-			whereBetween,
-			...selectedOptions,
-		};
-
-		const clearQuery  = clearObject(query);
-		const queryParams = queryStringifyPlus(clearQuery);
-		const href        = `/search?${queryParams}`;
-
-		pushInRouter(href);
-	}
-
 	get subcategories() {
 		return this.state.selectedCategories;
 	}
@@ -305,7 +229,7 @@ class Search extends React.Component<IProps, IState> {
 		return this.state.selectedCategories[this.state.selectedCategories.length - 1];
 	}
 
-	onChangeRange = ({ type, to, from }: IRangePrice) => {
+	onChangeRange = ({ type, to, from }: IRange) => {
 		this.setState({
 			rangePrice: {
 				priceType: type,
@@ -354,7 +278,7 @@ class Search extends React.Component<IProps, IState> {
 				<div className='form-group col-12 col-md-2' >
 					<button
 						className='btn orange-btn-outline search__button'
-						type='submit'
+						onClick={this.onSearch}
 					>
 						<i className='fas fa-search p-r-5' />
 						Search
@@ -412,22 +336,30 @@ class Search extends React.Component<IProps, IState> {
 		return null;
 	}
 
+	onSearch = () => {
+		const {selectedCategories, options, rangePrice, searchString} = this.state;
+
+		this.props.onSearch({
+			selectedCategories,
+			options,
+			rangePrice,
+			searchString,
+		});
+	}
+
 	render() {
 		const { priceRange } = this.props;
 
 		const { rangePrice: { priceType, priceTo, priceFrom } } = this.state;
 
-		const range: IRangePrice = {
+		const range: IRange = {
 			type: priceType,
 			to: priceTo,
 			from: priceFrom,
 		};
 
 		return (
-			<form
-				action='#'
-				onSubmit={this.onSubmit}
-			>
+			<>
 				{this.renderLineSearch()}
 				{this.renderSubcategories()}
 				{
@@ -439,7 +371,7 @@ class Search extends React.Component<IProps, IState> {
 						/>
 						: null
 				}
-			</form >
+			</>
 		);
 	}
 }

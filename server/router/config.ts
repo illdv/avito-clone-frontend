@@ -28,7 +28,7 @@ export const getRoutes = () => ([
 	{
 		path: '/search',
 		page: '/search',
-		prepare: ['searchUrl', 'categories', 'search', 'countriesTotal', 'categoriesTotal', 'breadcrumbs'],
+		prepare: ['searchUrl', 'categories', 'search', 'countriesTotal', 'categoriesTotal'],
 	},
 ] as IRoute[]);
 

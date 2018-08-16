@@ -30,17 +30,17 @@ function calcUrlSearchForLocation(countryId, regionId, cityId) {
 	const hasCountry = newQueryParams.country_id;
 	const hasCity    = newQueryParams.city_id;
 
+	delete newQueryParams.country_id;
+	delete newQueryParams.region_id;
+	delete newQueryParams.city_id;
+
 	if (hasRegion && !hasCity) {
 		return queryStringifyPlus({ ...newQueryParams, city_id: cityId });
 	}
 
 	if (hasCountry && !hasCity) {
-		delete newQueryParams.city_id;
 		return queryStringifyPlus({ ...newQueryParams, region_id: regionId });
 	}
-
-	delete newQueryParams.city_id;
-	delete newQueryParams.region_id;
 
 	return queryStringifyPlus({ ...newQueryParams, country_id: countryId });
 }

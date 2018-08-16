@@ -14,7 +14,8 @@ import { IPagination } from 'client/ssr/pages/interfacePagination';
 import SetSearchUrl from 'client/ssr/contexts/SearchUrlContext';
 import { isServer } from 'client/common/utils/utils';
 import { ISearchBreadcrumbs } from 'client/ssr/blocks/search/SearchStateful';
-import { useOrDefault } from 'client/spa/profile/utils/createAd'
+import { useOrDefault } from 'client/spa/profile/utils/createAd';
+import { IQuery } from 'client/common/search/interface';
 
 if (isServer()) {
 	types.disableChecking();
@@ -31,8 +32,7 @@ export interface ISearch {
 interface ICategoryProps {
 	categories: any[];
 	search: ISearch;
-	query: any;
-	breadcrumbs: any;
+	query: IQuery;
 	countriesTotal: ICountriesTotal[];
 	categoriesTotal: any;
 	searchUrl: any;
@@ -43,14 +43,13 @@ let loopState;
 class Category extends React.Component<ICategoryProps> {
 	static async getInitialProps({ query }) {
 
-		const { categoriesTotal, countriesTotal, breadcrumbs, query: queryResult, search, categories, location } = query;
+		const { categoriesTotal, countriesTotal, query: queryResult, search, categories, location } = query;
 
-		if (!categoriesTotal || !countriesTotal || !breadcrumbs || !queryResult || !search || !categories || !location) {
+		if (!categoriesTotal || !countriesTotal || !queryResult || !search || !categories || !location) {
 			return ({
 				searchUrl: loopState.searchUrl,
 				categoriesTotal: loopState.categoriesTotal,
 				countriesTotal: loopState.countriesTotal,
-				breadcrumbs: loopState.breadcrumbs,
 				query: loopState.query,
 				search: loopState.search,
 				categories: loopState.categories,
@@ -62,7 +61,6 @@ class Category extends React.Component<ICategoryProps> {
 			searchUrl: query.searchUrl,
 			categoriesTotal,
 			countriesTotal,
-			breadcrumbs,
 			query: queryResult,
 			search,
 			categories,
