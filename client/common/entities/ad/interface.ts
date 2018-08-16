@@ -38,7 +38,7 @@ interface IAd {
 	is_approved?: boolean;
 	is_active?: boolean;
 	is_completed?: boolean;
-	is_vip?: boolean|number; // TODO UDALI SUKA!
+	is_vip?: boolean|number;
 	created_at?: string;
 	updated_at?: string;
 	deleted_at?: any;
