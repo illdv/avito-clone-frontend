@@ -51,7 +51,6 @@ export interface IChartState {
 			pointBackgroundColor: string;
 		}];
 	};
-	options?: {};
 }
 
 export interface IPriceHistories {
@@ -69,6 +68,10 @@ export interface ICrumb {
 	href: string;
 }
 
+export interface IFeatureAdProps {
+	options: IOption[];
+}
+
 export interface IAdsProps {
 	ad: IAd;
 	categories: any[];
@@ -80,7 +83,7 @@ export interface IAdsState {
 	crumbs: ICrumb[];
 	lastCrumb: ICrumb;
 	images: IImage[];
-	default_map: {
+	coordinatesMap: {
 		lat: number;
 		lng: number;
 	};
@@ -89,11 +92,6 @@ export interface IAdsState {
 
 export interface ISliderProps {
 	images: IImage[];
-}
-
-export interface ISlide {
-	original: string;
-	thumbnail: string;
 }
 
 export interface ISeller {
@@ -141,16 +139,16 @@ export interface IFavorites {
 	isFavorite: boolean;
 }
 
-export interface IFavoriteState {
-	is_favorite: boolean;
-}
-
 export interface IGMProps {
 	city: IAdCity;
 	address?: string;
-	default_map: IGMMarkerProp;
-	isMarkerShown: IGMMarkerProp;
-	zoom?: number;
+	coordinatesMap: IGMMarkerProp;
+
+}
+
+export interface ILocationSale {
+	coordinatesMap: IGMMarkerProp;
+	zoom: number;
 }
 
 export interface IGMState {

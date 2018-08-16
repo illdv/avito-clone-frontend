@@ -162,7 +162,8 @@ class SelectorLocationByAd extends Component<IProps, IState> {
 				>
 					Address
 				</label>
-				<div className='col-md-4 col-lg-2'>
+				<div className='col-md-9 col-lg-8'>
+				<div className='col-md-4 col-lg-4 m-b-15'>
 					<select
 						className='form-control'
 						onChange={this.changeCountry}
@@ -178,40 +179,41 @@ class SelectorLocationByAd extends Component<IProps, IState> {
 						}
 					</select>
 				</div>
-				{
-					this.state.regions.length > 0 &&
-					<div className='col-md-4 col-lg-2'>
-						<select
-							className='form-control'
-							onChange={this.changeRegion}
-							style={error !== '' && region_id === null ? {border: '1px solid red'} : {border: '1px solid silver'}}
-						>
-							<option defaultValue={region_id}>{this.state.title_region}</option>
-							{
-								this.state.regions.map(region => {
-									return <Options id={region.region_id} title={region.title} key={region.region_id}/>
-								})
-							}
-						</select>
+					{
+						this.state.regions.length > 0 &&
+						<div className='col-md-4 col-lg-4  m-b-15'>
+							<select
+								className='form-control'
+								onChange={this.changeRegion}
+								style={error !== '' && region_id === null ? {border: '1px solid red'} : {border: '1px solid silver'}}
+							>
+								<option defaultValue={region_id}>{this.state.title_region}</option>
+								{
+									this.state.regions.map(region => {
+										return <Options id={region.region_id} title={region.title} key={region.region_id}/>
+									})
+								}
+							</select>
+						</div>
+					}
+					{
+						this.state.cities.length > 0 &&
+						<div className='col-md-4 col-lg-4'>
+							<select
+								className='form-control'
+								onChange={this.selectCity}
+								style={error === '' ? {border: '1px solid silver'} : {border: '1px solid red'}}
+							>
+								<option defaultValue={city_id}>{this.state.title_city}</option>
+								{
+									this.state.cities.map(city => {
+										return <Options id={city.city_id} title={city.title} key={city.city_id}/>
+									})
+								}
+							</select>
 					</div>
 				}
-				{
-					this.state.cities.length > 0 &&
-					<div className='col-md-4 col-lg-2'>
-						<select
-							className='form-control'
-							onChange={this.selectCity}
-							style={error === '' ? {border: '1px solid silver'} : {border: '1px solid red'}}
-						>
-							<option defaultValue={city_id}>{this.state.title_city}</option>
-							{
-								this.state.cities.map(city => {
-									return <Options id={city.city_id} title={city.title} key={city.city_id}/>
-								})
-							}
-						</select>
-					</div>
-				}
+				</div>
 			</div>
 		);
 	}
