@@ -6,6 +6,7 @@ import { IRootState } from 'client/common/store/storeInterface';
 import { UserActions } from 'client/common/entities/user/rootActions';
 import { filterNotification } from './utils';
 import { FilterType } from './interface';
+import {extractPreviewImage} from "../../../../ssr/blocks/ad/utils";
 
 const FilterButton = (props: { buttonFilter: FilterType, length: number, isActive: boolean, onClick: () => void }) => {
 	const { buttonFilter, length, isActive, onClick } = props;
@@ -168,7 +169,7 @@ class Notification extends Component<IProps, IState> {
 					<div className='message-block__inner' >
 						<div className='row no-gutters' >
 							<div className='col-md-3 col-lg-3' >
-								<img src='../images/Rectangle.png' alt='' className='message-block__img' />
+								<img src='/static/img/no-image.svg' alt='' className='message-block__img' />
 							</div >
 							<div className='col-md-6 col-lg-6' >
 								<a href='#' >
