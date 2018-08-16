@@ -55,7 +55,7 @@ const PriceRange: React.SFC<IPriceRange> = ({ range, onChangeRange }) => {
 				<input
 					id='from'
 					type='number'
-					value={from}
+					value={from ? from : ''}
 					placeholder='Price from $'
 					className='search__options form-control'
 					onChange={onChangePrice}
@@ -66,7 +66,7 @@ const PriceRange: React.SFC<IPriceRange> = ({ range, onChangeRange }) => {
 				<input
 					id='to'
 					type='number'
-					value={to}
+					value={to ? to : ''}
 					placeholder='To $'
 					className='search__options form-control'
 					onChange={onChangePrice}
