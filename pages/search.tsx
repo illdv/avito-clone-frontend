@@ -8,7 +8,7 @@ import { SetCategories } from 'client/ssr/blocks/categories/context';
 
 import SearchPage, { ICountriesTotal } from 'client/ssr/pages/Search';
 import { IAds } from 'client/common/entities/user/modules/owned-ads/interfaces';
-import SetQuery from 'client/ssr/contexts/QueryContext';
+import SetQuery, { getQueryLoop } from 'client/ssr/contexts/QueryContext';
 import { SetBreadcrumbs } from 'client/ssr/contexts/Breadcrumbs';
 import { IPagination } from 'client/ssr/pages/interfacePagination';
 import SetSearchUrl from 'client/ssr/contexts/SearchUrlContext';
@@ -57,7 +57,7 @@ class Category extends React.Component<ICategoryProps> {
 			});
 		}
 
-		return ({
+		const result = {
 			searchUrl: query.searchUrl,
 			categoriesTotal,
 			countriesTotal,
@@ -65,13 +65,23 @@ class Category extends React.Component<ICategoryProps> {
 			search,
 			categories,
 			location,
-		});
+		};
+
+		loopState = result;
+		
+		return result;
 	}
 
 	render() {
-		loopState = this.props;
+		if (!loopState) {
+			loopState = this.props;
+		}
 
 		const { search, categories, query, countriesTotal, categoriesTotal, searchUrl } = this.props;
+
+		console.log('query = ', query);
+		console.log('isServer = ', isServer());
+		console.log('render getQueryLoop = ', getQueryLoop());
 
 		const { total, breadcrumbs } = search;
 

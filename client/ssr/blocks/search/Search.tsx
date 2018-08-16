@@ -10,6 +10,7 @@ import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface'
 import PriceRange, { IRange } from 'client/ssr/blocks/search/components/PriceRange';
 import { findCategoriesQueueById, useOrDefault } from 'client/spa/profile/utils/createAd';
 import { IQuery } from 'client/common/search/interface';
+import { isServer } from 'client/common/utils/utils'
 
 require('./Search.sass');
 
@@ -68,6 +69,20 @@ const getOption = (option: IOption, creatorChangeOption) => (
 	</>
 );
 
+const getOptions = (categoriesQueue: any): any[] => {
+	if (categoriesQueue.length > 1) {
+
+		const totalOptions = categoriesQueue[categoriesQueue.length - 1].total_options;
+
+		return totalOptions.map(option => ({
+			value: categoriesQueue[option.id] || '',
+			item: option,
+		}));
+	}
+
+	return [];
+};
+
 class Search extends React.Component<IProps, IState> {
 	constructor(props, context) {
 		super(props, context);
@@ -109,23 +124,13 @@ class Search extends React.Component<IProps, IState> {
 	static getDerivedStateFromProps(nextProps: IProps, prevState: IState): IState {
 		const { urlString, categories, query, locationName } = nextProps;
 
-		const { whereLike } = query;
-
-		const options = [];
+		const { whereLike, category_id } = query;
 
 		if (urlString !== prevState.urlString) {
-			const categoryId      = query.category_id;
-			const categoriesQueue = categoryId && findCategoriesQueueById(categories, Number(categoryId)) || [];
 
-			if (categoriesQueue.length > 1) {
-				const totalOptions = categoriesQueue[categoriesQueue.length - 1].total_options;
-				totalOptions.forEach(option => {
-					options.push({
-						value: query && query.options[option.id] || '',
-						item: option,
-					});
-				});
-			}
+			const categoriesQueue = category_id && findCategoriesQueueById(categories, Number(category_id)) || [];
+
+			const options = getOptions(categoriesQueue);
 
 			return {
 				locationName,
@@ -244,15 +249,22 @@ class Search extends React.Component<IProps, IState> {
 	}
 
 	renderLineSearch = () => {
+
+		const { searchString } = this.state;
+
+		const { query, categories, locationName } = this.props;
+
+
+
 		return (
 			<div className='search form-inline form-row p-t-20' >
 				<div className='form-group col-6 col-md-3' >
 					<SelectCategories
-						categories={this.props.categories}
+						categories={categories}
 						onSelect={this.onSelectCategory}
 						label={'Category'}
 						selectedCategoriesIds={this.selectedCategoriesIds}
-						idDefaultCategory={this.props.query.category_id}
+						idDefaultCategory={query.category_id}
 						parent={null}
 					/>
 				</div >
@@ -261,7 +273,7 @@ class Search extends React.Component<IProps, IState> {
 						className='search__options form-control'
 						placeholder='Search'
 						name='search'
-						value={this.state.searchString}
+						value={searchString}
 						onChange={this.changeSearchString}
 					/>
 				</div >
@@ -270,7 +282,7 @@ class Search extends React.Component<IProps, IState> {
 						readOnly
 						type='text'
 						placeholder='Search'
-						defaultValue={this.props.locationName}
+						defaultValue={locationName}
 						onClick={this.showSearchLocationModal}
 						className='search__options form-control search_input--no-disable'
 					/>
@@ -337,7 +349,7 @@ class Search extends React.Component<IProps, IState> {
 	}
 
 	onSearch = () => {
-		const {selectedCategories, options, rangePrice, searchString} = this.state;
+		const { selectedCategories, options, rangePrice, searchString } = this.state;
 
 		this.props.onSearch({
 			selectedCategories,

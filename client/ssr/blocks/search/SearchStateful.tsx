@@ -9,7 +9,7 @@ import Search, { IDataForSearch } from 'client/ssr/blocks/search/Search';
 import { ISearchState } from 'client/common/search/store';
 import { getSearchUrlLoop } from 'client/ssr/contexts/SearchUrlContext';
 import { queryStringifyPlus } from 'server/router/utils';
-import { pushInRouter } from 'client/common/utils/utils';
+import { isServer, pushInRouter } from 'client/common/utils/utils';
 import { getLocationState } from 'client/common/store/selectors';
 import { ILocationStoreState } from 'client/common/location/module';
 import { clearObject, extractCategoryId, extractRangePrice, getSelectedOptions } from 'client/ssr/blocks/search/utils';
@@ -49,8 +49,11 @@ class SearchStateful extends Component<IProps, IState> {
 	state: IState = {};
 
 	componentWillMount(): void {
-		const { searchActions } = this.props;
-		searchActions.initialize.REQUEST({ query: getQueryLoop(), queryString: getSearchUrlLoop() });
+		if (!isServer()) {
+			const { searchActions } = this.props;
+			console.log('componentWillMount getQueryLoop = ', getQueryLoop());
+			searchActions.initialize.REQUEST({ query: getQueryLoop(), queryString: getSearchUrlLoop() });
+		}
 	}
 
 	onSearch = (data: IDataForSearch) => {
