@@ -250,45 +250,6 @@ export const search: prepareMethod = async ({ query = { currentPage: '1' }, accu
 	}
 };
 
-// TODO: delete it
-async function getNameLocation(queryParams, req) {
-	const hasRegion  = queryParams.region_id;
-	const hasCountry = queryParams.country_id;
-	const hasCity    = queryParams.city_id;
-
-	if (hasCountry && hasRegion && hasCity) {
-		const responseRegions = await getInstanceWithLanguageByReq(req).get(`/cities/${queryParams.city_id}`);
-		return responseRegions.data[0].title;
-	}
-
-	if (hasCountry && hasRegion) {
-		const responseRegions = await getInstanceWithLanguageByReq(req).get(`/regions/${queryParams.region_id}`);
-		return responseRegions.data[0].title;
-	}
-
-	if (hasCountry) {
-		const responseCountries = await getInstanceWithLanguageByReq(req).get(`/countries`);
-
-		const country = responseCountries.data.find(item => item.country_id === Number(queryParams.country_id));
-		return country.title;
-	}
-
-	return null;
-}
-
-// TODO: delete it
-export const breadcrumbs: prepareMethod = async ({ query, accumulation }, req) => {
-	const categoryQueue = findCategoriesQueueById(accumulation.categories, query.category);
-	const nameLocation  = await getNameLocation(query, req);
-	return [
-		{
-			title: `All listings in ${nameLocation}`,
-			href: '/category',
-		},
-		...categoryQueueToBreadcrumbsFormat(categoryQueue, categoryQueue.length),
-	];
-};
-
 export const countriesTotal: prepareMethod = async ({ query: queryParams, accumulation }, req) => {
 	try {
 		const hasRegion  = queryParams.region_id;

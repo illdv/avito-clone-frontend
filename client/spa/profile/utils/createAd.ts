@@ -28,25 +28,48 @@ export const transformationAdToManagerState =
 			step: 1,
 			sellerInfoFields: sellerFields,
 			adInfoFields: {
-				title: { disable: false, value: initialAd.title },
-				price: { disable: false, value: initialAd.price },
-				description: { disable: false, value: initialAd.description },
-				address: {disable: false, value: initialAd.address},
-				city_id: {value: initialAd.city_id},
+				title: {
+					disable: false,
+					value: initialAd ? initialAd.title : '',
+					error: '',
+				},
+				price: {
+					disable: false,
+					value: initialAd ? initialAd.price : '',
+					error: '',
+				},
+				description: {
+					disable: false,
+					value: initialAd ? initialAd.description : '',
+					error: '',
+				},
+				address: {
+					disable: false,
+					value: initialAd ? initialAd.address : '',
+					error: '',
+				},
+				city_id: {
+					value: initialAd ? initialAd.city_id : 0,
+					error: '',
+				},
 			},
 			selectedCategories,
 			attachedImages,
-			defaultCategoryId: initialAd.category_id,
+			defaultCategoryId: initialAd ? initialAd.category_id : null,
 			location: {
 				id: null,
 				name: null,
-				lng: initialAd.longitude,
-				lat: initialAd.latitude,
+				lng: initialAd ? initialAd.longitude : 55.75222,
+				lat: initialAd ? initialAd.latitude : 37.61140,
 			},
 			options,
 			typeIds,
-			selectedType: initialAd.type_id,
-			isVip: initialAd.is_vip as number,
+			selectedType: initialAd ? initialAd.type_id : null,
+			isVip: initialAd ? initialAd.is_vip as number : 0,
+			selectedCategoriesError: {
+				category: '',
+				subCategory: '',
+			},
 		};
 	};
 

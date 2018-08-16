@@ -2,19 +2,23 @@ import * as React from 'react';
 
 require('./PriceRange.sass');
 
-export interface IRangePrice {
+export interface IRange {
 	to: number;
 	type: number;
 	from: number;
 }
 
 interface IPriceRange {
-	range: IRangePrice;
-	onChangeRange: (newRange: IRangePrice) => void;
+	range: IRange;
+	onChangeRange: (newRange: IRange) => void;
 }
 
 const checkSelected = (value, selected) => {
 	return value === selected;
+};
+
+const ifNullReturnDefault = (value: number | null, defaultValue: string) => {
+	return value === null ? defaultValue : value;
 };
 
 const PriceRange: React.SFC<IPriceRange> = ({ range, onChangeRange }) => {
@@ -55,7 +59,7 @@ const PriceRange: React.SFC<IPriceRange> = ({ range, onChangeRange }) => {
 				<input
 					id='from'
 					type='number'
-					value={from ? from : ''}
+					value={ifNullReturnDefault(from, '')}
 					placeholder='Price from $'
 					className='search__options form-control'
 					onChange={onChangePrice}
@@ -66,7 +70,7 @@ const PriceRange: React.SFC<IPriceRange> = ({ range, onChangeRange }) => {
 				<input
 					id='to'
 					type='number'
-					value={to ? to : ''}
+					value={ifNullReturnDefault(to, '')}
 					placeholder='To $'
 					className='search__options form-control'
 					onChange={onChangePrice}
