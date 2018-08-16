@@ -4,29 +4,29 @@ import { connect, Dispatch } from 'react-redux';
 import InformationAboutAd from './InformationAboutAd';
 import { IRootState } from 'client/common/store/storeInterface';
 import ConfirmAd from './ConfirmAd';
-import { transformationAdToManagerState, getSelectAdTypeIdsBySelectedCategories } from '../../utils/createAd';
+import { getSelectAdTypeIdsBySelectedCategories, transformationAdToManagerState } from '../../utils/createAd';
 
 import {
-	ISellerInfoFields,
+	AdInfoFieldsNames,
 	IAdInfoFields,
 	IAttachedImage,
 	ILocation,
-	AdInfoFieldsNames,
+	ISellerInfoFields,
 	SellerFieldsNames,
 } from '../../interfaces/managerAd';
 import { UserActions } from 'client/common/entities/user/rootActions';
 import { getCategories } from 'client/ssr/blocks/categories/context';
 import { IOption } from './interface';
 import { ILoaded } from '../../../../common/location/module';
-import Ad from 'client/ssr/blocks/ad/Ad';
 
 interface IProps {
 	initialAd?: IAd;
 	user: IUserState;
 	categories: ICategory[];
-	callback(state: IState): void;
 	loadedLocation: ILoaded;
 	isEditing: boolean;
+
+	callback(state: IState): void;
 }
 
 export interface IState {
@@ -50,25 +50,22 @@ const mapStateToProps = (state: IRootState) => ({
 
 const findFieldAtPossibleNull = (obj, key, defaultValue) => {
 	return obj && obj[key] || defaultValue;
-}
+};
 
 class ManagerAd extends React.Component<IProps, IState> {
 	constructor(props, context) {
 		super(props, context);
 
-		const sellerInfoFields = {
-			name: { disable: true, value: findFieldAtPossibleNull(this.props.user.profile, 'name', '') },
-			email: { disable: true, value: findFieldAtPossibleNull(this.props.user.profile, 'email', '') },
-			phone: { disable: false, value: findFieldAtPossibleNull(this.props.user.profile, 'phone', '') },
+		const sellerInfoFields: ISellerInfoFields = {
+			name: { disable: true, value: findFieldAtPossibleNull(this.props.user.profile, 'name', ''), error: '' },
+			email: { disable: true, value: findFieldAtPossibleNull(this.props.user.profile, 'email', ''), error: '' },
+			phone: { disable: false, value: findFieldAtPossibleNull(this.props.user.profile, 'phone', ''), error: '' },
 		};
 
 		if (this.props.initialAd) {
-			// Edit Ad
 			this.state = transformationAdToManagerState(this.props.initialAd, this.props.categories, sellerInfoFields);
 		} else {
-			// Create Ad
-			// @ts-ignore
-            this.state = {
+			this.state = {
 				step: 1,
 				sellerInfoFields,
 				adInfoFields: {
@@ -76,7 +73,7 @@ class ManagerAd extends React.Component<IProps, IState> {
 					price: { disable: false, value: '', error: '' },
 					description: { disable: false, value: '', error: '' },
 					address: { disable: false, value: '', error: '' },
-					city_id: {value: 0, error: ''},
+					city_id: { value: 1, error: '' },
 				},
 				selectedCategories: [],
 				attachedImages: [],
@@ -97,60 +94,60 @@ class ManagerAd extends React.Component<IProps, IState> {
 				},
 			};
 		}
-
 	}
 
 	validation = () => {
 
 		const newInputs = {
-			selectedCategoriesError: {...this.state.selectedCategoriesError},
+			selectedCategoriesError: { ...this.state.selectedCategoriesError },
 			adInfoFields: {
-				title: {...this.state.adInfoFields.title},
-				price: {...this.state.adInfoFields.price},
-				description: {...this.state.adInfoFields.description},
-				address: {...this.state.adInfoFields.address},
-				city_id: {...this.state.adInfoFields.city_id},
-			}};
-		let errors = [];
+				title: { ...this.state.adInfoFields.title },
+				price: { ...this.state.adInfoFields.price },
+				description: { ...this.state.adInfoFields.description },
+				address: { ...this.state.adInfoFields.address },
+				city_id: { ...this.state.adInfoFields.city_id },
+			}
+		};
+		let errors      = [];
 
 		if (this.state.selectedCategories.length === 0) {
-			newInputs.selectedCategoriesError.category = 'error category';
+			newInputs.selectedCategoriesError.category    = 'error category';
 			newInputs.selectedCategoriesError.subCategory = 'error syb-category';
-			errors = [...errors, 'error'];
+			errors                                        = [...errors, 'error'];
 		} else if (this.state.selectedCategories[0].children.length > 0 && this.state.selectedCategories.length === 1) {
 			newInputs.selectedCategoriesError.subCategory = 'error syb-category';
-			errors = [...errors, 'error'];
+			errors                                        = [...errors, 'error'];
 		}
 		if (this.state.adInfoFields.title.value === '') {
-		 	newInputs.adInfoFields.title.error = 'Please fill in the field';
-			errors = [...errors, 'error'];
+			newInputs.adInfoFields.title.error = 'Please fill in the field';
+			errors                             = [...errors, 'error'];
 		}
 		if (this.state.adInfoFields.description.value === '') {
-		 	newInputs.adInfoFields.description.error = 'Please fill in the field';
-			errors = [...errors, 'error'];
+			newInputs.adInfoFields.description.error = 'Please fill in the field';
+			errors                                   = [...errors, 'error'];
 		}
 		if (this.state.adInfoFields.price.value === '') {
-		 	newInputs.adInfoFields.price.error = 'Please fill in the field';
-			errors = [...errors, 'error'];
+			newInputs.adInfoFields.price.error = 'Please fill in the field';
+			errors                             = [...errors, 'error'];
 		}
 		if (this.state.adInfoFields.city_id.value === 0) {
 			newInputs.adInfoFields.city_id.error = 'Select country';
-			errors = [...errors, 'error'];
+			errors                               = [...errors, 'error'];
 		}
 		if (this.state.adInfoFields.address.value === '') {
-		 	newInputs.adInfoFields.address.error = 'Please fill in the field';
-			errors = [...errors, 'error'];
+			newInputs.adInfoFields.address.error = 'Please fill in the field';
+			errors                               = [...errors, 'error'];
 		}
 		console.log(this.state.selectedCategories);
 		if (errors.length === 0) {
 			return (true);
 		} else {
-	 		this.setState({
+			this.setState({
 				adInfoFields: newInputs.adInfoFields,
 				selectedCategoriesError: newInputs.selectedCategoriesError,
 			});
 			return (false);
-	 	}
+		}
 	}
 
 	next = () => {
@@ -181,10 +178,10 @@ class ManagerAd extends React.Component<IProps, IState> {
 			});
 		}
 
-	};
+	}
 
 	createtorChangeAdInfoField = (name: AdInfoFieldsNames) =>
-		(e: ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => {
+		(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 			this.setState({
 				adInfoFields: {
 					...this.state.adInfoFields,
@@ -213,9 +210,10 @@ class ManagerAd extends React.Component<IProps, IState> {
 					name: title,
 				},
 			});
-	};
+		}
+
 	createtorChangeSellerInfoField = (name: SellerFieldsNames) =>
-		(e: ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => {
+		(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 			this.setState({
 				adInfoFields: {
 					...this.state.adInfoFields,
@@ -243,15 +241,15 @@ class ManagerAd extends React.Component<IProps, IState> {
 	}
 
 	onSelectCategories = (selectedCategories: ICategory[]) => {
-		let selectedType = null;
-		const options = this.getOptionsBySelectedCategories(selectedCategories);
-		const typeIds = getSelectAdTypeIdsBySelectedCategories(selectedCategories);
-		const selectedCategoriesError = {...this.state.selectedCategoriesError};
+		let selectedType              = null;
+		const options                 = this.getOptionsBySelectedCategories(selectedCategories);
+		const typeIds                 = getSelectAdTypeIdsBySelectedCategories(selectedCategories);
+		const selectedCategoriesError = { ...this.state.selectedCategoriesError };
 
 		if (selectedCategories.length === 1) {
 			selectedCategoriesError.category = '';
 		} else {
-			selectedCategoriesError.category = '';
+			selectedCategoriesError.category    = '';
 			selectedCategoriesError.subCategory = '';
 		}
 
@@ -322,9 +320,8 @@ class ManagerAd extends React.Component<IProps, IState> {
 		}
 	}
 
-	onSelectLocation = (location: ILocation) =>  this.setState({ location });
-
-	callCallback = () => this.props.callback(this.state);
+	onSelectLocation = (location: ILocation) => this.setState({ location });
+	callCallback     = () => this.props.callback(this.state);
 
 	render() {
 		const { step } = this.state;
@@ -334,56 +331,56 @@ class ManagerAd extends React.Component<IProps, IState> {
 
 		if (step === 1) {
 			return (
-				<div>
+				<div >
 					<InformationAboutAd
-						adInfoFields={ this.state.adInfoFields }
-						sellerInfoFields={ this.state.sellerInfoFields }
-						createtorChangeAdInfoField={ this.createtorChangeAdInfoField }
-						createtorChangeSellerInfoField={ this.createtorChangeSellerInfoField }
-						selectedCategories={ this.state.selectedCategories }
-						selectedCategoriesError={ this.state.selectedCategoriesError }
-						onSelectCategories={ this.onSelectCategories }
-						onUpdateImages={ this.onUpdateImages }
-						deleteImage={ this.deleteImage }
-						categories={ this.props.categories }
-						attachedImages={ this.state.attachedImages }
-						defaultCategoryId={ this.state.defaultCategoryId }
-						onSelectLocation={ this.onSelectLocation }
-						location={ this.state.location }
-						options={ this.state.options }
-						creatorChangeOptionById={ this.creatorChangeOptionById }
-						onSelectTypeAd={ this.onSelectTypeAd }
-						selectedType={ this.state.selectedType }
-						typeIds={ this.state.typeIds }
+						adInfoFields={this.state.adInfoFields}
+						sellerInfoFields={this.state.sellerInfoFields}
+						createtorChangeAdInfoField={this.createtorChangeAdInfoField}
+						createtorChangeSellerInfoField={this.createtorChangeSellerInfoField}
+						selectedCategories={this.state.selectedCategories}
+						selectedCategoriesError={this.state.selectedCategoriesError}
+						onSelectCategories={this.onSelectCategories}
+						onUpdateImages={this.onUpdateImages}
+						deleteImage={this.deleteImage}
+						categories={this.props.categories}
+						attachedImages={this.state.attachedImages}
+						defaultCategoryId={this.state.defaultCategoryId}
+						onSelectLocation={this.onSelectLocation}
+						location={this.state.location}
+						options={this.state.options}
+						creatorChangeOptionById={this.creatorChangeOptionById}
+						onSelectTypeAd={this.onSelectTypeAd}
+						selectedType={this.state.selectedType}
+						typeIds={this.state.typeIds}
 						loadedLocation={this.props.loadedLocation}
-						onSelectCityAd={ this.onSelectCityAd }
+						onSelectCityAd={this.onSelectCityAd}
 
 					/>
-					<div className='container page-create'>
+					<div className='container page-create' >
 						<button
-							onClick={ this.next }
+							onClick={this.next}
 							className='btn orange-btn w-25 float-right'
 						>
 							Continue
-						</button>
-					</div>
-				</div>
+						</button >
+					</div >
+				</div >
 			);
 		} else {
 			return (
 				<ConfirmAd
-					selectedCategories={ this.state.selectedCategories }
-					fullName={ this.state.sellerInfoFields.name.value }
-					email={ this.state.sellerInfoFields.email.value }
-					phone={ this.state.sellerInfoFields.phone.value }
-					address={ this.state.adInfoFields.address.value}
-					title={ this.state.adInfoFields.title.value }
-					price={ this.state.adInfoFields.price.value }
-					description={ this.state.adInfoFields.description.value }
-					locationName={ this.state.location.name }
-					vip={ this.isVip }
-					back={ this.back }
-					next={ this.callCallback }
+					selectedCategories={this.state.selectedCategories}
+					fullName={this.state.sellerInfoFields.name.value}
+					email={this.state.sellerInfoFields.email.value}
+					phone={this.state.sellerInfoFields.phone.value}
+					address={this.state.adInfoFields.address.value}
+					title={this.state.adInfoFields.title.value}
+					price={this.state.adInfoFields.price.value}
+					description={this.state.adInfoFields.description.value}
+					locationName={this.state.location.name}
+					vip={this.isVip}
+					back={this.back}
+					next={this.callCallback}
 					isEditing={this.props.isEditing}
 				/>
 			);

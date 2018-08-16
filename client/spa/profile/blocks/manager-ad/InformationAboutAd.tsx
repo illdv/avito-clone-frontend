@@ -277,10 +277,6 @@ const InformationAboutAd = ({ sellerInfoFields, adInfoFields, categories, create
 						/>
 					</div>
 				</div>
-				{/* <Lease
-					onSelectLocation={ onSelectLocation }
-					location={ location }
-				/> */}
 			</div>
 		</div>
 	</section>

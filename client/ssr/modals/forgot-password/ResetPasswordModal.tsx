@@ -61,7 +61,7 @@ class ResetPasswordModal extends React.Component<IProps, IState> {
 					</button>
 					<div className='text-center p-40'>
 						<h1 className='m-b-30'>Reset password</h1>
-						<h4 className='grey-text p-x-10'>Enter your email address, secret code and new password</h4>
+						<h4 className='grey-text p-x-10'>Check your email address, enter secret code and new password</h4>
 					</div>
 					<div className='auth-form'>
 						<div className='form-group row auth-input__wrapper'>
@@ -74,7 +74,7 @@ class ResetPasswordModal extends React.Component<IProps, IState> {
 							<input
 								type='text'
 								id='email'
-								className='col-sm-6 form-control'
+								className='col-sm-6 form-control disable-email'
 								name='email'
 								required
 								placeholder='Enter email'

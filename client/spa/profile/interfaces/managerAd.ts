@@ -18,6 +18,7 @@ export interface IField {
 	value: string;
 	error: string;
 }
+
 export interface INumberField {
 	value: number;
 	error: string;

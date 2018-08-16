@@ -49,7 +49,7 @@ export const transformationAdToManagerState =
 					error: '',
 				},
 				city_id: {
-					value: initialAd ? initialAd.city_id : 0,
+					value: initialAd ? initialAd.city_id : 1,
 					error: '',
 				},
 			},

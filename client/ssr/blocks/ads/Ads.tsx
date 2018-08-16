@@ -57,10 +57,16 @@ class Ads extends React.Component<IAdsProps, IAdsState> {
 	}
 
 	onSelectOrder = (order: ISelectSort) => {
-		this.state.page = 1;
 		const parse: ISortedBy = JSON.parse(order);
-		const sort = `orderBy[${parse.field}]=${parse.sort}`;
-		this.state.sort = sort;
+		let sort = `orderBy[${parse.field}]=${parse.sort}`;
+		const search = decodeURI(location.search).replace('?', '');
+		if (search !== '') {
+			sort += '&' + search;
+		}
+		this.setState({
+			page: 1,
+			sort: sort,
+		});
 		AdsAPI.get(sort).then(res => {
 			this.setState({ads: res.data.data});
 		})
@@ -73,14 +79,16 @@ class Ads extends React.Component<IAdsProps, IAdsState> {
 		this.state.spinner = true;
 		this.state.page++;
 		AdsAPI.getPage(this.state.sort, this.state.page)
-			.then(value => {
-				this.state.ads = [...this.state.ads, ...value.data.data];
-				this.state.spinner = false;
-				this.forceUpdate();
+			.then(res => {
+				this.setState({
+						ads: [...this.state.ads, ...res.data.data],
+					spinner: false,
+				});
 		})
 			.catch(err => {
 				console.log(err);
 		});
+
 	};
 
 	render() {
