@@ -6,7 +6,6 @@ import { IRootState } from 'client/common/store/storeInterface';
 import { UserActions } from 'client/common/entities/user/rootActions';
 import { filterNotification } from './utils';
 import { FilterType } from './interface';
-import {extractPreviewImage} from "../../../../ssr/blocks/ad/utils";
 
 const FilterButton = (props: { buttonFilter: FilterType, length: number, isActive: boolean, onClick: () => void }) => {
 	const { buttonFilter, length, isActive, onClick } = props;
