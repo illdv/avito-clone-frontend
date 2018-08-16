@@ -40,7 +40,7 @@ export const findCategoriesQueueById = (categories, categoryId): any[] | null =>
 			return acc;
 		}
 
-		if (category.id == categoryId) {
+		if (Number(category.id) === Number(categoryId)) {
 			return [category];
 		} else {
 			if (category.children.length > 0) {

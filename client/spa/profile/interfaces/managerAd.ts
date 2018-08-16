@@ -28,7 +28,7 @@ export interface IAdInfoFields {
 	[AdInfoFieldsNames.price]: IField;
 	[AdInfoFieldsNames.description]: IField;
 	[AdInfoFieldsNames.address]: IField;
-	[AdInfoFieldsNames.city_id]: INumberField;
+	[AdInfoFieldsNames.city_id]: number;
 }
 
 export enum SellerFieldsNames {

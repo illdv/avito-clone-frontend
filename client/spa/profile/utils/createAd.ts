@@ -48,10 +48,7 @@ export const transformationAdToManagerState =
 					value: initialAd ? initialAd.address : '',
 					error: '',
 				},
-				city_id: {
-					value: initialAd ? initialAd.city_id : 0,
-					error: '',
-				},
+				city_id: initialAd.city_id,
 			},
 			selectedCategories,
 			attachedImages,

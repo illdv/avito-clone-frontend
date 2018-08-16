@@ -113,7 +113,7 @@ class SelectorLocationByAd extends Component<IProps, IState> {
 	};
 
 	async componentWillMount() {
-		if (this.props.currentCity !== 0) {
+		if (this.props.currentCity !== null) {
 			const cityResponse = await AdsAPI.getCity(this.props.currentCity);
 			const regionResponse = await AdsAPI.getRegionsById(cityResponse.data[0].country_id);
 			const cities = await AdsAPI.getCitiesById(cityResponse.data[0].region_id);
@@ -160,7 +160,7 @@ class SelectorLocationByAd extends Component<IProps, IState> {
 					htmlFor='location'
 					className='col-md-3 col-lg-4 offer-form__label'
 				>
-					Select location
+					Address
 				</label>
 				<div className='col-md-4 col-lg-2'>
 					<select

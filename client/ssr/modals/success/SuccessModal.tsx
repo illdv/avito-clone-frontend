@@ -10,7 +10,6 @@ interface ISuccess {
 const SuccessModal: React.SFC<ISuccess> = ({}) => {
 	const onClose = () => {
 		hideAllModal();
-		showLoginModal();
 	};
 	return (
 		<Modal
@@ -18,7 +17,7 @@ const SuccessModal: React.SFC<ISuccess> = ({}) => {
 			useOnRequestClose={true}
 		>
 			<div className='auth-modal'>
-				<div className='login-links d-block text-center no-border'>
+				<div className='login-links d-block text-center no-border p-t-25'>
 					<h1 className='m-b-30'>Well done!</h1>
 					<h3 className='grey-text p-x-10'>Your password has been changed <br />successfully</h3>
 				</div>

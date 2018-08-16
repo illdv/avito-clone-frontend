@@ -22,7 +22,7 @@ class PlaceMap extends Component<IGMProps, IGMState> {
 				<div className='col-lg-8 offer-address'>
 					<h5 className='offer-address__title'>
 						Address:
-						<span> {this.props.city.title + ', ' + this.props.address}</span>
+						<span> {this.props.city.title}</span>
 					</h5>
 				</div>
 				{/*<div className='col-lg-4'>*/}
