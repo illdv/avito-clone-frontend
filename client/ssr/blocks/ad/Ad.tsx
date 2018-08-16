@@ -1,20 +1,20 @@
 import React from 'react';
 import { connect, Dispatch } from 'react-redux';
 
-import Breadcrumbs from './components/Breadcrumbs';
-import SliderImages from './components/SliderImages';
-import Seller from './components/Seller';
-import Chart from './components/Chart';
+import Breadcrumbs from 'client/ssr/components/AdShowPage/Breadcrumbs';
+import SliderImages from 'client/ssr/components/AdShowPage/SliderImages';
+import Seller from 'client/ssr/components/AdShowPage/Seller';
 import NumberFormat from 'react-number-format';
 import { IAdsProps, IAdsState, ICrumb } from 'client/ssr/blocks/ad/interface';
-import Feature from 'client/ssr/blocks/ad/components/Feature';
-import Description from 'client/ssr/blocks/ad/components/Description';
+import Feature from 'client/ssr/components/AdShowPage/Feature';
+import Description from 'client/ssr/components/AdShowPage/Description';
 import Link from 'next/link';
-import { ButtonFavorites } from 'client/ssr/blocks/ad/components/ButtonFavorites';
-import Kit from 'client/ssr/blocks/ad/components/Kit';
-import PlaceMap from 'client/ssr/blocks/ad/components/PlaceMap';
+import ButtonFavorites from 'client/ssr/components/AdShowPage/ButtonFavorites';
+import Kit from 'client/ssr/components/AdShowPage/Kit';
+import PlaceMap from 'client/ssr/components/AdShowPage/PlaceMap';
 import { IRootState } from '../../../common/store/storeInterface';
 import { UserActions } from '../../../common/entities/user/rootActions';
+import Chart from 'client/ssr/components/AdShowPage/Chart/Chart';
 
 require('./Ad.sass');
 
@@ -27,12 +27,11 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 
 		const crumbs: ICrumb[] = [].concat(this.firstCrumbs, queueCrumbs, this.lastCrumbItem);
 		const images: IImage[] = [].concat(slider);
-
 		this.state = {
 			crumbs,
 			lastCrumb: queueCrumbs[queueCrumbs.length - 1],
 			images,
-			default_map: {
+			coordinatesMap: {
 				lat: this.props.ad.latitude,
 				lng: this.props.ad.longitude,
 			},
@@ -49,6 +48,7 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 		}
 		return { isFavorite };
 	}
+
 
 	formatCategoriesToCrumbs = (categories): ICrumb[] => {
 		return categories.map(category => {
@@ -114,8 +114,8 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 	}
 
 	render() {
-		const { similar, ad }                           = this.props;
-		const { crumbs, lastCrumb, images, isFavorite } = this.state;
+		const { similar, ad, user }                           = this.props;
+		const { crumbs, lastCrumb, images, isFavorite, coordinatesMap } = this.state;
 		return (
 			<>
 				<section className='heading'>
@@ -178,6 +178,7 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 								seller={ad.user}
 								city={ad.city.title}
 								country={ad.city.country.title}
+								user={user}
 							/>
 						</div>
 					</div>
@@ -189,8 +190,7 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 						<PlaceMap
 							address={ad.address}
 							city={ad.city}
-							default_map={this.state.default_map}
-							isMarkerShown={this.state.default_map}
+							coordinatesMap={coordinatesMap}
 						/>
 						<Chart
 							similar_ads={similar}
