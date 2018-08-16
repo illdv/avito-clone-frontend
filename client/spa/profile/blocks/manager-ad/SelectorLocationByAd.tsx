@@ -159,7 +159,8 @@ class SelectorLocationByAd extends Component<IProps, IState> {
 				>
 					Address
 				</label>
-				<div className='col-md-4 col-lg-2'>
+				<div className='col-md-9 col-lg-8'>
+				<div className='col-md-4 col-lg-4 m-b-15'>
 					<select className='form-control' onChange={this.changeCountry} required={true}>
 						<option defaultValue={this.state.country_id}>
 							{this.state.title_country}
@@ -173,7 +174,7 @@ class SelectorLocationByAd extends Component<IProps, IState> {
 				</div>
 				{
 					this.state.regions.length > 0 &&
-					<div className='col-md-4 col-lg-2'>
+					<div className='col-md-4 col-lg-4 m-b-15'>
 						<select className='form-control' onChange={this.changeRegion} required={true}>
 							<option defaultValue={this.state.region_id}>{this.state.title_region}</option>
 							{
@@ -186,7 +187,7 @@ class SelectorLocationByAd extends Component<IProps, IState> {
 				}
 				{
 					this.state.cities.length > 0 &&
-					<div className='col-md-4 col-lg-2'>
+					<div className='col-md-4 col-lg-4'>
 						<select className='form-control' onChange={this.selectCity} required={true}>
 							<option defaultValue={this.state.city_id}>{this.state.title_city}</option>
 							{
@@ -197,6 +198,7 @@ class SelectorLocationByAd extends Component<IProps, IState> {
 						</select>
 					</div>
 				}
+				</div>
 			</div>
 		);
 	}
