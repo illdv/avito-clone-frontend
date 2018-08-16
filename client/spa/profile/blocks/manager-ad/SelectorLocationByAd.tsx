@@ -5,6 +5,7 @@ import { AdsAPI } from 'client/common/api/AdsAPI';
 export interface IProps {
 	location: ILoaded;
 	currentCity: number;
+	error: string;
 
 	onChange(e: ChangeEvent<HTMLInputElement>, title?: string ): void;
 }
@@ -151,6 +152,8 @@ class SelectorLocationByAd extends Component<IProps, IState> {
 	}
 
 	render() {
+		const error = this.props.error;
+		const { country_id, region_id, city_id } = this.state;
 		return (
 			<div className='offer-form__item form-group row align-items-center'>
 				<label
@@ -161,8 +164,12 @@ class SelectorLocationByAd extends Component<IProps, IState> {
 				</label>
 				<div className='col-md-9 col-lg-8'>
 				<div className='col-md-4 col-lg-4 m-b-15'>
-					<select className='form-control' onChange={this.changeCountry} required={true}>
-						<option defaultValue={this.state.country_id}>
+					<select
+						className='form-control'
+						onChange={this.changeCountry}
+						style={error !== '' && country_id === null ? {border: '1px solid red'} : {border: '1px solid silver'}}
+					>
+						<option defaultValue={country_id}>
 							{this.state.title_country}
 						</option>
 						{
@@ -172,30 +179,38 @@ class SelectorLocationByAd extends Component<IProps, IState> {
 						}
 					</select>
 				</div>
-				{
-					this.state.regions.length > 0 &&
-					<div className='col-md-4 col-lg-4 m-b-15'>
-						<select className='form-control' onChange={this.changeRegion} required={true}>
-							<option defaultValue={this.state.region_id}>{this.state.title_region}</option>
-							{
-								this.state.regions.map(region => {
-									return <Options id={region.region_id} title={region.title} key={region.region_id}/>
-								})
-							}
-						</select>
-					</div>
-				}
-				{
-					this.state.cities.length > 0 &&
-					<div className='col-md-4 col-lg-4'>
-						<select className='form-control' onChange={this.selectCity} required={true}>
-							<option defaultValue={this.state.city_id}>{this.state.title_city}</option>
-							{
-								this.state.cities.map(city => {
-									return <Options id={city.city_id} title={city.title} key={city.city_id}/>
-								})
-							}
-						</select>
+					{
+						this.state.regions.length > 0 &&
+						<div className='col-md-4 col-lg-4  m-b-15'>
+							<select
+								className='form-control'
+								onChange={this.changeRegion}
+								style={error !== '' && region_id === null ? {border: '1px solid red'} : {border: '1px solid silver'}}
+							>
+								<option defaultValue={region_id}>{this.state.title_region}</option>
+								{
+									this.state.regions.map(region => {
+										return <Options id={region.region_id} title={region.title} key={region.region_id}/>
+									})
+								}
+							</select>
+						</div>
+					}
+					{
+						this.state.cities.length > 0 &&
+						<div className='col-md-4 col-lg-4'>
+							<select
+								className='form-control'
+								onChange={this.selectCity}
+								style={error === '' ? {border: '1px solid silver'} : {border: '1px solid red'}}
+							>
+								<option defaultValue={city_id}>{this.state.title_city}</option>
+								{
+									this.state.cities.map(city => {
+										return <Options id={city.city_id} title={city.title} key={city.city_id}/>
+									})
+								}
+							</select>
 					</div>
 				}
 				</div>

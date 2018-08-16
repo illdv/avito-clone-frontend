@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createContext } from 'react';
-import { connect, Dispatch } from 'react-redux';
+import { IQuery } from 'client/common/search/interface';
 
 export interface IState {
 
@@ -8,16 +8,6 @@ export interface IState {
 
 export interface IProps {
 	query: any;
-}
-
-export interface IQuery {
-	category_id?: number;
-	country_id?: number;
-	region_id?: number;
-	city_id?: string;
-	price_from?: string;
-	search?: string;
-	currentPage?: number;
 }
 
 let loop: IQuery;

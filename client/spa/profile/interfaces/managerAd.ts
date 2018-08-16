@@ -16,6 +16,12 @@ export enum AdInfoFieldsNames {
 export interface IField {
 	disable: boolean;
 	value: string;
+	error: string;
+}
+
+export interface INumberField {
+	value: number;
+	error: string;
 }
 
 export interface IAdInfoFields {
@@ -23,7 +29,7 @@ export interface IAdInfoFields {
 	[AdInfoFieldsNames.price]: IField;
 	[AdInfoFieldsNames.description]: IField;
 	[AdInfoFieldsNames.address]: IField;
-	[AdInfoFieldsNames.city_id]: number;
+	[AdInfoFieldsNames.city_id]: INumberField;
 }
 
 export enum SellerFieldsNames {

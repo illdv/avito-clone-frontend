@@ -1,7 +1,7 @@
 import * as queryString from 'query-string';
 
 function helper(nameObject, data) {
-	return Object.entries(data).reduce((result, [key, value]) => {
+	return Object.entries(data || {}).reduce((result, [key, value]) => {
 		return { ...result, [`${nameObject}[${key}]`]: value };
 	}, {});
 }
@@ -18,7 +18,7 @@ function reducerObject(data) {
 }
 
 export function queryStringifyPlus(data) {
-	return queryString.stringify(reducerObject(data), { arrayFormat: 'bracket' });
+	return queryString.stringify(reducerObject(data || {}), { arrayFormat: 'bracket' });
 }
 
 export const  getQueryWithLocation = req => {

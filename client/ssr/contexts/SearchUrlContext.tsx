@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { createContext } from 'react';
-import { connect, Dispatch } from 'react-redux';
 
 export interface IState {
 

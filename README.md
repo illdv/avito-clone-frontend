@@ -8,3 +8,7 @@ npm run dev
 Please import TypeScriptAndHtml.xml
 
 Settings -> Editor --> Code Style -> Schema -> Import
+
+### Login
+dev@cronix.ms
+111111

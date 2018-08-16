@@ -45,7 +45,7 @@ interface INotification {
 	notifiable_type: string;
 	notifiable_id: number;
 	data: INotificationData;
-	read_at?: any;
+	read_at?: string | number;
 	created_at: string;
 	updated_at: string;
 }

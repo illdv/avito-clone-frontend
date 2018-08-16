@@ -8,22 +8,31 @@ import { SetCategories } from 'client/ssr/blocks/categories/context';
 
 import SearchPage, { ICountriesTotal } from 'client/ssr/pages/Search';
 import { IAds } from 'client/common/entities/user/modules/owned-ads/interfaces';
-import SetQuery from 'client/ssr/contexts/QueryContext';
+import SetQuery, { getQueryLoop } from 'client/ssr/contexts/QueryContext';
 import { SetBreadcrumbs } from 'client/ssr/contexts/Breadcrumbs';
 import { IPagination } from 'client/ssr/pages/interfacePagination';
 import SetSearchUrl from 'client/ssr/contexts/SearchUrlContext';
+import { isServer } from 'client/common/utils/utils';
+import { ISearchBreadcrumbs } from 'client/ssr/blocks/search/SearchStateful';
+import { useOrDefault } from 'client/spa/profile/utils/createAd';
+import { IQuery } from 'client/common/search/interface';
 
-const isServer: boolean = typeof window === 'undefined';
-
-if (isServer) {
+if (isServer()) {
 	types.disableChecking();
+}
+
+export interface ISearch {
+	ads: IAds[];
+	pagination: IPagination;
+	vip: IAds[];
+	total: number;
+	breadcrumbs: ISearchBreadcrumbs;
 }
 
 interface ICategoryProps {
 	categories: any[];
-	search: { ads: IAds[], pagination: IPagination };
-	query: any;
-	breadcrumbs: any;
+	search: ISearch;
+	query: IQuery;
 	countriesTotal: ICountriesTotal[];
 	categoriesTotal: any;
 	searchUrl: any;
@@ -34,14 +43,13 @@ let loopState;
 class Category extends React.Component<ICategoryProps> {
 	static async getInitialProps({ query }) {
 
-		const { categoriesTotal, countriesTotal, breadcrumbs, query: queryResult, search, categories, location } = query;
+		const { categoriesTotal, countriesTotal, query: queryResult, search, categories, location } = query;
 
-		if (!categoriesTotal || !countriesTotal || !breadcrumbs || !queryResult || !search || !categories || !location) {
+		if (!categoriesTotal || !countriesTotal || !queryResult || !search || !categories || !location) {
 			return ({
 				searchUrl: loopState.searchUrl,
 				categoriesTotal: loopState.categoriesTotal,
 				countriesTotal: loopState.countriesTotal,
-				breadcrumbs: loopState.breadcrumbs,
 				query: loopState.query,
 				search: loopState.search,
 				categories: loopState.categories,
@@ -49,28 +57,54 @@ class Category extends React.Component<ICategoryProps> {
 			});
 		}
 
-		return ({
+		const result = {
 			searchUrl: query.searchUrl,
 			categoriesTotal,
 			countriesTotal,
-			breadcrumbs,
 			query: queryResult,
 			search,
 			categories,
 			location,
-		});
+		};
+
+		loopState = result;
+		
+		return result;
 	}
 
 	render() {
-		loopState = this.props;
+		if (!loopState) {
+			loopState = this.props;
+		}
 
-		const { search, categories, query, breadcrumbs, countriesTotal, categoriesTotal, searchUrl } = this.props;
+		const { search, categories, query, countriesTotal, categoriesTotal, searchUrl } = this.props;
+
+		console.log('query = ', query);
+		console.log('isServer = ', isServer());
+		console.log('render getQueryLoop = ', getQueryLoop());
+
+		const { total, breadcrumbs } = search;
+
+		const locationName    = useOrDefault(() => breadcrumbs.location.title, 'World');
+
+		const categoriesBreadcrumbs = (breadcrumbs.categories || []).map((item, index) => ({
+			title: `${item.title} ${index === breadcrumbs.categories.length - 1 ? total : ''}`,
+			href: `/search?category_id=${item.id}`,
+		}));
+
+		const breadcrumbsItems = [
+			{
+				title: `All listings in ${locationName}`,
+				href: '',
+			},
+			...categoriesBreadcrumbs,
+		];
 
 		return (
 			<SetSearchUrl searchUrl={searchUrl} >
 				<SetQuery query={query} >
 					<SetCategories categories={categories} >
-						<SetBreadcrumbs breadCrumbs={breadcrumbs} >
+						<SetBreadcrumbs breadCrumbs={breadcrumbsItems} >
 							<SearchPage search={search} countriesTotal={countriesTotal} categoriesTotal={categoriesTotal} />
 						</SetBreadcrumbs >
 					</SetCategories >

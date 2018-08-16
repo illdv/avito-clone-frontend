@@ -1,4 +1,4 @@
-import React, { createContext } from 'react';
+import React, { createContext, ReactNode } from 'react';
 
 export type Category = any[];
 
