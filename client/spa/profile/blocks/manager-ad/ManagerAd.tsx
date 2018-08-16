@@ -75,7 +75,7 @@ class ManagerAd extends React.Component<IProps, IState> {
 					title: { disable: false, value: '', error: '' },
 					price: { disable: false, value: '', error: '' },
 					description: { disable: false, value: '', error: '' },
-					address: { disable: false, value: '', error: '' },
+					address: { disable: false, value: 'qqqq', error: '' },
 					city_id: {value: 0, error: ''},
 				},
 				selectedCategories: [],
@@ -137,10 +137,10 @@ class ManagerAd extends React.Component<IProps, IState> {
 			newInputs.adInfoFields.city_id.error = 'Select country';
 			errors = [...errors, 'error'];
 		}
-		if (this.state.adInfoFields.address.value === '') {
-		 	newInputs.adInfoFields.address.error = 'Please fill in the field';
-			errors = [...errors, 'error'];
-		}
+		// if (this.state.adInfoFields.address.value === '') {
+		//  	newInputs.adInfoFields.address.error = 'Please fill in the field';
+		// 	errors = [...errors, 'error'];
+		// }
 		console.log(this.state.selectedCategories);
 		if (errors.length === 0) {
 			return (true);
@@ -203,8 +203,8 @@ class ManagerAd extends React.Component<IProps, IState> {
 			this.setState({
 				adInfoFields: {
 					...this.state.adInfoFields,
-					[city_id]: {
-						value: Number(e.target.value),
+					city_id: {
+						value: 11111,
 						error: '',
 					},
 				},
