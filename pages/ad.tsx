@@ -40,10 +40,11 @@ class Ads extends React.Component<IAdsProps> {
 		if (!this.props.adForShow || !this.props.adForShow.ad) {
 			return <Error statusCode={404} />;
 		}
-
+		const { categories, adForShow: {ad, similars} } = this.props;
+		const { user, address } = ad;
 		return (
 			<React.Fragment>
-				<SetCategories categories={this.props.categories}>
+				<SetCategories categories={categories}>
 					<Header />
 					<div className='bottom-header p-y-20'>
 						<div className='container'>
@@ -52,13 +53,13 @@ class Ads extends React.Component<IAdsProps> {
 						</div>
 					</div>
 					<Ad
-						ad={this.props.adForShow.ad}
-						categories={this.props.categories}
-						similar={this.props.adForShow.similars}
+						ad={ad}
+						categories={categories}
+						similar={similars}
 					/>
 					<SellerModal
-						seller={this.props.adForShow.ad.user}
-						address={this.props.adForShow.ad.address}
+						seller={user}
+						address={address}
 					/>
 					<Footer />
 				</SetCategories>

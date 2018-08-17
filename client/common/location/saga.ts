@@ -85,6 +85,7 @@ function* sagaChangeCountryForSession(action) {
 	} else {
 		try {
 			const getRegions = yield call(get, 'getRegions', { id: idCountry });
+			console.log(getRegions);
 			const regions: IRegion[] = getRegions.data;
 
 			yield put(changeState({
