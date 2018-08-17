@@ -35,6 +35,7 @@ instance.interceptors.response.use(response => {
 });
 
 export const formatData = (data): string => {
+	console.log(data);
 	return queryStringifyPlus(data);
 };
 
@@ -179,7 +180,7 @@ export const getCountries: prepareMethod = async (sugar, req) => {
 
 export const getRegions: prepareMethod = async ({ query }, req) => {
 	try {
-		const response = await getInstanceWithLanguageByReq(req).get(`/countries/${query.id}/regions/%20`);
+		const response = await getInstanceWithLanguageByReq(req).get(`/countries/${query.id}/regions`);
 		return response.data;
 	} catch (err) {
 		console.log(err);
@@ -189,7 +190,7 @@ export const getRegions: prepareMethod = async ({ query }, req) => {
 
 export const getCities: prepareMethod = async ({ query }, req) => {
 	try {
-		const response = await getInstanceWithLanguageByReq(req).get(`/regions/${query.id}/cities/%20`);
+		const response = await getInstanceWithLanguageByReq(req).get(`/regions/${query.id}/cities`);
 		return response.data;
 	} catch (err) {
 		console.log(err);
@@ -214,6 +215,7 @@ function getNewWhereLike(query) {
 export const searchUrl: prepareMethod = async ({ query = { currentPage: '1' }, accumulation }, req) => {
 	try {
 		const mainQuery = { ...accumulation.query || query };
+		console.log('main query=',accumulation.query);
 		return formatData({
 			...getDataForAdsIndexPage,
 			...mainQuery,
@@ -224,10 +226,10 @@ export const searchUrl: prepareMethod = async ({ query = { currentPage: '1' }, a
 };
 
 export const search: prepareMethod = async ({ query = { currentPage: '1' }, accumulation }, req) => {
+
 	try {
 		const response = await getLiteAdsByQueryString(accumulation.searchUrl);
 		const { current_page, last_page, per_page, total } = response;
-
 		const pagination = {
 			current_page,
 			last_page,
