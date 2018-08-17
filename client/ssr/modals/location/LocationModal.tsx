@@ -87,7 +87,7 @@ export class LocationModal extends React.Component<ILocationModalProps> {
 	}
 
 	close = () => {
-		hideLocationModal(ModalNames.location);
+		hideLocationModal(this.props.name);
 	}
 
 

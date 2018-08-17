@@ -58,7 +58,16 @@ class SearchStateful extends Component<IProps, IState> {
 
 	onSearch = (data: IDataForSearch) => {
 
-		const { idCity, idRegion, idCountry } = this.props.locationState.local;
+		const idCity = this.props.locationState.local.idCity;
+		let idRegion = null;
+		let idCountry = null;
+
+		if (!idCity) {
+			idRegion = this.props.locationState.local.idRegion;
+			if (!idRegion) {
+				idCountry = this.props.locationState.local.idCountry;
+			}
+		}
 
 		const { rangePrice, searchString, options, selectedCategories } = data;
 
