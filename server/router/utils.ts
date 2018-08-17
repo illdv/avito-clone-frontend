@@ -18,6 +18,7 @@ function reducerObject(data) {
 }
 
 export function queryStringifyPlus(data) {
+	console.log(data);
 	return queryString.stringify(reducerObject(data || {}), { arrayFormat: 'bracket' });
 }
 
