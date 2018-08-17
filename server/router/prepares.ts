@@ -128,23 +128,7 @@ export const location: prepareMethod = async (sugar, req) => {
 };
 
 export const query: prepareMethod = async (sugar, req) => {
-	const queryStr = req.url.match(/\?([^]+)/);
-
-	const optionsStrings = queryStr && queryStr[1].match(/(options[^&]+)/g);
-
-	const options = {};
-
-	if (optionsStrings) {
-		optionsStrings.forEach(optionString => {
-			const optionsParams = optionString.match(/options\[([^&]+)\]=([^]+)/);
-
-			if (optionsParams) {
-				options[optionsParams[1]] = optionsParams[2];
-			}
-		});
-	}
-
-	return { ...sugar.query, options };
+	return { ...sugar.query };
 };
 
 const getInstanceWithLanguageByReq = req => {
@@ -196,20 +180,6 @@ export const getCities: prepareMethod = async ({ query }, req) => {
 		return [];
 	}
 };
-
-function getNewWhereLike(query) {
-	const newQueryParams: any = { ...query };
-
-	const queryData = {};
-
-	if (newQueryParams && newQueryParams.whereLike) {
-		queryData['whereLike[title]']       = newQueryParams.whereLike.title;
-		queryData['whereLike[body]']        = newQueryParams.whereLike.body;
-		queryData['whereLike[description]'] = newQueryParams.whereLike.description;
-	}
-
-	return `&${queryString.stringify(queryData)}`;
-}
 
 export const searchUrl: prepareMethod = async ({ query = { currentPage: '1' }, accumulation }, req) => {
 	try {
