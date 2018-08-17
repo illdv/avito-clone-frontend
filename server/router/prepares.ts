@@ -35,7 +35,6 @@ instance.interceptors.response.use(response => {
 });
 
 export const formatData = (data): string => {
-	console.log(data);
 	return queryStringifyPlus(data);
 };
 
@@ -215,7 +214,6 @@ function getNewWhereLike(query) {
 export const searchUrl: prepareMethod = async ({ query = { currentPage: '1' }, accumulation }, req) => {
 	try {
 		const mainQuery = { ...accumulation.query || query };
-		console.log('main query=',accumulation.query);
 		return formatData({
 			...getDataForAdsIndexPage,
 			...mainQuery,
