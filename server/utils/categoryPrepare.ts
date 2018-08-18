@@ -1,4 +1,5 @@
 import * as jsHttpCookie from 'cookie';
+import { getRegionAndCountryByCity, getCountryByRegion, prepareMethod } from '../router/prepares';
 
 export const findCategoriesQueueBySlug = (categories, categorySlug): any[] | null => {
 	if (!categorySlug) {
@@ -131,6 +132,27 @@ export const getLocationsIdByRequest = req => {
 	;
 
 	return result;
+}
+
+export const getSearchLocationsIdByRequest: prepareMethod = async (sugar, rec) => {
+	let result = {
+		idCountry: null,
+		idRegion: null,
+		idCity: null,
+	};
+
+	if (sugar.query.city_id) {
+		result = await getRegionAndCountryByCity(sugar, rec);
+		return result;
+	} else if (sugar.query.region_id) {
+		result = await getCountryByRegion(sugar, rec);
+		return result;
+	} else if (sugar.query.country_id) {
+		result.idCountry = Number(sugar.query.country_id);
+		return result;
+	} else {
+		return result;
+	}
 }
 
 export const getLocationNameByLocations = (idCountry, idRegion, idCity, countries, regions, cities) => {

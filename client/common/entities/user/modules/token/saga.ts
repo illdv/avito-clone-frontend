@@ -17,10 +17,8 @@ function saveTokenInStore(action: Action<{ token: string, isRememberMe: boolean 
 	const { token, isRememberMe } = action.payload;
 
 	if (isRememberMe) {
-		console.log('setAndRememberToken');
 		CustomStorage.setAndRememberToken(token);
 	} else {
-		console.log('setToken');
 		CustomStorage.setToken(token);
 	}
 }
