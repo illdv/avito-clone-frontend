@@ -36,7 +36,7 @@ const checkIsActiveByRelate = (relations: string[], pathname: string) => () => {
 
 		return relate === pathname;
 	});
-}
+};
 
 const StylizedLink: React.SFC<StylizedLinkProps> = ({ to, relations, pathname, children }) => (
 	<li className='account-navigation__item'>

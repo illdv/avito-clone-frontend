@@ -5,7 +5,7 @@ export const optionChart = {
 	title: {
 		display: false,
 		text: 'Price change',
-		fontFamily: "Roboto",
+		fontFamily: 'Roboto',
 		fontSize: 16,
 		fontColor: '#000000',
 		fontStyle: '500',

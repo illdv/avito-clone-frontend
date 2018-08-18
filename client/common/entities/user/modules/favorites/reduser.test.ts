@@ -1,5 +1,5 @@
 import reducer from './reducer';
-import {favoritesActions} from "./actions";
+import {favoritesActions} from './actions';
 
 const initialState = {
 	ids: [],

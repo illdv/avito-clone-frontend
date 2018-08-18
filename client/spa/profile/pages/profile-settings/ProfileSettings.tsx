@@ -34,7 +34,7 @@ interface IState {
 }
 
 interface IProps {
-	user: IUserState,
+	user: IUserState;
 }
 
 export class ProfileSettings extends React.Component<IProps, IState> {

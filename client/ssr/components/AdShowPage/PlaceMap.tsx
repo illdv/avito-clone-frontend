@@ -12,7 +12,7 @@ class PlaceMap extends Component<IGMProps, IGMState> {
 		this.setState({
 			show: !this.state.show,
 		});
-	};
+	}
 
 	render() {
 		const { city, coordinatesMap } = this.props;
@@ -41,7 +41,7 @@ class PlaceMap extends Component<IGMProps, IGMState> {
 				{/*}*/}
 			</div>
 		);
-	};
-};
+	}
+}
 
 export default PlaceMap;

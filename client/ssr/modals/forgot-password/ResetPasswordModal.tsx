@@ -32,7 +32,7 @@ class ResetPasswordModal extends React.Component<IProps, IState> {
 		this.setState({
 			fields: {...this.state.fields, [id]: value},
 		});
-	};
+	}
 
 	onSubmit = () => {
 		const {code, password, password_confirmation} = this.state.fields;
@@ -41,7 +41,7 @@ class ResetPasswordModal extends React.Component<IProps, IState> {
 			token: code, password,
 			password_confirmation,
 		});
-	};
+	}
 
 	close = () => hideForgotPasswordModal();
 

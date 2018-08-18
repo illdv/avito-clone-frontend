@@ -1,5 +1,5 @@
 import { AxiosWrapper } from './AxiosWrapper';
-import {AxiosPromise} from "axios";
+import {AxiosPromise} from 'axios';
 
 export class UserAPI {
 	public static login(loginRequest): AxiosPromise<any> {

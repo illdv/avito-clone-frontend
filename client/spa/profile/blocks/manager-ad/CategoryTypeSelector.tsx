@@ -4,7 +4,7 @@ const mockTypesLabelsById = {
 	1: 'For Sale',
 	2: 'For Buy',
 	3: 'For Rent',
-}
+};
 
 interface IProps {
 	selectedType: number;

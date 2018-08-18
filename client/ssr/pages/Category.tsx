@@ -11,7 +11,7 @@ import ListOfSubcategories, { ItemOfTitlesList } from 'client/ssr/blocks/list-of
 import GroupList from '../blocks/GroupList/GroupList';
 import { pushInRouter } from 'client/common/utils/utils';
 import { changeCountryLocal } from 'client/common/location/module';
-import { categoryToItemOfTitlesList } from 'client/ssr/pages/utils'
+import { categoryToItemOfTitlesList } from 'client/ssr/pages/utils';
 
 export interface IAdGroup {
 	title: string;

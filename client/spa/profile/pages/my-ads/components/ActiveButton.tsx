@@ -13,7 +13,7 @@ class ActiveButton extends Component<IActiveButtonProps> {
 				{option.label}
 			</a>
 		);
-	};
+	}
 
 	render() {
 		return (

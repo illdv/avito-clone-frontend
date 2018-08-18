@@ -39,7 +39,7 @@ describe('Success get current user profile', () => {
 	saga('Set user token', result => {
 		expect(result)
 			.toEqual(
-				put(tokenActions.setTokenToState.REQUEST({token: token})),
+				put(tokenActions.setTokenToState.REQUEST({token})),
 			);
 	});
 });
