@@ -16,12 +16,9 @@ export const initialRoutes = (server, appNext) => {
 					if (!(prepares[prepareName] instanceof Function)) {
 						throw new Error(`Prepare [${ prepareName }] is not function`);
 					}
-					console.time(`prepare - ${ prepareName }`);
 					acc[prepareName] = await prepares[prepareName]({ params, query, path, accumulation: { ...acc } }, req);
-					console.timeEnd(`prepare - ${ prepareName }`);					
 					return acc;
 				} catch (error) {
-					console.timeEnd(`prepare - ${ prepareName }`);
 					throw error;
 				}
 			}, Promise.resolve({}));

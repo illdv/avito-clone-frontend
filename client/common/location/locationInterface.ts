@@ -21,12 +21,14 @@ export interface ILocationSession {
 	idCountry: number;
 	idRegion: number;
 	idCity: number;
+	locationName: string;
 }
 
 export interface ILocationLocal {
 	idCountry: number;
 	idRegion: number;
 	idCity: number;
+	locationName: string;
 }
 
 export interface ILoadedData {
@@ -44,5 +46,4 @@ export interface ILocationStoreState {
 	session: ILocationSession;
 	local: ILocationLocal;
 	loaded: ILoaded;
-	locationName: string;
 }
