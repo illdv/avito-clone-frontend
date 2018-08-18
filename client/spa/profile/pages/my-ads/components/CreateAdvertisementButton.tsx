@@ -4,7 +4,7 @@ import { Link, withRouter } from 'react-router-dom';
 
 interface IPropsButton {
 	className: string;
-};
+}
 
 class CreateAdvertisementButton extends Component<IPropsButton> {
 	render() {

@@ -30,8 +30,9 @@ module.exports = withTs(withSass({
 
 		const dev = process.env.NODE_ENV !== 'production';
 
-		if (dev)
+		if (dev) {
 			config.devtool = 'source-map';
+		}
 
 		return config;
 	}

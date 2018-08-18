@@ -166,7 +166,7 @@ class ManagerAd extends React.Component<IProps, IState> {
 		});
 	}
 
-	isVip = (e) => {
+	isVip =e => {
 		const plan = e.target.value;
 		if (plan === 'Quick' || plan === 'Turbo') {
 			this.setState({

@@ -41,15 +41,15 @@ const getQueryHref = (locationState: ILocationStoreState, category: ICategory|nu
 	const queryData = {};
 
 	if (category) {
-		queryData['category_id'] = category.id;
+		queryData.category_id = category.id;
 	}
 
 	if (idCity) {
-		queryData['city_id'] = idCity;
+		queryData.city_id = idCity;
 	} else if (idRegion) {
-		queryData['region_id'] = idRegion;
+		queryData.region_id = idRegion;
 	} else if (idCountry) {
-		queryData['country_id'] = idCountry;
+		queryData.country_id = idCountry;
 	}
 
 	const query = queryString.stringify(queryData);

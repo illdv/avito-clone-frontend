@@ -42,7 +42,7 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 	static getDerivedStateFromProps(props: IAdsProps) {
 		let isFavorite;
 		try {
-			isFavorite = props.user.favorites.ids.indexOf(props.ad.id) !== -1
+			isFavorite = props.user.favorites.ids.indexOf(props.ad.id) !== -1;
 		} catch (e) {
 			console.log(e);
 		}

@@ -86,7 +86,7 @@ export const getMainCategory = categoryQueue => {
 
 export const getCurrentCategoryByQueue = categoryQueue => {
 	return (categoryQueue && categoryQueue.length > 0) ? categoryQueue[categoryQueue.length - 1] : null;
-}
+};
 
 export const getIdFromCategory = categoty => {
 	return categoty ? categoty.id : null;
@@ -120,18 +120,18 @@ export const getLocationsIdByRequest = req => {
 			}
 
 			if (cookiesJSON.idRegion) {
-				result.idRegion = Number(cookiesJSON.idRegion) || null
+				result.idRegion = Number(cookiesJSON.idRegion) || null;
 			}
 
 			if (cookiesJSON.idCity) {
-				result.idCity = Number(cookiesJSON.idCity) || null
+				result.idCity = Number(cookiesJSON.idCity) || null;
 			}
 		}
 	}
-	;
+	
 
 	return result;
-}
+};
 
 export const getLocationNameByLocations = (idCountry, idRegion, idCity, countries, regions, cities) => {
 	if (idCity) {
@@ -170,4 +170,4 @@ export const getLocationNameByLocations = (idCountry, idRegion, idCity, countrie
 	}
 
 	return 'World';
-}
+};

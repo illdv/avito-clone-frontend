@@ -65,7 +65,7 @@ class Ads extends React.Component<IAdsProps, IAdsState> {
 		}
 		this.setState({
 			page: 1,
-			sort: sort,
+			sort,
 		});
 		AdsAPI.get(sort).then(res => {
 			this.setState({ads: res.data.data});
@@ -73,7 +73,7 @@ class Ads extends React.Component<IAdsProps, IAdsState> {
 			.catch(err => {
 				console.log(err);
 		});
-	};
+	}
 
 	onLoadMore = () => {
 		this.state.spinner = true;
@@ -89,7 +89,7 @@ class Ads extends React.Component<IAdsProps, IAdsState> {
 				console.log(err);
 		});
 
-	};
+	}
 
 	render() {
 		const { title, lastPage, loadMore } = this.props;
