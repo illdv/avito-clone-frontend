@@ -111,61 +111,79 @@ export class LocationModal extends React.Component<ILocationModalProps> {
 									Country
 								</label>
 								<Select
-									className='col-8'
+									className='col-9'
 									onChange={this.onSelectCountry}
 									options={this.prepareDataForCountryToOptions}
 									value={this.initSelectedOption(idCountry, this.prepareDataForCountryToOptions)}
 								/>
-								<button
-									onClick={this.onClearCountry}
-									type='button'
-									className='close col-1'
-									data-dismiss='alert'
-									aria-label='Close'
-								>
-									<span aria-hidden='true'>&times;</span>
-								</button>
+								{ idCountry ?
+									<button
+										onClick={this.onClearCountry}
+										type='button'
+										className='close'
+										data-dismiss='alert'
+										aria-label='Close'
+										style={{position: 'absolute', right: '70px'}}
+									>
+										<span aria-hidden='true'>&times;</span>
+									</button>
+									: null
+								}
 							</div>
-							<div className='form-group row align-items-center'>
-								<label htmlFor='chooseState' className='col-3 choose-location__label'>
-									State(region)
-								</label>
-								<Select
-									className='col-8'
-									onChange={this.onSelectRegion}
-									options={this.prepareDataForRegionToOptions}
-									value={this.initSelectedOption(idRegion, this.prepareDataForRegionToOptions)}
-								/>
-								<button
-									onClick={this.onClearRegion}
-									type='button'
-									className='close col-1'
-									data-dismiss='alert'
-									aria-label='Close'
-								>
-									<span aria-hidden='true'>&times;</span>
-								</button>
-							</div>
-							<div className='form-group row align-items-center'>
-								<label htmlFor='chooseCity' className='col-3 choose-location__label'>
-									City
-								</label>
-								<Select
-									className='col-8'
-									onChange={this.onSelectedCity}
-									options={this.prepareDataForCityToOptions}
-									value={this.initSelectedOption(idCity, this.prepareDataForCityToOptions)}
-								/>
-								<button
-									onClick={this.onClearCity}
-									type='button'
-									className='close col-1'
-									data-dismiss='alert'
-									aria-label='Close'
-								>
-									<span aria-hidden='true'>&times;</span>
-								</button>
-							</div>
+							{ idCountry ?
+								<div className='form-group row align-items-center'>
+									<label htmlFor='chooseState' className='col-3 choose-location__label'>
+										State(region)
+									</label>
+									<Select
+										className='col-9'
+										onChange={this.onSelectRegion}
+										options={this.prepareDataForRegionToOptions}
+										value={this.initSelectedOption(idRegion, this.prepareDataForRegionToOptions)}
+									/>
+									{ idRegion ?
+										<button
+											onClick={this.onClearRegion}
+											type='button'
+											className='close'
+											data-dismiss='alert'
+											aria-label='Close'
+											style={{position: 'absolute', right: '70px'}}
+										>
+											<span aria-hidden='true'>&times;</span>
+										</button>
+										: null
+									}
+								</div>
+								: null
+							}
+							{ idRegion ?
+								<div className='form-group row align-items-center'>
+									<label htmlFor='chooseCity' className='col-3 choose-location__label'>
+										City
+									</label>
+									<Select
+										className='col-9'
+										onChange={this.onSelectedCity}
+										options={this.prepareDataForCityToOptions}
+										value={this.initSelectedOption(idCity, this.prepareDataForCityToOptions)}
+									/>
+									{ idCity ?
+										<button
+											onClick={this.onClearCity}
+											type='button'
+											className='close'
+											data-dismiss='alert'
+											aria-label='Close'
+											style={{position: 'absolute', right: '70px'}}
+										>
+											<span aria-hidden='true'>&times;</span>
+										</button>
+										: null
+									}
+								</div>
+								: null
+							}
 							{this.props.children}
 						</form>
 					</div>

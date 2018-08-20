@@ -126,10 +126,10 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 							</div>
 							<div className='col-md-3'>
 								<div className='back-next'>
-									<Link href={`${lastCrumb.href}`}>
+									<a href={`${lastCrumb.href}`}>
 										<a className='back-next__link orange-text'>Back</a>
-									</Link>
-									<Link href={`${ad.next_ad}`}>
+									</a>
+									<Link href={`/ad/${ad.next_ad}`}>
 										<a className='back-next__link orange-text'>Next
 											<i className='fas fa-arrow-right p-l-5 f-s-12 orange-text' />
 										</a>

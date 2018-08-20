@@ -33,11 +33,13 @@ const defaultState: ILocationStoreState = {
 		idCountry: null,
 		idRegion: null,
 		idCity: null,
+		locationName: 'World',
 	},
 	local: {
 		idCountry: null,
 		idRegion: null,
 		idCity: null,
+		locationName: 'World',
 	},
 	loaded: {
 		session: {
@@ -51,7 +53,6 @@ const defaultState: ILocationStoreState = {
 			cities: [],
 		},
 	},
-	locationName: null,
 };
 
 const fakeActionChangeCountry = {
@@ -113,6 +114,7 @@ describe('Testing location saga', () => {
 					idCountry: null,
 					idRegion: null,
 					idCity: null,
+					locationName: 'World',
 				},
 				loaded: {
 					...defaultState.loaded,
