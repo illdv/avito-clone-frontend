@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Kit = (props) => {
+const Kit =props => {
 	return (
 		<div className='row p-t-60 p-b-60'>
 			<div className='col-md-12 col-lg-10'>

@@ -4,7 +4,7 @@ import { IFavorites } from 'client/ssr/blocks/ad/interface';
 class ButtonFavorites extends Component <IFavorites> {
 	handleSelectFavorite = () => {
 		this.props.selectFavorite(this.props.id);
-	};
+	}
 
 	render() {
 		const { isFavorite } = this.props;

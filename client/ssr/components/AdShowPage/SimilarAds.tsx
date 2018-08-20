@@ -18,7 +18,7 @@ class SimilarAds extends Component <ISimilarAdsProps, ISimilarAdsState> {
 		}
 
 		this.getOrderSimilar(field, this.props.id_parent);
-	};
+	}
 
 	getOrderSimilar(field, id) {
 		AdsAPI.similar(field, id)

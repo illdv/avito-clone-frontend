@@ -58,7 +58,16 @@ class SearchStateful extends Component<IProps, IState> {
 
 	onSearch = (data: IDataForSearch) => {
 
-		const { idCity, idRegion, idCountry } = this.props.locationState.local;
+		const idCity = this.props.locationState.local.idCity;
+		let idRegion = null;
+		let idCountry = null;
+
+		if (!idCity) {
+			idRegion = this.props.locationState.local.idRegion;
+			if (!idRegion) {
+				idCountry = this.props.locationState.local.idCountry;
+			}
+		}
 
 		const { rangePrice, searchString, options, selectedCategories } = data;
 
@@ -88,6 +97,47 @@ class SearchStateful extends Component<IProps, IState> {
 		pushInRouter(href);
 	}
 
+	localeName() {
+		const { idCity, idRegion, idCountry } = this.props.locationState.local;
+
+		if (idCity) {
+			if (this.props.locationState.loaded.local.cities.length > 0) {
+
+				const result = this.props.locationState.loaded.local.cities.filter(city => {
+					return city.city_id === idCity;
+				});
+
+				if (result.length > 0) {
+					return result[0].title;
+				}
+			}
+		}
+
+		if (idRegion) {
+			if (this.props.locationState.loaded.local.regions.length > 0) {
+				const result = this.props.locationState.loaded.local.regions.filter(region => {
+					return region.region_id === idRegion;
+				});
+				if (result.length > 0) {
+					return result[0].title;
+				}
+			}
+		}
+
+		if (idCountry) {
+			if (this.props.locationState.loaded.local.countries.length > 0) {
+				const result = this.props.locationState.loaded.local.countries.filter(country => {
+					return country.country_id === idCountry;
+				});
+				if (result.length > 0) {
+					return result[0].title;
+				}
+			}
+		}
+
+		return 'World';
+	}
+
 	render() {
 
 		const { query, queryString } = this.props.search;
@@ -95,7 +145,7 @@ class SearchStateful extends Component<IProps, IState> {
 		return (
 			<Search
 				onSearch={this.onSearch}
-				locationName={this.props.locationName}
+				locationName={this.localeName()}
 				query={query}
 				urlString={queryString}
 				priceRange={true}

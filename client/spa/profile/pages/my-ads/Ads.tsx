@@ -30,11 +30,11 @@ class Ads extends React.Component<IProps, ISelectedAd> {
 		}
 
 		this.setState({
-			selected: selected,
+			selected,
 			selectedAll: !selectedAll,
 		});
-	};
-	selectedCurrent = (e) => {
+	}
+	selectedCurrent =e => {
 		let { selected, selectedAll } = this.state;
 		if (e.target.checked) {
 			selected.add(Number(e.target.value));
@@ -49,12 +49,12 @@ class Ads extends React.Component<IProps, ISelectedAd> {
 		}
 
 		this.setState({ selected, selectedAll });
-	};
+	}
 
 	formationToSet = (id: number) => {
 		const format = new Set();
 		return format.add(id);
-	};
+	}
 
 	constructor(props, context) {
 		super(props, context);

@@ -126,6 +126,4 @@ export interface IEditAdRequest {
 	address: string;
 }
 
-export interface IFavoritesAds {
-	(id: any): IAds;
-}
+export type IFavoritesAds = (id: any) => IAds;

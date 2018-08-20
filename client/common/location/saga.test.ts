@@ -60,7 +60,7 @@ const fakeActionChangeCountry = {
 
 const fakeActionChangeCountryWithoutId = {
 	payload: null,
-}
+};
 
 const fakeCountries: ICountry[] = [
 	{ country_id: 2, title: '2' },
@@ -78,7 +78,7 @@ const fakeRegions: IRegion[] = [
 const fakeCities: ICity[] = [
 	{ country_id: 2, region_id: 22, city_id: 222, title: '222', area: '222' },
 	{ country_id: 2, region_id: 33, city_id: 333, title: '333', area: '333' },
-]
+];
 
 describe('Testing location saga', () => {
 

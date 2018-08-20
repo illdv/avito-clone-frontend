@@ -10,7 +10,7 @@ import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface'
 import PriceRange, { IRange } from 'client/ssr/blocks/search/components/PriceRange';
 import { findCategoriesQueueById, useOrDefault } from 'client/spa/profile/utils/createAd';
 import { IQuery } from 'client/common/search/interface';
-import { isServer } from 'client/common/utils/utils'
+import { isServer } from 'client/common/utils/utils';
 
 require('./Search.sass');
 
@@ -216,7 +216,7 @@ class Search extends React.Component<IProps, IState> {
 		});
 	}
 
-	showSearchLocationModal = () => showLocationModal(ModalNames.location);
+	showSearchLocationModal = () => showLocationModal(ModalNames.searchLocation);
 
 	get subcategories() {
 		return this.state.selectedCategories;
