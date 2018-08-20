@@ -1,10 +1,8 @@
 import React from 'react';
-import { connect } from 'react-redux';
 
 import { showSellerModals } from 'client/ssr/modals/seller/SellerModalTriger';
 import { ISeller } from 'client/ssr/blocks/ad/interface';
-import { IRootState } from '../../../../common/store/storeInterface';
-import { editAdPagePathCreator } from '../../../../spa/profile/constants';
+import { editAdPagePathCreator } from 'client/spa/profile/constants';
 
 export const avatar = '/static/img/person.png';
 
@@ -15,10 +13,6 @@ export interface IProps {
 	city: string;
 	user: IUserState; // Looking through
 }
-
-const mapStateToProps = (state: IRootState) => ({
-	user: state.user,
-});
 
 const Seller = ({ adId, seller, country, city, user }: IProps) => (
 	<div className='col-lg-7'>
@@ -61,4 +55,4 @@ const Seller = ({ adId, seller, country, city, user }: IProps) => (
 	</div>
 );
 
-export default connect(mapStateToProps)(Seller);
+export default Seller;

@@ -41,7 +41,7 @@ class SearchPage extends React.Component<ISearchPageProp> {
 				<div className='bottom-header p-y-20' >
 					<div className='container' >
 						<Navbar />
-						<SearchStateful locationName={useOrDefault(() => search.breadcrumbs.location.title, 'World')}/>
+						<SearchStateful />
 						<BreadcrumbsWrap
 							classNameForContainer='breadcrumb'
 							classNameForItem='breadcrumb-item'

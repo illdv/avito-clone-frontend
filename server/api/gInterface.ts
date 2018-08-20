@@ -29,7 +29,7 @@ export enum AdSelectedFields {
 
 export enum  AdWithFields {
 	country = 'city.country',
-	seller = 'user',
+	seller = 'user.image',
 	images = 'images',
 	options = 'options',
 	priceHistories = 'priceHistories',
@@ -90,10 +90,10 @@ export enum CategorySelectedFields {
 }
 
 export enum CategoryWithFields {
-	parent = 'parent',
+	parent  = 'parent',
 	options = 'options',
-	ads = 'ads',
-	images = 'images',
+	ads     = 'ads',
+	images  = 'images',
 }
 
 export interface IGetLiteCategoriesRequest {

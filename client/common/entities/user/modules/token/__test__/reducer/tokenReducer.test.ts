@@ -11,7 +11,7 @@ describe('SET TOKEN REDUCER', () => {
 	});
 
 	it('SET_TOKEN_TO_STATE_REQUEST', () => {
-		const action = tokenActions.setTokenToState.REQUEST({token: token});
+		const action = tokenActions.setTokenToState.REQUEST({token});
 		expect(reducer(initalState, action))
 			.toEqual(token);
 	});

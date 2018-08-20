@@ -1,36 +1,16 @@
 {
   "defaultSeverity": "warning",
-  "extends": [
-    "tslint:recommended",
-    "tslint-react"
-  ],
+  "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
   "linterOptions": {
-    "exclude": [
-      "config/**/*.js",
-      "node_modules/**/*.ts"
-    ]
+    "exclude": ["config/**/*.js", "node_modules/**/*.ts"]
   },
   "jsRules": {},
   "rules": {
     "eofline": false,
-    "indent": [
-      true,
-      "tabs",
-      4
-    ],
-    "quotemark": [
-      true,
-      "single",
-      "jsx-single"
-    ],
-    "semicolon": [
-      true,
-      "always"
-    ],
-    "arrow-parens": [
-      true,
-      "ban-single-arg-parens"
-    ],
+    "indent": [true, "tabs", 4],
+    "quotemark": [true, "single", "jsx-single"],
+    "semicolon": [true, "always"],
+    "arrow-parens": [true, "ban-single-arg-parens"],
     "jsx-curly-spacing": false,
     "member-ordering": false,
     "no-namespace": false,
@@ -43,6 +23,5 @@
     "jsx-wrap-multiline": true,
     "jsx-no-multiline-js": false,
     "no-trailing-whitespace": false
-  },
-  "rulesDirectory": []
+  }
 }

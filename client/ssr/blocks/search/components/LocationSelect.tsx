@@ -31,17 +31,17 @@ class LocationSelect extends Component<ILocationSelectProps, ILocationSelectStat
 			city_id: this.props.city_id,
 			title: this.cityName,
 		};
-	};
+	}
 
 	get cityName() {
-		if (this.props.city_id != ""){
+		if (this.props.city_id != ''){
 			AdsAPI.getCity(this.props.city_id)
 				.then(res => {
 					if(res.data.length > 0) {
 						this.setState({title: res.data[0].title});
 					}
 				});
-		};
+		}
 	}
 
 	showSearchLocationModal = () => showLocationModal(ModalNames.searchLocation);

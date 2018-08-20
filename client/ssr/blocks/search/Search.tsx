@@ -167,7 +167,7 @@ class Search extends React.Component<IProps, IState> {
 		});
 	}
 
-	showSearchLocationModal = () => showLocationModal(ModalNames.location);
+	showSearchLocationModal = () => showLocationModal(ModalNames.searchLocation);
 
 	get subcategories() {
 		return this.state.selectedCategories;

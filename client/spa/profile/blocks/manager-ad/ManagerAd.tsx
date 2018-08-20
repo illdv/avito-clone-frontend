@@ -72,8 +72,8 @@ class ManagerAd extends React.Component<IProps, IState> {
 					title: { disable: false, value: '', error: '' },
 					price: { disable: false, value: '', error: '' },
 					description: { disable: false, value: '', error: '' },
-					address: { disable: false, value: '', error: '' },
-					city_id: { value: 1, error: '' },
+					address: { disable: false, value: '1111', error: '' },
+					city_id: {value: 0, error: ''},
 				},
 				selectedCategories: [],
 				attachedImages: [],
@@ -132,13 +132,12 @@ class ManagerAd extends React.Component<IProps, IState> {
 		}
 		if (this.state.adInfoFields.city_id.value === 0) {
 			newInputs.adInfoFields.city_id.error = 'Select country';
-			errors                               = [...errors, 'error'];
+			errors = [...errors, 'error'];
 		}
-		if (this.state.adInfoFields.address.value === '') {
-			newInputs.adInfoFields.address.error = 'Please fill in the field';
-			errors                               = [...errors, 'error'];
-		}
-		console.log(this.state.selectedCategories);
+		// if (this.state.adInfoFields.address.value === '') {
+		//  	newInputs.adInfoFields.address.error = 'Please fill in the field';
+		// 	errors = [...errors, 'error'];
+		// }
 		if (errors.length === 0) {
 			return (true);
 		} else {
@@ -152,7 +151,6 @@ class ManagerAd extends React.Component<IProps, IState> {
 
 	next = () => {
 		const success = this.validation();
-		console.log(success);
 		if (success) {
 			this.setState({
 				step: this.state.step + 1,
@@ -166,7 +164,7 @@ class ManagerAd extends React.Component<IProps, IState> {
 		});
 	}
 
-	isVip = (e) => {
+	isVip =e => {
 		const plan = e.target.value;
 		if (plan === 'Quick' || plan === 'Turbo') {
 			this.setState({
@@ -201,7 +199,7 @@ class ManagerAd extends React.Component<IProps, IState> {
 				adInfoFields: {
 					...this.state.adInfoFields,
 					[city_id]: {
-						value: Number(e.target.value),
+						value: e.target.value,
 						error: '',
 					},
 				},

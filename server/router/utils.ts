@@ -22,15 +22,15 @@ export function queryStringifyPlus(data) {
 }
 
 export const  getQueryWithLocation = req => {
-	const query = {};
+	const query: any = {};
 	if (req.cookies) {
-		if (eval(req.cookies.idCity)) {
-			query['city_id'] = req.cookies.idCity;
-		} else if (eval(req.cookies.idRegion)) {
-			query['region_id'] = req.cookies.idRegion;
-		} else if (eval(req.cookies.idCountry)) {
-			query['country_id'] = req.cookies.idCountry;
+		if (req.cookies.idCity) {
+			query.city_id = req.cookies.idCity;
+		} else if (req.cookies.idRegion) {
+			query.region_id = req.cookies.idRegion;
+		} else if (req.cookies.idCountry) {
+			query.country_id = req.cookies.idCountry;
 		}
 	}
 	return query;
-}
+};

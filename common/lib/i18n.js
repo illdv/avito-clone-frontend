@@ -13,8 +13,9 @@ const options = {
 								escapeValue: false,
 								formatSeparator: ',',
 								format: (value, format, lng) => {
-												if (format === 'uppercase')
+												if (format === 'uppercase') {
 																return value.toUpperCase();
+												}
 												return value;
 								},
 				},
@@ -28,14 +29,17 @@ if (process.browser) {
 								.use(LanguageDetector);
 }
 // initialize if not already initialized
-if (!i18nInstance.isInitialized)
+if (!i18nInstance.isInitialized) {
 				i18nInstance.init(options);
+}
 // a simple helper to getInitialProps passed on loaded i18n data
 const getInitialProps = (req, namespaces) => {
-				if (!namespaces)
+				if (!namespaces) {
 								namespaces = i18nInstance.options.defaultNS;
-				if (typeof namespaces === 'string')
+				}
+				if (typeof namespaces === 'string') {
 								namespaces = [namespaces];
+				}
 				req.i18n.toJSON = () => null; // do not serialize i18next instance and send to client
 				const initialI18nStore = {};
 				req.i18n.languages.forEach((l) => {

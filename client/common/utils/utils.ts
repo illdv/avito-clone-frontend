@@ -12,11 +12,11 @@ export const  getQueryWithLocation = () => {
 	const query = {};
 
 	if (eval(Cookies.get('idCity'))) {
-		query['city_id'] = Cookies.get('idCity');
+		query.city_id = Cookies.get('idCity');
 	} else if (eval(Cookies.get('idRegion'))) {
-		query['region_id'] = Cookies.get('idRegion');
+		query.region_id = Cookies.get('idRegion');
 	} else if (eval(Cookies.get('idCountry'))) {
-		query['country_id'] = Cookies.get('idCountry');
+		query.country_id = Cookies.get('idCountry');
 	}
 	return query;
-}
+};

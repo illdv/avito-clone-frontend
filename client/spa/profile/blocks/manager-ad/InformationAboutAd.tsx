@@ -32,7 +32,7 @@ interface IProps {
 
 	onSelectTypeAd(id: number): void;
 
-	onSelectCityAd(city_id: number, title?: string): (e: ChangeEvent<HTMLInputElement>) => void;
+	onSelectCityAd(city: AdInfoFieldsNames, title?: string): (e: ChangeEvent<HTMLInputElement>) => void;
 
 	onSelectLocation(location: ILocation): void;
 
@@ -254,14 +254,14 @@ const InformationAboutAd = ({ sellerInfoFields, adInfoFields, categories, create
 					currentCity={adInfoFields.city_id.value}
 					error={adInfoFields.city_id.error}
 				/>
-				<Input
-					id={'address'}
-					title={'Address'}
-					inputClass={'col-md-9 col-lg-6'}
-					value={adInfoFields.address.value}
-					error={adInfoFields.address.error}
-					onChange={createtorChangeAdInfoField(AdInfoFieldsNames.address)}
-				/>
+				{/*<Input*/}
+					{/*id={'address'}*/}
+					{/*title={'Address'}*/}
+					{/*inputClass={'col-md-9 col-lg-6'}*/}
+					{/*value={adInfoFields.address.value}*/}
+					{/*error={adInfoFields.address.error}*/}
+					{/*onChange={createtorChangeAdInfoField(AdInfoFieldsNames.address)}*/}
+				{/*/>*/}
 				<div className='offer-form__item form-group row align-items-center'>
 					<label
 						htmlFor=''

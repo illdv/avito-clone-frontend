@@ -49,14 +49,14 @@ export interface Image {
 }
 
 export interface IOption {
-	category_id: number;
-	created_at: string;
-	deleted_at: string|null;
+	category_id?: number;
+	created_at?: string;
+	deleted_at?: string|null;
 	id: number;
 	name: string;
 	pivot: IPivot;
-	type_id: number;
-	updated_at: string;
+	type_id?: number;
+	updated_at?: string;
 }
 
 export interface IOptionValue {
@@ -126,6 +126,4 @@ export interface IEditAdRequest {
 	address: string;
 }
 
-export interface IFavoritesAds {
-	(id: any): IAds;
-}
+export type IFavoritesAds = (id: any) => IAds;

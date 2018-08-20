@@ -6,6 +6,7 @@ import {
 	findCategoriesQueueById,
 	getLocationNameByLocations,
 	getLocationsIdByRequest,
+	getSearchLocationsIdByRequest,
 } from '../utils/categoryPrepare';
 
 import { getDataForAdShowPage, getDataForAdsIndexPage } from '../api/ad';
@@ -19,7 +20,7 @@ interface ISugar {
 	accumulation?: any;
 }
 
-type prepareMethod = (sugar: ISugar, req: any) => any;
+export type prepareMethod = (sugar: ISugar, req: any) => any;
 
 const instance = axios.create({
 	baseURL: process.env.API_URL,
@@ -84,46 +85,85 @@ const getLiteAdsByQueryString = async (queryStringParams: string) => {
 };
 
 export const location: prepareMethod = async (sugar, req) => {
-	const { idCountry, idRegion, idCity } = getLocationsIdByRequest(req);
+	const cookies = await getLocationsIdByRequest(req);
+	let search = {
+		idCountry: null,
+		idRegion: null,
+		idCity: null,
+	};
 
 	const countries = await getCountries(null, req);
 
-	let regions = [];
+	let cookieRegions = [];
 
-	if (idCountry) {
-		regions = regions.concat(await getRegions({ query: { id: idCountry } }, req));
+	if (cookies.idCountry) {
+		cookieRegions = cookieRegions.concat(await getRegions({ query: { id: cookies.idCountry } }, req));
 	}
 
-	let cities = [];
+	let cookieCities = [];
 
-	if (idRegion) {
-		cities = cities.concat(await getCities({ query: { id: idRegion } }, req));
+	if (cookies.idRegion) {
+		cookieCities = cookieCities.concat(await getCities({ query: { id: cookies.idRegion } }, req));
 	}
 
+	if (sugar.path !== '/search') {
+		search = cookies;
+	} else {
+		search = await getSearchLocationsIdByRequest(sugar, req);
+	}
+
+	let searchRegions = [];
+
+	if (cookies.idCountry === search.idCountry) {
+		searchRegions = cookieRegions;
+	} else if (search.idCountry) {
+		searchRegions = searchRegions.concat(await getRegions({ query: { id: search.idCountry } }, req));
+	}
+
+	let searchCities = [];
+
+	if (cookies.idRegion === search.idRegion) {
+		searchCities = cookieCities;
+	} else if (search.idRegion) {
+		searchCities = searchCities.concat(await getCities({ query: { id: search.idRegion } }, req));
+	}
+	console.log('cookies -', cookies);
+	console.log('search -', search);
+
+	const locationName = getLocationNameByLocations(cookies.idCountry, cookies.idRegion, cookies.idCity, countries,
+		cookieRegions, cookieCities);
+	const locationName2 = getLocationNameByLocations(search.idCountry, search.idRegion, search.idCity, countries,
+		searchRegions, searchCities);
+
+	console.log('locationName -', locationName);
+	console.log('locationName2 -', locationName2);
 	return {
 		session: {
-			idCountry,
-			idRegion,
-			idCity,
+			idCountry: cookies.idCountry,
+			idRegion: cookies.idRegion,
+			idCity: cookies.idCity,
+			locationName: getLocationNameByLocations(cookies.idCountry, cookies.idRegion, cookies.idCity, countries,
+				cookieRegions, cookieCities),
 		},
 		local: {
-			idCountry,
-			idRegion,
-			idCity,
+			idCountry: search.idCountry,
+			idRegion: search.idRegion,
+			idCity: search.idCity,
+			locationName: getLocationNameByLocations(search.idCountry, search.idRegion, search.idCity, countries,
+				searchRegions, searchCities),
 		},
 		loaded: {
 			session: {
 				countries,
-				regions,
-				cities,
+				regions: cookieRegions,
+				cities: cookieCities,
 			},
 			local: {
 				countries,
-				regions,
-				cities,
+				regions: searchRegions,
+				cities: searchCities,
 			},
 		},
-		locationName: getLocationNameByLocations(idCountry, idRegion, idCity, countries, regions, cities),
 	};
 };
 
@@ -131,7 +171,7 @@ export const query: prepareMethod = async (sugar, req) => {
 	return { ...sugar.query };
 };
 
-const getInstanceWithLanguageByReq = req => {
+export const getInstanceWithLanguageByReq = req => {
 	const axiosInstance = axios.create({
 		baseURL: process.env.API_FOR_LOCATION,
 		headers: {
@@ -141,12 +181,9 @@ const getInstanceWithLanguageByReq = req => {
 		},
 	});
 
-	/*axiosInstance.interceptors.response.use(response => {
-		console.log('---------------------------------------------------------');
-		console.log('url = ', response.config.url);
-		console.log('data = ', JSON.stringify(response.data));
+	axiosInstance.interceptors.response.use(response => {
 		return response;
-	});*/
+	});
 
 	return axiosInstance;
 };
@@ -163,7 +200,7 @@ export const getCountries: prepareMethod = async (sugar, req) => {
 
 export const getRegions: prepareMethod = async ({ query }, req) => {
 	try {
-		const response = await getInstanceWithLanguageByReq(req).get(`/countries/${query.id}/regions/%20`);
+		const response = await getInstanceWithLanguageByReq(req).get(`/countries/${query.id}/regions`);
 		return response.data;
 	} catch (err) {
 		console.log(err);
@@ -173,13 +210,77 @@ export const getRegions: prepareMethod = async ({ query }, req) => {
 
 export const getCities: prepareMethod = async ({ query }, req) => {
 	try {
-		const response = await getInstanceWithLanguageByReq(req).get(`/regions/${query.id}/cities/%20`);
+		const response = await getInstanceWithLanguageByReq(req).get(`/regions/${query.id}/cities`);
 		return response.data;
 	} catch (err) {
 		console.log(err);
 		return [];
 	}
 };
+
+function getNewWhereLike(query) {
+	const newQueryParams: any = { ...query };
+
+	const queryData = {};
+
+	if (newQueryParams && newQueryParams.whereLike) {
+		queryData['whereLike[title]']       = newQueryParams.whereLike.title;
+		queryData['whereLike[body]']        = newQueryParams.whereLike.body;
+		queryData['whereLike[description]'] = newQueryParams.whereLike.description;
+	}
+
+	return `&${queryString.stringify(queryData)}`;
+}
+
+export const getRegionAndCountryByCity: prepareMethod = async ( sugar , req) => {
+	try {
+		const response = await getInstanceWithLanguageByReq(req).get(`/cities/${Number(sugar.query.city_id)}`);
+		return ({
+			idCountry: response.data[0].country_id,
+			idRegion: response.data[0].region_id,
+			idCity: Number(sugar.query.city_id),
+		});
+	} catch (err) {
+		console.log(err);
+		return ({
+			idCountry: null,
+			idRegion: null,
+			idCity: null,
+		});
+	}
+};
+
+export const getCountryByRegion: prepareMethod = async ( sugar , req) => {
+	try {
+		const response = await getInstanceWithLanguageByReq(req).get(`/regions/${Number(sugar.query.region_id)}/cities`);
+		return ({
+			idCountry: response.data[0].country_id,
+			idRegion: Number(sugar.query.region_id),
+			idCity: null,
+		});
+	} catch (err) {
+		console.log(err);
+		return ({
+			idCountry: null,
+			idRegion: null,
+			idCity: null,
+		});
+	}
+};
+
+function getNewWhereLike(query) {
+	const newQueryParams: any = { ...query };
+
+	const queryData = {};
+
+	if (newQueryParams && newQueryParams.whereLike) {
+		queryData['whereLike[title]']       = newQueryParams.whereLike.title;
+		queryData['whereLike[body]']        = newQueryParams.whereLike.body;
+		queryData['whereLike[description]'] = newQueryParams.whereLike.description;
+	}
+
+	return `&${queryString.stringify(queryData)}`;
+}
 
 export const searchUrl: prepareMethod = async ({ query = { currentPage: '1' }, accumulation }, req) => {
 	try {
@@ -194,10 +295,10 @@ export const searchUrl: prepareMethod = async ({ query = { currentPage: '1' }, a
 };
 
 export const search: prepareMethod = async ({ query = { currentPage: '1' }, accumulation }, req) => {
+
 	try {
 		const response = await getLiteAdsByQueryString(accumulation.searchUrl);
 		const { current_page, last_page, per_page, total } = response;
-
 		const pagination = {
 			current_page,
 			last_page,

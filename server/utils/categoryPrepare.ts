@@ -1,4 +1,5 @@
 import * as jsHttpCookie from 'cookie';
+import { getRegionAndCountryByCity, getCountryByRegion, prepareMethod } from '../router/prepares';
 
 export const findCategoriesQueueBySlug = (categories, categorySlug): any[] | null => {
 	if (!categorySlug) {
@@ -86,7 +87,7 @@ export const getMainCategory = categoryQueue => {
 
 export const getCurrentCategoryByQueue = categoryQueue => {
 	return (categoryQueue && categoryQueue.length > 0) ? categoryQueue[categoryQueue.length - 1] : null;
-}
+};
 
 export const getIdFromCategory = categoty => {
 	return categoty ? categoty.id : null;
@@ -120,17 +121,38 @@ export const getLocationsIdByRequest = req => {
 			}
 
 			if (cookiesJSON.idRegion) {
-				result.idRegion = Number(cookiesJSON.idRegion) || null
+				result.idRegion = Number(cookiesJSON.idRegion) || null;
 			}
 
 			if (cookiesJSON.idCity) {
-				result.idCity = Number(cookiesJSON.idCity) || null
+				result.idCity = Number(cookiesJSON.idCity) || null;
 			}
 		}
 	}
-	;
+	
 
 	return result;
+};
+
+export const getSearchLocationsIdByRequest: prepareMethod = async (sugar, rec) => {
+	let result = {
+		idCountry: null,
+		idRegion: null,
+		idCity: null,
+	};
+
+	if (sugar.query.city_id) {
+		result = await getRegionAndCountryByCity(sugar, rec);
+		return result;
+	} else if (sugar.query.region_id) {
+		result = await getCountryByRegion(sugar, rec);
+		return result;
+	} else if (sugar.query.country_id) {
+		result.idCountry = Number(sugar.query.country_id);
+		return result;
+	} else {
+		return result;
+	}
 }
 
 export const getLocationNameByLocations = (idCountry, idRegion, idCity, countries, regions, cities) => {
@@ -170,4 +192,4 @@ export const getLocationNameByLocations = (idCountry, idRegion, idCity, countrie
 	}
 
 	return 'World';
-}
+};
