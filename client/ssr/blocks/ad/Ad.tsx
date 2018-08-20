@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect, Dispatch } from 'react-redux';
+import { connect } from 'react-redux';
 
 import Breadcrumbs from 'client/ssr/components/AdShowPage/Breadcrumbs';
 import SliderImages from 'client/ssr/components/AdShowPage/SliderImages';
@@ -48,7 +48,6 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 		}
 		return { isFavorite };
 	}
-
 
 	formatCategoriesToCrumbs = (categories): ICrumb[] => {
 		return categories.map(category => {

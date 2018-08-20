@@ -42,6 +42,7 @@ class Ads extends React.Component<IAdsProps> {
 		}
 		const { categories, adForShow: {ad, similars} } = this.props;
 		const { user, address } = ad;
+
 		return (
 			<React.Fragment>
 				<SetCategories categories={categories}>

@@ -14,55 +14,55 @@ export interface ISellerProps {
 
 class SellerModal extends Component<ISellerProps> {
 	render() {
+		const { seller: { image: { file_url }, name, created_at, phone }, address } = this.props;
 		return (
 			<Modal
 				name={ModalNames.seller}
 				useOnRequestClose={true}
 			>
 				<div className='seller-modal modal-content'>
+					<button
+						type='button'
+						className='auth-modal__close close'
+						data-dismiss='modal'
+						aria-label='Close'
+						onClick={hideSellerModal}
+					>
+						<span aria-hidden='true'>&times;</span>
+					</button>
 					<div className='modal-header no-border'>
 						<h2
 							className='modal-title'
 							id='exampleModalLongTitle'
 						>
 							<NumberFormat
-								value={this.props.seller.phone}
+								value={phone}
 								displayType={'text'}
 								format={'# ### ### ## ##'}
 							/>
 						</h2>
-						<button
-							type='button'
-							className='close'
-							data-dismiss='modal'
-							aria-label='Close'
-							onClick={hideSellerModal}
-						>
-							<span aria-hidden='true'>&times;</span>
-						</button>
 					</div>
 					<div className='modal-body'>
 						<div className='seller'>
 							<div className='d-flex align-items-center m-r-20'>
 								<div className='seller-info'>
-									<span className='orange-text'>{this.props.seller.name}</span>
-									<span className='d-block'>On ADS from {this.props.seller.created_at}</span>
-									<span>Completed {this.props.seller.completed_ad} ads</span>
+									<span className='orange-text'>{name}</span>
+									<span className='d-block'>On ADS from {created_at}</span>
 								</div>
 								<img
-									src='/static/img/person.png'
+									src={file_url}
 									alt=''
 									className='round-img m-l-20'
 								/>
 							</div>
 							<div className='p-t-20'>
 								<span className='grey-text f-w-300'>The contact person</span>
-								<span>{this.props.seller.name}</span>
+								<span>{name}</span>
 							</div>
 							<div className='row p-t-20'>
 								<div className='col-9'>
 									<span className='grey-text'>Address</span>
-									<span className='f-w-400'>{this.props.address}</span>
+									<span className='f-w-400'>{address}</span>
 								</div>
 								<div className='col-3'>
 									<a

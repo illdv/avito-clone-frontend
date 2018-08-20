@@ -10,17 +10,12 @@ function* sagaModalJuggler() {
 }
 
 function* watcherModalJuggler() {
-	yield [
-		takeEvery(SHOW, sagaModalJuggler),
-		takeEvery(HIDE, sagaModalJuggler),
-		takeEvery(HIDE_ALL, sagaModalJuggler),
-		takeEvery(SHOW_AND_HIDE_ALL, sagaModalJuggler),
-		takeEvery(SHOW_AND_HIDE_SPECIFIED, sagaModalJuggler),
-	];
+	yield takeEvery([SHOW, HIDE, HIDE_ALL, SHOW_AND_HIDE_ALL, SHOW_AND_HIDE_SPECIFIED], sagaModalJuggler);
 }
 
 export {
-	sagaModalJuggler
+	sagaModalJuggler,
 };
+
 
 export default [watcherModalJuggler];
