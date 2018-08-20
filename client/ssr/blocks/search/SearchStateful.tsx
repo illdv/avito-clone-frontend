@@ -85,7 +85,7 @@ class SearchStateful extends Component<IProps, IState> {
 			city_id: idCity,
 			region_id: idRegion,
 			country_id: idCountry,
-			type: rangePrice.priceType,
+			type_id: rangePrice.priceType,
 			whereBetween,
 			options: selectedOptions,
 		};
