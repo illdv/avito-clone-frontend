@@ -24,7 +24,7 @@ class LoadMore extends React.Component<IAdsProps, IAdsState> {
 
 	handleCreateMoreAds = () => () => {
 		this.props.onLoadMore();
-	};
+	}
 
 	render() {
 		const { loadMore, lastPage, page, spinner } = this.props;

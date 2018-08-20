@@ -149,7 +149,7 @@ class MyAds extends Component<IProps> {
 			noContent={'While you do not have announcements'}
 			submitAd={true}
 		/>
-	);
+	)
 
 	render() {
 		const sortedAds = this.sortingAdsByStatus();

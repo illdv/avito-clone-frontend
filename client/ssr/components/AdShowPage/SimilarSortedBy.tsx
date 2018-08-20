@@ -18,7 +18,7 @@ class SimilarSortedBy extends Component<IProps, ISimilarAdsState> {
 		filter: '',
 	};
 
-	changeOrderBy = (e) => {
+	changeOrderBy =e => {
 		this.props.sort(e);
 	}
 

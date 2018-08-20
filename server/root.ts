@@ -19,7 +19,7 @@ const handleNext = appNext.getRequestHandler();
 
 // Logers
 const serverLogger = log4js.getLogger('server');
-//const defaultLogger = log4js.getLogger();
+// const defaultLogger = log4js.getLogger();
 
 // init i18next with serverside settings
 // using i18next-express-middleware
@@ -38,18 +38,18 @@ i18nInstance
 	// loaded translations we can bootstrap our routes
 	appNext.prepare()
 		.then(() => {
-        const server = express();
-        
-                server.enable('trust proxy', 1);
+		const server = express();
+		
+				server.enable('trust proxy', 1);
 
-                server.use(requestIp.mw());
+				server.use(requestIp.mw());
 
-                server.use(session({
-                    secret: 'keyboard cat',
-                    resave: false,
-                    saveUninitialized: true,
-                    cookie: { secure: true }
-				}))
+				server.use(session({
+					secret: 'keyboard cat',
+					resave: false,
+					saveUninitialized: true,
+					cookie: { secure: true }
+				}));
 				
 				server.use(cookieParser());
 		
@@ -69,9 +69,9 @@ i18nInstance
 				// use next.js
 				server.get('*', (req, res) => handleNext(req, res));
 
-				server.listen(process.env.PORT, (err) => {
-					if (err) throw err;
+				server.listen(process.env.PORT,err => {
+					if (err) { throw err; }
 					serverLogger.trace(`Listen in ${process.env.PORT} port`);
-				})
-			})
-	})
+				});
+			});
+	});

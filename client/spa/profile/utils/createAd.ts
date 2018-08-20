@@ -128,4 +128,4 @@ export const getSelectAdTypeIdsBySelectedCategories = (selectedCategories: ICate
 	}
 
 	return [];
-}
+};

@@ -47,7 +47,7 @@ class Pagination extends Component<IProps, IState> {
 		const searchUrl      = queryString.stringify({ ...newQueryParams, page: currentPage });
 
 		return '?' + searchUrl;
-	};
+	}
 
 	formationPagination = (currentPage: number, lastPage: number) => {
 		return Array(lastPage).fill(0).map((index, item) => {
@@ -74,7 +74,7 @@ class Pagination extends Component<IProps, IState> {
 				}
 			}
 		});
-	};
+	}
 
 	render() {
 		const { current_page, last_page } = this.props.pagination;

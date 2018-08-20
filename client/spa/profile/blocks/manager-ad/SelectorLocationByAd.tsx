@@ -10,8 +10,8 @@ export interface IProps {
 	onChange(e: ChangeEvent<HTMLInputElement>, title?: string ): void;
 }
 export interface IDefaultFields {
-	id?: number,
-	title?: string,
+	id?: number;
+	title?: string;
 }
 
 export interface IState {
@@ -37,7 +37,7 @@ const Options = ({id, title}: IOption) => {
 				{title}
 		</option>
 	);
-}
+};
 
 class SelectorLocationByAd extends Component<IProps, IState> {
 	constructor(props) {
@@ -52,9 +52,9 @@ class SelectorLocationByAd extends Component<IProps, IState> {
 			title_region: null,
 			title_city: null,
 		};
-	};
+	}
 
-	changeCountry = (e) => {
+	changeCountry =e => {
 		const id: number = Number(e.target.value);
 		if (id !== this.state.country_id) {
 			this.setState({
@@ -77,12 +77,12 @@ class SelectorLocationByAd extends Component<IProps, IState> {
 			.catch(e => console.log(e));
 		const count = this.props.location.session.countries.find(country => {
 			return country.country_id === id;
-		})
+		});
 
 		this.setState({
 			title_country: count.title,
 		});
-	};
+	}
 
 	changeRegion = e => {
 		const id: number = Number(e.target.value);
@@ -105,12 +105,12 @@ class SelectorLocationByAd extends Component<IProps, IState> {
 
 		const regi = this.state.regions.find(region => {
 			return region.region_id === id;
-		})
+		});
 
 		this.setState({
 			title_region: regi.title,
 		});
-	};
+	}
 
 	async componentWillMount() {
 		if (this.props.currentCity !== 0) {
@@ -143,7 +143,7 @@ class SelectorLocationByAd extends Component<IProps, IState> {
 
 	}
 
-	selectCity = (e) => {
+	selectCity =e => {
 		const city = this.state.cities.find(city => {
 			return Number(city.city_id) === Number(e.target.value);
 		});
@@ -176,7 +176,7 @@ class SelectorLocationByAd extends Component<IProps, IState> {
 						</option>
 						{
 							countries.map(country => {
-								return <Options id={country.country_id} title={country.title} key={country.country_id}/>
+								return <Options id={country.country_id} title={country.title} key={country.country_id}/>;
 							})
 						}
 					</select>
@@ -192,7 +192,7 @@ class SelectorLocationByAd extends Component<IProps, IState> {
 								<option defaultValue={region_id}>{title_region}</option>
 								{
 									regions.map(region => {
-										return <Options id={region.region_id} title={region.title} key={region.region_id}/>
+										return <Options id={region.region_id} title={region.title} key={region.region_id}/>;
 									})
 								}
 							</select>
@@ -209,7 +209,7 @@ class SelectorLocationByAd extends Component<IProps, IState> {
 								<option defaultValue={city_id}>{title_city}</option>
 								{
 									cities.map(city => {
-										return <Options id={city.city_id} title={city.title} key={city.city_id}/>
+										return <Options id={city.city_id} title={city.title} key={city.city_id}/>;
 									})
 								}
 							</select>

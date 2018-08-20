@@ -9,5 +9,5 @@ const instance = axios.create({
 });
 
 export const get = async (prepareName: string, query?: object, param?: object) => {
-	return await instance.post('/prepare', { prepareName, query, param });
+	return instance.post('/prepare', { prepareName, query, param });
 };

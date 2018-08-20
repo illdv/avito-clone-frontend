@@ -111,7 +111,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	hide: (name) => dispatch(hide(name)),
+	hide:name => dispatch(hide(name)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ModalWrap);

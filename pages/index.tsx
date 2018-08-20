@@ -15,7 +15,7 @@ import Ads from 'client/ssr/blocks/ads/Ads';
 
 import * as loaderPrepare from '../client/common/loader-prepare/loaderPrepare';
 import Page404 from 'client/common/layouts/Page404';
-import SearchStateful from 'client/ssr/blocks/search/SearchStateful'
+import SearchStateful from 'client/ssr/blocks/search/SearchStateful';
 
 const isServer: boolean = typeof window === 'undefined';
 

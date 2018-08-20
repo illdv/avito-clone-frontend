@@ -138,7 +138,6 @@ class ManagerAd extends React.Component<IProps, IState> {
 		//  	newInputs.adInfoFields.address.error = 'Please fill in the field';
 		// 	errors = [...errors, 'error'];
 		// }
-		console.log(this.state.selectedCategories);
 		if (errors.length === 0) {
 			return (true);
 		} else {
@@ -152,7 +151,6 @@ class ManagerAd extends React.Component<IProps, IState> {
 
 	next = () => {
 		const success = this.validation();
-		console.log(success);
 		if (success) {
 			this.setState({
 				step: this.state.step + 1,
@@ -166,7 +164,7 @@ class ManagerAd extends React.Component<IProps, IState> {
 		});
 	}
 
-	isVip = (e) => {
+	isVip =e => {
 		const plan = e.target.value;
 		if (plan === 'Quick' || plan === 'Turbo') {
 			this.setState({
