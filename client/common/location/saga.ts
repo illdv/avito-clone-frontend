@@ -52,9 +52,13 @@ function* sagaChangeCountryForSession(action) {
 		return null;
 	}
 
-	jsCookie.set('idCountry', idCountry);
-	jsCookie.set('idRegion', null);
-	jsCookie.set('idCity', null);
+	if (idCountry === null) {
+		jsCookie.remove('idCountry');
+	} else {
+		jsCookie.set('idCountry', idCountry);
+	}
+	jsCookie.remove('idRegion');
+	jsCookie.remove('idCity');
 
 	if (!idCountry) {
 		yield put(changeState({
@@ -63,11 +67,13 @@ function* sagaChangeCountryForSession(action) {
 				idCountry: null,
 				idRegion: null,
 				idCity: null,
+				locationName: 'World',
 			},
 			local: {
 				idCountry: null,
 				idRegion: null,
 				idCity: null,
+				locationName: 'World',
 			},
 			loaded: {
 				session: {
@@ -133,6 +139,7 @@ function* sagaChangeCountryForLocal(action) {
 				idCountry: null,
 				idRegion: null,
 				idCity: null,
+				locationName: 'World',
 			},
 			loaded: {
 				...locationState.loaded,
@@ -178,8 +185,12 @@ function* sagaChangeRegionForSession(action) {
 		return null;
 	}
 
-	jsCookie.set('idRegion', idRegion);
-	jsCookie.set('idCity', null);
+	if (idRegion === null) {
+		jsCookie.remove('idRegion');
+	} else {
+		jsCookie.set('idRegion', idRegion);
+	}
+	jsCookie.remove('idCity');
 
 	if (!idRegion) {
 		yield put(changeState({
@@ -283,7 +294,11 @@ function* sagaChangeCityForSession(action) {
 		return null;
 	}
 
-	jsCookie.set('idCity', idCity);
+	if (idCity === null) {
+		jsCookie.remove('idCity');
+	} else {
+		jsCookie.set('idCity', idCity);
+	}
 
 	if (!idCity) {
 		yield put(changeState({
