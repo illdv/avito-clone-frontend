@@ -121,13 +121,6 @@ export const location: prepareMethod = async (sugar, req) => {
 		searchCities = searchCities.concat(await getCities({ query: { id: search.idRegion } }, req));
 	}
 
-	const locationName = getLocationNameByLocations(cookies.idCountry, cookies.idRegion, cookies.idCity, countries,
-		cookieRegions, cookieCities);
-	const locationName2 = getLocationNameByLocations(search.idCountry, search.idRegion, search.idCity, countries,
-		searchRegions, searchCities);
-
-	console.log('locationName -', locationName);
-	console.log('locationName2 -', locationName2);
 	return {
 		session: {
 			idCountry: cookies.idCountry,
