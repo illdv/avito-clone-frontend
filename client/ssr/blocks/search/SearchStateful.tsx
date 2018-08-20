@@ -87,7 +87,7 @@ class SearchStateful extends Component<IProps, IState> {
 			country_id: idCountry,
 			type: rangePrice.priceType,
 			whereBetween,
-			...selectedOptions,
+			options: selectedOptions,
 		};
 
 		const clearQuery  = clearObject(query);
