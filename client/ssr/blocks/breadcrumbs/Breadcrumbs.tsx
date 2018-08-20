@@ -33,17 +33,19 @@ export const Breadcrumbs = (props: IBreadcrumbsPrivateProps) => {
 				breadcrumbs.map((crumb, index) => (
 					<li
 						className={classNameForItem}
-						key={crumb.href.toLowerCase()}
+						key={crumb.href}
 					>
 						{
 							isLastDisabled && index !== indexLastCrumb
-								? <a
-									href={crumb.href.toLowerCase()}
+								?
+								<a
+									href={crumb.href}
 									className={'orange-text'}
 								>
 									{crumb.title}
 								</a>
-								: <a>
+								:
+								<a>
 									{crumb.title}
 								</a>
 						}

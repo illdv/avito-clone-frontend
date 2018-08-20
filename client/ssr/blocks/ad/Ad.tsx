@@ -51,9 +51,11 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 
 	formatCategoriesToCrumbs = (categories): ICrumb[] => {
 		return categories.map(category => {
+			const cityId = this.props.ad.city.city_id;
+			const categoryId      = encodeURI(category.id);
 			return {
 				title: category.title,
-				href: '/search?city_id=' + this.props.ad.city.city_id + '&category=' + encodeURI(category.id),
+				href: `/search?city_id=${cityId}&category_id=${categoryId}`,
 			};
 		});
 	}
@@ -87,7 +89,6 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 			return {
 				original: image.file_url,
 				thumbnail: image.file_url,
-
 			};
 		});
 	}
