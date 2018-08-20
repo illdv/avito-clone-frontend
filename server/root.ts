@@ -8,6 +8,7 @@ import * as express from 'express';
 import * as log4js from 'log4js';
 import * as path from 'path';
 import * as next from 'next';
+import * as qs from 'qs';
 
 import { i18nInstance } from '../common/lib/i18n';
 import { initialRoutes } from './router/connectRoutes';
@@ -39,6 +40,8 @@ i18nInstance
 	appNext.prepare()
 		.then(() => {
 		const server = express();
+
+				server.set('query parser', str => qs.parse(str, { arrayLimit: -1 }));
 		
 				server.enable('trust proxy', 1);
 

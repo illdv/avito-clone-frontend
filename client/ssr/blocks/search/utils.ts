@@ -1,5 +1,5 @@
 import { IRangePrice } from 'client/ssr/blocks/search/Search';
-import { IOption } from 'client/ssr/blocks/search/Options'
+import { IOption } from 'client/ssr/blocks/search/Options';
 
 /**
  * Delete all value equal null, undefined or empty string.

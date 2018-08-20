@@ -1,9 +1,6 @@
 import { default as axios } from 'axios';
-import * as queryString from 'query-string';
 
 import {
-	categoryQueueToBreadcrumbsFormat,
-	findCategoriesQueueById,
 	getLocationNameByLocations,
 	getLocationsIdByRequest,
 	getSearchLocationsIdByRequest,
@@ -35,16 +32,12 @@ instance.interceptors.response.use(response => {
 	return response;
 });
 
-export const formatData = (data): string => {
-	return queryStringifyPlus(data);
-};
-
 export const orderBy = 'orderBy[created_at]=desc';
 
 export const adsPaginationPage: prepareMethod = async (sugar, req) => {
 	try {
 		const query = getQueryWithLocation(req);
-		const response = await instance.get(`/ads?${orderBy}&${formatData({ ...query, ...getDataForAdsIndexPage })}`);
+		const response = await instance.get(`/ads?${orderBy}&${queryStringifyPlus({ ...query, ...getDataForAdsIndexPage })}`);
 		const ads      = response.data.data;
 		const vip      = response.data.vip;
 		const lastPage = response.data.last_page;
@@ -56,7 +49,7 @@ export const adsPaginationPage: prepareMethod = async (sugar, req) => {
 
 export const adForShow: prepareMethod = async ({ params }) => {
 	try {
-		const response = await instance.get(`/ads/${params.id}?${formatData(getDataForAdShowPage)}`);
+		const response = await instance.get(`/ads/${params.id}?${queryStringifyPlus(getDataForAdShowPage)}`);
 		const ad       = response.data.ad;
 		const similars = response.data.similars;
 		return { ad, similars };
@@ -66,7 +59,7 @@ export const adForShow: prepareMethod = async ({ params }) => {
 };
 
 export const categories: prepareMethod = async () => {
-	const response = await instance.get(`/categories?${formatData(getLitleCategories)}`);
+	const response = await instance.get(`/categories?${queryStringifyPlus(getLitleCategories)}`);
 
 	return response.data;
 };
@@ -74,7 +67,7 @@ export const categories: prepareMethod = async () => {
 export const categoriesByLocation: prepareMethod = async (sugar, req) => {
 	const query = getQueryWithLocation(req);
 
-	const response = await instance.get(`/categories?${formatData({ ...query, ...getLitleCategories })}`);
+	const response = await instance.get(`/categories?${queryStringifyPlus({ ...query, ...getLitleCategories })}`);
 
 	return response.data;
 };
@@ -127,8 +120,6 @@ export const location: prepareMethod = async (sugar, req) => {
 	} else if (search.idRegion) {
 		searchCities = searchCities.concat(await getCities({ query: { id: search.idRegion } }, req));
 	}
-	console.log('cookies -', cookies);
-	console.log('search -', search);
 
 	const locationName = getLocationNameByLocations(cookies.idCountry, cookies.idRegion, cookies.idCity, countries,
 		cookieRegions, cookieCities);
@@ -218,20 +209,6 @@ export const getCities: prepareMethod = async ({ query }, req) => {
 	}
 };
 
-function getNewWhereLike(query) {
-	const newQueryParams: any = { ...query };
-
-	const queryData = {};
-
-	if (newQueryParams && newQueryParams.whereLike) {
-		queryData['whereLike[title]']       = newQueryParams.whereLike.title;
-		queryData['whereLike[body]']        = newQueryParams.whereLike.body;
-		queryData['whereLike[description]'] = newQueryParams.whereLike.description;
-	}
-
-	return `&${queryString.stringify(queryData)}`;
-}
-
 export const getRegionAndCountryByCity: prepareMethod = async ( sugar , req) => {
 	try {
 		const response = await getInstanceWithLanguageByReq(req).get(`/cities/${Number(sugar.query.city_id)}`);
@@ -268,24 +245,10 @@ export const getCountryByRegion: prepareMethod = async ( sugar , req) => {
 	}
 };
 
-function getNewWhereLike(query) {
-	const newQueryParams: any = { ...query };
-
-	const queryData = {};
-
-	if (newQueryParams && newQueryParams.whereLike) {
-		queryData['whereLike[title]']       = newQueryParams.whereLike.title;
-		queryData['whereLike[body]']        = newQueryParams.whereLike.body;
-		queryData['whereLike[description]'] = newQueryParams.whereLike.description;
-	}
-
-	return `&${queryString.stringify(queryData)}`;
-}
-
 export const searchUrl: prepareMethod = async ({ query = { currentPage: '1' }, accumulation }, req) => {
 	try {
-		const mainQuery = { ...accumulation.query || query };
-		return formatData({
+		const mainQuery           = { ...accumulation.query || query };
+		return queryStringifyPlus({
 			...getDataForAdsIndexPage,
 			...mainQuery,
 		});
