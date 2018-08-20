@@ -14,14 +14,16 @@ import { getLocationState } from 'client/common/store/selectors';
 import { ILocationStoreState } from 'client/common/location/module';
 import { clearObject, extractCategoryId, extractRangePrice, getSelectedOptions } from 'client/ssr/blocks/search/utils';
 
+export interface ILocationBreadcrumbs {
+	country_id?: number;
+	region_id?: number;
+	city_id?: number;
+	title?: string;
+}
+
 export interface ISearchBreadcrumbs {
 	categories: ICategory[];
-	location: {
-		country_id?: number,
-		region_id?: number,
-		city_id?: number,
-		title?: string,
-	};
+	location: ILocationBreadcrumbs;
 }
 
 export interface IState {
@@ -31,7 +33,6 @@ export interface IState {
 export interface IProps {
 	searchActions: ISearchActions;
 	search?: ISearchState;
-	locationName: string;
 	locationState: ILocationStoreState;
 }
 
