@@ -153,7 +153,7 @@ export const getSearchLocationsIdByRequest: prepareMethod = async (sugar, rec) =
 	} else {
 		return result;
 	}
-}
+};
 
 export const getLocationNameByLocations = (idCountry, idRegion, idCity, countries, regions, cities) => {
 	if (idCity) {
