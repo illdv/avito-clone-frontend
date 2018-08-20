@@ -80,6 +80,7 @@ class Category extends React.Component<ICategoryProps> {
 		const { search, categories, query, countriesTotal, categoriesTotal, searchUrl } = this.props;
 
 		const { total, breadcrumbs } = search;
+		console.log('loopState -', loopState);
 
 		const locationName    = useOrDefault(() => breadcrumbs.location.title, 'World');
 

@@ -128,6 +128,7 @@ export const location: prepareMethod = async (sugar, req) => {
 
 	console.log('locationName -', locationName);
 	console.log('locationName2 -', locationName2);
+	console.log('sugar -', sugar.path);
 	return {
 		session: {
 			idCountry: cookies.idCountry,
