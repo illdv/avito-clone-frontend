@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { IGMProps, IGMState } from 'client/ssr/blocks/ad/interface';
-import LocationSail from 'client/ssr/components/AdShowPage/LocationSale';
 
 class PlaceMap extends Component<IGMProps, IGMState> {
 	state = {
@@ -12,17 +11,17 @@ class PlaceMap extends Component<IGMProps, IGMState> {
 		this.setState({
 			show: !this.state.show,
 		});
-	};
+	}
 
 	render() {
-		const { city, coordinatesMap } = this.props;
-		const { zoom, show } = this.state;
+		const { city, coordinatesMap, address } = this.props;
+		// const { zoom, show } = this.state;
 		return (
 			<div className='row'>
 				<div className='col-lg-8 offer-address'>  {/* TODO if use map then col-lg-4  */}
 					<h5 className='offer-address__title'>
 						Address:
-						<span> {city.title}</span>
+						<span> {address}</span>
 					</h5>
 				</div>
 				{/*<div className='col-lg-4'>*/}
@@ -41,7 +40,7 @@ class PlaceMap extends Component<IGMProps, IGMState> {
 				{/*}*/}
 			</div>
 		);
-	};
-};
+	}
+}
 
 export default PlaceMap;

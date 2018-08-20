@@ -1,6 +1,6 @@
 import { createAction, createReducer } from 'redux-act';
 
-import { IMeta, IModal, IModalJugglerState, ModalNames } from './modalJugglerInterface';
+import { IModal, IModalJugglerState, ModalNames } from './modalJugglerInterface';
 
 const REDUCER = 'MODAL';
 const NS      = `${REDUCER}__`;

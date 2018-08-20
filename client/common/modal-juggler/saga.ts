@@ -4,23 +4,17 @@ import { SHOW, HIDE, HIDE_ALL, SHOW_AND_HIDE_ALL, SHOW_AND_HIDE_SPECIFIED } from
 import { getModals } from '../store/selectors';
 
 function* sagaModalJuggler() {
-    const modals = yield select(getModals);
+	const modals = yield select(getModals);
 
-    document.documentElement.style.overflow = modals.length > 0 ? 'hidden' : 'auto';
+	document.documentElement.style.overflow = modals.length > 0 ? 'hidden' : 'auto';
 }
 
 function* watcherModalJuggler() {
-    yield [
-        takeEvery(SHOW, sagaModalJuggler),
-        takeEvery(HIDE, sagaModalJuggler),
-        takeEvery(HIDE_ALL, sagaModalJuggler),
-        takeEvery(SHOW_AND_HIDE_ALL, sagaModalJuggler),
-        takeEvery(SHOW_AND_HIDE_SPECIFIED, sagaModalJuggler),
-    ]
+	yield takeEvery([SHOW, HIDE, HIDE_ALL, SHOW_AND_HIDE_ALL, SHOW_AND_HIDE_SPECIFIED], sagaModalJuggler);
 }
 
 export {
-    sagaModalJuggler
-}
+	sagaModalJuggler,
+};
 
 export default [watcherModalJuggler];
