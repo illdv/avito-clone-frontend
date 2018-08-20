@@ -48,9 +48,9 @@ const PriceRange: React.SFC<IPriceRange> = ({ range, onChangeRange }) => {
 					>
 						Add Type
 					</option >
-					<option value='for-sale' selected={checkSelected('for-sale', type)} >Sell</option >
-					<option value='for-rent' selected={checkSelected('for-rent', type)} >Rent</option >
-					<option value='for-buy' selected={checkSelected('for-buy', type)} >Buy now</option >
+					<option value='1' selected={checkSelected('1', type)} >Sell</option >
+					<option value='2' selected={checkSelected('2', type)} >Rent</option >
+					<option value='3' selected={checkSelected('3', type)} >Buy now</option >
 				</select >
 			</div >
 

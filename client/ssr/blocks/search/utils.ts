@@ -9,6 +9,9 @@ export function clearObject(dirtyObject) {
 		if (!value || value === '') {
 			return result;
 		}
+		if (key === 'type_id') {
+			return { ...result, [`where[${key}]`]: value };
+		}
 		if (typeof value === 'object' && !Array.isArray(value)) {
 			return { ...result, [key]: clearObject(value) };
 		}
