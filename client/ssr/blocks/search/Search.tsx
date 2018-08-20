@@ -10,14 +10,10 @@ import { ModalNames } from '../../../common/modal-juggler/modalJugglerInterface'
 import PriceRange, { IRange } from 'client/ssr/blocks/search/components/PriceRange';
 import { findCategoriesQueueById, useOrDefault } from 'client/spa/profile/utils/createAd';
 import { IQuery } from 'client/common/search/interface';
-import { isServer } from 'client/common/utils/utils';
+import { default as Options, IOption } from 'client/ssr/blocks/search/Options';
+import { bindingOptionsWhitValue } from 'client/ssr/blocks/search/utils';
 
 require('./Search.sass');
-
-interface IOption {
-	value: string;
-	item: ITotalOptions;
-}
 
 export interface IRangePrice {
 	priceType: number | null;
@@ -53,35 +49,6 @@ interface IState {
 }
 
 const mapStateToProps = (state: IRootState) => ({});
-
-const getOption = (option: IOption, creatorChangeOption) => (
-	<>
-		<label htmlFor={option.item.name} >
-			{option.item.name.replace('_', ' ')}
-		</label >
-		<input
-			className='search__options form-control'
-			id={option.item.name}
-			value={option.value}
-			placeholder={option.item.name}
-			onChange={creatorChangeOption(option.item.id)}
-		/>
-	</>
-);
-
-const getOptions = (categoriesQueue: any): any[] => {
-	if (categoriesQueue.length > 1) {
-
-		const totalOptions = categoriesQueue[categoriesQueue.length - 1].total_options;
-
-		return totalOptions.map(option => ({
-			value: categoriesQueue[option.id] || '',
-			item: option,
-		}));
-	}
-
-	return [];
-};
 
 class Search extends React.Component<IProps, IState> {
 	constructor(props, context) {
@@ -124,13 +91,13 @@ class Search extends React.Component<IProps, IState> {
 	static getDerivedStateFromProps(nextProps: IProps, prevState: IState): IState {
 		const { urlString, categories, query, locationName } = nextProps;
 
-		const { whereLike, category_id } = query;
+		const { whereLike, category_id, options } = query;
 
 		if (urlString !== prevState.urlString) {
 
 			const categoriesQueue = category_id && findCategoriesQueueById(categories, Number(category_id)) || [];
 
-			const options = getOptions(categoriesQueue);
+			const bindingOptions = bindingOptionsWhitValue(categoriesQueue, options);
 
 			return {
 				locationName,
@@ -138,7 +105,7 @@ class Search extends React.Component<IProps, IState> {
 				searchString: whereLike.title,
 				selectedCategories: categoriesQueue,
 				duplicateCategories: categories,
-				options,
+				options: bindingOptions,
 				rangePrice: {
 					priceType: query.type || null,
 					priceFrom: useOrDefault(() => query.whereBetween.price[0], null),
@@ -194,22 +161,6 @@ class Search extends React.Component<IProps, IState> {
 		}));
 	}
 
-	creatorChangeOption = (id: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
-		const newOptions = this.state.options.map(option => {
-			if (option.item.id === id) {
-				return {
-					value: e.target.value,
-					item: option.item,
-				};
-			} else {
-				return option;
-			}
-		});
-		this.setState({
-			options: newOptions,
-		});
-	}
-
 	changeSearchString = e => {
 		this.setState({
 			searchString: e.target.value,
@@ -228,10 +179,6 @@ class Search extends React.Component<IProps, IState> {
 
 	get categories() {
 		return this.state.selectedCategories;
-	}
-
-	get lastSubcategory() {
-		return this.state.selectedCategories[this.state.selectedCategories.length - 1];
 	}
 
 	onChangeRange = ({ type, to, from }: IRange) => {
@@ -253,8 +200,6 @@ class Search extends React.Component<IProps, IState> {
 		const { searchString } = this.state;
 
 		const { query, categories, locationName } = this.props;
-
-
 
 		return (
 			<div className='search form-inline form-row p-t-20' >
@@ -300,8 +245,17 @@ class Search extends React.Component<IProps, IState> {
 		);
 	}
 
+	onChangeOptions = (options: IOption[]) => {
+		this.setState({
+			options,
+		});
+	}
+
 	renderSubcategories = () => {
 		if (this.isSubcategories) {
+
+			const { options, selectedCategories } = this.state;
+
 			return (
 				<div className='search form-inline form-row' >
 					{
@@ -330,17 +284,11 @@ class Search extends React.Component<IProps, IState> {
 								: null
 						))
 					}
-					{
-						this.lastSubcategory &&
-						this.state.options.map(option => (
-							<div
-								key={option.item.id}
-								className='form-group col-6 col-md-3'
-							>
-								{getOption(option, this.creatorChangeOption)}
-							</div >
-						))
-					}
+					<Options
+						options={options}
+						selectedCategories={selectedCategories}
+						onChange={this.onChangeOptions}
+					/>
 				</div >
 			);
 		}

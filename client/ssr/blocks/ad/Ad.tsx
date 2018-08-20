@@ -51,9 +51,11 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 
 	formatCategoriesToCrumbs = (categories): ICrumb[] => {
 		return categories.map(category => {
+			const cityId = this.props.ad.city.city_id;
+			const categoryId      = encodeURI(category.id);
 			return {
 				title: category.title,
-				href: '/search?city_id=' + this.props.ad.city.city_id + '&category=' + encodeURI(category.id),
+				href: `/search?city_id=${cityId}&category_id=${categoryId}`,
 			};
 		});
 	}
@@ -87,7 +89,6 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 			return {
 				original: image.file_url,
 				thumbnail: image.file_url,
-
 			};
 		});
 	}
@@ -125,10 +126,10 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 							</div>
 							<div className='col-md-3'>
 								<div className='back-next'>
-									<Link href={`${lastCrumb.href}`}>
+									<a href={`${lastCrumb.href}`}>
 										<a className='back-next__link orange-text'>Back</a>
-									</Link>
-									<Link href={`${ad.next_ad}`}>
+									</a>
+									<Link href={`/ad/${ad.next_ad}`}>
 										<a className='back-next__link orange-text'>Next
 											<i className='fas fa-arrow-right p-l-5 f-s-12 orange-text' />
 										</a>

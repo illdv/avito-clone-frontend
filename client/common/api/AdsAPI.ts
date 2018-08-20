@@ -5,7 +5,7 @@ import { getQueryWithLocation } from '../utils/utils';
 import {getMyAd, getDataForAdsIndexPage} from 'server/api/ad';
 import * as queryString from 'query-string';
 import {AxiosPromise} from 'axios';
-import { formatData } from 'server/router/prepares';
+import { queryStringifyPlus } from 'server/router/utils';
 
 export class AdsAPI {
 	public static queryStr = data => {
@@ -14,13 +14,13 @@ export class AdsAPI {
 
 	public static get(data): AxiosPromise<any> {
 		const query = getQueryWithLocation();
-		return AxiosWrapper.get(`/ads?${formatData({...query, ...getDataForAdsIndexPage})}&${data}`);
+		return AxiosWrapper.get(`/ads?${queryStringifyPlus({...query, ...getDataForAdsIndexPage})}&${data}`);
 	}
 
 	public static getPage(sort, page): AxiosPromise<any>  {
 		const query = getQueryWithLocation();
 		query.page = page;
-		return AxiosWrapper.get(`/ads?${formatData({...query, ...getDataForAdsIndexPage})}&${sort}`);
+		return AxiosWrapper.get(`/ads?${queryStringifyPlus({...query, ...getDataForAdsIndexPage})}&${sort}`);
 	}
 
 	public static getMy(): AxiosPromise<any>  {
