@@ -92,6 +92,7 @@ class Pagination extends Component<IProps, IState> {
 				}
 				{
 					current_page === last_page &&
+						last_page !== 1 &&
 					<PaginationItem>
 						<PaginationLink
 							href={this.calcHrefGoPage(1)}
