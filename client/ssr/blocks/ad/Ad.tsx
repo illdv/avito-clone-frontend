@@ -15,15 +15,16 @@ import PlaceMap from 'client/ssr/components/AdShowPage/PlaceMap';
 import { IRootState } from '../../../common/store/storeInterface';
 import { UserActions } from '../../../common/entities/user/rootActions';
 import Chart from 'client/ssr/components/AdShowPage/Chart/Chart';
+import { createAddress } from 'client/ssr/blocks/ad/utils';
 
 require('./Ad.sass');
 
 class Ad extends React.Component <IAdsProps, IAdsState> {
 	constructor(props) {
 		super(props);
-		const queue       = this.recurseGetAdCategories(this.props.categories, this.props.ad.category_id);
+		const queue = this.recurseGetAdCategories(this.props.categories, this.props.ad.category_id);
 		const queueCrumbs = this.formatCategoriesToCrumbs(queue);
-		const slider      = this.formationImages(this.props.ad.images);
+		const slider = this.formationImages(this.props.ad.images);
 
 		const crumbs: ICrumb[] = [].concat(this.firstCrumbs, queueCrumbs, this.lastCrumbItem);
 		const images: IImage[] = [].concat(slider);
@@ -52,7 +53,7 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 	formatCategoriesToCrumbs = (categories): ICrumb[] => {
 		return categories.map(category => {
 			const cityId = this.props.ad.city.city_id;
-			const categoryId      = encodeURI(category.id);
+			const categoryId = encodeURI(category.id);
 			return {
 				title: category.title,
 				href: `/search?city_id=${cityId}&category_id=${categoryId}`,
@@ -60,7 +61,7 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 		});
 	}
 
-	recurseGetAdCategories   = (categories, idCategoryAd): any[] | null => {
+	recurseGetAdCategories = (categories, idCategoryAd): any[] | null => {
 		return categories.reduce((acc, category) => {
 			if (acc) {
 				return acc;
@@ -114,15 +115,17 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 	}
 
 	render() {
-		const { similar, ad, user }                           = this.props;
+		const { similar, ad, user } = this.props;
 		const { crumbs, lastCrumb, images, isFavorite, coordinatesMap } = this.state;
+		const adAddress = createAddress(ad.city);
+
 		return (
 			<>
 				<section className='heading'>
 					<div className='container'>
 						<div className='row'>
 							<div className='col-md-9'>
-								<Breadcrumbs breadcrumbs={crumbs} />
+								<Breadcrumbs breadcrumbs={crumbs}/>
 							</div>
 							<div className='col-md-3'>
 								<div className='back-next'>
@@ -131,7 +134,7 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 									</a>
 									<Link href={`/ad/${ad.next_ad}`}>
 										<a className='back-next__link orange-text'>Next
-											<i className='fas fa-arrow-right p-l-5 f-s-12 orange-text' />
+											<i className='fas fa-arrow-right p-l-5 f-s-12 orange-text'/>
 										</a>
 									</Link>
 								</div>
@@ -145,11 +148,11 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 									added <span>{ad.created_at}</span>
 								</h6>
 								<span>
-									<i className='fas fa-sync-alt orange-text' />
+									<i className='fas fa-sync-alt orange-text'/>
 									<span> {ad.updated_at} </span>
 								</span>
 								<span className='p-l-15'>
-									<i className='fas fa-eye orange-text' />
+									<i className='fas fa-eye orange-text'/>
 									<span> {ad.total_visits} </span>
 									(Today's <span> {ad.today_visits}</span>)
 								</span>
@@ -169,8 +172,8 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 							</div>
 						</div>
 						<div className='row p-y-20'>
-							<SliderImages images={ images } />
-							<Feature options={ad.options} />
+							<SliderImages images={images}/>
+							<Feature options={ad.options}/>
 						</div>
 						<div className='row'>
 							<Seller
@@ -185,10 +188,10 @@ class Ad extends React.Component <IAdsProps, IAdsState> {
 				</section>
 				<section className='section-mb'>
 					<div className='container'>
-						<Description body={ad.description} />
-						<Kit />
+						<Description body={ad.description}/>
+						<Kit/>
 						<PlaceMap
-							address={ad.address}
+							address={adAddress}
 							city={ad.city}
 							coordinatesMap={coordinatesMap}
 						/>

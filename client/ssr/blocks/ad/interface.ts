@@ -1,6 +1,7 @@
 import { IOption, IType } from 'client/common/entities/user/modules/owned-ads/interfaces';
 
 export interface IAdCity {
+	area: string;
 	city_id: number;
 	country_id: number;
 	region_id: number;
@@ -12,6 +13,7 @@ export interface IAdCountry {
 	country_id: number;
 	title: string;
 	total_ads: number;
+	region_id?: number;
 }
 
 export interface IAd {
