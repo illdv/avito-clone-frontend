@@ -107,7 +107,7 @@ class Search extends React.Component<IProps, IState> {
 				duplicateCategories: categories,
 				options: bindingOptions,
 				rangePrice: {
-					priceType: query.type || null,
+					priceType: query.type_id || null,
 					priceFrom: useOrDefault(() => query.whereBetween.price[0], null),
 					priceTo: useOrDefault(() => query.whereBetween.price[1], null),
 				},

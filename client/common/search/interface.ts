@@ -7,7 +7,7 @@ export interface IQuery {
 	search?: string;
 	currentPage?: number;
 	options?: any;
-	type?: number;
+	type_id?: number;
 	whereBetween?: {
 		price: number[],
 	};
