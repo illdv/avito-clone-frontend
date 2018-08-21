@@ -3,19 +3,23 @@ import Modal from '../../../common/modal-juggler/Modal';
 import { ModalNames } from 'client/common/modal-juggler/modalJugglerInterface';
 import { hideSellerModal } from 'client/ssr/modals/seller/SellerModalTriger';
 import NumberFormat from 'react-number-format';
-import { ISeller } from 'client/ssr/blocks/ad/interface';
+import { IAdCity, ISeller } from 'client/ssr/blocks/ad/interface';
+import { createAddress } from 'client/ssr/blocks/ad/utils';
 
 require('./SellerModal.sass');
 
 export interface ISellerProps {
 	seller: ISeller;
-	address: string;
+	city: IAdCity;
+	address?: string;
 }
 
 class SellerModal extends Component<ISellerProps> {
 	render() {
-		const { seller: { image, name, created_at, phone }, address } = this.props;
+		const { seller: { image, name, created_at, phone }, city } = this.props;
 		const file_url = image ? image.file_url : '/static/img/person.png';
+		const adAddress = createAddress(city);
+
 		return (
 			<Modal
 				name={ModalNames.seller}
@@ -63,7 +67,7 @@ class SellerModal extends Component<ISellerProps> {
 							<div className='row p-t-20'>
 								<div className='col-9'>
 									<span className='grey-text'>Address</span>
-									<span className='f-w-400'>{address}</span>
+									<span className='f-w-400'>{adAddress}</span>
 								</div>
 								<div className='col-3'>
 									<a
