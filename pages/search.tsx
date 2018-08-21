@@ -83,7 +83,7 @@ class Category extends React.Component<ICategoryProps> {
 		return {};
 	}
 
-	createLocationBreadcrumbs = (query: IQuery, location: ILocationBreadcrumbs) => {
+	createLocationBreadcrumbs = (query: IQuery, location: ILocationBreadcrumbs, search: ISearch) => {
 
 		const locationName = useOrDefault(() => location.title, 'World');
 
@@ -96,7 +96,7 @@ class Category extends React.Component<ICategoryProps> {
 		const searchParamForLocation = this.extractSearchParam(location);
 
 		return {
-			title: `All listings in ${locationName}`,
+			title: `All listings in ${locationName} ${search.breadcrumbs.categories ? '' : search.total}`,
 			href: `/search?${queryStringifyPlus({ ...newQuery, ...searchParamForLocation })}`,
 		};
 	}
@@ -113,6 +113,7 @@ class Category extends React.Component<ICategoryProps> {
 		const categoriesBreadcrumbs = (categories || []).map((item, index) => {
 
 			const href = `/search?${queryStringifyPlus({ ...newQuery, category_id: item.id })}`;
+
 			return {
 				title: `${item.title} ${index === categories.length - 1 ? total : ''}`,
 				href,
@@ -120,7 +121,7 @@ class Category extends React.Component<ICategoryProps> {
 		});
 
 
-		const locationBreadcrumbs = this.createLocationBreadcrumbs(query, location);
+		const locationBreadcrumbs = this.createLocationBreadcrumbs(query, location, search);
 
 		return [
 			locationBreadcrumbs,
