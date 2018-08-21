@@ -13,6 +13,7 @@ import ShowArray from 'client/common/blocks/ShowArray';
 import SearchStateful from 'client/ssr/blocks/search/SearchStateful';
 import { ISearch } from 'pages/search';
 import PaginationStateful from 'client/ssr/pages/PaginationStateful';
+import Pagination from 'client/ssr/pages/Pagination';
 
 export interface ICountriesTotal {
 	country_id: number;
@@ -73,7 +74,7 @@ class SearchPage extends React.Component<ISearchPageProp> {
 								ads={search.ads}
 							/>
 							<div className={'d-flex justify-content-center'} >
-								<PaginationStateful pagination={search.pagination} />
+								<Pagination pagination={search.pagination} />
 							</div >
 						</div >
 						:

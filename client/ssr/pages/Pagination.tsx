@@ -1,4 +1,3 @@
-/*
 import * as React from 'react';
 import { Component } from 'react';
 import { connect, Dispatch } from 'react-redux';
@@ -23,11 +22,11 @@ const mapStateToProps = (state: IRootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-	/!*
+	/*
 		onLoadingMail: () => {
 		 dispatch(Mail.Actions.onLoadingMail.REQUEST());
 	 },
-	*!/
+	*/
 });
 
 const DotDot = () => {
@@ -56,9 +55,26 @@ class Pagination extends Component<IProps, IState> {
 	render() {
 		const { current_page, last_page } = this.props.pagination;
 
-
-		console.log('arr -', arr);
-		console.log(Array(last_page));
+		const arr = Array(last_page).fill(0).map((item, index) => index+1).reduce((acc, item) => {
+			if (current_page <= 6 && current_page >= last_page-5) {
+				acc.push(item);
+			} else if (current_page > 6 && current_page < last_page-5) {
+				if (item >= current_page - 2 && item <= current_page + 2) {
+					acc.push(item);
+				}
+			}else if (current_page <= 6) {
+				if (item <= current_page+2) {
+					acc.push(item);
+				}
+			} else if (current_page >= last_page-5) {
+				if (item >= current_page-2) {
+					acc.push(item);
+				}
+			} else {
+				acc.push(0);
+			}
+			return acc;
+		}, []);
 
 		return (
 			<BPagination >
@@ -70,7 +86,7 @@ class Pagination extends Component<IProps, IState> {
 				}
 				{ current_page > 6 ?
 					<>
-					{ [1,2,3].map((item) => (
+					{ [1,2,3].map(item => (
 							<PaginationItem key={item}>
 								<PaginationLink href={this.calcHrefGoPage(item)} >
 									{item}
@@ -82,7 +98,7 @@ class Pagination extends Component<IProps, IState> {
 					</>: null
 				}
 				{
-					arr.map((item) => (
+					arr.map(item => (
 						<PaginationItem key={item} active={current_page === item}>
 							<PaginationLink href={this.calcHrefGoPage(item)} >
 								{item}
@@ -93,7 +109,7 @@ class Pagination extends Component<IProps, IState> {
 				{ current_page < last_page - 5 ?
 					<>
 						<DotDot/>
-						{ [last_page-2, last_page-1, last_page].map((item) => (
+						{ [last_page-2, last_page-1, last_page].map(item => (
 							<PaginationItem key={item}>
 								<PaginationLink href={this.calcHrefGoPage(item)} >
 									{item}
@@ -114,4 +130,4 @@ class Pagination extends Component<IProps, IState> {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Pagination);*/
+export default connect(mapStateToProps, mapDispatchToProps)(Pagination);
