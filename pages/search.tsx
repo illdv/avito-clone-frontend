@@ -16,7 +16,7 @@ import { isServer } from 'client/common/utils/utils';
 import { ILocationBreadcrumbs, ISearchBreadcrumbs } from 'client/ssr/blocks/search/SearchStateful';
 import { useOrDefault } from 'client/spa/profile/utils/createAd';
 import { IQuery } from 'client/common/search/interface';
-import { queryStringifyPlus } from 'server/router/utils'
+import { queryStringifyPlus } from 'server/router/utils';
 
 if (isServer()) {
 	types.disableChecking();

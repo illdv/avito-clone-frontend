@@ -59,6 +59,7 @@ class Ads extends React.Component<IAdsProps> {
 						similar={similars}
 					/>
 					<SellerModal
+						city={ad.city}
 						seller={user}
 						address={address}
 					/>
