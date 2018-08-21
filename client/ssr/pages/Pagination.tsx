@@ -77,55 +77,60 @@ class Pagination extends Component<IProps, IState> {
 		}, []);
 
 		return (
-			<BPagination >
-				{
-					current_page - 1 !== 0 &&
-					<PaginationItem >
-						<PaginationLink previous href={this.calcHrefGoPage(current_page - 1)} />
-					</PaginationItem >
-				}
-				{ current_page > 6 ?
-					<>
-					{ [1,2,3].map(item => (
-							<PaginationItem key={item}>
-								<PaginationLink href={this.calcHrefGoPage(item)} >
-									{item}
-								</PaginationLink >
+			<>
+				{ last_page !== 1 ?
+					<BPagination >
+						{
+							current_page - 1 !== 0 &&
+							<PaginationItem >
+								<PaginationLink previous href={this.calcHrefGoPage(current_page - 1)} />
 							</PaginationItem >
-						))
-					}
-						<DotDot/>
-					</>: null
-				}
-				{
-					arr.map(item => (
-						<PaginationItem key={item} active={current_page === item}>
-							<PaginationLink href={this.calcHrefGoPage(item)} >
-								{item}
-							</PaginationLink >
-						</PaginationItem >
-					))
-				}
-				{ current_page < last_page - 5 ?
-					<>
-						<DotDot/>
-						{ [last_page-2, last_page-1, last_page].map(item => (
-							<PaginationItem key={item}>
-								<PaginationLink href={this.calcHrefGoPage(item)} >
-									{item}
-								</PaginationLink >
-							</PaginationItem >
-						))
 						}
-					</>: null
+						{ current_page > 6 ?
+							<>
+							{ [1,2,3].map(item => (
+									<PaginationItem key={item}>
+										<PaginationLink href={this.calcHrefGoPage(item)} >
+											{item}
+										</PaginationLink >
+									</PaginationItem >
+								))
+							}
+								<DotDot/>
+							</>: null
+						}
+						{
+							arr.map(item => (
+								<PaginationItem key={item} active={current_page === item}>
+									<PaginationLink href={this.calcHrefGoPage(item)} >
+										{item}
+									</PaginationLink >
+								</PaginationItem >
+							))
+						}
+						{ current_page < last_page - 5 ?
+							<>
+								<DotDot/>
+								{ [last_page-2, last_page-1, last_page].map(item => (
+									<PaginationItem key={item}>
+										<PaginationLink href={this.calcHrefGoPage(item)} >
+											{item}
+										</PaginationLink >
+									</PaginationItem >
+								))
+								}
+							</>: null
+						}
+						{
+							current_page + 1 <= last_page &&
+							<PaginationItem >
+								<PaginationLink next href={this.calcHrefGoPage(current_page + 1)} />
+							</PaginationItem >
+						}
+					</BPagination >
+					: null
 				}
-				{
-					current_page + 1 <= last_page &&
-					<PaginationItem >
-						<PaginationLink next href={this.calcHrefGoPage(current_page + 1)} />
-					</PaginationItem >
-				}
-			</BPagination >
+			</>
 		);
 	}
 }
