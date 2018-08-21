@@ -5,6 +5,7 @@ import { hideSellerModal } from 'client/ssr/modals/seller/SellerModalTriger';
 import NumberFormat from 'react-number-format';
 import { IAdCity, ISeller } from 'client/ssr/blocks/ad/interface';
 import { createAddress } from 'client/ssr/blocks/ad/utils';
+import { useOrDefault } from 'client/spa/profile/utils/createAd';
 
 require('./SellerModal.sass');
 
@@ -16,7 +17,8 @@ export interface ISellerProps {
 
 class SellerModal extends Component<ISellerProps> {
 	render() {
-		const { seller: { image: { file_url }, name, created_at, phone }, city } = this.props;
+		const { seller: { name, created_at, phone }, city } = this.props;
+		const fileUrl = useOrDefault(() => this.props.seller.image.file_url, '');
 		const adAddress = createAddress(city);
 
 		return (
@@ -54,7 +56,7 @@ class SellerModal extends Component<ISellerProps> {
 									<span className='d-block'>On ADS from {created_at}</span>
 								</div>
 								<img
-									src={file_url}
+									src={fileUrl}
 									alt=''
 									className='round-img m-l-20'
 								/>
