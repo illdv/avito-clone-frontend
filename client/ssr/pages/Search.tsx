@@ -8,11 +8,12 @@ import EmptySearch from 'client/ssr/blocks/empty-search/EmptySearch';
 import BreadcrumbsWrap from 'client/ssr/wraps/BreadcrumbFromContext';
 import ListOfSubcategories from 'client/ssr/blocks/list-of-subcategories/ListOfSubcategories';
 import { categoryToItemOfTitlesList, countriesToItemOfTitlesList, getNextLocationName } from 'client/ssr/pages/utils';
-import Pagination from 'client/ssr/pages/Pagination';
 import { useOrDefault } from 'client/spa/profile/utils/createAd';
 import ShowArray from 'client/common/blocks/ShowArray';
 import SearchStateful from 'client/ssr/blocks/search/SearchStateful';
 import { ISearch } from 'pages/search';
+import PaginationStateful from 'client/ssr/pages/PaginationStateful';
+import Pagination from 'client/ssr/pages/Pagination';
 
 export interface ICountriesTotal {
 	country_id: number;
