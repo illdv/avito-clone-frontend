@@ -18,7 +18,7 @@ export interface ISellerProps {
 class SellerModal extends Component<ISellerProps> {
 	render() {
 		const { seller: { name, created_at, phone }, city } = this.props;
-		const fileUrl = useOrDefault(() => this.props.seller.image.file_url, '');
+		const fileUrl = useOrDefault(() => this.props.seller.image.file_url, '/static/img/person.png');
 		const adAddress = createAddress(city);
 
 		return (
