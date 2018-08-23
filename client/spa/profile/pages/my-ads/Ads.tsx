@@ -94,32 +94,32 @@ class Ads extends React.Component<IProps, ISelectedAd> {
 						  <div className='offer-block__inner'>
 							  <div className='row'>
 								  <div className='col-9 d-flex'>
-                                      {
-                                          location.pathname !== '/profile/my-ads/completed' ?
-                                              <a href={`/ad/${ad.id}`}>
-                                                  <img
-                                                      alt=''
-                                                      src={extractPreviewImage(ad)}
-                                                      className='offer-block__img'
-                                                  />
-                                              </a>
-                                              :
-                                              <img
-                                                  alt=''
-                                                  src={extractPreviewImage(ad)}
-                                                  className='offer-block__img'
-                                              />
-                                      }
+										{
+											location.pathname !== '/profile/my-ads/completed' ?
+												<a href={`/ad/${ad.id}`}>
+													<img
+														alt=''
+														src={extractPreviewImage(ad)}
+														className='offer-block__img'
+													/>
+												</a>
+												:
+												<img
+													alt=''
+													src={extractPreviewImage(ad)}
+													className='offer-block__img'
+												/>
+										}
 
 									  <div className='offer-block__info'>
 										  <div>
 											  {
 											  	location.pathname !== '/profile/my-ads/completed' ?
-                                                    <a href={`/ad/${ad.id}`}>
-                                                        <h5>{ad.title}</h5>
-                                                    </a>
+													<a href={`/ad/${ad.id}`}>
+														<h5>{ad.title}</h5>
+													</a>
 													:
-                                                    <h5>{ad.title}</h5>
+													<h5>{ad.title}</h5>
 											  }
 
 											  <span className='d-inline-block offer-block__price'>{ad.price}</span>
