@@ -47,10 +47,13 @@ class Chart extends Component<IChart, IChartState> {
 						<Line data={data} options={optionChart}/>
 					</div>
 				</div>
-				<SimilarAds
-					similar_ads={similar_ads}
-					id_parent={id_parent}
-				/>
+				{
+					similar_ads.length > 0 &&
+                    <SimilarAds
+                        similar_ads={similar_ads}
+                        id_parent={id_parent}
+                    />
+				}
 			</div>
 		);
 	}
