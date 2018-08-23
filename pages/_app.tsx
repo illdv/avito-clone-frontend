@@ -13,6 +13,7 @@ import { CustomStorage } from 'client/common/entities/user/CustomStorage';
 import { UserActions } from 'client/common/entities/user/rootActions';
 import { useOrDefault } from 'client/spa/profile/utils/createAd';
 import SetSearch from 'client/ssr/contexts/QueryContext';
+import { ToastContainer } from 'react-toastify';
 
 if (isServer) {
 	types.disableChecking();
@@ -60,6 +61,7 @@ class ExampleApp extends App {
 						<Component { ...pageProps } />
 					</SetSearch>
 				</Provider >
+				<ToastContainer />
 			</Container >
 		);
 	}
