@@ -49,10 +49,10 @@ class Chart extends Component<IChart, IChartState> {
 				</div>
 				{
 					similar_ads.length > 0 &&
-                    <SimilarAds
-                        similar_ads={similar_ads}
-                        id_parent={id_parent}
-                    />
+					<SimilarAds
+						similar_ads={similar_ads}
+						id_parent={id_parent}
+					/>
 				}
 			</div>
 		);
