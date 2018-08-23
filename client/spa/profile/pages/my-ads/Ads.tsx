@@ -94,18 +94,34 @@ class Ads extends React.Component<IProps, ISelectedAd> {
 						  <div className='offer-block__inner'>
 							  <div className='row'>
 								  <div className='col-9 d-flex'>
-									  <a href={`/ad/${ad.id}`}>
-										  <img
-											  alt=''
-											  src={extractPreviewImage(ad)}
-											  className='offer-block__img'
-										  />
-									  </a>
+										{
+											location.pathname !== '/profile/my-ads/completed' ?
+												<a href={`/ad/${ad.id}`}>
+													<img
+														alt=''
+														src={extractPreviewImage(ad)}
+														className='offer-block__img'
+													/>
+												</a>
+												:
+												<img
+													alt=''
+													src={extractPreviewImage(ad)}
+													className='offer-block__img'
+												/>
+										}
+
 									  <div className='offer-block__info'>
 										  <div>
-											  <a href={`/ad/${ad.id}`}>
-												  <h5>{ad.title}</h5>
-											  </a>
+											  {
+											  	location.pathname !== '/profile/my-ads/completed' ?
+													<a href={`/ad/${ad.id}`}>
+														<h5>{ad.title}</h5>
+													</a>
+													:
+													<h5>{ad.title}</h5>
+											  }
+
 											  <span className='d-inline-block offer-block__price'>{ad.price}</span>
 										  </div>
 										  <div className='publish-offer'>
