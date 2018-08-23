@@ -43,6 +43,7 @@ function* resetPassword(action) {
 	}
 	// yield put(show(ModalNames.login));
 }
+
 function* login(action: Action<ILoginRequest>) {
 	try {
 		const response: AxiosResponse<IAuthResponse> = yield call(UserAPI.login, action.payload);
