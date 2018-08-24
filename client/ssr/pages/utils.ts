@@ -3,7 +3,7 @@ import { ICountriesTotal } from 'client/ssr/pages/Search';
 import { getQueryLoop } from 'client/ssr/contexts/QueryContext';
 import { queryStringifyPlus } from '../../../server/router/utils';
 
-export const categoryToItemOfTitlesList = ({ id, title, total_ads_count, slug }: ICategory): ItemOfTitlesList => {
+export const categoryToItemOfTitlesList = ({ id, title, total_ads_count }: ICategory): ItemOfTitlesList => {
 	const query  = getQueryLoop();
 	const parsed = queryStringifyPlus({ ...query, category_id: id });
 	return { id, title, count: total_ads_count, href: `?${parsed}` };
@@ -61,9 +61,9 @@ export enum LocationType {
 function getLocationStatus(): ILocationStatus {
 	const newQueryParams: any = { ...getQueryLoop() };
 
-	const hasRegion  = newQueryParams.region_id;
-	const hasCountry = newQueryParams.country_id;
-	const hasCity    = newQueryParams.city_id;
+	const hasRegion  = !!newQueryParams.region_id;
+	const hasCountry = !!newQueryParams.country_id;
+	const hasCity    = !!newQueryParams.city_id;
 
 	return {
 		hasRegion,
@@ -74,11 +74,12 @@ function getLocationStatus(): ILocationStatus {
 
 function getLocationType(): LocationType {
 	const { hasCity, hasCountry, hasRegion } = getLocationStatus();
-	if (hasCountry && hasRegion && hasCity) {
+
+	if (hasCity) {
 		return LocationType.SelectCity;
 	}
 
-	if (hasCountry && hasRegion) {
+	if (hasRegion) {
 		return LocationType.SelectRegion;
 	}
 

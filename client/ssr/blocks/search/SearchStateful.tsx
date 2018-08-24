@@ -31,9 +31,9 @@ export interface IState {
 }
 
 export interface IProps {
-	searchActions: ISearchActions;
+	searchActions?: ISearchActions;
 	search?: ISearchState;
-	locationState: ILocationStoreState;
+	locationState?: ILocationStoreState;
 }
 
 const mapStateToProps = (state: IRootState) => ({
