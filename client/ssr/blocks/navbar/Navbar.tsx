@@ -13,7 +13,7 @@ const mapStateToProps = (state: IRootState) => ({
 });
 
 interface IProps {
-	user: IUserState;
+	user?: IUserState;
 }
 
 class Navbar extends React.Component<IProps> {

@@ -14,6 +14,7 @@ import { IAd } from 'client/ssr/blocks/ad/interface';
 import { SetCategories } from 'client/ssr/blocks/categories/context';
 import { isServer } from 'client/common/utils/utils';
 import Error from 'next/error';
+import SearchStateful from '../client/ssr/blocks/search/SearchStateful';
 
 if (isServer) {
 	types.disableChecking();
@@ -50,7 +51,7 @@ class Ads extends React.Component<IAdsProps> {
 					<div className='bottom-header p-y-20'>
 						<div className='container'>
 							<Navbar />
-							<Search priceRange={true}/>
+							<SearchStateful/>
 						</div>
 					</div>
 					<Ad

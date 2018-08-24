@@ -34,7 +34,6 @@ interface IProps {
 	locationName: string;
 	urlString: string;
 	categories: Category;
-	idActiveCategory: number;
 	priceRange?: boolean;
 }
 

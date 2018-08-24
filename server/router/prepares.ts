@@ -29,6 +29,14 @@ const instance = axios.create({
 });
 
 instance.interceptors.response.use(response => {
+	console.log('---------------------------------------------------------');
+	console.log('url = ', response.config.url);
+	console.log('data = ', JSON.stringify(response.data));
+	return response;
+});
+
+
+instance.interceptors.response.use(response => {
 	return response;
 });
 
